@@ -1,4 +1,5 @@
-// const path = require('path');
+const path = require('path');
+const postcssPresetEnv = require('postcss-preset-env')
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -11,7 +12,7 @@ module.exports = {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          { loader: 'css-loader', options: { importLoader: 1 } },
+          { loader: 'css-loader', options: { importLoaders: 1 } },
           {
             loader: 'postcss-loader',
             options: {
@@ -69,6 +70,11 @@ module.exports = {
       filename: 'index.min.css'
     })
   ],
+  resolve: {
+    alias: {
+      snapsvg: path.join(__dirname, './src/muya/lib/assets/libs/snap.svg-min.js'),
+    }
+  },
   entry: {
     index: './src/index.js',
   }
