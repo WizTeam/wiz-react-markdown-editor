@@ -13,6 +13,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
@@ -28,6 +31,7 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.5",
+    "mini-css-extract-plugin": "^0.10.0",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.13.1",
@@ -40,6 +44,9 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "dompurify": "^2.0.12",
+    "execall": "^2.0.0",
+    "flowchart.js": "^1.13.0",
     "lodash": "^4.17.19",
     "prop-types": "^15.7.2",
     "react-intl": "^5.4.5"
