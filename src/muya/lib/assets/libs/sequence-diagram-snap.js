@@ -749,9 +749,10 @@ var parser = function() {
 exports.Parser = parser.Parser, exports.parse = function() {
     return parser.parse.apply(parser, arguments);
 }, exports.main = function(args) {
-    args[1] || (console.log("Usage: " + args[0] + " FILE"), process.exit(1));
-    var source = require("fs").readFileSync(require("path").normalize(args[1]), "utf8");
-    return exports.parser.parse(source);
+    // args[1] || (console.log("Usage: " + args[0] + " FILE"), process.exit(1));
+    // var source = require("fs").readFileSync(require("path").normalize(args[1]), "utf8");
+    // return exports.parser.parse(source);
+    return null;
 }, "undefined" != typeof module && require.main === module && exports.main(process.argv.slice(1)));
 /**
  * jison doesn't have a good exception, so we make one.
