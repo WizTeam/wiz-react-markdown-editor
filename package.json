@@ -7,9 +7,12 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.dev.js",
-    "dev": "cross-env NODE_ENV=development&&webpack --config webpack.dev.js",
-    "dev:demo": "webpack-dev-server --config webpack.demo.js",
-    "build": "cross-env NODE_ENV=production&&webpack --config webpack.production.js"
+    "build": "cross-env NODE_ENV=production&&webpack --config webpack.prod.js",
+    "pub": "npm run build && npm publish",
+    "lint:prettier": "check-prettier lint",
+    "lint:js": "eslint --ext .js,.ts .",
+    "lint-staged": "lint-staged",
+    "lint-staged:js": "eslint --ext .js,.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",
@@ -30,11 +33,14 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.5",
+    "eslint-plugin-react": "^7.20.6",
     "file-loader": "^6.0.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
     "mini-css-extract-plugin": "^0.10.0",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.13.1",
@@ -68,5 +74,16 @@
     "vega": "^5.13.0",
     "vega-embed": "^6.10.0",
     "vega-lite": "^4.14.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,ts,tsx}": "npm run lint-staged:js",
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+      "prettier --write"
+    ]
   }
 }

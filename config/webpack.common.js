@@ -1,17 +1,17 @@
 const path = require('path');
-const postcssPresetEnv = require('postcss-preset-env')
+const postcssPresetEnv = require('postcss-preset-env');
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-console.log('webpack.common.js');
 module.exports = {
   module: {
     rules: [
       {
         test: /\.css$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          'style-loader',
+          // MiniCssExtractPlugin.loader,
           { loader: 'css-loader', options: { importLoaders: 1 } },
           {
             loader: 'postcss-loader',
@@ -28,10 +28,8 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        // exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-        }
+        use: ['babel-loader', 'eslint-loader'],
+        exclude: /node_modules/
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -63,19 +61,16 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: 'index.min.css'
-    })
-  ],
+  // plugins: [
+  //   new MiniCssExtractPlugin({
+  //     // Options similar to the same options in webpackOptions.output
+  //     // both options are optional
+  //     filename: 'index.min.css'
+  //   })
+  // ],
   resolve: {
     alias: {
-      snapsvg: path.join(__dirname, './src/muya/lib/assets/libs/snap.svg-min.js'),
+      snapsvg: path.join(__dirname, './src/muya/lib/assets/libs/snap.svg-min.js')
     }
-  },
-  entry: {
-    index: './src/index.js',
   }
 };
