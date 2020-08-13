@@ -21,8 +21,8 @@
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
-    "babel-loader": "^8.1.0",
     "@material-ui/core": "^4.9.13",
+    "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.3",
     "cross-env": "^7.0.2",
@@ -56,6 +56,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "dompurify": "^2.0.12",
+    "element-resize-detector": "^1.2.1",
     "execall": "^2.0.0",
     "flowchart.js": "^1.13.0",
     "fuzzaldrin": "^2.1.0",
