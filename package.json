@@ -46,6 +46,7 @@
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.13.1",
     "style-loader": "^1.2.1",
+    "to-string-loader": "^1.1.6",
     "url-loader": "^4.1.0",
     "webfontloader": "^1.6.28",
     "webpack": "^4.44.1",
@@ -58,6 +59,7 @@
     "dompurify": "^2.0.12",
     "element-resize-detector": "^1.2.1",
     "execall": "^2.0.0",
+    "file-icons-js": "^1.0.3",
     "flowchart.js": "^1.13.0",
     "fuzzaldrin": "^2.1.0",
     "github-markdown-css": "^4.0.0",
@@ -73,6 +75,7 @@
     "snabbdom-to-html": "^6.0.0",
     "turndown": "^6.0.0",
     "underscore": "^1.10.2",
+    "unsplash-js": "^6.0.0",
     "vega": "^5.13.0",
     "vega-embed": "^6.10.0",
     "vega-lite": "^4.14.1"

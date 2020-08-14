@@ -4,27 +4,32 @@ const postcssPresetEnv = require('postcss-preset-env');
 
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const cssLoaders = [
+  { loader: 'css-loader', options: { importLoaders: 1 } },
+  {
+    loader: 'postcss-loader',
+    options: {
+      ident: 'postcss',
+      plugins: () => [
+        postcssPresetEnv({
+          stage: 0
+        })
+      ]
+    }
+  }
+];
+
 module.exports = {
   module: {
     rules: [
       {
+        test: /\.theme\.css$/,
+        use: ['style-loader', ...cssLoaders]
+      },
+      {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          // MiniCssExtractPlugin.loader,
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: () => [
-                postcssPresetEnv({
-                  stage: 0
-                })
-              ]
-            }
-          }
-        ]
+        exclude: /\.theme\.css$/,
+        use: ['style-loader', ...cssLoaders]
       },
       {
         test: /\.js$/,
