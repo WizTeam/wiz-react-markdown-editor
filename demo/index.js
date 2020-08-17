@@ -30,10 +30,16 @@ function chooseImage() {
 
 const App = () => {
   const [theme, setTheme] = React.useState('light');
-  const [focusMode] = React.useState(false);
+  const [focusMode, setFocusMode] = React.useState(false);
+  const [typewriterMode, setTypewriterMode] = React.useState(false);
 
   return (
-    <div>
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <div>
+        <span>{`theme:${theme}|`}</span>
+        <span>{`focus:${focusMode}|`}</span>
+        <span>{`typewriter:${typewriterMode}`}</span>
+      </div>
       <div>
         <button
           onClick={() => {
@@ -52,9 +58,28 @@ const App = () => {
           dark
         </button>
       </div>
+      <div>
+        <button
+          onClick={() => {
+            setFocusMode(!focusMode);
+          }}
+          type="button"
+        >
+          focus toggle
+        </button>
+        <button
+          onClick={() => {
+            setTypewriterMode(!typewriterMode);
+          }}
+          type="button"
+        >
+          typewriter toggle
+        </button>
+      </div>
       <Editor
-        theme={theme}
         focus={focusMode}
+        typewriter={typewriterMode}
+        theme={theme}
         onSelectImages={chooseImage}
         onChange={(content) => {
           console.log(content);

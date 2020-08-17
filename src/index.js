@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useMuya } from './hooks/editor';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth, addThemeStyle } from './theme';
+import { animatedScrollTo } from './utils/utils';
 import './style/index.css';
 import './style/printService.css';
 import './muya/themes/default.css';
@@ -35,6 +36,12 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     overflow: 'hidden'
+  },
+  typewriter: {
+    '& $editorComponent': {
+      paddingTop: 'calc(50vh - 136px)',
+      paddingBottom: 'calc(50vh - 54px)'
+    }
   }
 });
 
@@ -117,15 +124,33 @@ function Editor(props) {
       props?.onChange(contentObj);
     }
 
+    function handleSelectionChange(changes) {
+      const { y } = changes.cursorCoords;
+      const container = editor.container;
+      const STANDAR_Y = 250;
+      //
+      if (typewriter) {
+        animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, 100);
+      }
+
+      // 快到底部时，向下滚动
+      if (container.clientHeight - y < 100) {
+        const editableHeight = container.clientHeight - 100;
+        animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
+      }
+    }
+
     if (editor) {
       editor.on('change', handleChange);
+      editor.on('selectionChange', handleSelectionChange);
     }
     return () => {
       if (editor) {
         editor.off('change', handleChange);
+        editor.off('selectionChange', handleSelectionChange);
       }
     };
-  }, [editor]);
+  }, [editor, typewriter]);
 
   return (
     <div
