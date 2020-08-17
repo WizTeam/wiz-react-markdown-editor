@@ -6,6 +6,8 @@ import CodePicker from '../muya/lib/ui/codePicker';
 import EmojiPicker from '../muya/lib/ui/emojiPicker';
 import ImagePathPicker from '../muya/lib/ui/imagePicker';
 import ImageSelector from '../muya/lib/ui/imageSelector';
+import ImageToolbar from '../muya/lib/ui/imageToolbar';
+import Transformer from '../muya/lib/ui/transformer';
 
 Muya.use(TablePicker);
 Muya.use(QuickInsert);
@@ -15,6 +17,8 @@ Muya.use(ImageSelector, {
   unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
 });
 Muya.use(ImagePathPicker);
+Muya.use(ImageToolbar);
+Muya.use(Transformer);
 
 function formatOptions(options) {
   Object.assign(
