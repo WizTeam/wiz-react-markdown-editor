@@ -19,6 +19,9 @@ import Editor from 'wiz_react_markdown_editor';
 |     width      |                         string\number                          | '100%'  |  ✗   |   编辑器可编辑的最大宽度   |
 |     theme      | 'dark'\'light'\'material-dark'\'ulysses'\'graphite'\'one-dark' | 'light' |  ✗   |         编辑器主题         |
 | onSelectImages |                     function: () => string                     |    -    |  ✗   | 选择图片函数, 返回资源路径 |
+|    markdown    |                             string                             |   ''    |  ✗   |       markdown 源码        |
+|     focus      |                            boolean                             |  false  |  ✗   |    是否打开 focus 模式     |
+|    onChange    |                 function (contentObj) => void                  |    -    |  ✗   |        内容改变事件        |
 
 ### Edit Grammar:
 

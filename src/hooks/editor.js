@@ -70,6 +70,13 @@ export function useMuya(eleRef, options) {
         })
       );
     }
+
+    return () => {
+      if (editor) {
+        editor.destroy();
+        setEditor(null);
+      }
+    };
   }, [eleRef]);
 
   return editor;
