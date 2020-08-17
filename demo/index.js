@@ -28,5 +28,31 @@ function chooseImage() {
   });
 }
 
-const App = () => <Editor onSelectImages={chooseImage} />;
+const App = () => {
+  const [theme, setTheme] = React.useState('light');
+
+  return (
+    <div>
+      <div>
+        <button
+          onClick={() => {
+            setTheme('light');
+          }}
+          type="button"
+        >
+          light
+        </button>
+        <button
+          onClick={() => {
+            setTheme('dark');
+          }}
+          type="button"
+        >
+          dark
+        </button>
+      </div>
+      <Editor theme={theme} onSelectImages={chooseImage} />
+    </div>
+  );
+};
 render(<App />, document.getElementById('root'));

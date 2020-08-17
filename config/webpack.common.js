@@ -23,12 +23,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.theme\.css$/,
-        use: ['style-loader', ...cssLoaders]
+        test: /(theme-chalk(?:\/|\\)index|exportStyle|katex|github-markdown|prism[-a-z]*|\.theme|headerFooterStyle)\.css$/,
+        use: ['to-string-loader', 'css-loader']
       },
       {
         test: /\.css$/,
-        exclude: /\.theme\.css$/,
+        exclude: /(theme-chalk(?:\/|\\)index|exportStyle|katex|github-markdown|prism[-a-z]*|\.theme|headerFooterStyle)\.css$/,
         use: ['style-loader', ...cssLoaders]
       },
       {

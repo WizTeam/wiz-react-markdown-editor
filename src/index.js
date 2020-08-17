@@ -5,15 +5,18 @@ import PropTypes from 'prop-types';
 import { useMuya } from './hooks/editor';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth, addThemeStyle } from './theme';
+import './style/index.css';
+import './style/printService.css';
 import './muya/themes/default.css';
-import './style/one-dark.css';
+// import './style/one-dark.css';
 
 const useStyles = makeStyles({
   editorWrapper: {
     height: '100%',
     position: 'relative',
-    flex: 1
-    // color: var(--editorColor),
+    flex: 1,
+    backgroundColor: 'var(--editorBgColor)',
+    color: 'var(--editorColor)'
     // & .ag-dialog-table {
     //   & .el-button {
     //     font-size: 13px;
