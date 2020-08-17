@@ -60,11 +60,15 @@ export function useMuya(eleRef, options) {
   const [editor, setEditor] = useState();
   useEffect(() => {
     if (eleRef.current) {
-      const muya = new Muya(eleRef.current, formatOptions(options));
-      setEditor({
-        ...muya,
-        setOptions: (opt) => muya.setOptions(formatOptions(opt))
-      });
+      setEditor(
+        new Proxy(new Muya(eleRef.current, formatOptions(options)), {
+          get(target, key, proxy) {
+            return key === 'setOptions'
+              ? (args) => Reflect.apply(target[key], target, [formatOptions(args)])
+              : Reflect.get(target, key, proxy);
+          }
+        })
+      );
     }
   }, [eleRef]);
 

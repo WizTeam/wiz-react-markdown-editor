@@ -108,6 +108,21 @@ function Editor(props) {
     }
   }, [MuyaOptions]);
 
+  useEffect(() => {
+    function handleChange(contentObj) {
+      props?.onChange(contentObj);
+    }
+
+    if (editor) {
+      editor.on('change', handleChange);
+    }
+    return () => {
+      if (editor) {
+        editor.off('change', handleChange);
+      }
+    };
+  }, [editor]);
+
   return (
     <div
       className={classNames(
@@ -125,13 +140,15 @@ function Editor(props) {
 Editor.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   theme: PropTypes.oneOf(['dark', 'light', 'material-dark', 'ulysses', 'graphite', 'one-dark']),
-  onSelectImages: PropTypes.func
+  onSelectImages: PropTypes.func,
+  onChange: PropTypes.func
 };
 
 Editor.defaultProps = {
   width: '100%',
   theme: 'light',
-  onSelectImages: null
+  onSelectImages: null,
+  onChange: null
 };
 
 export default Editor;

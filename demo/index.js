@@ -51,7 +51,13 @@ const App = () => {
           dark
         </button>
       </div>
-      <Editor theme={theme} onSelectImages={chooseImage} />
+      <Editor
+        theme={theme}
+        onSelectImages={chooseImage}
+        onChange={(content) => {
+          console.log(content);
+        }}
+      />
     </div>
   );
 };
