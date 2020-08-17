@@ -30,6 +30,7 @@ function chooseImage() {
 
 const App = () => {
   const [theme, setTheme] = React.useState('light');
+  const [focusMode, setFocusMode] = React.useState(false);
 
   return (
     <div>
@@ -51,7 +52,17 @@ const App = () => {
           dark
         </button>
       </div>
-      <Editor theme={theme} onSelectImages={chooseImage} />
+      <div>
+        <button
+          onClick={() => {
+            setFocusMode(!focusMode);
+          }}
+          type="button"
+        >
+          focus toggle
+        </button>
+      </div>
+      <Editor focus={focusMode} theme={theme} onSelectImages={chooseImage} />
     </div>
   );
 };

@@ -61,11 +61,20 @@ export function useMuya(eleRef, options) {
   useEffect(() => {
     if (eleRef.current) {
       const muya = new Muya(eleRef.current, formatOptions(options));
-      setEditor({
-        ...muya,
-        setOptions: (opt) => muya.setOptions(formatOptions(opt))
-      });
+      // eslint-disable-next-line func-names
+      Muya.prototype.setOptionsWithTheme = function (opt) {
+        return this.setOptions(formatOptions(opt));
+      };
+      //
+      setEditor(muya);
     }
+
+    return () => {
+      if (editor) {
+        editor.destroy();
+        setEditor(null);
+      }
+    };
   }, [eleRef]);
 
   return editor;

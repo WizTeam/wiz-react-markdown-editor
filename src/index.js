@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -41,15 +41,15 @@ const useStyles = makeStyles({
 function Editor(props) {
   const classes = useStyles();
   //
-  const [typewriter] = useState(false);
-  const [focus] = useState(false);
-  const [sourceCode] = useState(false);
+  const { typewriter, focus, sourceCode, theme, onSelectImages, markdown, width } = props;
   //
   const editorRef = useRef();
 
   const MuyaOptions = {
-    theme: props.theme,
-    imagePathPicker: props.onSelectImages
+    focusMode: focus,
+    theme,
+    imagePathPicker: onSelectImages,
+    markdown
   };
 
   const editor = useMuya(editorRef, MuyaOptions);
@@ -94,20 +94,22 @@ function Editor(props) {
   //   }
   // });
 
+  useEffect(() => {
+    editor?.setFocusMode(focus);
+  }, [focus]);
+
   // 先添加theme的<style>标签，防止切换主题时覆盖属性
   useEffect(() => {
-    addThemeStyle(props.theme);
-  }, [props.theme]);
+    addThemeStyle(theme);
+  }, [theme]);
 
   // 后生成的属性，具有更高的优先级
   useEffect(() => {
-    setEditorWidth(props.width);
-  }, [props.width]);
+    setEditorWidth(width);
+  }, [width]);
 
   useEffect(() => {
-    if (editor) {
-      editor.setOptions(MuyaOptions);
-    }
+    editor?.setOptionsWithTheme(MuyaOptions);
   }, [MuyaOptions]);
 
   return (
@@ -127,13 +129,21 @@ function Editor(props) {
 Editor.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   theme: PropTypes.oneOf(['dark', 'light', 'material-dark', 'ulysses', 'graphite', 'one-dark']),
-  onSelectImages: PropTypes.func
+  onSelectImages: PropTypes.func,
+  sourceCode: PropTypes.bool,
+  typewriter: PropTypes.bool,
+  focus: PropTypes.bool,
+  markdown: PropTypes.string
 };
 
 Editor.defaultProps = {
   width: '100%',
   theme: 'light',
-  onSelectImages: null
+  onSelectImages: null,
+  sourceCode: false,
+  typewriter: false,
+  focus: false,
+  markdown: ''
 };
 
 export default Editor;

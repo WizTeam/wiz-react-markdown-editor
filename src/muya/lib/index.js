@@ -54,7 +54,7 @@ class Muya {
     const { markdown } = this
     const { focusMode } = this.options
     this.setMarkdown(markdown)
-    this.setFocusMode(focusMode)
+    this.setFocusMode(focusMode, true)
     this.mutationObserver()
     eventCenter.attachDOMEvent(container, 'focus', () => {
       eventCenter.dispatch('focus')
@@ -196,10 +196,10 @@ class Muya {
     return this.contentState.selectionChange()
   }
 
-  setFocusMode (bool) {
+  setFocusMode (bool, force = false) {
     const { container } = this
     const { focusMode } = this.options
-    if (bool && !focusMode) {
+    if (bool && !focusMode || force && bool) {
       container.classList.add(CLASS_OR_ID.AG_FOCUS_MODE)
     } else {
       container.classList.remove(CLASS_OR_ID.AG_FOCUS_MODE)
