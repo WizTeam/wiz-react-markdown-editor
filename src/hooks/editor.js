@@ -4,15 +4,17 @@ import TablePicker from '../muya/lib/ui/tablePicker';
 import QuickInsert from '../muya/lib/ui/quickInsert';
 import CodePicker from '../muya/lib/ui/codePicker';
 import EmojiPicker from '../muya/lib/ui/emojiPicker';
-// import ImagePathPicker from '../muya/lib/ui/imagePicker';
+import ImagePathPicker from '../muya/lib/ui/imagePicker';
 import ImageSelector from '../muya/lib/ui/imageSelector';
 
 Muya.use(TablePicker);
 Muya.use(QuickInsert);
 Muya.use(CodePicker);
 Muya.use(EmojiPicker);
-Muya.use(ImageSelector);
-// Muya.use(ImagePathPicker);
+Muya.use(ImageSelector, {
+  unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
+});
+Muya.use(ImagePathPicker);
 
 function formatOptions(options) {
   Object.assign(
