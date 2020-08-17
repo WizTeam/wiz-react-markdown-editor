@@ -94,13 +94,15 @@ function Editor(props) {
   //   }
   // });
 
-  useEffect(() => {
-    setEditorWidth(props.width);
-  }, [props.width]);
-
+  // 先添加theme的<style>标签，防止切换主题时覆盖属性
   useEffect(() => {
     addThemeStyle(props.theme);
   }, [props.theme]);
+
+  // 后生成的属性，具有更高的优先级
+  useEffect(() => {
+    setEditorWidth(props.width);
+  }, [props.width]);
 
   useEffect(() => {
     if (editor) {
