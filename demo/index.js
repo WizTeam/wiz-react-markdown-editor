@@ -30,7 +30,7 @@ function chooseImage() {
 
 const App = () => {
   const [theme, setTheme] = React.useState('light');
-  const [focusMode, setFocusMode] = React.useState(false);
+  const [focusMode] = React.useState(false);
 
   return (
     <div>

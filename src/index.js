@@ -109,7 +109,7 @@ function Editor(props) {
   }, [width]);
 
   useEffect(() => {
-    editor?.setOptionsWithTheme(MuyaOptions);
+    editor?.setOptions(MuyaOptions);
   }, [MuyaOptions]);
 
   useEffect(() => {
