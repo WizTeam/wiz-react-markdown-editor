@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Editor from '../src/index';
+// eslint-disable-next-line import/no-unresolved
+import Editor from 'wiz_react_markdown_editor';
 
 function chooseImage() {
   return new Promise((res, rej) => {
