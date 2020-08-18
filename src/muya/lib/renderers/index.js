@@ -1,3 +1,4 @@
+import { importFlowchart, importMermaid, importVegaLite } from '../utils/importResource';
 const rendererCache = new Map();
 /**
  *
@@ -12,15 +13,18 @@ const loadRenderer = async (name) => {
         // rendererCache.set(name, m.default)
         break;
       case 'flowchart':
-        m = await import('flowchart.js');
+        // m = await import('flowchart.js');
+        m = await importFlowchart();
         rendererCache.set(name, m.default);
         break;
       case 'mermaid':
-        m = await import('mermaid/dist/mermaid.core');
+        // m = await import('mermaid/dist/mermaid.core');
+        m = await importMermaid();
         rendererCache.set(name, m.default);
         break;
       case 'vega-lite':
-        m = await import('vega-embed');
+        // m = await import('vega-embed');
+        m = await importVegaLite();
         rendererCache.set(name, m.default);
         break;
       default:

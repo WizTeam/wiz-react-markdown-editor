@@ -15,6 +15,9 @@ module.exports = merge(common, {
     libraryTarget: 'umd',
     libraryExport: 'default'
   },
+  module: {
+    noParse: /src\/muya\/lib\/utils\/importResource\.js/
+  },
   externals: {
     react: {
       root: 'React',

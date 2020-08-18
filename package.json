@@ -1,13 +1,13 @@
 {
   "name": "wiz-react-markdown-editor",
   "version": "0.0.1",
-  "main": "/lib/index.js",
+  "main": "/lib",
   "repository": "git@github.com:WizTeam/wiz-react-markdown-editor.git",
   "author": "WizTeam",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.dev.js",
-    "build": "cross-env NODE_ENV=production && webpack --config config/webpack.prod.js",
+    "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
     "pub": "npm run build && npm publish",
     "lint:prettier": "check-prettier lint",
     "lint:js": "eslint --ext .js,.ts .",

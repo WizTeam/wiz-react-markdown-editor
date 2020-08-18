@@ -2,8 +2,8 @@ const path = require('path');
 const postcssPresetEnv = require('postcss-preset-env');
 const webpack = require('webpack');
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
-
-// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const proMode = process.env.NODE_ENV === 'production';
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const cssLoaders = [
   { loader: 'css-loader', options: { importLoaders: 1 } },
@@ -30,7 +30,7 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: /(theme-chalk(?:\/|\\)index|exportStyle|katex|github-markdown|prism[-a-z]*|\.theme|headerFooterStyle)\.css$/,
-        use: ['style-loader', ...cssLoaders]
+        use: [proMode ? MiniCssExtractPlugin.loader : 'style-loader', ...cssLoaders]
       },
       {
         test: /\.js$/,
@@ -70,12 +70,17 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.UNSPLASH_ACCESS_KEY': JSON.stringify(process.env.UNSPLASH_ACCESS_KEY)
+    }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: 'index.min.css'
     })
   ],
   resolve: {
     alias: {
       snapsvg: path.resolve(__dirname, '../src/muya/lib/assets/libs/snap.svg-min.js'),
-      'wiz-react-markdown-editor': path.resolve(__dirname, '../lib/index.js')
+      'wiz-react-markdown-editor': path.resolve(__dirname, '../lib')
     }
   }
 };
