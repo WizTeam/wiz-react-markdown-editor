@@ -14,7 +14,7 @@ export function addSizeUnit(value, unit = 'px') {
 function easeInOutQuad(t, b, c, d) {
   let time = t;
   time /= d / 2;
-  if (t < 1) return (c / 2) * time * time + b;
+  if (time < 1) return (c / 2) * time * time + b;
   time -= 1;
   return (-c / 2) * (time * (time - 2) - 1) + b;
 }
@@ -33,7 +33,7 @@ export const animatedScrollTo = (element, to, duration, callback) => {
     const now = +new Date();
     const val = Math.floor(easeInOutQuad(now - animationStart, start, change, duration));
     if (lastpos) {
-      if (lastpos === element.scrollTop) {
+      if (lastpos === _element.scrollTop) {
         lastpos = val;
         _element.scrollTop = val;
       } else {

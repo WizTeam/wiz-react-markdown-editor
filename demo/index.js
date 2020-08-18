@@ -34,7 +34,7 @@ const App = () => {
   const [typewriterMode, setTypewriterMode] = React.useState(false);
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div>
         <span>{`theme:${theme}|`}</span>
         <span>{`focus:${focusMode}|`}</span>
@@ -76,15 +76,17 @@ const App = () => {
           typewriter toggle
         </button>
       </div>
-      <Editor
-        focus={focusMode}
-        typewriter={typewriterMode}
-        theme={theme}
-        onSelectImages={chooseImage}
-        onChange={(content) => {
-          console.log(content);
-        }}
-      />
+      <div style={{ flex: 1, overflow: 'hidden' }}>
+        <Editor
+          focus={focusMode}
+          typewriter={typewriterMode}
+          theme={theme}
+          onSelectImages={chooseImage}
+          onChange={(content) => {
+            console.log(content);
+          }}
+        />
+      </div>
     </div>
   );
 };

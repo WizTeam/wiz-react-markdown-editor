@@ -45,6 +45,8 @@ const useStyles = makeStyles({
   }
 });
 
+const STANDAR_Y = 320;
+
 function Editor(props) {
   const classes = useStyles();
   //
@@ -61,45 +63,20 @@ function Editor(props) {
 
   const editor = useMuya(editorRef, MuyaOptions);
 
-  // useEffect(() => {
-  //   if (editorRef.current) {
-  //     // use muya UI plugins
-  //     Muya.use(TablePicker);
-  //     //
-  //     const options = {
-  //       autoCheck: true
-  //     };
-  //     //
-  //     editor.current = new Muya(editorRef.current, options);
-  //     //
-  //     editor.current.on('change', () => {
-  //       // if (typeof props.onChange === 'function') {
-  //       //   props.onChange(changes, { id: 'muya' });
-  //       // }
-  //     });
-  //     //
-  //     editor.current.on('format-click', ({ event, formatType }) => {
-  //       const ctrlOrMeta = (isOsx && event.metaKey) || (!isOsx && event.ctrlKey);
-  //       if (formatType === 'link' && ctrlOrMeta) {
-  //         // this.$store.dispatch('FORMAT_LINK_CLICK', { data, dirname: window.DIRNAME })
-  //       } else if (formatType === 'image' && ctrlOrMeta) {
-  //         // if (this.imageViewer) {
-  //         //   this.imageViewer.destroy()
-  //         // }
-  //         // this.setImageViewerVisible(true)
-  //       }
-  //     });
-  //     editor.current.on('selectionChange', () => {
-  //       console.log('editor selectionChange');
-  //     });
-  //     editor.current.on('selectionFormats', () => {
-  //       console.log('editor selectionFormats');
-  //     });
-  //     editor.current.on('contextmenu', () => {
-  //       console.log('editor contextmenu');
-  //     });
-  //   }
-  // });
+  const scrollToCursor = (duration = 300) => {
+    if (!editor) return;
+    setTimeout(() => {
+      const { container } = editor;
+      const { y } = editor.getSelection().cursorCoords;
+      animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, duration);
+    }, 0);
+  };
+
+  useEffect(() => {
+    if (typewriter) {
+      scrollToCursor();
+    }
+  }, [typewriter]);
 
   useEffect(() => {
     editor?.setFocusMode(focus);
@@ -127,7 +104,6 @@ function Editor(props) {
     function handleSelectionChange(changes) {
       const { y } = changes.cursorCoords;
       const container = editor.container;
-      const STANDAR_Y = 250;
       //
       if (typewriter) {
         animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, 100);
