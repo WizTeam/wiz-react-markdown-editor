@@ -35,7 +35,7 @@ module.exports = {
       {
         test: /\.js$/,
         use: ['babel-loader', 'eslint-loader'],
-        exclude: /(?:node_modules|lib)/
+        exclude: [path.resolve(__dirname, '../node_modules'), path.resolve(__dirname, '../lib')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -74,8 +74,8 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      snapsvg: path.join(__dirname, '../src/muya/lib/assets/libs/snap.svg-min.js'),
-      wiz_react_markdown_editor: path.join(__dirname, '../lib/index.js')
+      snapsvg: path.resolve(__dirname, '../src/muya/lib/assets/libs/snap.svg-min.js'),
+      'wiz-react-markdown-editor': path.resolve(__dirname, '../lib/index.js')
     }
   }
 };

@@ -5,7 +5,7 @@ const common = require('./webpack.common.js');
 
 const libsDist = 'lib';
 module.exports = merge(common, {
-  mode: 'production',
+  mode: 'development',
   devtool: 'inline-source-map',
   plugins: [new CleanWebpackPlugin()],
   entry: path.join(__dirname, '../src/index.js'),

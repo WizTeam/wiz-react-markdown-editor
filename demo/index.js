@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 // eslint-disable-next-line import/no-unresolved
-import Editor from 'wiz_react_markdown_editor';
+import Editor from 'wiz-react-markdown-editor';
 
 function chooseImage() {
   return new Promise((res, rej) => {
@@ -31,16 +31,10 @@ function chooseImage() {
 
 const App = () => {
   const [theme, setTheme] = React.useState('light');
-  const [focusMode, setFocusMode] = React.useState(false);
-  const [typewriterMode, setTypewriterMode] = React.useState(false);
+  const [focusMode] = React.useState(false);
 
   return (
-    <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div>
-        <span>{`theme:${theme}|`}</span>
-        <span>{`focus:${focusMode}|`}</span>
-        <span>{`typewriter:${typewriterMode}`}</span>
-      </div>
+    <div>
       <div>
         <button
           onClick={() => {
@@ -59,35 +53,14 @@ const App = () => {
           dark
         </button>
       </div>
-      <div>
-        <button
-          onClick={() => {
-            setFocusMode(!focusMode);
-          }}
-          type="button"
-        >
-          focus toggle
-        </button>
-        <button
-          onClick={() => {
-            setTypewriterMode(!typewriterMode);
-          }}
-          type="button"
-        >
-          typewriter toggle
-        </button>
-      </div>
-      <div style={{ flex: 1, overflow: 'hidden' }}>
-        <Editor
-          focus={focusMode}
-          typewriter={typewriterMode}
-          theme={theme}
-          onSelectImages={chooseImage}
-          onChange={(content) => {
-            console.log(content);
-          }}
-        />
-      </div>
+      <Editor
+        theme={theme}
+        focus={focusMode}
+        onSelectImages={chooseImage}
+        onChange={(content) => {
+          console.log(content);
+        }}
+      />
     </div>
   );
 };
