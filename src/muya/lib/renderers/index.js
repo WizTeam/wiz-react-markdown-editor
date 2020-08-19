@@ -15,8 +15,8 @@ const loadRenderer = async (name) => {
     switch (name) {
       case 'sequence':
         // m = await import('../parser/render/sequence')
-        m = await importParser();
-        rendererCache.set(name, m.default);
+        // m = await importParser();
+        // rendererCache.set(name, m.default);
         break;
       case 'flowchart':
         // m = await import('flowchart.js');
