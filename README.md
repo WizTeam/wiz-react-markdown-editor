@@ -7,7 +7,7 @@
 ### Usage:
 
 ```jsx
-import 'wiz-react-markdown-editor/index.min.css';
+import 'wiz-react-markdown-editor/lib/index.min.css';
 import Editor from 'wiz-react-markdown-editor';
 
 <Editor />;
