@@ -3,8 +3,8 @@ import { render } from 'react-dom';
 // eslint-disable-next-line import/no-unresolved
 import 'wiz-react-markdown-editor/index.min.css';
 // eslint-disable-next-line import/no-unresolved
-import Editor from 'wiz-react-markdown-editor';
-// import Editor from '../src/index';
+// import Editor from 'wiz-react-markdown-editor';
+import Editor from '../src/index';
 
 function chooseImage() {
   return new Promise((res, rej) => {

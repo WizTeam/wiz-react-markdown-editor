@@ -73,6 +73,12 @@ function Editor(props) {
   };
 
   useEffect(() => {
+    if (editor) {
+      editor.setMarkdown(markdown, 0);
+    }
+  }, [markdown]);
+
+  useEffect(() => {
     if (typewriter) {
       scrollToCursor();
     }
