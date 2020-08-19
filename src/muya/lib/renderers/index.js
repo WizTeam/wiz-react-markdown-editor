@@ -1,8 +1,8 @@
 import {
   importFlowchart,
   importMermaid,
-  importVegaLite,
-  importParser
+  importVegaLite
+  // importParser
 } from '../utils/importResource';
 const rendererCache = new Map();
 /**
