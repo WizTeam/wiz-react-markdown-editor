@@ -77,6 +77,7 @@ export function useMuya(eleRef, options) {
         setEditor(null);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eleRef]);
 
   return editor;

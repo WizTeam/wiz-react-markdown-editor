@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -54,33 +54,36 @@ function Editor(props) {
   //
   const editorRef = useRef();
 
-  const MuyaOptions = {
-    focusMode: focus,
-    theme,
-    imagePathPicker: onSelectImages,
-    markdown
-  };
+  const MuyaOptions = useMemo(
+    () => ({
+      focusMode: focus,
+      theme,
+      imagePathPicker: onSelectImages,
+      markdown
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [focus, onSelectImages, theme]
+  );
 
   const editor = useMuya(editorRef, MuyaOptions);
 
-  const scrollToCursor = (duration = 300) => {
-    if (!editor) return;
-    setTimeout(() => {
-      const { container } = editor;
-      const { y } = editor.getSelection().cursorCoords;
-      animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, duration);
-    }, 0);
-  };
-
   useEffect(() => {
+    function scrollToCursor(duration = 300) {
+      if (!editor) return;
+      setTimeout(() => {
+        const { container } = editor;
+        const { y } = editor.getSelection().cursorCoords;
+        animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, duration);
+      }, 0);
+    }
     if (typewriter) {
       scrollToCursor();
     }
-  }, [typewriter]);
+  }, [editor, typewriter]);
 
   useEffect(() => {
     editor?.setFocusMode(focus);
-  }, [focus]);
+  }, [editor, focus]);
 
   // 先添加theme的<style>标签，防止切换主题时覆盖属性
   useEffect(() => {
@@ -94,13 +97,10 @@ function Editor(props) {
 
   useEffect(() => {
     editor?.setOptions(MuyaOptions);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MuyaOptions]);
 
   useEffect(() => {
-    function handleChange(contentObj) {
-      props?.onChange(contentObj);
-    }
-
     function handleSelectionChange(changes) {
       const { y } = changes.cursorCoords;
       const container = editor.container;
@@ -117,16 +117,16 @@ function Editor(props) {
     }
 
     if (editor) {
-      editor.on('change', handleChange);
+      editor.on('change', props.onChange);
       editor.on('selectionChange', handleSelectionChange);
     }
     return () => {
       if (editor) {
-        editor.off('change', handleChange);
+        editor.off('change', props.onChange);
         editor.off('selectionChange', handleSelectionChange);
       }
     };
-  }, [editor, typewriter]);
+  }, [editor, props.onChange, typewriter]);
 
   return (
     <div
