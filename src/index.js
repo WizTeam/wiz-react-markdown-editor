@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useMuya } from './hooks/editor';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth, addThemeStyle } from './theme';
-import { animatedScrollTo, formatUrl } from './utils/utils';
+import { animatedScrollTo, formatUrl, isDarkMode } from './utils/utils';
 import './style/index.css';
 import './style/printService.css';
 import './muya/themes/default.css';
@@ -60,6 +60,7 @@ function Editor(props) {
     width,
     resourceUrl
   } = props;
+  console.log(isDarkMode());
   //
   const editorRef = useRef();
 
@@ -173,7 +174,7 @@ Editor.propTypes = {
 
 Editor.defaultProps = {
   width: '100%',
-  theme: 'light',
+  theme: isDarkMode() ? 'dark' : 'light',
   onSelectImages: null,
   onChange: null,
   sourceCode: false,

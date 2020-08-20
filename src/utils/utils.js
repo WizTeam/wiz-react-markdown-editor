@@ -57,3 +57,7 @@ export const animatedScrollTo = (element, to, duration, callback) => {
   };
   requestAnimationFrame(animateScroll);
 };
+
+export function isDarkMode() {
+  return window.matchMedia('(prefers-color-scheme: dark)')?.matches ?? false;
+}
