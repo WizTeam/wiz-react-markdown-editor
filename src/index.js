@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useMuya } from './hooks/editor';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth, addThemeStyle } from './theme';
-import { animatedScrollTo } from './utils/utils';
+import { animatedScrollTo, formatUrl } from './utils/utils';
 import './style/index.css';
 import './style/printService.css';
 import './muya/themes/default.css';
@@ -50,7 +50,16 @@ const STANDAR_Y = 320;
 function Editor(props) {
   const classes = useStyles();
   //
-  const { typewriter, focus, sourceCode, theme, onSelectImages, markdown, width } = props;
+  const {
+    typewriter,
+    focus,
+    sourceCode,
+    theme,
+    onSelectImages,
+    markdown,
+    width,
+    resourceUrl
+  } = props;
   //
   const editorRef = useRef();
 
@@ -59,10 +68,13 @@ function Editor(props) {
       focusMode: focus,
       theme,
       imagePathPicker: onSelectImages,
-      markdown
+      markdown,
+      imageAction: (src) => {
+        return resourceUrl && /^index_files\//.test(src) ? formatUrl(resourceUrl) + src : src;
+      }
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [focus, onSelectImages, theme]
+    [focus, onSelectImages, theme, resourceUrl]
   );
 
   const editor = useMuya(editorRef, MuyaOptions);
@@ -155,7 +167,8 @@ Editor.propTypes = {
   sourceCode: PropTypes.bool,
   typewriter: PropTypes.bool,
   focus: PropTypes.bool,
-  markdown: PropTypes.string
+  markdown: PropTypes.string,
+  resourceUrl: PropTypes.string
 };
 
 Editor.defaultProps = {
@@ -166,7 +179,8 @@ Editor.defaultProps = {
   sourceCode: false,
   typewriter: false,
   focus: false,
-  markdown: ''
+  markdown: '',
+  resourceUrl: ''
 };
 
 export default Editor;

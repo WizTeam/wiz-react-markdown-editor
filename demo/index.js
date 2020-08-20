@@ -63,6 +63,7 @@ const App = () => {
         onChange={(content) => {
           console.log(content);
         }}
+        resourceUrl="https://baidu.com"
       />
     </div>
   );

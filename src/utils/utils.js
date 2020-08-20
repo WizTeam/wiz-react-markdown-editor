@@ -10,6 +10,10 @@ export function addSizeUnit(value, unit = 'px') {
   return isString(value) ? value : value + unit;
 }
 
+export function formatUrl(url) {
+  return url.endsWith('/') ? url : `${url}/`;
+}
+
 // help functions
 function easeInOutQuad(t, b, c, d) {
   let time = t;
