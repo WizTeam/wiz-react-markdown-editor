@@ -1,4 +1,4 @@
-import { escapeCharacters } from './escapeCharacter'
+import { escapeCharacters } from './escapeCharacter';
 
 /* eslint-disable no-useless-escape */
 export const beginRules = {
@@ -9,7 +9,7 @@ export const beginRules = {
 
   // extra syntax (not belogs to GFM)
   multiple_math: /^(\$\$)$/
-}
+};
 
 export const inlineRules = {
   strong: /^(\*\*|__)(?=\S)([\s\S]*?[^\s\\])(\\*)\1(?!(\*|_))/, // can nest
@@ -35,13 +35,13 @@ export const inlineRules = {
 
   // Markdown extensions (not belongs to GFM and Commonmark)
   inline_math: /^(\$)([^\$]*?[^\$\\])(\\*)\1(?!\1)/
-}
+};
 
 // Markdown extensions (not belongs to GFM and Commonmark)
 export const inlineExtensionRules = {
   // This is not the best regexp, because it not support `2^2\\^`.
-  superscript: /^(\^)((?:[^\^\s]|(?<=\\)\1|(?<=\\) )+?)(?<!\\)\1(?!\1)/,
-  subscript: /^(~)((?:[^~\s]|(?<=\\)\1|(?<=\\) )+?)(?<!\\)\1(?!\1)/,
-  footnote_identifier: /^(\[\^)([^\^\[\]\s]+?)(?<!\\)\]/
-}
+  superscript: /^(\^)((?:[^\^\s]|\\\1|\\ )+?)\1(?!\1)/,
+  subscript: /^(~)((?:[^~\s]|\\\1|\\ )+?)\1(?!\1)/,
+  footnote_identifier: /^(\[\^)([^\^\[\]\s]+?)\]/
+};
 /* eslint-enable no-useless-escape */

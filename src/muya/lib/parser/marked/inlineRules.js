@@ -1,5 +1,5 @@
-import { block } from './blockRules'
-import { edit, noop } from './utils'
+import { block } from './blockRules';
+import { edit, noop } from './utils';
 
 /* eslint-disable no-useless-escape */
 
@@ -11,7 +11,8 @@ const inline = {
   escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
   autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/, // eslint-disable-line no-control-regex
   url: noop,
-  tag: '^comment' +
+  tag:
+    '^comment' +
     '|^</[a-zA-Z][\\w:-]*\\s*>' + // self-closing tag
     '|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>' + // open tag
     '|^<\\?[\\s\\S]*?\\?>' + // processing instruction, e.g. <?php ?>
@@ -40,51 +41,51 @@ const inline = {
   math: /^\$([^$]*?[^\$\\])\$(?!\$)/,
 
   // superscript and subScript
-  superscript: /^(\^)((?:[^\^\s]|(?<=\\)\1|(?<=\\) )+?)(?<!\\)\1(?!\1)/,
-  subscript: /^(~)((?:[^~\s]|(?<=\\)\1|(?<=\\) )+?)(?<!\\)\1(?!\1)/,
-  footnoteIdentifier: /^\[\^([^\^\[\]\s]+?)(?<!\\)\]/
-}
+  superscript: /^(\^)((?:[^\^\s]|\\\1|\\ )+?)\1(?!\1)/,
+  subscript: /^(~)((?:[^~\s]|\\\1|\\ )+?)\1(?!\1)/,
+  footnoteIdentifier: /^\[\^([^\^\[\]\s]+?)\]/
+};
 
 // list of punctuation marks from common mark spec
 // without ` and ] to workaround Rule 17 (inline code blocks/links)
-inline._punctuation = '!"#$%&\'()*+,\\-./:;<=>?@\\[^_{|}~'
-inline.em = edit(inline.em).replace(/punctuation/g, inline._punctuation).getRegex()
+inline._punctuation = '!"#$%&\'()*+,\\-./:;<=>?@\\[^_{|}~';
+inline.em = edit(inline.em)
+  .replace(/punctuation/g, inline._punctuation)
+  .getRegex();
 
-inline._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g
+inline._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g;
 
-inline._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/
-inline._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/
+inline._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/;
+inline._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
 inline.autolink = edit(inline.autolink)
   .replace('scheme', inline._scheme)
   .replace('email', inline._email)
-  .getRegex()
+  .getRegex();
 
-inline._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/
+inline._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
 
 inline.tag = edit(inline.tag)
   .replace('comment', block._comment)
   .replace('attribute', inline._attribute)
-  .getRegex()
+  .getRegex();
 
-inline._label = /(?:\[[^\[\]]*\]|\\.|`[^`]*`|[^\[\]\\`])*?/
-inline._href = /<(?:\\[<>]?|[^\s<>\\])*>|[^\s\x00-\x1f]*/ // eslint-disable-line no-control-regex
-inline._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/
+inline._label = /(?:\[[^\[\]]*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
+inline._href = /<(?:\\[<>]?|[^\s<>\\])*>|[^\s\x00-\x1f]*/; // eslint-disable-line no-control-regex
+inline._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
 
 inline.link = edit(inline.link)
   .replace('label', inline._label)
   .replace('href', inline._href)
   .replace('title', inline._title)
-  .getRegex()
+  .getRegex();
 
-inline.reflink = edit(inline.reflink)
-  .replace('label', inline._label)
-  .getRegex()
+inline.reflink = edit(inline.reflink).replace('label', inline._label).getRegex();
 
 /**
  * Normal Inline Grammar
  */
 
-export const normal = Object.assign({}, inline)
+export const normal = Object.assign({}, inline);
 
 /**
  * Pedantic Inline Grammar
@@ -99,7 +100,7 @@ export const pedantic = Object.assign({}, normal, {
   reflink: edit(/^!?\[(label)\]\s*\[([^\]]*)\]/)
     .replace('label', inline._label)
     .getRegex()
-})
+});
 
 /**
  * GFM Inline Grammar
@@ -122,11 +123,9 @@ export const gfm = Object.assign({}, normal, {
   // extra
 
   emoji: /^(:)([a-z_\d+-]+?)\1/ // not real GFM but put it in here
-})
+});
 
-gfm.url = edit(gfm.url, 'i')
-  .replace('email', gfm._extended_email)
-  .getRegex()
+gfm.url = edit(gfm.url, 'i').replace('email', gfm._extended_email).getRegex();
 
 /**
  * GFM + Line Breaks Inline Grammar
@@ -138,6 +137,6 @@ export const breaks = Object.assign({}, gfm, {
     .replace('\\b_', '\\b_| {2,}\\n')
     .replace(/\{2,\}/g, '*')
     .getRegex()
-})
+});
 
 /* eslint-ensable no-useless-escape */

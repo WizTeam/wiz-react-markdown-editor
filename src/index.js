@@ -70,7 +70,7 @@ function Editor(props) {
       imagePathPicker: onSelectImages,
       markdown,
       imageAction: (src) => {
-        return resourceUrl && /^index_files\//.test(src) ? formatUrl(resourceUrl) + src : src;
+        return resourceUrl && src.startsWith('index_files/') ? formatUrl(resourceUrl) + src : src;
       }
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
