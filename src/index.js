@@ -60,7 +60,6 @@ function Editor(props) {
     width,
     resourceUrl
   } = props;
-  console.log(isDarkMode());
   //
   const editorRef = useRef();
 
