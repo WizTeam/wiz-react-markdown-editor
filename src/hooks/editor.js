@@ -64,7 +64,7 @@ export function useMuya(eleRef, options) {
         new Proxy(new Muya(eleRef.current, formatOptions(options)), {
           get(target, key, proxy) {
             return key === 'setOptions'
-              ? (args) => Reflect.apply(target[key], target, [formatOptions(args)])
+              ? (opt, ...arg) => Reflect.apply(target[key], target, [formatOptions(opt), ...arg])
               : Reflect.get(target, key, proxy);
           }
         })

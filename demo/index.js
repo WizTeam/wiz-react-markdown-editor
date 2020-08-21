@@ -36,6 +36,16 @@ const App = () => {
   const [theme, setTheme] = React.useState('light');
   const [focusMode, setFocusMode] = React.useState(false);
   const [typewriterMode, setTypewriterMode] = React.useState(false);
+  const [data, setData] = React.useState(null);
+
+  React.useEffect(() => {
+    window.loadMarkdown = ({ markdown, resourceUrl }) => {
+      setData({
+        markdown,
+        resourceUrl
+      });
+    };
+  }, []);
 
   return (
     <div>
@@ -88,7 +98,8 @@ const App = () => {
         onChange={(content) => {
           console.log(content);
         }}
-        resourceUrl="https://baidu.com"
+        markdown={data?.markdown}
+        resourceUrl={data?.resourceUrl}
       />
     </div>
   );

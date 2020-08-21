@@ -94,11 +94,6 @@ function Editor(props) {
   }, [editor, typewriter]);
 
   useEffect(() => {
-    editor?.setMarkdown(markdown, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markdown]);
-
-  useEffect(() => {
     editor?.setFocusMode(focus);
   }, [editor, focus]);
 
@@ -113,9 +108,14 @@ function Editor(props) {
   }, [width]);
 
   useEffect(() => {
-    editor?.setOptions(MuyaOptions);
+    editor?.setOptions(MuyaOptions, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MuyaOptions]);
+
+  useEffect(() => {
+    editor?.setMarkdown(markdown, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [markdown]);
 
   useEffect(() => {
     function handleSelectionChange(changes) {
