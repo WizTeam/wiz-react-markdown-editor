@@ -69,7 +69,7 @@ function Editor(props) {
       theme,
       imagePathPicker: onSelectImages,
       markdown,
-      imageAction: (src) => {
+      transformImageUrl: (src) => {
         return resourceUrl && src.startsWith('index_files/') ? formatUrl(resourceUrl) + src : src;
       }
     }),
