@@ -23,7 +23,7 @@ import Editor from 'wiz-react-markdown-editor';
 |    markdown    |                               string                                |             ''              |  ✗   |                      初始化时的 markdown 源码                       |
 |     focus      |                               boolean                               |            false            |  ✗   |                         是否打开 focus 模式                         |
 |   typewriter   |                               boolean                               |            false            |  ✗   |                      是否打开 typewriter 模式                       |
-|    onChange    |  function ({ markdown, wordCount, cursor, history, toc }) => void   |              -              |  ✗   |                            内容改变事件                             |
+|    onChange    |  function ({ markdown, wordCount, cursor, history, toc }) => void   |              () => {}              |  ✗   |                            内容改变事件                             |
 |  resourceUrl   |                               string                                |              -              |  ✗   | 图片资源路,在添加路径为`index_files/`开头图片资源前面添加的资源路径 |
 
 ### Edit Grammar:

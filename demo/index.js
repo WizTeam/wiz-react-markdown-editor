@@ -95,9 +95,6 @@ const App = () => {
         focus={focusMode}
         typewriter={typewriterMode}
         onSelectImages={chooseImage}
-        onChange={(content) => {
-          console.log(content);
-        }}
         markdown={data?.markdown}
         resourceUrl={data?.resourceUrl}
       />

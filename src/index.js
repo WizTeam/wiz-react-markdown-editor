@@ -175,7 +175,7 @@ Editor.defaultProps = {
   width: '100%',
   theme: isDarkMode() ? 'dark' : 'light',
   onSelectImages: null,
-  onChange: null,
+  onChange: () => {},
   sourceCode: false,
   typewriter: false,
   focus: false,
