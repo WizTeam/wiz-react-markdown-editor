@@ -444,9 +444,9 @@ figure {
   display: inline-block;
   width: 100%;
   height: 100%;
-  filter: drop-shadow(16px 0 currentColor);
+  /* filter: drop-shadow(16px 0 currentColor);
   position: absolute;
-  left: -16px;
+  left: -16px; */
 }
 
 .ag-container-icon i.icon {
@@ -963,9 +963,9 @@ span.ag-warn.ag-emoji-marked-text {
   width: 100%;
   height: 100%;
   display: inline-block;
-  filter: drop-shadow(20px 0 currentColor);
+  /* filter: drop-shadow(20px 0 currentColor);
   position: absolute;
-  left: -20px;
+  left: -20px; */
 }
 
 .ag-inline-image.ag-image-fail,
@@ -1152,9 +1152,9 @@ span.ag-reference-link {
 }
 
 .ag-front-icon i.icon > i[class^=icon-] {
-  filter: drop-shadow(16px 0 currentColor);
+  /* filter: drop-shadow(16px 0 currentColor);
   position: absolute;
-  left: -16px;
+  left: -16px; */
 }
 
 .ag-paragraph.ag-active .ag-front-icon {
@@ -1210,9 +1210,9 @@ pre:not(.ag-active):hover .ag-code-copy {
 .ag-code-copy i.icon > i[class^=icon-] {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(16px 0 var(--iconColor));
+  /* filter: drop-shadow(16px 0 var(--iconColor));
   position: absolute;
-  left: -16px;
+  left: -16px; */
 }
 
 pre.ag-paragraph.line-numbers {
