@@ -90,14 +90,16 @@ const App = () => {
           typewriter toggle
         </button>
       </div>
-      <Editor
-        theme={theme}
-        focus={focusMode}
-        typewriter={typewriterMode}
-        onSelectImages={chooseImage}
-        markdown={data?.markdown}
-        resourceUrl={data?.resourceUrl}
-      />
+      <div style={{ height: '100vh' }}>
+        <Editor
+          theme={theme}
+          focus={focusMode}
+          typewriter={typewriterMode}
+          onSelectImages={chooseImage}
+          markdown={data?.markdown}
+          resourceUrl={data?.resourceUrl}
+        />
+      </div>
     </div>
   );
 };
