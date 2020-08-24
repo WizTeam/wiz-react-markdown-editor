@@ -3,15 +3,12 @@ import { insertAfter, operateClassName } from '../../../utils/domManipulate';
 import { CLASS_OR_ID } from '../../../config';
 
 export default function loadImageAsync(imageInfo, attrs, className, imageClass) {
+  console.log('loadImageAsync');
   let { src, isUnknownType } = imageInfo;
   let id;
   let isSuccess;
   let w;
   let h;
-
-  if (this.muya.options.transformImageUrl) {
-    src = this.muya.options.transformImageUrl(src);
-  }
 
   if (!this.loadImageMap.has(src)) {
     id = getUniqueId();

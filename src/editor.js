@@ -69,13 +69,13 @@ export default function MarkdownEditor(props) {
     }
     lastDataRef.current = {
       contentId: props.contentId,
-      markdown: content.markdown,
+      markdown: content.markdown
     };
     //
     saveDataQueueRef.current.push({
       content,
       contentId: props.contentId,
-      lastChange: new Date().valueOf(),
+      lastChange: new Date().valueOf()
     });
   }
 
@@ -84,7 +84,7 @@ export default function MarkdownEditor(props) {
     saveDataQueueRef.current.push(null);
     lastDataRef.current = {
       markdown: props.markdown,
-      contentId: props.contentId,
+      contentId: props.contentId
     };
   }, [props.contentId, props.markdown]);
 
