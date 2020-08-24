@@ -9,3 +9,7 @@ export function createdStyleTag(id, contents, overwrite = false) {
     document.head.appendChild(ele);
   }
 }
+
+export function isMacSystem() {
+  return navigator.platform.toUpperCase().includes('MAC');
+}

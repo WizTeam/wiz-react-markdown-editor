@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useRef, useEffect, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
@@ -6,6 +7,7 @@ import { useMuya } from './hooks/editor';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth, addThemeStyle } from './theme';
 import { animatedScrollTo, formatUrl, isDarkMode } from './utils/utils';
+import { matchHotKey } from './utils/eventUtils';
 import './style/index.css';
 import './style/printService.css';
 import './muya/themes/default.css';
@@ -49,6 +51,7 @@ const STANDAR_Y = 320;
 
 function Editor(props) {
   const classes = useStyles();
+
   //
   const {
     typewriter,
@@ -145,6 +148,21 @@ function Editor(props) {
     };
   }, [editor, props.onChange, typewriter]);
 
+  function handleKeyDown(e) {
+    let res = true;
+
+    if (matchHotKey('⌘-z', e)) {
+      editor?.undo();
+    } else if (matchHotKey('⇧-⌘-z', e)) {
+      editor?.redo();
+    } else {
+      res = false;
+    }
+    if (res) {
+      e.preventDefault();
+    }
+  }
+
   return (
     <div
       className={classNames(
@@ -153,6 +171,7 @@ function Editor(props) {
         focus && classes.focus,
         sourceCode && classes.source
       )}
+      onKeyDown={handleKeyDown}
     >
       <div ref={editorRef} className={classes.editorComponent} />
     </div>
