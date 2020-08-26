@@ -39,10 +39,12 @@ const App = () => {
   const [data, setData] = React.useState(null);
 
   React.useEffect(() => {
-    window.loadMarkdown = ({ markdown, resourceUrl }) => {
+    window.loadMarkdown = ({ markdown, resourceUrl, contentId, theme }) => {
       setData({
         markdown,
-        resourceUrl
+        resourceUrl,
+        contentId,
+        theme,
       });
     };
   }, []);
@@ -92,12 +94,16 @@ const App = () => {
       </div>
       <div style={{ height: '100vh' }}>
         <Editor
-          theme={theme}
+          theme={data?.theme || theme}
           focus={focusMode}
           typewriter={typewriterMode}
           onSelectImages={chooseImage}
           markdown={data?.markdown}
           resourceUrl={data?.resourceUrl}
+          contentId={data?.contentId}
+          onSave={({contentId, markdown}) => {
+            console.log(`save data: ${contentId}`);
+          }}
         />
       </div>
     </div>
