@@ -61,7 +61,8 @@ function Editor(props) {
     onSelectImages,
     markdown,
     width,
-    resourceUrl
+    resourceUrl,
+    readOnly
   } = props;
   //
   const editorRef = useRef();
@@ -119,6 +120,12 @@ function Editor(props) {
     editor?.setMarkdown(markdown, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markdown]);
+
+  useEffect(() => {
+    if (editor && editor.container) {
+      editor.container.setAttribute('contenteditable', !readOnly);
+    }
+  }, [editor, readOnly]);
 
   useEffect(() => {
     function handleSelectionChange(changes) {
@@ -187,7 +194,8 @@ Editor.propTypes = {
   typewriter: PropTypes.bool,
   focus: PropTypes.bool,
   markdown: PropTypes.string,
-  resourceUrl: PropTypes.string
+  resourceUrl: PropTypes.string,
+  readOnly: PropTypes.bool
 };
 
 Editor.defaultProps = {
@@ -199,7 +207,8 @@ Editor.defaultProps = {
   typewriter: false,
   focus: false,
   markdown: '',
-  resourceUrl: ''
+  resourceUrl: '',
+  readOnly: false
 };
 
 export default Editor;

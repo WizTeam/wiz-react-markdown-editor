@@ -37,6 +37,7 @@ const App = () => {
   const [focusMode, setFocusMode] = React.useState(false);
   const [typewriterMode, setTypewriterMode] = React.useState(false);
   const [data, setData] = React.useState(null);
+  const [readOnly, setReadOnly] = React.useState(false);
 
   React.useEffect(() => {
     window.loadMarkdown = ({ markdown, resourceUrl }) => {
@@ -52,7 +53,8 @@ const App = () => {
       <div>
         <span>{`theme:${theme}|`}</span>
         <span>{`focus:${focusMode}|`}</span>
-        <span>{`typewriter:${typewriterMode}`}</span>
+        <span>{`typewriter:${typewriterMode}|`}</span>
+        <span>{`readOnly:${readOnly}`}</span>
       </div>
       <div>
         <button
@@ -90,6 +92,11 @@ const App = () => {
           typewriter toggle
         </button>
       </div>
+      <div>
+        <button type="button" onClick={() => setReadOnly(!readOnly)}>
+          readOnly
+        </button>
+      </div>
       <div style={{ height: '100vh' }}>
         <Editor
           theme={theme}
@@ -98,6 +105,7 @@ const App = () => {
           onSelectImages={chooseImage}
           markdown={data?.markdown}
           resourceUrl={data?.resourceUrl}
+          readOnly={readOnly}
         />
       </div>
     </div>

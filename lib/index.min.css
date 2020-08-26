@@ -1246,6 +1246,7 @@ span.ag-reference-link {
 }
 
 .ag-front-icon i.icon > i[class^=icon-] {
+  position: absolute;
   /* filter: drop-shadow(16px 0 currentColor);
   position: absolute;
   left: -16px; */

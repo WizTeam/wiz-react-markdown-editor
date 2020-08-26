@@ -44,10 +44,11 @@ class SaveDataQueue {
 }
 
 export default function MarkdownEditor(props) {
+  const { onSave, theme = 'lite', markdown = '', contentId, ...editorCoreProp } = props;
   //
-  function doSaveData({ contentId, content }) {
-    if (props.onSave) {
-      props.onSave({ contentId, markdown: content.markdown });
+  function doSaveData({ id, content }) {
+    if (onSave) {
+      onSave({ id, markdown: content.markdown });
     }
   }
 
@@ -57,24 +58,24 @@ export default function MarkdownEditor(props) {
 
   function handleChange(content) {
     //
-    if (!props.contentId) {
+    if (!contentId) {
       return;
     }
     //
     if (
-      lastDataRef.current.contentId === props.contentId &&
+      lastDataRef.current.contentId === contentId &&
       lastDataRef.current.markdown.trim() === content.markdown.trim()
     ) {
       return;
     }
     lastDataRef.current = {
-      contentId: props.contentId,
+      contentId,
       markdown: content.markdown
     };
     //
     saveDataQueueRef.current.push({
       content,
-      contentId: props.contentId,
+      contentId,
       lastChange: new Date().valueOf()
     });
   }
@@ -83,27 +84,14 @@ export default function MarkdownEditor(props) {
     // content changed
     saveDataQueueRef.current.push(null);
     lastDataRef.current = {
-      markdown: props.markdown,
-      contentId: props.contentId
+      markdown,
+      contentId
     };
-  }, [props.contentId, props.markdown]);
-
-  //
-  const theme = props.theme || 'lite';
-  const markdown = props.markdown || '';
+  }, [contentId, markdown]);
 
   return (
-    <EditorCore
-      theme={theme}
-      onChange={handleChange}
-      markdown={markdown}
-      resourceUrl={props.resourceUrl}
-      width={props.width}
-      onSelectImages={props.onSelectImages}
-      sourceCode={props.sourceCode}
-      typewriter={props.typewriter}
-      focus={props.focus}
-    />
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <EditorCore theme={theme} onChange={handleChange} markdown={markdown} {...editorCoreProp} />
   );
 }
 
@@ -116,7 +104,8 @@ MarkdownEditor.propTypes = {
   typewriter: PropTypes.bool,
   focus: PropTypes.bool,
   markdown: PropTypes.string,
-  resourceUrl: PropTypes.string
+  resourceUrl: PropTypes.string,
+  readOnly: PropTypes.bool
 };
 
 MarkdownEditor.defaultProps = {
@@ -128,5 +117,6 @@ MarkdownEditor.defaultProps = {
   typewriter: false,
   focus: false,
   markdown: '',
-  resourceUrl: ''
+  resourceUrl: '',
+  readOnly: false
 };
