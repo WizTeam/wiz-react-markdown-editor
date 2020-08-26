@@ -40,10 +40,11 @@ const App = () => {
   const [readOnly, setReadOnly] = React.useState(false);
 
   React.useEffect(() => {
-    window.loadMarkdown = ({ markdown, resourceUrl }) => {
+    window.loadMarkdown = ({ markdown, resourceUrl, contentId }) => {
       setData({
         markdown,
-        resourceUrl
+        resourceUrl,
+        contentId
       });
     };
   }, []);
@@ -99,13 +100,17 @@ const App = () => {
       </div>
       <div style={{ height: '100vh' }}>
         <Editor
-          theme={theme}
+          theme={data?.theme || theme}
           focus={focusMode}
           typewriter={typewriterMode}
           onSelectImages={chooseImage}
           markdown={data?.markdown}
           resourceUrl={data?.resourceUrl}
           readOnly={readOnly}
+          contentId={data?.contentId}
+          onSave={({ contentId }) => {
+            console.log(`save data: ${contentId}`);
+          }}
         />
       </div>
     </div>
