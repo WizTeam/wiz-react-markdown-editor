@@ -3328,7 +3328,7 @@ SOFTWARE.
 
   /*editor*/
   /*Theme color cluster*/
-  --themeColor: rgba(33, 181, 111, 1);
+  --themeColor: #448aff;
   --themeColor90: rgba(33, 181, 111, .9);
   --themeColor80: rgba(33, 181, 111, .8);
   --themeColor70: rgba(33, 181, 111, .7);
@@ -3510,12 +3510,12 @@ body {
 }
 
 .el-slider__button {
-  border-color: rgba(33, 181, 111, 1);
+  border-color: #448aff;
   border-color: var(--themeColor);
 }
 
 .el-slider__bar {
-  background-color: rgba(33, 181, 111, 1);
+  background-color: #448aff;
   background-color: var(--themeColor);
 }
 
@@ -3624,7 +3624,7 @@ div.el-tab-pane {
 .muya-button:focus,
 .el-button:focus {
   outline: none;
-  border: 1px solid rgba(33, 181, 111, 1);
+  border: 1px solid #448aff;
   border: var(--buttonFocusBorder);
 }
 
@@ -3635,7 +3635,7 @@ div.el-tab-pane {
   text-decoration: none;
   color: #ffffff;
   color: var(--buttonPrimaryFontColor);
-  background: rgba(33, 181, 111, 1);
+  background: #448aff;
   background: var(--buttonPrimaryBgColor);
   border: none;
   border: var(--buttonPrimaryBorder);
@@ -3649,7 +3649,7 @@ div.el-tab-pane {
 .el-button--primary:hover {
   color: #ffffff;
   color: var(--buttonPrimaryFontColorHover);
-  background: rgba(33, 181, 111, 1);
+  background: #448aff;
   background: var(--buttonPrimaryBgColorHover);
   border: none;
   border: var(--buttonPrimaryBorderHover);
@@ -3659,7 +3659,7 @@ div.el-tab-pane {
 .el-button--primary:active {
   color: #ffffff;
   color: var(--buttonPrimaryFontColorActive);
-  background: rgba(33, 181, 111, 1);
+  background: #448aff;
   background: var(--buttonPrimaryBgColorActive);
   border: none;
   border: var(--buttonPrimaryBorderActive);
@@ -3671,7 +3671,7 @@ button.button-primary:not(.custom):focus,
   outline: none;
   border: none;
   border: var(--buttonPrimaryFocusBorder);
-  box-shadow: inset 0 0 0 1px rgba(13, 91, 55, 0.5), 0 0 0 1px rgba(33, 181, 111, 1);
+  box-shadow: inset 0 0 0 1px rgba(13, 91, 55, 0.5), 0 0 0 1px #448aff;
   box-shadow: var(--buttonPrimaryFocusShadow);
 }
 
@@ -3740,7 +3740,7 @@ button.button-primary:not(.custom):focus,
   background-color: var(--buttonBgColor);
 }
 .el-button--primary:focus {
-  background-color: rgba(33, 181, 111, 1);
+  background-color: #448aff;
   background-color: var(--buttonPrimaryBgColor);
 }
 .el-button.is-disabled,
@@ -3759,7 +3759,7 @@ button.button-primary:not(.custom):focus,
 .el-button--primary.is-disabled:hover {
   color: #ffffff;
   color: var(--buttonPrimaryFontColor);
-  background: rgba(33, 181, 111, 1);
+  background: #448aff;
   background: var(--buttonPrimaryBgColor);
   border: none;
   border: var(--buttonPrimaryBorder);
