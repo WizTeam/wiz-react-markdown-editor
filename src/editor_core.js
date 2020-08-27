@@ -154,14 +154,24 @@ function Editor(props) {
       }
     };
   }, [editor, props.onChange, typewriter]);
-
   function handleKeyDown(e) {
     let res = true;
-
     if (matchHotKey('⌘-z', e)) {
       editor?.undo();
     } else if (matchHotKey('⇧-⌘-z', e)) {
       editor?.redo();
+    } else if (matchHotKey('⌘-1', e)) {
+      editor?.updateParagraph('heading 1');
+    } else if (matchHotKey('⌘-2', e)) {
+      editor?.updateParagraph('heading 2');
+    } else if (matchHotKey('⌘-3', e)) {
+      editor?.updateParagraph('heading 3');
+    } else if (matchHotKey('⌘-4', e)) {
+      editor?.updateParagraph('heading 4');
+    } else if (matchHotKey('⌘-5', e)) {
+      editor?.updateParagraph('heading 5');
+    } else if (matchHotKey('⌘-6', e)) {
+      editor?.updateParagraph('heading 6');
     } else {
       res = false;
     }
