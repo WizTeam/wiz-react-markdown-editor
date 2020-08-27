@@ -119,7 +119,7 @@ function Editor(props) {
   useEffect(() => {
     editor?.setMarkdown(markdown, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markdown]);
+  }, [markdown, resourceUrl]);
 
   useEffect(() => {
     if (editor && editor.container) {
