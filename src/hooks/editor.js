@@ -13,6 +13,7 @@ import LinkTools from '../muya/lib/ui/linkTools';
 import FootnoteTool from '../muya/lib/ui/footnoteTool';
 import TableBarTools from '../muya/lib/ui/tableTools';
 import FrontMenu from '../muya/lib/ui/frontMenu';
+import TagInsert from '../muya/lib/ui/tagInsert';
 
 Muya.use(TablePicker);
 Muya.use(QuickInsert);
@@ -39,6 +40,7 @@ Muya.use(LinkTools, {
 Muya.use(FootnoteTool);
 Muya.use(TableBarTools);
 Muya.use(FrontMenu);
+Muya.use(TagInsert);
 
 function formatOptions(options) {
   Object.assign(

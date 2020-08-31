@@ -105,7 +105,8 @@ MarkdownEditor.propTypes = {
   focus: PropTypes.bool,
   markdown: PropTypes.string,
   resourceUrl: PropTypes.string,
-  readOnly: PropTypes.bool
+  readOnly: PropTypes.bool,
+  wordList: PropTypes.array
 };
 
 MarkdownEditor.defaultProps = {
@@ -118,5 +119,6 @@ MarkdownEditor.defaultProps = {
   focus: false,
   markdown: '',
   resourceUrl: '',
-  readOnly: false
+  readOnly: false,
+  wordList: []
 };

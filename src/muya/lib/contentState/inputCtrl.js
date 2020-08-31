@@ -32,11 +32,19 @@ const BACK_HASH = {
 let renderCodeBlockTimer = null;
 
 const inputCtrl = (ContentState) => {
-  // Input @ to quick insert paragraph
+  // Input @/+// to quick insert paragraph
   ContentState.prototype.checkQuickInsert = function (block) {
     const { type, text, functionType } = block;
     if (type !== 'span' || functionType !== 'paragraphContent') return false;
     return /^(@|\+|\/)\S*$/.test(text);
+  };
+
+  ContentState.prototype.checkTagInsert = function (block) {
+    const { type, text, functionType } = block;
+    if (type !== 'span') return false;
+    return /(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/.test(
+      text
+    );
   };
 
   ContentState.prototype.checkCursorInTokenType = function (functionType, text, offset, type) {
@@ -286,6 +294,7 @@ const inputCtrl = (ContentState) => {
     // show quick insert
     const rect = paragraph.getBoundingClientRect();
     const checkQuickInsert = this.checkQuickInsert(block);
+    const checkTagInsert = this.checkTagInsert(block);
     const reference = this.getPositionReference();
     reference.getBoundingClientRect = function () {
       const { x, y, left, top, height, bottom } = rect;
@@ -304,8 +313,10 @@ const inputCtrl = (ContentState) => {
         }
       );
     };
-
     this.muya.eventCenter.dispatch('muya-quick-insert', reference, block, !!checkQuickInsert);
+    this.muya.eventCenter.dispatch('muya-tag-insert', reference, block, !!checkTagInsert);
+
+    console.log('needRender', needRender);
 
     this.cursor = { start, end };
 

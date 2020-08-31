@@ -38,6 +38,7 @@ const App = () => {
   const [typewriterMode, setTypewriterMode] = React.useState(false);
   const [data, setData] = React.useState(null);
   const [readOnly, setReadOnly] = React.useState(false);
+  const [wordList, setWordList] = React.useState([]);
 
   React.useEffect(() => {
     window.loadMarkdown = ({ markdown, resourceUrl, contentId }) => {
@@ -47,6 +48,7 @@ const App = () => {
         contentId
       });
     };
+    window.setWordList = setWordList;
   }, []);
 
   return (
@@ -111,6 +113,7 @@ const App = () => {
           onSave={({ contentId }) => {
             console.log(`save data: ${contentId}`);
           }}
+          wordList={wordList}
         />
       </div>
     </div>

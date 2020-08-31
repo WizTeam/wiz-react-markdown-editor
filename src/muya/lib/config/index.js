@@ -1,48 +1,141 @@
-import { generateKeyHash, genUpper2LowerKeyHash, getLongUniqueId } from '../utils'
-import htmlTags from 'html-tags'
-import voidHtmlTags from 'html-tags/void'
+import { generateKeyHash, genUpper2LowerKeyHash, getLongUniqueId } from '../utils';
+import htmlTags from 'html-tags';
+import voidHtmlTags from 'html-tags/void';
 
 // [0.25, 0.5, 1, 2, 4, 8] <—?—> [256M, 500M/768M, 1G/1000M, 2G, 4G, 8G]
 // Electron 2.0.2 not support yet! So give a default value 4
-export const DEVICE_MEMORY = navigator.deviceMemory || 4 // Get the divice memory number(Chrome >= 63)
-export const UNDO_DEPTH = DEVICE_MEMORY >= 4 ? 100 : 50
-export const HAS_TEXT_BLOCK_REG = /^span$/i
-export const VOID_HTML_TAGS = voidHtmlTags
-export const HTML_TAGS = htmlTags
+export const DEVICE_MEMORY = navigator.deviceMemory || 4; // Get the divice memory number(Chrome >= 63)
+export const UNDO_DEPTH = DEVICE_MEMORY >= 4 ? 100 : 50;
+export const HAS_TEXT_BLOCK_REG = /^span$/i;
+export const VOID_HTML_TAGS = voidHtmlTags;
+export const HTML_TAGS = htmlTags;
 // TYPE1 ~ TYPE7 according to https://github.github.com/gfm/#html-blocks
-export const BLOCK_TYPE1 = [
-  'script', 'pre', 'style'
-]
+export const BLOCK_TYPE1 = ['script', 'pre', 'style'];
 
-export const BLOCK_TYPE2_REG = /^<!--(?=\s).*\s+-->$/
+export const BLOCK_TYPE2_REG = /^<!--(?=\s).*\s+-->$/;
 
 export const BLOCK_TYPE6 = [
-  'address', 'article', 'aside', 'base', 'basefont', 'blockquote', 'body', 'caption', 'center', 'col', 'colgroup', 'dd',
-  'details', 'dialog', 'dir', 'div', 'dl', 'dt', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'frame', 'frameset',
-  'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hr', 'html', 'iframe', 'legend', 'li', 'link', 'main', 'menu',
-  'menuitem', 'meta', 'nav', 'noframes', 'ol', 'optgroup', 'option', 'p', 'param', 'section', 'source', 'summary', 'table',
-  'tbody', 'td', 'tfoot', 'th', 'thead', 'title', 'tr', 'track', 'ul'
-]
+  'address',
+  'article',
+  'aside',
+  'base',
+  'basefont',
+  'blockquote',
+  'body',
+  'caption',
+  'center',
+  'col',
+  'colgroup',
+  'dd',
+  'details',
+  'dialog',
+  'dir',
+  'div',
+  'dl',
+  'dt',
+  'fieldset',
+  'figcaption',
+  'figure',
+  'footer',
+  'form',
+  'frame',
+  'frameset',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'head',
+  'header',
+  'hr',
+  'html',
+  'iframe',
+  'legend',
+  'li',
+  'link',
+  'main',
+  'menu',
+  'menuitem',
+  'meta',
+  'nav',
+  'noframes',
+  'ol',
+  'optgroup',
+  'option',
+  'p',
+  'param',
+  'section',
+  'source',
+  'summary',
+  'table',
+  'tbody',
+  'td',
+  'tfoot',
+  'th',
+  'thead',
+  'title',
+  'tr',
+  'track',
+  'ul'
+];
 
-export const BLOCK_TYPE7 = htmlTags.filter(tag => {
-  return !BLOCK_TYPE1.find(t => t === tag) && !BLOCK_TYPE6.find(t => t === tag)
-})
+export const BLOCK_TYPE7 = htmlTags.filter((tag) => {
+  return !BLOCK_TYPE1.find((t) => t === tag) && !BLOCK_TYPE6.find((t) => t === tag);
+});
 
-export const IMAGE_EXT_REG = /\.(?:jpeg|jpg|png|gif|svg|webp)(?=\?|$)/i
+export const IMAGE_EXT_REG = /\.(?:jpeg|jpg|png|gif|svg|webp)(?=\?|$)/i;
 
-export const PARAGRAPH_TYPES = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre', 'ul', 'ol', 'li', 'figure']
+export const PARAGRAPH_TYPES = [
+  'p',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'blockquote',
+  'pre',
+  'ul',
+  'ol',
+  'li',
+  'figure'
+];
 
 export const blockContainerElementNames = [
   // elements our editor generates
   ...PARAGRAPH_TYPES,
   // all other known block elements
-  'address', 'article', 'aside', 'audio', 'canvas', 'dd', 'dl', 'dt', 'fieldset',
-  'figcaption', 'footer', 'form', 'header', 'hgroup', 'main', 'nav',
-  'noscript', 'output', 'section', 'video',
-  'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td'
-]
+  'address',
+  'article',
+  'aside',
+  'audio',
+  'canvas',
+  'dd',
+  'dl',
+  'dt',
+  'fieldset',
+  'figcaption',
+  'footer',
+  'form',
+  'header',
+  'hgroup',
+  'main',
+  'nav',
+  'noscript',
+  'output',
+  'section',
+  'video',
+  'table',
+  'thead',
+  'tbody',
+  'tfoot',
+  'tr',
+  'th',
+  'td'
+];
 
-export const emptyElementNames = ['br', 'col', 'colgroup', 'hr', 'img', 'input', 'source', 'wbr']
+export const emptyElementNames = ['br', 'col', 'colgroup', 'hr', 'img', 'input', 'source', 'wbr'];
 
 export const EVENT_KEYS = generateKeyHash([
   'Enter',
@@ -55,11 +148,13 @@ export const EVENT_KEYS = generateKeyHash([
   'ArrowRight',
   'Tab',
   'Escape'
-])
+]);
 
 export const LOWERCASE_TAGS = generateKeyHash([
-  ...blockContainerElementNames, ...emptyElementNames, 'div'
-])
+  ...blockContainerElementNames,
+  ...emptyElementNames,
+  'div'
+]);
 
 export const CLASS_OR_ID = genUpper2LowerKeyHash([
   'AG_ACTIVE',
@@ -153,8 +248,9 @@ export const CLASS_OR_ID = genUpper2LowerKeyHash([
   'AG_TIGHT_LIST_ITEM',
   'AG_TOOL_BAR',
   'AG_VEGA_LITE',
-  'AG_WARN'
-])
+  'AG_WARN',
+  'AG_TAG'
+]);
 
 export const DAED_REMOVE_SELECTOR = new Set([
   '.ag-image-marked-text::before',
@@ -162,10 +258,10 @@ export const DAED_REMOVE_SELECTOR = new Set([
   '.ag-hide',
   '.ag-gray',
   '.ag-warn'
-])
+]);
 
-export const CURSOR_ANCHOR_DNA = getLongUniqueId()
-export const CURSOR_FOCUS_DNA = getLongUniqueId()
+export const CURSOR_ANCHOR_DNA = getLongUniqueId();
+export const CURSOR_FOCUS_DNA = getLongUniqueId();
 
 export const DEFAULT_TURNDOWN_CONFIG = {
   headingStyle: 'atx', // setext or atx
@@ -177,18 +273,18 @@ export const DEFAULT_TURNDOWN_CONFIG = {
   strongDelimiter: '**', // ** or __
   linkStyle: 'inlined',
   linkReferenceStyle: 'full',
-  blankReplacement (content, node, options) {
+  blankReplacement(content, node, options) {
     if (node && node.classList.contains('ag-soft-line-break')) {
-      return LINE_BREAK
+      return LINE_BREAK;
     } else if (node && node.classList.contains('ag-hard-line-break')) {
-      return '  ' + LINE_BREAK
+      return '  ' + LINE_BREAK;
     } else if (node && node.classList.contains('ag-hard-line-break-sapce')) {
-      return ''
+      return '';
     } else {
-      return node.isBlock ? '\n\n' : ''
+      return node.isBlock ? '\n\n' : '';
     }
   }
-}
+};
 
 export const FORMAT_MARKER_MAP = {
   em: '*',
@@ -212,11 +308,11 @@ export const FORMAT_MARKER_MAP = {
     open: '<mark>',
     close: '</mark>'
   }
-}
+};
 
-export const FORMAT_TYPES = ['strong', 'em', 'del', 'inline_code', 'link', 'image', 'inline_math']
+export const FORMAT_TYPES = ['strong', 'em', 'del', 'inline_code', 'link', 'image', 'inline_math'];
 
-export const LINE_BREAK = '\n'
+export const LINE_BREAK = '\n';
 
 export const PREVIEW_DOMPURIFY_CONFIG = {
   // do not forbit `class` because `code` element use class to present language
@@ -228,7 +324,7 @@ export const PREVIEW_DOMPURIFY_CONFIG = {
     svgFilters: true,
     mathMl: true
   }
-}
+};
 
 export const EXPORT_DOMPURIFY_CONFIG = {
   FORBID_ATTR: ['contenteditable'],
@@ -240,7 +336,7 @@ export const EXPORT_DOMPURIFY_CONFIG = {
     svgFilters: true,
     mathMl: true
   }
-}
+};
 
 export const MUYA_DEFAULT_OPTION = {
   fontSize: 16,
@@ -281,18 +377,21 @@ export const MUYA_DEFAULT_OPTION = {
   // Markdown extensions
   superSubScript: false,
   footnote: false
-}
+};
 
 // export const DIAGRAM_TEMPLATE = {
 //   'mermaid': `graph LR;\nYou-->|Mark Text|Me;`
 // }
 
-export const isOsx = window && window.navigator && /Mac/.test(window.navigator.platform)
-export const isWin = window && window.navigator.userAgent && /win32|wow32|win64|wow64/i.test(window.navigator.userAgent)
+export const isOsx = window && window.navigator && /Mac/.test(window.navigator.platform);
+export const isWin =
+  window &&
+  window.navigator.userAgent &&
+  /win32|wow32|win64|wow64/i.test(window.navigator.userAgent);
 // http[s] (domain or IPv4 or localhost or IPv6) [port] /not-white-space
-export const URL_REG = /^http(s)?:\/\/([a-z0-9\-._~]+\.[a-z]{2,}|[0-9.]+|localhost|\[[a-f0-9.:]+\])(:[0-9]{1,5})?\/[\S]+/i
+export const URL_REG = /^http(s)?:\/\/([a-z0-9\-._~]+\.[a-z]{2,}|[0-9.]+|localhost|\[[a-f0-9.:]+\])(:[0-9]{1,5})?\/[\S]+/i;
 // data:[<MIME-type>][;charset=<encoding>][;base64],<data>
-export const DATA_URL_REG = /^data:image\/[\w+-]+(;[\w-]+=[\w-]+|;base64)*,[a-zA-Z0-9+/]+={0,2}$/
+export const DATA_URL_REG = /^data:image\/[\w+-]+(;[\w-]+=[\w-]+|;base64)*,[a-zA-Z0-9+/]+={0,2}$/;
 // The smallest transparent gif base64 image.
 // export const SMALLEST_BASE64 = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 // export const isIOS = /(?:iPhone|iPad|iPod|iOS)/i.test(window.navigator.userAgent)
@@ -302,4 +401,4 @@ export const defaultSearchOption = {
   isRegexp: false,
   selectHighlight: false,
   highlightIndex: -1
-}
+};

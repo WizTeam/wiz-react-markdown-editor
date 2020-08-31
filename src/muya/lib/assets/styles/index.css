@@ -1291,3 +1291,11 @@ i.ag-footnote-backlink {
   cursor: pointer;
   z-index: 100;
 }
+
+.ag-tag {
+  background-color: #aaaaaa;
+  border-radius: 12px;
+  color: #fff;
+  padding: 0 8px;
+  cursor: pointer;
+}
