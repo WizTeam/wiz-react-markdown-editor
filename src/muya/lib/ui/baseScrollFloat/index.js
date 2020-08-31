@@ -30,9 +30,8 @@ class BaseScrollFloat extends BaseFloat {
   listen() {
     super.listen();
     const { eventCenter, container } = this.muya;
-    let oldText;
     const handler = (event) => {
-      if (!this.status) return;
+      if (!this.status || this.muya.keyboard.isComposed) return;
       switch (event.key) {
         case EVENT_KEYS.ArrowUp:
           this.step('previous');
@@ -42,23 +41,14 @@ class BaseScrollFloat extends BaseFloat {
           this.step('next');
           break;
         case EVENT_KEYS.Enter:
-          oldText = event.target.innerText;
+          this.selectItem(this.activeItem);
           break;
         default:
           break;
       }
     };
 
-    const enterHandler = (event) => {
-      if (!this.status) return;
-      // 过滤输入法回车触发
-      if (event.key === EVENT_KEYS.Enter && event.target.innerText === oldText) {
-        this.selectItem(this.activeItem);
-      }
-    };
-
     eventCenter.attachDOMEvent(container, 'keydown', handler);
-    eventCenter.attachDOMEvent(container, 'keyup', enterHandler);
   }
 
   hide() {
