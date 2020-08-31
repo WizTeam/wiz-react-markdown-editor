@@ -192,11 +192,15 @@ function Editor(props) {
         classes.editorWrapper,
         typewriter && classes.typewriter,
         focus && classes.focus,
-        sourceCode && classes.source
+        sourceCode && classes.source,
+        props.editorWrapperClassName
       )}
       onKeyDown={handleKeyDown}
     >
-      <div ref={editorRef} className={classes.editorComponent} />
+      <div
+        ref={editorRef}
+        className={classNames(classes.editorComponent, props.editorComponentClassName)}
+      />
     </div>
   );
 }

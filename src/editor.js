@@ -46,9 +46,10 @@ class SaveDataQueue {
 export default function MarkdownEditor(props) {
   const { onSave, theme = 'lite', markdown = '', contentId, ...editorCoreProp } = props;
   //
-  function doSaveData({ id, content }) {
+  // eslint-disable-next-line no-shadow
+  function doSaveData({ contentId, content }) {
     if (onSave) {
-      onSave({ id, markdown: content.markdown });
+      onSave({ contentId, markdown: content.markdown });
     }
   }
 
