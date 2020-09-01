@@ -316,8 +316,6 @@ const inputCtrl = (ContentState) => {
     this.muya.eventCenter.dispatch('muya-quick-insert', reference, block, !!checkQuickInsert);
     this.muya.eventCenter.dispatch('muya-tag-insert', reference, block, !!checkTagInsert);
 
-    console.log('needRender', needRender);
-
     this.cursor = { start, end };
 
     // Throttle render if edit in code block.

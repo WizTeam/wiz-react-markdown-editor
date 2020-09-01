@@ -1395,6 +1395,14 @@ i.ag-footnote-backlink {
   z-index: 100;
 }
 
+.ag-tag {
+  background-color: #aaaaaa;
+  border-radius: 12px;
+  color: #fff;
+  padding: 0 8px;
+  cursor: pointer;
+}
+
 .ag-float-wrapper {
   position: absolute;
   font-size: 12px;
@@ -3208,6 +3216,45 @@ i.ag-footnote-backlink {
 
 .ag-front-menu .submenu::-webkit-scrollbar:vertical {
   width: 0px;
+}
+
+.ag-tag-insert {
+  width: 250px;
+  max-height: 307px;
+  padding: 0 0 10px;
+  overflow-y: auto;
+}
+
+.ag-tag-insert .item {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  padding: 10px 14px 10px 14px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.ag-tag-insert:hover .active {
+  background: transparent;
+}
+.ag-tag-insert .active,
+.ag-tag-insert div.item:hover {
+ background-color: var(--floatHoverColor);
+}
+
+.ag-tag-insert .no-result {
+  margin-top: 20px;
+  padding: 0 20px;
+  font-size: 14px;
+  text-align: center;
+  color: var(--themeColor);
+}
+
+.ag-tag-insert .hide {
+  display: none;
 }
 
 /*

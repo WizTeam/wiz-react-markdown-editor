@@ -26,6 +26,7 @@ import Editor from 'wiz-react-markdown-editor';
 |    onChange    |  function ({ markdown, wordCount, cursor, history, toc }) => void   |          () => {}           |  ✗   |                            内容改变事件                             |
 |  resourceUrl   |                               string                                |              -              |  ✗   | 图片资源路,在添加路径为`index_files/`开头图片资源前面添加的资源路径 |
 |    readOnly    |                               boolean                               |            false            |  ✗   |                                只读                                 |
+|    wordList    |                              string[]                               |             []              |  ✗   |                              标签列表                               |
 
 ### Edit Grammar:
 
