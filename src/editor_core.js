@@ -157,7 +157,7 @@ function Editor(props) {
   }, [editor, props.onChange, typewriter]);
 
   useEffect(() => {
-    editor?.tagInsert.setWordList(wordList);
+    editor?.tagInsert?.setWordList(wordList);
   }, [editor, wordList]);
 
   function handleKeyDown(e) {

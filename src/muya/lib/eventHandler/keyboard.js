@@ -9,6 +9,7 @@ class Keyboard {
     this.muya = muya;
     this.isComposed = false;
     this.shownFloat = new Set();
+    this.inputDom = null;
     this.recordIsComposed();
     this.dispatchEditorState();
     this.keydownBinding();
@@ -43,8 +44,12 @@ class Keyboard {
     const handler = (event) => {
       if (event.type === 'compositionstart') {
         this.isComposed = true;
+        this.inputDom = selection.getSelectionStart();
       } else if (event.type === 'compositionend') {
-        this.isComposed = false;
+        setTimeout(() => {
+          this.isComposed = false;
+        }, 30);
+        this.inputDom = null;
         // Because the compose event will not cause `input` event, So need call `inputHandler` by ourself
         contentState.inputHandler(event);
         eventCenter.dispatch('stateChange');
@@ -201,8 +206,22 @@ class Keyboard {
       if (!this.isComposed) {
         contentState.inputHandler(event);
         this.muya.dispatchChange();
+      } else if (this.isComposed) {
+        // safari空行时会输出<span>
+        const startNode = selection.getSelectionStart();
+        if (this.inputDom !== startNode) {
+          this.inputDom.innerText = event.data;
+          startNode.lastElementChild
+            ? startNode.replaceChild(this.inputDom, startNode.lastElementChild)
+            : startNode.parentNode.replaceChild(this.inputDom, startNode);
+          selection.select(this.inputDom, event.data?.length ?? 0);
+        }
+        if (event.data === null) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
       }
-
       const { lang, paragraph } = contentState.checkEditLanguage();
       if (lang) {
         eventCenter.dispatch('muya-code-picker', {
