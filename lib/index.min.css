@@ -3491,16 +3491,6 @@ html, body {
   caret-color: var(--editorColor);
 }
 
-body {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .icon {
   width: 1em; height: 1em;
   vertical-align: -0.15em;
