@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -57,7 +57,7 @@ function Editor(props) {
     typewriter,
     focus,
     sourceCode,
-    theme,
+    theme: initTheme,
     onSelectImages,
     markdown,
     width,
@@ -67,6 +67,16 @@ function Editor(props) {
   } = props;
   //
   const editorRef = useRef();
+
+  const [theme, setTheme] = useState(isDarkMode() ? 'dark' : 'light');
+
+  useEffect(() => {
+    if (initTheme === 'default') {
+      setTheme(isDarkMode() ? 'dark' : 'light');
+    } else {
+      setTheme(initTheme);
+    }
+  }, [initTheme]);
 
   const MuyaOptions = useMemo(
     () => ({
@@ -143,18 +153,39 @@ function Editor(props) {
         animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
       }
     }
+    function handleSystemThemeChange(e) {
+      if (initTheme === 'default') {
+        if (e.matches && theme !== 'dark') {
+          setTheme('dark');
+        } else if (!e.matches && theme !== 'light') {
+          setTheme('light');
+        }
+      }
+    }
 
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', handleSystemThemeChange);
+    } else if (typeof media.addListener === 'function') {
+      media.addListener(handleSystemThemeChange);
+    }
     if (editor) {
       editor.on('change', props.onChange);
       editor.on('selectionChange', handleSelectionChange);
     }
     return () => {
+      if (typeof media.removeEventListener === 'function') {
+        media.removeEventListener('change', handleSystemThemeChange);
+      } else if (typeof media.removeListener === 'function') {
+        media.removeListener(handleSystemThemeChange);
+      }
       if (editor) {
         editor.off('change', props.onChange);
         editor.off('selectionChange', handleSelectionChange);
       }
     };
-  }, [editor, props.onChange, typewriter]);
+  }, [editor, initTheme, props.onChange, theme, typewriter]);
 
   useEffect(() => {
     editor?.tagInsert?.setWordList(wordList);
@@ -207,7 +238,15 @@ function Editor(props) {
 
 Editor.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  theme: PropTypes.oneOf(['dark', 'light', 'material-dark', 'ulysses', 'graphite', 'one-dark']),
+  theme: PropTypes.oneOf([
+    'dark',
+    'light',
+    'material-dark',
+    'ulysses',
+    'graphite',
+    'one-dark',
+    'default'
+  ]),
   onSelectImages: PropTypes.func,
   onChange: PropTypes.func,
   sourceCode: PropTypes.bool,
@@ -221,7 +260,7 @@ Editor.propTypes = {
 
 Editor.defaultProps = {
   width: '100%',
-  theme: isDarkMode() ? 'dark' : 'light',
+  theme: 'default',
   onSelectImages: null,
   onChange: () => {},
   sourceCode: false,

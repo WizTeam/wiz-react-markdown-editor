@@ -3,7 +3,6 @@ import assert from 'assert';
 import PropTypes from 'prop-types';
 
 import EditorCore from './editor_core';
-import { isDarkMode } from './utils/utils';
 
 class SaveDataQueue {
   constructor(onSave) {
@@ -98,7 +97,15 @@ export default function MarkdownEditor(props) {
 
 MarkdownEditor.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  theme: PropTypes.oneOf(['dark', 'light', 'material-dark', 'ulysses', 'graphite', 'one-dark']),
+  theme: PropTypes.oneOf([
+    'dark',
+    'light',
+    'material-dark',
+    'ulysses',
+    'graphite',
+    'one-dark',
+    'default'
+  ]),
   onSelectImages: PropTypes.func,
   onSave: PropTypes.func,
   sourceCode: PropTypes.bool,
@@ -112,7 +119,7 @@ MarkdownEditor.propTypes = {
 
 MarkdownEditor.defaultProps = {
   width: '100%',
-  theme: isDarkMode() ? 'dark' : 'light',
+  theme: 'default',
   onSelectImages: null,
   onSave: null,
   sourceCode: false,

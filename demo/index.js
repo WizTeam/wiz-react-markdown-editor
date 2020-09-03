@@ -33,7 +33,7 @@ function chooseImage() {
 }
 
 const App = () => {
-  const [theme, setTheme] = React.useState('light');
+  const [theme, setTheme] = React.useState('default');
   const [focusMode, setFocusMode] = React.useState(false);
   const [typewriterMode, setTypewriterMode] = React.useState(false);
   const [data, setData] = React.useState(null);
