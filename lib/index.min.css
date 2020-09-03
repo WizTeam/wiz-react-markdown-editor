@@ -3486,7 +3486,7 @@ SOFTWARE.
 html, body {
   margin: 0;
   padding: 0;
-  background: transparent !important;
+  /* background: transparent !important; */
   caret-color: rgba(0, 0, 0, .7);
   caret-color: var(--editorColor);
 }
