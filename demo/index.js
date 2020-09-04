@@ -100,7 +100,7 @@ const App = () => {
           readOnly
         </button>
       </div>
-      <div style={{ height: '100vh' }}>
+      <div style={{ height: '70vh' }}>
         <Editor
           theme={data?.theme || theme}
           focus={focusMode}
