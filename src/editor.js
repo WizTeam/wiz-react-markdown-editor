@@ -10,7 +10,7 @@ class SaveDataQueue {
     this._onSave = onSave;
     setInterval(() => {
       this._autoSave();
-    }, 1000);
+    }, 500);
   }
 
   push(data) {
@@ -30,7 +30,7 @@ class SaveDataQueue {
     //
     const { lastChange } = this._last;
     const now = new Date().valueOf();
-    if (now - lastChange > 3000) {
+    if (now - lastChange > 1000) {
       this._saveNow();
     }
   }
