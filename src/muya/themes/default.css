@@ -163,7 +163,7 @@ kbd {
   }
 
   a {
-    color: var(--themeColor);
+    color: var(--link-color);
   }
 
   h1,

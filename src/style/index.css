@@ -35,6 +35,7 @@
   --footnoteBgColor: rgba(0, 0, 0, .03);
   --inputBgColor: rgba(0, 0, 0, .06);
   --focusColor: var(--themeColor);
+  --link-color: #448aff;
 
   --buttonFontColor: var(--editorColor);
   --buttonBgColor: #ffffff;
