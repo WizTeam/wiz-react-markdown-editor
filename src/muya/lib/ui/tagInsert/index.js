@@ -1,7 +1,6 @@
 import { patch, h } from '../../parser/render/snabbdom';
 import { filter } from 'fuzzaldrin';
 import BaseScrollFloat from '../baseScrollFloat';
-import selection from '../../selection';
 import './index.css';
 
 export default class TagInsert extends BaseScrollFloat {
@@ -78,7 +77,6 @@ export default class TagInsert extends BaseScrollFloat {
   }
 
   getItemElement(item) {
-    // return this.scrollElement.querySelector(`[data-text="${item}"]`);
-    return null;
+    return this.scrollElement.querySelector(`[data-text="${item}"]`);
   }
 }

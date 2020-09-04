@@ -89,7 +89,7 @@ function Editor(props) {
       }
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [focus, onSelectImages, theme, resourceUrl]
+    [focus, onSelectImages, theme, resourceUrl, markdown]
   );
 
   const editor = useMuya(editorRef, MuyaOptions);
@@ -123,14 +123,10 @@ function Editor(props) {
   }, [width]);
 
   useEffect(() => {
-    editor?.setOptions(MuyaOptions, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [MuyaOptions]);
-
-  useEffect(() => {
+    editor?.setOptions(MuyaOptions);
     editor?.setMarkdown(markdown, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markdown, resourceUrl]);
+  }, [MuyaOptions]);
 
   useEffect(() => {
     if (editor && editor.container) {
