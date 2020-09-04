@@ -33,7 +33,7 @@ export default class TagInsert extends BaseScrollFloat {
         {
           dataset: { text: item },
           on: {
-            click: () => this.selectItem(item)
+            mousedown: () => this.selectItem(item)
           }
         },
         item

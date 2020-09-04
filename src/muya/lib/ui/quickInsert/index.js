@@ -76,7 +76,7 @@ class QuickInsert extends BaseScrollFloat {
               {
                 dataset: { label },
                 on: {
-                  click: () => {
+                  mousedown: () => {
                     this.selectItem(item);
                   }
                 }
@@ -138,7 +138,6 @@ class QuickInsert extends BaseScrollFloat {
     const { contentState } = this.muya;
     this.block.text = '';
     const { key } = this.block;
-
     if (/link|image/.test(item.label)) {
       contentState.format(item.label);
       if (item.label === 'link') {
