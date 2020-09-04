@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useRef, useEffect, useMemo, useState } from 'react';
+import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -49,6 +49,8 @@ const useStyles = makeStyles({
 
 const STANDAR_Y = 320;
 
+let oldMd = '';
+
 function Editor(props) {
   const classes = useStyles();
 
@@ -70,6 +72,11 @@ function Editor(props) {
 
   const [theme, setTheme] = useState(isDarkMode() ? 'dark' : 'light');
 
+  const transformImageUrl = useCallback(
+    (src) => (resourceUrl && src.startsWith('index_files/') ? formatUrl(resourceUrl) + src : src),
+    [resourceUrl]
+  );
+
   useEffect(() => {
     if (initTheme === 'default') {
       setTheme(isDarkMode() ? 'dark' : 'light');
@@ -84,12 +91,10 @@ function Editor(props) {
       theme,
       imagePathPicker: onSelectImages,
       markdown,
-      transformImageUrl: (src) => {
-        return resourceUrl && src.startsWith('index_files/') ? formatUrl(resourceUrl) + src : src;
-      }
+      transformImageUrl
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [focus, onSelectImages, theme, resourceUrl, markdown]
+    [focus, onSelectImages, theme, resourceUrl]
   );
 
   const editor = useMuya(editorRef, MuyaOptions);
@@ -123,10 +128,28 @@ function Editor(props) {
   }, [width]);
 
   useEffect(() => {
-    editor?.setOptions(MuyaOptions);
-    editor?.setMarkdown(markdown, 0);
+    editor?.setOptions(MuyaOptions, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MuyaOptions]);
+
+  useEffect(() => {
+    if (oldMd !== markdown) {
+      editor?.setOptions({
+        transformImageUrl
+      });
+      editor?.setMarkdown(markdown, 0);
+      oldMd = markdown;
+    } else {
+      editor?.setOptions(
+        {
+          transformImageUrl
+        },
+        true
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transformImageUrl, markdown]);
 
   useEffect(() => {
     if (editor && editor.container) {
