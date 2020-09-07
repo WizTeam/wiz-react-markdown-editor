@@ -4134,7 +4134,7 @@ kbd {
     min-width: 400px;
     min-height: 100%;
     margin: 0 auto;
-    padding: 20px 50px 100px 50px;
+    padding: 20px 40px 100px;
     box-sizing: border-box;
   }
 
@@ -4148,7 +4148,7 @@ kbd {
   }
 
   .ag-header-tight-space {
-    margin-left: -.3em;
+    margin-left: -.2em;
   }
 
   .ag-image-src {
