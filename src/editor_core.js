@@ -65,7 +65,8 @@ function Editor(props) {
     width,
     resourceUrl,
     readOnly,
-    wordList
+    wordList,
+    editorFocus
   } = props;
   //
   const editorRef = useRef();
@@ -210,6 +211,14 @@ function Editor(props) {
     editor?.tagInsert?.setWordList(wordList);
   }, [editor, wordList]);
 
+  useEffect(() => {
+    function _editorFocus() {
+      editor?.focus();
+    }
+    //
+    editorFocus(_editorFocus);
+  }, [editor, editorFocus]);
+
   function handleKeyDown(e) {
     let res = true;
     if (matchHotKey('⌘-z', e)) {
@@ -274,7 +283,8 @@ Editor.propTypes = {
   markdown: PropTypes.string,
   resourceUrl: PropTypes.string,
   readOnly: PropTypes.bool,
-  wordList: PropTypes.array
+  wordList: PropTypes.array,
+  editorFocus: PropTypes.func
 };
 
 Editor.defaultProps = {
@@ -288,7 +298,8 @@ Editor.defaultProps = {
   markdown: '',
   resourceUrl: '',
   readOnly: false,
-  wordList: []
+  wordList: [],
+  editorFocus: () => {}
 };
 
 export default Editor;

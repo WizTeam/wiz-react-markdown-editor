@@ -266,8 +266,10 @@ class Muya {
   }
 
   focus() {
-    this.contentState.setCursor();
-    this.container.focus();
+    setTimeout(() => {
+      this.contentState.setCursor();
+      this.container.focus();
+    }, 0);
   }
 
   blur(isRemoveAllRange = false, unSelect = false) {

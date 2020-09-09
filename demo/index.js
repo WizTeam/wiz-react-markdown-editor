@@ -39,6 +39,7 @@ const App = () => {
   const [data, setData] = React.useState(null);
   const [readOnly, setReadOnly] = React.useState(false);
   const [wordList, setWordList] = React.useState([]);
+  const editorFocus = React.useRef(null);
 
   React.useEffect(() => {
     window.loadMarkdown = ({ markdown, resourceUrl, contentId }) => {
@@ -99,6 +100,9 @@ const App = () => {
         <button type="button" onClick={() => setReadOnly(!readOnly)}>
           readOnly
         </button>
+        <button type="button" onClick={() => editorFocus.current()}>
+          editor focus
+        </button>
       </div>
       <div style={{ height: '70vh' }}>
         <Editor
@@ -114,6 +118,11 @@ const App = () => {
             console.log(`save data: ${contentId}`);
           }}
           wordList={wordList}
+          editorFocus={(fn) => {
+            if (fn) {
+              editorFocus.current = fn;
+            }
+          }}
         />
       </div>
     </div>
