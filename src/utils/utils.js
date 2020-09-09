@@ -16,6 +16,7 @@ export function formatUrl(url) {
 
 // help functions
 function easeInOutQuad(t, b, c, d) {
+  if (d === 0) return b + c;
   let time = t;
   time /= d / 2;
   if (time < 1) return (c / 2) * time * time + b;
