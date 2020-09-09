@@ -89,9 +89,9 @@ function Editor(props) {
     () => ({
       focusMode: focus,
       theme,
-      imagePathPicker: onSelectImages,
-      markdown,
-      transformImageUrl
+      imagePathPicker: onSelectImages
+      // markdown,
+      // transformImageUrl
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [focus, onSelectImages, theme, resourceUrl]
