@@ -140,7 +140,12 @@ const addFormat = (type, block, { start, end }) => {
         ']()' +
         oldText.substring(end.offset);
       // put cursor between `()`
-      start.offset += type === 'link' ? 3 + anchorTextLen : 4 + anchorTextLen;
+      if (anchorTextLen) {
+        start.offset += type === 'link' ? 3 + anchorTextLen : 4 + anchorTextLen;
+      } else {
+        start.offset += type === 'link' ? 1 : 2;
+      }
+
       end.offset = start.offset;
       break;
     }
@@ -349,16 +354,22 @@ const formatCtrl = (ContentState) => {
     }
   };
 
-  ContentState.prototype.formatTag = function (content) {
+  ContentState.prototype.formatTag = function (content = '') {
     const { start, end } = selection.getCursorRange();
     if (start.key === end.key) {
       const { key } = start;
       const block = this.getBlock(start.key);
-      block.text = block.text.replace(
-        /(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/,
-        `#${content}#`
-      );
-      const offset = content.length + 2;
+      let offset;
+      if (block.text) {
+        block.text = block.text.replace(
+          /(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/,
+          `#${content}#`
+        );
+        offset = content.length + 2;
+      } else {
+        block.text = `#${content}#`;
+        offset = 1 + content.length;
+      }
       this.cursor = {
         start: { key, offset },
         end: { key, offset }

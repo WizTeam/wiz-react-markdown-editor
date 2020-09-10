@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, forwardRef } from 'react';
 import assert from 'assert';
 import PropTypes from 'prop-types';
 
@@ -42,7 +42,7 @@ class SaveDataQueue {
   }
 }
 
-export default function MarkdownEditor(props) {
+const MarkdownEditor = forwardRef((props, ref) => {
   const { onSave, theme = 'lite', markdown = '', contentId, ...editorCoreProp } = props;
   //
   // eslint-disable-next-line no-shadow
@@ -90,10 +90,16 @@ export default function MarkdownEditor(props) {
   }, [contentId, markdown]);
 
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <EditorCore theme={theme} onChange={handleChange} markdown={markdown} {...editorCoreProp} />
+    <EditorCore
+      theme={theme}
+      onChange={handleChange}
+      markdown={markdown}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...editorCoreProp}
+      editorRef={ref}
+    />
   );
-}
+});
 
 MarkdownEditor.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -130,3 +136,5 @@ MarkdownEditor.defaultProps = {
   readOnly: false,
   wordList: []
 };
+
+export default MarkdownEditor;

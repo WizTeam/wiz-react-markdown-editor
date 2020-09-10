@@ -11,6 +11,7 @@ import { matchHotKey } from './utils/eventUtils';
 import './style/index.css';
 import './style/printService.css';
 import './muya/themes/default.css';
+import useImperative from './hooks/useImperative';
 // import './style/one-dark.css';
 
 const useStyles = makeStyles({
@@ -244,6 +245,8 @@ function Editor(props) {
       e.preventDefault();
     }
   }
+
+  useImperative(props.editorRef, editor);
 
   return (
     <div
