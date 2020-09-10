@@ -172,7 +172,7 @@ div.ag-show-quick-insert-hint p.ag-paragraph.ag-active > span.ag-paragraph-conte
 }
 
 .ag-selected {
-  background: linear-gradient(17deg, var(--editorBgColor) 36.65%, var(--editorColor04));
+  /* background: linear-gradient(17deg, var(--editorBgColor) 36.65%, var(--editorColor04)); */
   border-radius: 3px;
 }
 
@@ -1221,9 +1221,9 @@ span.ag-reference-link {
   opacity: .6;
 }
 
-.ag-front-icon:hover {
+/* .ag-front-icon:hover {
   background: var(--selectionColor);
-}
+} */
 
 .ag-front-icon::before {
   content: '';
