@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { useMuya } from './hooks/editor';
+import { useMuya } from './hooks/useMuya';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth, addThemeStyle } from './theme';
 import { animatedScrollTo, formatUrl, isDarkMode } from './utils/utils';

@@ -138,26 +138,24 @@ class QuickInsert extends BaseScrollFloat {
     const { contentState } = this.muya;
     this.block.text = '';
     const { key } = this.block;
+    const offset = 0;
+    contentState.cursor = {
+      start: { key, offset },
+      end: { key, offset }
+    };
+
     if (/link|image/.test(item.label)) {
+      contentState.setCursor();
+      console.log(`editor.contentState.format('${item.label}');`);
       contentState.format(item.label);
-      if (item.label === 'link') {
-        contentState.cursor = {
-          start: { key, offset: 1 },
-          end: { key, offset: 1 }
-        };
-        contentState.setCursor();
-      }
     } else {
-      const offset = 0;
-      contentState.cursor = {
-        start: { key, offset },
-        end: { key, offset }
-      };
       switch (item.label) {
         case 'paragraph':
+          console.log(`editor.contentState.partialRender()`);
           contentState.partialRender();
           break;
         default:
+          console.log(`editor.contentState.updateParagraph('${item.label}', true)`);
           contentState.updateParagraph(item.label, true);
           break;
       }
