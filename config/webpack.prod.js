@@ -11,8 +11,8 @@ module.exports = merge(common, {
   output: {
     path: path.join(__dirname, `../${libsDist}/`),
     filename: 'index.js',
-    libraryTarget: 'umd',
-    libraryExport: 'default'
+    libraryTarget: 'umd'
+    // libraryExport: 'default'
   },
   module: {
     noParse: /src\/muya\/lib\/utils\/importResource\.js/
