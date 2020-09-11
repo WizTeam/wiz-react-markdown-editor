@@ -3434,6 +3434,8 @@ SOFTWARE.
   --buttonPrimaryFocusBorder: none;
   --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(13, 91, 55, 0.5), 0 0 0 1px var(--themeColor);
   --tableBorderColor: #e5e5e5;
+  --tableBackgroundColor: transparent;
+  --tableTextColor: rgba(0, 0, 0, .7);
 
   /*marktext*/
   --sideBarColor: rgba(0, 0, 0, .6);
@@ -4401,6 +4403,7 @@ kbd {
     margin: 0;
     padding: 6px 13px;
     position: relative;
+    color: var(--tableTextColor);
   }
 
   table tr td {
@@ -4421,6 +4424,7 @@ kbd {
     width: calc(100% + 1px);
     height: calc(100% + 1px);
     border: 1px solid var(--tableBorderColor);
+    background-color: var(--tableBackgroundColor);
     box-sizing: border-box;
     pointer-events: none;
   }
