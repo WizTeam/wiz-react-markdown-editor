@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 // import 'wiz-react-markdown-editor/index.min.css';
 // eslint-disable-next-line import/no-unresolved
 // import Editor from 'wiz-react-markdown-editor';
-import Editor, { useEditor } from '../src/index';
+import { useEditor, MarkdownEditor } from '../src/index';
 
 function chooseImage() {
   return new Promise((res, rej) => {
@@ -292,7 +292,7 @@ const App = () => {
         )}
       </div>
       <div style={{ height: '70vh' }}>
-        <Editor
+        <MarkdownEditor
           theme={data?.theme || theme}
           focus={focusMode}
           typewriter={typewriterMode}
