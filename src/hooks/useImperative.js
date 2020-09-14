@@ -2,6 +2,7 @@ import { useImperativeHandle, useRef, useEffect } from 'react';
 
 export default function useImperative(ref, editor) {
   const eventRef = useRef([]);
+  const cursorRef = useRef();
 
   useEffect(() => {
     if (editor) {
@@ -143,6 +144,17 @@ export default function useImperative(ref, editor) {
       function removeTable() {
         editor.contentState.tableToolBarClick('delete');
       }
+      function saveCursor() {
+        cursorRef.current = editor.contentState.cursor;
+      }
+
+      function resetCursor() {
+        if (cursorRef.current) {
+          // eslint-disable-next-line no-param-reassign
+          editor.contentState.cursor = cursorRef.current;
+          editor.contentState.setCursor();
+        }
+      }
       return {
         insertTag,
         insertBold,
@@ -169,7 +181,9 @@ export default function useImperative(ref, editor) {
         insertColRight,
         removeTableCol,
         removeTableRow,
-        removeTable
+        removeTable,
+        saveCursor,
+        resetCursor
       };
     },
     [editor]

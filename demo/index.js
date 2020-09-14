@@ -36,9 +36,10 @@ const App = () => {
   const [theme, setTheme] = React.useState('default');
   const [focusMode, setFocusMode] = React.useState(false);
   const [typewriterMode, setTypewriterMode] = React.useState(false);
-  const [data, setData] = React.useState(null);
+  const [data] = React.useState(null);
   const [readOnly, setReadOnly] = React.useState(false);
   const [wordList, setWordList] = React.useState([]);
+  const [markdown, setMarkdown] = React.useState('');
   const editorFocus = React.useRef(null);
   const stopClickRef = React.useRef(false);
   const editorRef = React.useRef(null);
@@ -46,14 +47,17 @@ const App = () => {
   const { isCursorInTable } = useEditor(editorRef);
 
   React.useEffect(() => {
-    window.loadMarkdown = ({ markdown, resourceUrl, contentId }) => {
-      setData({
-        markdown,
-        resourceUrl,
-        contentId
-      });
-    };
+    // window.loadMarkdown = ({ markdown, resourceUrl, contentId }) => {
+    //   setData({
+    //     markdown,
+    //     resourceUrl,
+    //     contentId
+    //   });
+    // };
+    window.setMarkdown = setMarkdown;
     window.setWordList = setWordList;
+    window.saveCursor = () => editorRef.current.saveCursor();
+    window.resetCursor = () => editorRef.current.resetCursor();
     document.addEventListener(
       'click',
       (e) => {
@@ -148,6 +152,12 @@ const App = () => {
         break;
       case 'deleteTable':
         editorRef.current.removeTable();
+        break;
+      case 'saveCursor':
+        editorRef.current.saveCursor();
+        break;
+      case 'resetCursor':
+        editorRef.current.resetCursor();
         break;
       default:
         break;
@@ -288,6 +298,12 @@ const App = () => {
             <button type="button" onMouseDown={(e) => handleInsert('formula', e)}>
               formula
             </button>
+            <button type="button" onMouseDown={(e) => handleInsert('saveCursor', e)}>
+              saveCursor
+            </button>
+            <button type="button" onMouseDown={(e) => handleInsert('resetCursor', e)}>
+              resetCursor
+            </button>
           </>
         )}
       </div>
@@ -297,7 +313,7 @@ const App = () => {
           focus={focusMode}
           typewriter={typewriterMode}
           onSelectImages={chooseImage}
-          markdown={data?.markdown}
+          markdown={markdown}
           resourceUrl={data?.resourceUrl}
           readOnly={readOnly}
           contentId={data?.contentId}

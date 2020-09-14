@@ -8,7 +8,7 @@ import ImagePathPicker from '../muya/lib/ui/imagePicker';
 import ImageSelector from '../muya/lib/ui/imageSelector';
 import ImageToolbar from '../muya/lib/ui/imageToolbar';
 import Transformer from '../muya/lib/ui/transformer';
-import FormatPicker from '../muya/lib/ui/formatPicker';
+// import FormatPicker from '../muya/lib/ui/formatPicker';
 import LinkTools from '../muya/lib/ui/linkTools';
 import FootnoteTool from '../muya/lib/ui/footnoteTool';
 import TableBarTools from '../muya/lib/ui/tableTools';
@@ -25,7 +25,7 @@ Muya.use(ImageSelector, {
 Muya.use(ImagePathPicker);
 Muya.use(ImageToolbar);
 Muya.use(Transformer);
-Muya.use(FormatPicker);
+// Muya.use(FormatPicker);
 Muya.use(LinkTools, {
   jumpClick: (obj) => {
     if (obj.token.type === 'link') {
