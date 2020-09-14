@@ -233,7 +233,7 @@ class ExportMarkdown {
     const result = [];
     result.push(`${indent}$$\n`);
     for (const line of block.children[0].children[0].children) {
-      result.push(`${indent}${line.text}`);
+      result.push(`${indent}${line.text}${line.text.endsWith('\n') ? '' : '\n'}`);
     }
     result.push(`${indent}$$\n`);
     return result.join('');
