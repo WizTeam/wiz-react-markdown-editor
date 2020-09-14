@@ -96,8 +96,8 @@
 
 html, body {
   font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 28px;
 }
 
 span code,
@@ -222,27 +222,33 @@ kbd {
   }
 
   h1 {
-    font-size: 30px;
+    font-size: 32px;
+    line-height: 44px;
   }
 
   h2 {
-    font-size: 24px;
+    font-size: 28px;
+    line-height: 40px;
   }
 
   h3 {
-    font-size: 22px;
+    font-size: 24px;
+    line-height: 36px;
   }
 
   h4 {
     font-size: 20px;
+    line-height: 32px;
   }
 
   h5 {
-    font-size: 18px;
+    font-size: 16px;
+    line-height: 28px;
   }
 
   h6 {
     font-size: 16px;
+    color: #aaaaaa;
   }
 
   h1 .ag-gray {
@@ -270,7 +276,7 @@ kbd {
   ol,
   dl,
   table {
-    margin: 0.5em 0;
+    margin: 0;
   }
 
   li>ol,

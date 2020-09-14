@@ -1403,6 +1403,9 @@ i.ag-footnote-backlink {
   color: #fff;
   padding: 0 8px;
   cursor: pointer;
+  display: inline-block;
+  margin: 5px 3px;
+  line-height: normal;
 }
 
 .ag-float-wrapper {
@@ -3313,10 +3316,10 @@ SOFTWARE.
 
   --highlightColor: rgba(33, 181, 111, .4);
   --selectionColor: rgba(0, 0, 0, .1);
-  --editorColor: rgba(0, 0, 0, .7);
+  --editorColor:#333333;
   --editorColor80: rgba(0, 0, 0, .8);
   --editorColor60: rgba(0, 0, 0, .6);
-  --editorColor50: rgba(0, 0, 0, .5);
+  --editorColor50: #aaaaaa;
   --editorColor40: rgba(0, 0, 0, .4);
   --editorColor30: rgba(0, 0, 0, .3);
   --editorColor10: rgba(0, 0, 0, .1);
@@ -3414,7 +3417,7 @@ html, body {
   margin: 0;
   padding: 0;
   /* background: transparent !important; */
-  caret-color: rgba(0, 0, 0, .7);
+  caret-color: #333333;
   caret-color: var(--editorColor);
 }
 
@@ -3527,12 +3530,12 @@ input.el-input__inner {
 }
 
 div.el-tabs__item {
-  color: rgba(0, 0, 0, .7);
+  color: #333333;
   color: var(--editorColor);
 }
 
 div.el-tab-pane {
-  color: rgba(0, 0, 0, .7);
+  color: #333333;
   color: var(--editorColor);
   font-size: 14px;
 }
@@ -3553,7 +3556,7 @@ div.el-tab-pane {
 .el-button {
   cursor: pointer;
   text-decoration: none;
-  color: rgba(0, 0, 0, .7);
+  color: #333333;
   color: var(--buttonFontColor);
   background: #ffffff;
   background: var(--buttonBgColor);
@@ -3567,7 +3570,7 @@ div.el-tab-pane {
 .button:hover,
 .muya-button:hover,
 .el-button:hover {
-  color: rgba(0, 0, 0, .7);
+  color: #333333;
   color: var(--buttonFontColorHover);
   background: linear-gradient(#f9f9f9, #f2f2f2);
   background: var(--buttonBgColorHover);
@@ -3577,7 +3580,7 @@ div.el-tab-pane {
 .button:active,
 .muya-button:active,
 .el-button:active {
-  color: rgba(0, 0, 0, .7);
+  color: #333333;
   color: var(--buttonFontColorActive);
   background: #f0f0f0;
   background: var(--buttonBgColorActive);
@@ -3710,7 +3713,7 @@ button.button-primary:not(.custom):focus,
 .el-button.is-disabled,
 .el-button.is-disabled:focus,
 .el-button.is-disabled:hover {
-  color: rgba(0, 0, 0, .7);
+  color: #333333;
   color: var(--buttonFontColor);
   background: #ffffff;
   background: var(--buttonBgColor);
@@ -4025,8 +4028,8 @@ pre.ag-paragraph {
 
 html, body {
   font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 28px;
 }
 
 span code,
@@ -4151,27 +4154,33 @@ kbd {
   }
 
   h1 {
-    font-size: 30px;
+    font-size: 32px;
+    line-height: 44px;
   }
 
   h2 {
-    font-size: 24px;
+    font-size: 28px;
+    line-height: 40px;
   }
 
   h3 {
-    font-size: 22px;
+    font-size: 24px;
+    line-height: 36px;
   }
 
   h4 {
     font-size: 20px;
+    line-height: 32px;
   }
 
   h5 {
-    font-size: 18px;
+    font-size: 16px;
+    line-height: 28px;
   }
 
   h6 {
     font-size: 16px;
+    color: #aaaaaa;
   }
 
   h1 .ag-gray {
@@ -4199,7 +4208,7 @@ kbd {
   ol,
   dl,
   table {
-    margin: 0.5em 0;
+    margin: 0;
   }
 
   li>ol,

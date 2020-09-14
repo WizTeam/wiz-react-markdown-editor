@@ -1300,4 +1300,7 @@ i.ag-footnote-backlink {
   color: #fff;
   padding: 0 8px;
   cursor: pointer;
+  display: inline-block;
+  margin: 5px 3px;
+  line-height: normal;
 }
