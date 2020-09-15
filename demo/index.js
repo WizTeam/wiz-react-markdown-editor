@@ -307,7 +307,7 @@ const App = () => {
           </>
         )}
       </div>
-      <div style={{ height: '70vh' }}>
+      <div style={{ minHeight: '110vh' }}>
         <MarkdownEditor
           theme={data?.theme || theme}
           focus={focusMode}
