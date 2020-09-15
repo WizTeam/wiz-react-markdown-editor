@@ -43,7 +43,7 @@ class SaveDataQueue {
 }
 
 const MarkdownEditor = forwardRef((props, ref) => {
-  const { onSave, theme = 'lite', markdown = '', contentId, ...editorCoreProp } = props;
+  const { onSave, markdown = '', contentId, ...editorCoreProp } = props;
   //
   // eslint-disable-next-line no-shadow
   function doSaveData({ contentId, content }) {
@@ -91,7 +91,6 @@ const MarkdownEditor = forwardRef((props, ref) => {
 
   return (
     <EditorCore
-      theme={theme}
       onChange={handleChange}
       markdown={markdown}
       // eslint-disable-next-line react/jsx-props-no-spreading

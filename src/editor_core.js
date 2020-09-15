@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useMuya } from './hooks/useMuya';
 // import isOsx from './muya/lib/config';
-import { setEditorWidth, addThemeStyle } from './theme';
+import { setEditorWidth } from './theme';
 import { animatedScrollTo, formatUrl, isDarkMode } from './utils/utils';
 import { matchHotKey } from './utils/eventUtils';
 import './style/index.css';
@@ -60,7 +60,6 @@ function Editor(props) {
     typewriter,
     focus,
     sourceCode,
-    theme: initTheme,
     onSelectImages,
     markdown,
     width,
@@ -78,14 +77,6 @@ function Editor(props) {
     (src) => (resourceUrl && src.startsWith('index_files/') ? formatUrl(resourceUrl) + src : src),
     [resourceUrl]
   );
-
-  useEffect(() => {
-    if (initTheme === 'default') {
-      setTheme(isDarkMode() ? 'dark' : 'light');
-    } else {
-      setTheme(initTheme);
-    }
-  }, [initTheme]);
 
   const MuyaOptions = useMemo(
     () => ({
@@ -118,11 +109,6 @@ function Editor(props) {
   useEffect(() => {
     editor?.setFocusMode(focus);
   }, [editor, focus]);
-
-  // 先添加theme的<style>标签，防止切换主题时覆盖属性
-  useEffect(() => {
-    addThemeStyle(theme);
-  }, [theme]);
 
   // 后生成的属性，具有更高的优先级
   useEffect(() => {
@@ -175,12 +161,10 @@ function Editor(props) {
       }
     }
     function handleSystemThemeChange(e) {
-      if (initTheme === 'default') {
-        if (e.matches && theme !== 'dark') {
-          setTheme('dark');
-        } else if (!e.matches && theme !== 'light') {
-          setTheme('light');
-        }
+      if (e.matches && theme !== 'dark') {
+        setTheme('dark');
+      } else if (!e.matches && theme !== 'light') {
+        setTheme('light');
       }
     }
 
@@ -206,7 +190,7 @@ function Editor(props) {
         editor.off('selectionChange', handleSelectionChange);
       }
     };
-  }, [editor, initTheme, props.onChange, theme, typewriter]);
+  }, [editor, props.onChange, theme, typewriter]);
 
   useEffect(() => {
     editor?.tagInsert?.setWordList(wordList);
@@ -269,15 +253,6 @@ function Editor(props) {
 
 Editor.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  theme: PropTypes.oneOf([
-    'dark',
-    'light',
-    'material-dark',
-    'ulysses',
-    'graphite',
-    'one-dark',
-    'default'
-  ]),
   onSelectImages: PropTypes.func,
   onChange: PropTypes.func,
   sourceCode: PropTypes.bool,
@@ -292,7 +267,6 @@ Editor.propTypes = {
 
 Editor.defaultProps = {
   width: '100%',
-  theme: 'default',
   onSelectImages: null,
   onChange: () => {},
   sourceCode: false,
