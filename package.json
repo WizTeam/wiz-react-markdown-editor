@@ -8,6 +8,7 @@
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
+    "build:babel": "babel src -d dist --copy-files",
     "pub": "npm run build && npm publish",
     "lint:prettier": "check-prettier lint",
     "lint:js": "eslint --ext .js,.ts .",
@@ -15,7 +16,8 @@
     "lint-staged:js": "eslint --ext .js,.ts"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.0",
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
@@ -87,7 +89,7 @@
     }
   },
   "lint-staged": {
-    "**/!(lib)/*.{js,ts,tsx}": "npm run lint-staged:js",
-    "**/!(lib)/*.{js,jsx,tsx,ts,less,md,json}": "prettier --write"
+    "**/!(lib|dist)/*.{js,ts,tsx}": "npm run lint-staged:js",
+    "**/!(lib|dist)/*.{js,jsx,tsx,ts,less,md,json}": "prettier --write"
   }
 }

@@ -1,4 +1,5 @@
 /lib
+/dist
 /src/muya
 /.vscode
 /node_modules/
