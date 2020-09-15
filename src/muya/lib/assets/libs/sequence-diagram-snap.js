@@ -4,7 +4,7 @@
  *  @license Simplified BSD license.
  */
 import _ from 'underscore';
-import Snap from 'snapsvg';
+import Snap from './snap.svg-min';
 import WebFont from 'webfontloader';
 
 function Diagram() {

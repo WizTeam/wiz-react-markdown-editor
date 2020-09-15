@@ -7,7 +7,7 @@ exports.default = void 0;
 
 var _underscore = _interopRequireDefault(require("underscore"));
 
-var _snapsvg = _interopRequireDefault(require("snapsvg"));
+var _snap = _interopRequireDefault(require("./snap.svg-min"));
 
 var _webfontloader = _interopRequireDefault(require("webfontloader"));
 
@@ -1256,7 +1256,7 @@ _underscore.default.extend(BaseTheme.prototype, {
 // TODO Move defintion of font onto the <svg>, so it can easily be override at each level
 
 
-if (typeof _snapsvg.default != 'undefined') {
+if (typeof _snap.default != 'undefined') {
   var xmlns = 'http://www.w3.org/2000/svg';
   var LINE = {
     stroke: '#000000',
@@ -1346,7 +1346,7 @@ if (typeof _snapsvg.default != 'undefined') {
       var svg = document.createElementNS(xmlns, 'svg');
       container.appendChild(svg);
       this.addDescription(svg, this.diagram.title || '');
-      this.paper_ = (0, _snapsvg.default)(svg);
+      this.paper_ = (0, _snap.default)(svg);
       this.paper_.addClass('sequence');
 
       if (this.cssClass_) {
@@ -1532,7 +1532,7 @@ if (typeof _snapsvg.default != 'undefined') {
 /*global Diagram, _ */
 
 
-if (typeof Raphael == 'undefined' && typeof _snapsvg.default == 'undefined') {
+if (typeof Raphael == 'undefined' && typeof _snap.default == 'undefined') {
   throw new Error('Raphael or Snap.svg is required to be included.');
 }
 
