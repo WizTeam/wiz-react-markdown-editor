@@ -8,9 +8,9 @@ import { useMuya } from './hooks/useMuya';
 import { setEditorWidth } from './theme';
 import { animatedScrollTo, formatUrl, isDarkMode } from './utils/utils';
 import { matchHotKey } from './utils/eventUtils';
-import './style/index.css';
 import './style/printService.css';
 import './muya/themes/default.css';
+import './style/index.css';
 import useImperative from './hooks/useImperative';
 // import './style/one-dark.css';
 
