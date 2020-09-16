@@ -21,11 +21,11 @@ var _utils = require("./utils/utils");
 
 var _eventUtils = require("./utils/eventUtils");
 
-require("./style/index.css");
-
 require("./style/printService.css");
 
 require("./muya/themes/default.css");
+
+require("./style/index.css");
 
 var _useImperative = _interopRequireDefault(require("./hooks/useImperative"));
 
