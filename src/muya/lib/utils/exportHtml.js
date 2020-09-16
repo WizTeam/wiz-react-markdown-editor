@@ -2,11 +2,11 @@ import marked from '../parser/marked';
 import Prism from 'prismjs';
 import katex from 'katex';
 import loadRenderer from '../renderers';
-// import githubMarkdownCss from 'github-markdown-css/github-markdown.css'
-// import exportStyle from '../assets/styles/exportStyle.css'
-// import highlightCss from 'prismjs/themes/prism.css'
-// import katexCss from 'katex/dist/katex.css'
-// import footerHeaderCss from '../assets/styles/headerFooterStyle.css'
+import githubMarkdownCss from '../assets/styles/github-markdown';
+import exportStyle from '../assets/styles/exportStyle.js';
+import highlightCss from '../assets/styles/prism-css';
+import katexCss from '../assets/styles/katex-css';
+import footerHeaderCss from '../assets/styles/headerFooterStyle';
 import { EXPORT_DOMPURIFY_CONFIG } from '../config';
 import { sanitize, unescapeHtml } from '../utils';
 import { validEmoji } from '../ui/emojis';
@@ -179,11 +179,6 @@ class ExportHtml {
     const { printOptimization } = options;
 
     // WORKAROUND: Hide Prism.js style when exporting or printing. Otherwise the background color is white in the dark theme.
-    const githubMarkdownCss = await import('github-markdown-css/github-markdown.css');
-    const exportStyle = await import('../assets/styles/exportStyle.css');
-    const katexCss = await import('katex/dist/katex.css');
-    const footerHeaderCss = await import('../assets/styles/headerFooterStyle.css');
-    const highlightCss = await import('prismjs/themes/prism.css');
     const highlightCssStyle = printOptimization ? `@media print { ${highlightCss} }` : highlightCss;
     const html = this._prepareHtml(await this.renderHtml(), options);
     const katexCssStyle = this.mathRendererCalled ? katexCss : '';
