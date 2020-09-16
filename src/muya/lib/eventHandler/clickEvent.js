@@ -243,8 +243,38 @@ class ClickEvent {
       contentState.clickHandler(event);
     };
 
+    const handleTouchEnd = (event) => {
+      const now = new Date().getTime();
+      if (this.touchstartTime && now - this.touchstartTime >= 300) {
+        this.touchstartTime = null;
+        return;
+      }
+      this.touchstartTime = null;
+      //
+      const { target } = event;
+      // Handle table drag bar click
+      if (target.classList.contains('ag-drag-handler')) {
+        event.preventDefault();
+        event.stopPropagation();
+        const rect = target.getBoundingClientRect();
+        const reference = {
+          getBoundingClientRect() {
+            return rect;
+          },
+          width: rect.offsetWidth,
+          height: rect.offsetHeight
+        };
+        eventCenter.dispatch('muya-table-bar', {
+          reference,
+          tableInfo: {
+            barType: target.classList.contains('left') ? 'left' : 'bottom'
+          }
+        });
+      }
+    };
+
     eventCenter.attachDOMEvent(container, 'click', handler);
-    eventCenter.attachDOMEvent(container, 'touchend', handler);
+    eventCenter.attachDOMEvent(container, 'touchend', handleTouchEnd);
   }
 
   touchBinding() {
