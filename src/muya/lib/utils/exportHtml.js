@@ -2,14 +2,20 @@ import marked from '../parser/marked';
 import Prism from 'prismjs';
 import katex from 'katex';
 import loadRenderer from '../renderers';
-import githubMarkdownCss from '../assets/styles/github-markdown';
-import exportStyle from '../assets/styles/exportStyle.js';
-import highlightCss from '../assets/styles/prism-css';
-import katexCss from '../assets/styles/katex-css';
-import footerHeaderCss from '../assets/styles/headerFooterStyle';
+// import githubMarkdownCss from 'github-markdown-css/github-markdown.css'
+// import exportStyle from '../assets/styles/exportStyle.css'
+// import highlightCss from 'prismjs/themes/prism.css'
+// import katexCss from 'katex/dist/katex.css'
+// import footerHeaderCss from '../assets/styles/headerFooterStyle.css'
 import { EXPORT_DOMPURIFY_CONFIG } from '../config';
 import { sanitize, unescapeHtml } from '../utils';
 import { validEmoji } from '../ui/emojis';
+
+const githubMarkdownCss = '';
+const exportStyle = '';
+const highlightCss = '';
+const katexCss = '';
+const footerHeaderCss = '';
 
 export const getSanitizeHtml = (markdown, options) => {
   const html = marked(markdown, options);

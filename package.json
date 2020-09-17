@@ -8,7 +8,7 @@
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
-    "build:babel": "babel src -d dist --copy-files",
+    "build:babel": "babel src -d dist --copy-files --ignore 'src/muya/lib/utils/importResource.js'",
     "pub": "npm run build && npm publish",
     "lint:prettier": "check-prettier lint",
     "lint:js": "eslint --ext .js,.ts .",
