@@ -97,7 +97,7 @@
 html, body {
   font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
-  line-height: 28px;
+  line-height: 24px;
 }
 
 span code,
@@ -129,7 +129,7 @@ kbd {
     min-width: 400px;
     min-height: 100%;
     margin: 0 auto;
-    padding: 20px 40px 100px;
+    padding: 20px 85px 100px;
     box-sizing: border-box;
   }
 
@@ -694,6 +694,12 @@ figure[data-role] svg use[fill="black"] {
 
 figure[data-role] svg use[fill="#000000"] {
   fill: var(--editorColor);
+}
+
+@media screen and (max-width: 767px) {
+  #ag-editor-id {
+    padding: 20px 36px 100px;
+  }
 }
 
 /*
