@@ -13,16 +13,6 @@ var _katex = _interopRequireDefault(require('katex'));
 
 var _renderers = _interopRequireDefault(require('../renderers'));
 
-var _githubMarkdown = _interopRequireDefault(require('../assets/styles/github-markdown'));
-
-var _exportStyle = _interopRequireDefault(require('../assets/styles/exportStyle.js'));
-
-var _prismCss = _interopRequireDefault(require('../assets/styles/prism-css'));
-
-var _katexCss = _interopRequireDefault(require('../assets/styles/katex-css'));
-
-var _headerFooterStyle = _interopRequireDefault(require('../assets/styles/headerFooterStyle'));
-
 var _config = require('../config');
 
 var _utils = require('../utils');
@@ -46,6 +36,12 @@ function _defineProperty(obj, key, value) {
   }
   return obj;
 }
+
+const githubMarkdownCss = '';
+const exportStyle = '';
+const highlightCss = '';
+const katexCss = '';
+const footerHeaderCss = '';
 
 const getSanitizeHtml = (markdown, options) => {
   const html = (0, _marked.default)(markdown, options);
@@ -228,12 +224,12 @@ class ExportHtml {
     const { printOptimization } = options; // WORKAROUND: Hide Prism.js style when exporting or printing. Otherwise the background color is white in the dark theme.
 
     const highlightCssStyle = printOptimization
-      ? '@media print { '.concat(_prismCss.default, ' }')
-      : _prismCss.default;
+      ? '@media print { '.concat(highlightCss, ' }')
+      : highlightCss;
 
     const html = this._prepareHtml(await this.renderHtml(), options);
 
-    const katexCssStyle = this.mathRendererCalled ? _katexCss.default : '';
+    const katexCssStyle = this.mathRendererCalled ? katexCss : '';
     this.mathRendererCalled = false; // `extraCss` may changed in the mean time.
 
     const { title, extraCss } = options;
@@ -242,13 +238,13 @@ class ExportHtml {
         (0, _utils.sanitize)(title, _config.EXPORT_DOMPURIFY_CONFIG),
         '</title>\n  <style>\n  '
       )
-      .concat(_githubMarkdown.default, '\n  </style>\n  <style>\n  ')
+      .concat(githubMarkdownCss, '\n  </style>\n  <style>\n  ')
       .concat(highlightCssStyle, '\n  </style>\n  <style>\n  ')
       .concat(
         katexCssStyle,
         '\n  </style>\n  <style>\n    .markdown-body {\n      box-sizing: border-box;\n      min-width: 200px;\n      max-width: 980px;\n      margin: 0 auto;\n      padding: 45px;\n    }\n\n    @media not print {\n      .markdown-body {\n        padding: 45px;\n      }\n\n      @media (max-width: 767px) {\n        .markdown-body {\n          padding: 15px;\n        }\n      }\n    }\n\n    .hf-container {\n      color: #24292e;\n      line-height: 1.3;\n    }\n\n    .markdown-body .highlight pre,\n    .markdown-body pre {\n      white-space: pre-wrap;\n    }\n    .markdown-body table {\n      display: table;\n    }\n    .markdown-body img[data-align="center"] {\n      display: block;\n      margin: 0 auto;\n    }\n    .markdown-body img[data-align="right"] {\n      display: block;\n      margin: 0 0 0 auto;\n    }\n    .markdown-body li.task-list-item {\n      list-style-type: none;\n    }\n    .markdown-body li > [type=checkbox] {\n      margin: 0 0 0 -1.3em;\n    }\n    .markdown-body input[type="checkbox"] ~ p {\n      margin-top: 0;\n      display: inline-block;\n    }\n    .markdown-body ol ol,\n    .markdown-body ul ol {\n      list-style-type: decimal;\n    }\n    .markdown-body ol ol ol,\n    .markdown-body ol ul ol,\n    .markdown-body ul ol ol,\n    .markdown-body ul ul ol {\n      list-style-type: decimal;\n    }\n  </style>\n  <style>'
       )
-      .concat(_exportStyle.default, '</style>\n  <style>')
+      .concat(exportStyle, '</style>\n  <style>')
       .concat(extraCss, '</style>\n</head>\n<body>\n  ')
       .concat(html, '\n</body>\n</html>');
   }
@@ -268,9 +264,9 @@ class ExportHtml {
     }
 
     if (!options.extraCss) {
-      options.extraCss = _headerFooterStyle.default;
+      options.extraCss = footerHeaderCss;
     } else {
-      options.extraCss = _headerFooterStyle.default + options.extraCss;
+      options.extraCss = footerHeaderCss + options.extraCss;
     }
 
     let output = HF_TABLE_START;
