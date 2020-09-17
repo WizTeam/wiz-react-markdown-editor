@@ -696,7 +696,7 @@ figure[data-role] svg use[fill="#000000"] {
   fill: var(--editorColor);
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 375px) {
   #ag-editor-id {
     padding: 20px 36px 100px;
   }
