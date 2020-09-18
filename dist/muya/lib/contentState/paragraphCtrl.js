@@ -991,7 +991,7 @@ const paragraphCtrl = ContentState => {
       end: cursorEnd
     } = _selection.default.getCursorRange();
 
-    return startBlock.key === cursorStart.key && cursorStart.offset === 0 && endBlock.key === cursorEnd.key && cursorEnd.offset === endBlock.text.length && !this.muya.keyboard.isComposed;
+    return startBlock.key === cursorStart.key && cursorStart.offset === 0 && endBlock.key === cursorEnd.key && cursorEnd.offset === endBlock.text.length && cursorEnd.offset !== 0 && !this.muya.keyboard.isComposed;
   };
 
   ContentState.prototype.selectAllContent = function () {
