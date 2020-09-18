@@ -7,7 +7,7 @@ exports.isString = isString;
 exports.addSizeUnit = addSizeUnit;
 exports.formatUrl = formatUrl;
 exports.isDarkMode = isDarkMode;
-exports.animatedScrollTo = void 0;
+exports.os = exports.animatedScrollTo = void 0;
 
 function isType(param, type) {
   return Object.prototype.toString.call(param) === '[object '.concat(type, ']');
@@ -86,3 +86,26 @@ function isDarkMode() {
     ? _window$matchMedia$ma
     : false;
 }
+
+const os = (function () {
+  const ua = navigator.userAgent;
+  const isWindowsPhone = /(?:Windows Phone)/.test(ua);
+  const isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone;
+  const isAndroid = /(?:Android)/.test(ua);
+  const isFireFox = /(?:Firefox)/.test(ua);
+  const isChrome = /(?:Chrome|CriOS)/.test(ua);
+  const isTablet =
+    /(?:iPad|PlayBook)/.test(ua) ||
+    (isAndroid && !/(?:Mobile)/.test(ua)) ||
+    (isFireFox && /(?:Tablet)/.test(ua));
+  const isPhone = /(?:iPhone)/.test(ua) && !isTablet;
+  const isPc = !isPhone && !isAndroid && !isSymbian;
+  return {
+    isTablet,
+    isPhone,
+    isAndroid,
+    isPc
+  };
+})();
+
+exports.os = os;

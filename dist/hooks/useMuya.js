@@ -33,47 +33,51 @@ var _frontMenu = _interopRequireDefault(require('../muya/lib/ui/frontMenu'));
 
 var _tagInsert = _interopRequireDefault(require('../muya/lib/ui/tagInsert'));
 
+var _utils = require('../utils/utils');
+
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
 // import ImageToolbar from '../muya/lib/ui/imageToolbar';
 // import FormatPicker from '../muya/lib/ui/formatPicker';
-_lib.default.use(_tablePicker.default);
+if (!_utils.os.isAndroid && !_utils.os.isPhone) {
+  _lib.default.use(_tablePicker.default);
 
-_lib.default.use(_quickInsert.default);
+  _lib.default.use(_quickInsert.default);
 
-_lib.default.use(_codePicker.default);
+  _lib.default.use(_codePicker.default);
 
-_lib.default.use(_emojiPicker.default);
+  _lib.default.use(_emojiPicker.default);
 
-_lib.default.use(_imageSelector.default, {
-  unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
-});
+  _lib.default.use(_imageSelector.default, {
+    unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
+  });
 
-_lib.default.use(_imagePicker.default); // Muya.use(ImageToolbar);
+  _lib.default.use(_imagePicker.default); // Muya.use(ImageToolbar);
 
-_lib.default.use(_transformer.default); // Muya.use(FormatPicker);
+  _lib.default.use(_transformer.default); // Muya.use(FormatPicker);
 
-_lib.default.use(_linkTools.default, {
-  jumpClick: (obj) => {
-    if (obj.token.type === 'link') {
-      try {
-        window.open(obj.href);
-      } catch (e) {
-        console.log(e);
+  _lib.default.use(_linkTools.default, {
+    jumpClick: (obj) => {
+      if (obj.token.type === 'link') {
+        try {
+          window.open(obj.href);
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
-  }
-});
+  });
 
-_lib.default.use(_footnoteTool.default);
+  _lib.default.use(_footnoteTool.default);
 
-_lib.default.use(_tableTools.default);
+  _lib.default.use(_tableTools.default);
 
-_lib.default.use(_frontMenu.default);
+  _lib.default.use(_frontMenu.default);
 
-_lib.default.use(_tagInsert.default);
+  _lib.default.use(_tagInsert.default);
+}
 
 function formatOptions(options) {
   Object.assign(

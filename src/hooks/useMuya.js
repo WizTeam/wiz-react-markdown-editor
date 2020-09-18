@@ -14,33 +14,36 @@ import FootnoteTool from '../muya/lib/ui/footnoteTool';
 import TableBarTools from '../muya/lib/ui/tableTools';
 import FrontMenu from '../muya/lib/ui/frontMenu';
 import TagInsert from '../muya/lib/ui/tagInsert';
+import { os } from '../utils/utils';
 
-Muya.use(TablePicker);
-Muya.use(QuickInsert);
-Muya.use(CodePicker);
-Muya.use(EmojiPicker);
-Muya.use(ImageSelector, {
-  unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
-});
-Muya.use(ImagePathPicker);
-// Muya.use(ImageToolbar);
-Muya.use(Transformer);
-// Muya.use(FormatPicker);
-Muya.use(LinkTools, {
-  jumpClick: (obj) => {
-    if (obj.token.type === 'link') {
-      try {
-        window.open(obj.href);
-      } catch (e) {
-        console.log(e);
+if (!os.isAndroid && !os.isPhone) {
+  Muya.use(TablePicker);
+  Muya.use(QuickInsert);
+  Muya.use(CodePicker);
+  Muya.use(EmojiPicker);
+  Muya.use(ImageSelector, {
+    unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
+  });
+  Muya.use(ImagePathPicker);
+  // Muya.use(ImageToolbar);
+  Muya.use(Transformer);
+  // Muya.use(FormatPicker);
+  Muya.use(LinkTools, {
+    jumpClick: (obj) => {
+      if (obj.token.type === 'link') {
+        try {
+          window.open(obj.href);
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
-  }
-});
-Muya.use(FootnoteTool);
-Muya.use(TableBarTools);
-Muya.use(FrontMenu);
-Muya.use(TagInsert);
+  });
+  Muya.use(FootnoteTool);
+  Muya.use(TableBarTools);
+  Muya.use(FrontMenu);
+  Muya.use(TagInsert);
+}
 
 function formatOptions(options) {
   Object.assign(
