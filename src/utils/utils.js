@@ -62,3 +62,24 @@ export const animatedScrollTo = (element, to, duration, callback) => {
 export function isDarkMode() {
   return window.matchMedia('(prefers-color-scheme: dark)')?.matches ?? false;
 }
+
+export const os = (function () {
+  const ua = navigator.userAgent;
+  const isWindowsPhone = /(?:Windows Phone)/.test(ua);
+  const isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone;
+  const isAndroid = /(?:Android)/.test(ua);
+  const isFireFox = /(?:Firefox)/.test(ua);
+  const isChrome = /(?:Chrome|CriOS)/.test(ua);
+  const isTablet =
+    /(?:iPad|PlayBook)/.test(ua) ||
+    (isAndroid && !/(?:Mobile)/.test(ua)) ||
+    (isFireFox && /(?:Tablet)/.test(ua));
+  const isPhone = /(?:iPhone)/.test(ua) && !isTablet;
+  const isPc = !isPhone && !isAndroid && !isSymbian;
+  return {
+    isTablet,
+    isPhone,
+    isAndroid,
+    isPc
+  };
+})();
