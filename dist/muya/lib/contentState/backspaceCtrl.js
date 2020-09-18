@@ -182,12 +182,18 @@ const backspaceCtrl = (ContentState) => {
     const endBlock = this.getBlock(end.key);
     const maybeLastRow = this.getParent(endBlock);
     const startOutmostBlock = this.findOutMostBlock(startBlock);
-    const endOutmostBlock = this.findOutMostBlock(endBlock); // Just for fix delete the last `#` or all the atx heading cause error @fixme
+    const endOutmostBlock = this.findOutMostBlock(endBlock);
+    const isSelectLine = this.isSelectLine({
+      start,
+      end
+    }); // Just for fix delete the last `#` or all the atx heading cause error @fixme
+    // safari 删除整行默认会把sapn删掉
 
     if (
-      start.key === end.key &&
-      startBlock.type === 'span' &&
-      startBlock.functionType === 'atxLine'
+      (start.key === end.key &&
+        startBlock.type === 'span' &&
+        startBlock.functionType === 'atxLine') ||
+      isSelectLine
     ) {
       if (
         (start.offset === 0 && end.offset === startBlock.text.length) ||
@@ -206,6 +212,11 @@ const backspaceCtrl = (ContentState) => {
           }
         };
         this.updateToParagraph(this.getParent(startBlock), startBlock);
+
+        if (isSelectLine) {
+          this.muya.dispatchChange();
+        }
+
         return this.partialRender();
       }
     } // fix: #897
