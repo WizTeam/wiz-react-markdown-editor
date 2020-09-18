@@ -40,8 +40,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // import ImageToolbar from '../muya/lib/ui/imageToolbar';
 // import FormatPicker from '../muya/lib/ui/formatPicker';
 if (!_utils.os.isAndroid && !_utils.os.isPhone) {
-  _lib.default.use(_tablePicker.default);
-
   _lib.default.use(_quickInsert.default);
 
   _lib.default.use(_codePicker.default);
@@ -66,12 +64,14 @@ if (!_utils.os.isAndroid && !_utils.os.isPhone) {
 
   _lib.default.use(_footnoteTool.default);
 
-  _lib.default.use(_tableTools.default);
-
   _lib.default.use(_frontMenu.default);
 
   _lib.default.use(_tagInsert.default);
 }
+
+_lib.default.use(_tablePicker.default);
+
+_lib.default.use(_tableTools.default);
 
 _lib.default.use(_imageSelector.default, {
   unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY

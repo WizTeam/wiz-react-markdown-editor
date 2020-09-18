@@ -17,7 +17,6 @@ import TagInsert from '../muya/lib/ui/tagInsert';
 import { os } from '../utils/utils';
 
 if (!os.isAndroid && !os.isPhone) {
-  Muya.use(TablePicker);
   Muya.use(QuickInsert);
   Muya.use(CodePicker);
   Muya.use(EmojiPicker);
@@ -36,10 +35,11 @@ if (!os.isAndroid && !os.isPhone) {
     }
   });
   Muya.use(FootnoteTool);
-  Muya.use(TableBarTools);
   Muya.use(FrontMenu);
   Muya.use(TagInsert);
 }
+Muya.use(TablePicker);
+Muya.use(TableBarTools);
 Muya.use(ImageSelector, {
   unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
 });
