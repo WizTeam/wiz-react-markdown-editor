@@ -928,6 +928,7 @@ const paragraphCtrl = (ContentState) => {
       cursorStart.offset === 0 &&
       endBlock.key === cursorEnd.key &&
       cursorEnd.offset === endBlock.text.length &&
+      cursorEnd.offset !== 0 &&
       !this.muya.keyboard.isComposed
     );
   };
