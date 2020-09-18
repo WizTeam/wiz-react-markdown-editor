@@ -1,23 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-var _dom = require('../selection/dom');
+var _dom = require("../selection/dom");
 
-var _parser = require('../parser/');
+var _parser = require("../parser/");
 
-var _getImageInfo = require('../utils/getImageInfo');
+var _getImageInfo = require("../utils/getImageInfo");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const backspaceCtrl = (ContentState) => {
+const backspaceCtrl = ContentState => {
   ContentState.prototype.checkBackspaceCase = function () {
     const node = _selection.default.getSelectionStart();
 
@@ -37,90 +35,88 @@ const backspaceCtrl = (ContentState) => {
     const outBlock = this.findOutMostBlock(block);
     const parent = this.getParent(block);
 
-    const { left: outLeft } = _selection.default.getCaretOffsets(outMostParagraph);
+    const {
+      left: outLeft
+    } = _selection.default.getCaretOffsets(outMostParagraph);
 
-    const { left: inLeft } = _selection.default.getCaretOffsets(paragraph);
+    const {
+      left: inLeft
+    } = _selection.default.getCaretOffsets(paragraph);
 
-    if (
-      (parent && parent.type === 'li' && inLeft === 0 && this.isFirstChild(block)) ||
-      (parent &&
-        parent.type === 'li' &&
-        inLeft === 0 &&
-        parent.listItemType === 'task' &&
-        preBlock.type === 'input') // handle task item
+    if (parent && parent.type === 'li' && inLeft === 0 && this.isFirstChild(block) || parent && parent.type === 'li' && inLeft === 0 && parent.listItemType === 'task' && preBlock.type === 'input' // handle task item
     ) {
-      if (this.isOnlyChild(parent)) {
-        /**
-         * <ul>
-         *   <li>
-         *     <p>|text</p>
-         *     <p>maybe has other paragraph</p>
-         *   </li>
-         * <ul>
-         * ===>
-         * <p>|text</p>
-         * <p>maybe has other paragraph</p>
-         */
-        return {
-          type: 'LI',
-          info: 'REPLACEMENT'
-        };
-      } else if (this.isFirstChild(parent)) {
-        /**
-         * <ul>
-         *   <li>
-         *     <p>|text</p>
-         *     <p>maybe has other paragraph</p>
-         *   </li>
-         *   <li>
-         *     <p>other list item</p>
-         *   </li>
-         * <ul>
-         * ===>
-         * <p>|text</p>
-         * <p>maybe has other paragraph</p>
-         * <ul>
-         *   <li>
-         *     <p>other list item</p>
-         *   </li>
-         * <ul>
-         */
-        return {
-          type: 'LI',
-          info: 'REMOVE_INSERT_BEFORE'
-        };
-      } else {
-        /**
-         * <ul>
-         *   <li>
-         *     <p>other list item</p>
-         *   </li>
-         *   <li>
-         *     <p>|text</p>
-         *     <p>maybe has other paragraph</p>
-         *   </li>
-         *   <li>
-         *     <p>other list item</p>
-         *   </li>
-         * <ul>
-         * ===>
-         * <ul>
-         *   <li>
-         *     <p>other list item</p>
-         *     <p>|text</p>
-         *     <p>maybe has other paragraph</p>
-         *   </li>
-         *   <li>
-         *     <p>other list item</p>
-         *   </li>
-         * <ul>
-         */
-        return {
-          type: 'LI',
-          info: 'INSERT_PRE_LIST_ITEM'
-        };
+        if (this.isOnlyChild(parent)) {
+          /**
+           * <ul>
+           *   <li>
+           *     <p>|text</p>
+           *     <p>maybe has other paragraph</p>
+           *   </li>
+           * <ul>
+           * ===>
+           * <p>|text</p>
+           * <p>maybe has other paragraph</p>
+           */
+          return {
+            type: 'LI',
+            info: 'REPLACEMENT'
+          };
+        } else if (this.isFirstChild(parent)) {
+          /**
+           * <ul>
+           *   <li>
+           *     <p>|text</p>
+           *     <p>maybe has other paragraph</p>
+           *   </li>
+           *   <li>
+           *     <p>other list item</p>
+           *   </li>
+           * <ul>
+           * ===>
+           * <p>|text</p>
+           * <p>maybe has other paragraph</p>
+           * <ul>
+           *   <li>
+           *     <p>other list item</p>
+           *   </li>
+           * <ul>
+           */
+          return {
+            type: 'LI',
+            info: 'REMOVE_INSERT_BEFORE'
+          };
+        } else {
+          /**
+           * <ul>
+           *   <li>
+           *     <p>other list item</p>
+           *   </li>
+           *   <li>
+           *     <p>|text</p>
+           *     <p>maybe has other paragraph</p>
+           *   </li>
+           *   <li>
+           *     <p>other list item</p>
+           *   </li>
+           * <ul>
+           * ===>
+           * <ul>
+           *   <li>
+           *     <p>other list item</p>
+           *     <p>|text</p>
+           *     <p>maybe has other paragraph</p>
+           *   </li>
+           *   <li>
+           *     <p>other list item</p>
+           *   </li>
+           * <ul>
+           */
+          return {
+            type: 'LI',
+            info: 'INSERT_PRE_LIST_ITEM'
+          };
+        }
       }
-    }
 
     if (parent && parent.type === 'blockquote' && inLeft === 0) {
       if (this.isOnlyChild(block)) {
@@ -157,16 +153,21 @@ const backspaceCtrl = (ContentState) => {
   };
 
   ContentState.prototype.backspaceHandler = function (event) {
-    const { start, end } = _selection.default.getCursorRange();
+    const {
+      start,
+      end
+    } = _selection.default.getCursorRange();
 
     if (!start || !end) {
       return;
     } // handle delete selected image
 
+
     if (this.selectedImage) {
       event.preventDefault();
       return this.deleteImage(this.selectedImage);
     } // Handle select all content.
+
 
     if (this.isSelectAll()) {
       event.preventDefault();
@@ -189,16 +190,8 @@ const backspaceCtrl = (ContentState) => {
     }); // Just for fix delete the last `#` or all the atx heading cause error @fixme
     // safari 删除整行默认会把sapn删掉
 
-    if (
-      (start.key === end.key &&
-        startBlock.type === 'span' &&
-        startBlock.functionType === 'atxLine') ||
-      isSelectLine
-    ) {
-      if (
-        (start.offset === 0 && end.offset === startBlock.text.length) ||
-        (start.offset === end.offset && start.offset === 1 && startBlock.text === '#')
-      ) {
+    if (start.key === end.key && startBlock.type === 'span' && startBlock.functionType === 'atxLine' || isSelectLine) {
+      if (start.offset === 0 && end.offset === startBlock.text.length || start.offset === end.offset && start.offset === 1 && startBlock.text === '#') {
         event.preventDefault();
         startBlock.text = '';
         this.cursor = {
@@ -221,7 +214,10 @@ const backspaceCtrl = (ContentState) => {
       }
     } // fix: #897
 
-    const { text } = startBlock;
+
+    const {
+      text
+    } = startBlock;
     const tokens = (0, _parser.tokenizer)(text, {
       options: this.muya.options
     });
@@ -236,12 +232,8 @@ const backspaceCtrl = (ContentState) => {
         break;
       } // handle pre token is a <ruby> html tag, need preventdefault.
 
-      if (
-        token.range.start + 1 === start.offset &&
-        preToken &&
-        preToken.type === 'html_tag' &&
-        preToken.tag === 'ruby'
-      ) {
+
+      if (token.range.start + 1 === start.offset && preToken && preToken.type === 'html_tag' && preToken.tag === 'ruby') {
         needRender = true;
         token.raw = token.raw.substr(1);
         break;
@@ -264,16 +256,11 @@ const backspaceCtrl = (ContentState) => {
     // 1. one paragraph bollow table, selectAll, press backspace.
     // 2. select table from the first cell to the last cell, press backsapce.
 
+
     const maybeCell = this.getParent(startBlock);
 
     if (/th/.test(maybeCell.type) && start.offset === 0 && !maybeCell.preSibling) {
-      if (
-        (end.offset === endBlock.text.length &&
-          startOutmostBlock === endOutmostBlock &&
-          !endBlock.nextSibling &&
-          !maybeLastRow.nextSibling) ||
-        startOutmostBlock !== endOutmostBlock
-      ) {
+      if (end.offset === endBlock.text.length && startOutmostBlock === endOutmostBlock && !endBlock.nextSibling && !maybeLastRow.nextSibling || startOutmostBlock !== endOutmostBlock) {
         event.preventDefault(); // need remove the figure block.
 
         const figureBlock = this.getBlock(this.closest(startBlock, 'figure')); // if table is the only block, need create a p block.
@@ -287,7 +274,9 @@ const backspaceCtrl = (ContentState) => {
         }
 
         this.removeBlock(figureBlock);
-        const { key } = cursorBlock;
+        const {
+          key
+        } = cursorBlock;
         const offset = 0;
         this.cursor = {
           start: {
@@ -303,16 +292,14 @@ const backspaceCtrl = (ContentState) => {
       }
     } // Fixed #1456 existed bugs `Select one cell and press backspace will cause bug`
 
-    if (
-      startBlock.functionType === 'cellContent' &&
-      this.cursor.start.offset === 0 &&
-      this.cursor.end.offset !== 0 &&
-      this.cursor.end.offset === startBlock.text.length
-    ) {
+
+    if (startBlock.functionType === 'cellContent' && this.cursor.start.offset === 0 && this.cursor.end.offset !== 0 && this.cursor.end.offset === startBlock.text.length) {
       event.preventDefault();
       event.stopPropagation();
       startBlock.text = '';
-      const { key } = startBlock;
+      const {
+        key
+      } = startBlock;
       const offset = 0;
       this.cursor = {
         start: {
@@ -328,6 +315,7 @@ const backspaceCtrl = (ContentState) => {
     } // If select multiple paragraph or multiple characters in one paragraph, just let
     // inputCtrl to handle this case.
 
+
     if (start.key !== end.key || start.offset !== end.offset) {
       return;
     }
@@ -341,7 +329,10 @@ const backspaceCtrl = (ContentState) => {
     let parent = this.getBlock(block.parent);
     const preBlock = this.findPreBlockInLocation(block);
 
-    const { left, right } = _selection.default.getCaretOffsets(paragraph);
+    const {
+      left,
+      right
+    } = _selection.default.getCaretOffsets(paragraph);
 
     const inlineDegrade = this.checkBackspaceCase(); // Handle backspace when the previous is an inline image.
 
@@ -374,6 +365,7 @@ const backspaceCtrl = (ContentState) => {
       }
     } // handle backspace when cursor at the end of inline image.
 
+
     if (node.classList.contains('ag-image-container')) {
       const imageWrapper = node.parentNode;
       const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);
@@ -385,10 +377,13 @@ const backspaceCtrl = (ContentState) => {
       }
     } // Fix issue #1218
 
+
     if (startBlock.functionType === 'cellContent' && /<br\/>.{1}$/.test(startBlock.text)) {
       event.preventDefault();
       event.stopPropagation();
-      const { text } = startBlock;
+      const {
+        text
+      } = startBlock;
       startBlock.text = text.substring(0, text.length - 1);
       const key = startBlock.key;
       const offset = startBlock.text.length;
@@ -405,11 +400,14 @@ const backspaceCtrl = (ContentState) => {
       return this.singleRender(startBlock);
     } // Fix delete the last character in table cell, the default action will delete the cell content if not preventDefault.
 
+
     if (startBlock.functionType === 'cellContent' && left === 1 && right === 0) {
       event.stopPropagation();
       event.preventDefault();
       startBlock.text = '';
-      const { key } = startBlock;
+      const {
+        key
+      } = startBlock;
       const offset = 0;
       this.cursor = {
         start: {
@@ -424,23 +422,15 @@ const backspaceCtrl = (ContentState) => {
       return this.singleRender(startBlock);
     }
 
-    const tableHasContent = (table) => {
+    const tableHasContent = table => {
       const tHead = table.children[0];
       const tBody = table.children[1];
-      const tHeadHasContent = tHead.children[0].children.some((th) => th.children[0].text.trim());
-      const tBodyHasContent = tBody.children.some((row) =>
-        row.children.some((td) => td.children[0].text.trim())
-      );
+      const tHeadHasContent = tHead.children[0].children.some(th => th.children[0].text.trim());
+      const tBodyHasContent = tBody.children.some(row => row.children.some(td => td.children[0].text.trim()));
       return tHeadHasContent || tBodyHasContent;
     };
 
-    if (
-      block.type === 'span' &&
-      block.functionType === 'paragraphContent' &&
-      left === 0 &&
-      preBlock &&
-      preBlock.functionType === 'footnoteInput'
-    ) {
+    if (block.type === 'span' && block.functionType === 'paragraphContent' && left === 0 && preBlock && preBlock.functionType === 'footnoteInput') {
       event.preventDefault();
       event.stopPropagation();
 
@@ -463,12 +453,7 @@ const backspaceCtrl = (ContentState) => {
         };
         this.partialRender();
       }
-    } else if (
-      block.type === 'span' &&
-      block.functionType === 'codeContent' &&
-      left === 0 &&
-      !block.preSibling
-    ) {
+    } else if (block.type === 'span' && block.functionType === 'codeContent' && left === 0 && !block.preSibling) {
       event.preventDefault();
       event.stopPropagation();
 
@@ -563,47 +548,48 @@ const backspaceCtrl = (ContentState) => {
           // Cursor at begin of article and nothing need to do
           break;
 
-        case 'LI': {
-          if (inlineDegrade.info === 'REPLACEMENT') {
-            const children = parent.children;
-            const grandpa = this.getBlock(parent.parent);
+        case 'LI':
+          {
+            if (inlineDegrade.info === 'REPLACEMENT') {
+              const children = parent.children;
+              const grandpa = this.getBlock(parent.parent);
 
-            if (children[0].type === 'input') {
-              this.removeBlock(children[0]);
+              if (children[0].type === 'input') {
+                this.removeBlock(children[0]);
+              }
+
+              children.forEach(child => {
+                this.insertBefore(child, grandpa);
+              });
+              this.removeBlock(grandpa);
+            } else if (inlineDegrade.info === 'REMOVE_INSERT_BEFORE') {
+              const children = parent.children;
+              const grandpa = this.getBlock(parent.parent);
+
+              if (children[0].type === 'input') {
+                this.removeBlock(children[0]);
+              }
+
+              children.forEach(child => {
+                this.insertBefore(child, grandpa);
+              });
+              this.removeBlock(parent);
+            } else if (inlineDegrade.info === 'INSERT_PRE_LIST_ITEM') {
+              const parPre = this.getBlock(parent.preSibling);
+              const children = parent.children;
+
+              if (children[0].type === 'input') {
+                this.removeBlock(children[0]);
+              }
+
+              children.forEach(child => {
+                this.appendChild(parPre, child);
+              });
+              this.removeBlock(parent);
             }
 
-            children.forEach((child) => {
-              this.insertBefore(child, grandpa);
-            });
-            this.removeBlock(grandpa);
-          } else if (inlineDegrade.info === 'REMOVE_INSERT_BEFORE') {
-            const children = parent.children;
-            const grandpa = this.getBlock(parent.parent);
-
-            if (children[0].type === 'input') {
-              this.removeBlock(children[0]);
-            }
-
-            children.forEach((child) => {
-              this.insertBefore(child, grandpa);
-            });
-            this.removeBlock(parent);
-          } else if (inlineDegrade.info === 'INSERT_PRE_LIST_ITEM') {
-            const parPre = this.getBlock(parent.preSibling);
-            const children = parent.children;
-
-            if (children[0].type === 'input') {
-              this.removeBlock(children[0]);
-            }
-
-            children.forEach((child) => {
-              this.appendChild(parPre, child);
-            });
-            this.removeBlock(parent);
+            break;
           }
-
-          break;
-        }
 
         case 'BLOCKQUOTE':
           if (inlineDegrade.info === 'REPLACEMENT') {
@@ -635,7 +621,9 @@ const backspaceCtrl = (ContentState) => {
       }
     } else if (left === 0 && preBlock) {
       event.preventDefault();
-      const { text } = block;
+      const {
+        text
+      } = block;
       const key = preBlock.key;
       const offset = preBlock.text.length;
       preBlock.text += text; // If block is a line block and its parent paragraph only has one text line,
@@ -659,11 +647,7 @@ const backspaceCtrl = (ContentState) => {
       };
       let needRenderAll = false;
 
-      if (
-        this.isCollapse() &&
-        preBlock.type === 'span' &&
-        preBlock.functionType === 'paragraphContent'
-      ) {
+      if (this.isCollapse() && preBlock.type === 'span' && preBlock.functionType === 'paragraphContent') {
         this.checkInlineUpdate(preBlock);
         needRenderAll = true;
       }

@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.breaks = exports.gfm = exports.pedantic = exports.normal = void 0;
 
-var _blockRules = require('./blockRules');
+var _blockRules = require("./blockRules");
 
-var _utils = require('./utils');
+var _utils = require("./utils");
 
 /* eslint-disable no-useless-escape */
 
@@ -19,13 +19,11 @@ const inline = {
   autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
   // eslint-disable-line no-control-regex
   url: _utils.noop,
-  tag:
-    '^comment' +
-    '|^</[a-zA-Z][\\w:-]*\\s*>' + // self-closing tag
-    '|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>' + // open tag
-    '|^<\\?[\\s\\S]*?\\?>' + // processing instruction, e.g. <?php ?>
-    '|^<![a-zA-Z]+\\s[\\s\\S]*?>' + // declaration, e.g. <!DOCTYPE html>
-    '|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>',
+  tag: '^comment' + '|^</[a-zA-Z][\\w:-]*\\s*>' + // self-closing tag
+  '|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>' + // open tag
+  '|^<\\?[\\s\\S]*?\\?>' + // processing instruction, e.g. <?php ?>
+  '|^<![a-zA-Z]+\\s[\\s\\S]*?>' + // declaration, e.g. <!DOCTYPE html>
+  '|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>',
   // CDATA section
   link: /^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/,
   reflink: /^!?\[(label)\]\[(?!\s*\])((?:\\[\[\]]?|[^\[\]\\])+)\]/,
@@ -53,30 +51,18 @@ const inline = {
 // without ` and ] to workaround Rule 17 (inline code blocks/links)
 
 inline._punctuation = '!"#$%&\'()*+,\\-./:;<=>?@\\[^_{|}~';
-inline.em = (0, _utils.edit)(inline.em)
-  .replace(/punctuation/g, inline._punctuation)
-  .getRegex();
+inline.em = (0, _utils.edit)(inline.em).replace(/punctuation/g, inline._punctuation).getRegex();
 inline._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g;
 inline._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/;
 inline._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
-inline.autolink = (0, _utils.edit)(inline.autolink)
-  .replace('scheme', inline._scheme)
-  .replace('email', inline._email)
-  .getRegex();
+inline.autolink = (0, _utils.edit)(inline.autolink).replace('scheme', inline._scheme).replace('email', inline._email).getRegex();
 inline._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
-inline.tag = (0, _utils.edit)(inline.tag)
-  .replace('comment', _blockRules.block._comment)
-  .replace('attribute', inline._attribute)
-  .getRegex();
+inline.tag = (0, _utils.edit)(inline.tag).replace('comment', _blockRules.block._comment).replace('attribute', inline._attribute).getRegex();
 inline._label = /(?:\[[^\[\]]*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
 inline._href = /<(?:\\[<>]?|[^\s<>\\])*>|[^\s\x00-\x1f]*/; // eslint-disable-line no-control-regex
 
 inline._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
-inline.link = (0, _utils.edit)(inline.link)
-  .replace('label', inline._label)
-  .replace('href', inline._href)
-  .replace('title', inline._title)
-  .getRegex();
+inline.link = (0, _utils.edit)(inline.link).replace('label', inline._label).replace('href', inline._href).replace('title', inline._title).getRegex();
 inline.reflink = (0, _utils.edit)(inline.reflink).replace('label', inline._label).getRegex();
 /**
  * Normal Inline Grammar
@@ -91,12 +77,8 @@ exports.normal = normal;
 const pedantic = Object.assign({}, normal, {
   strong: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
   em: /^_(?=\S)([\s\S]*?\S)_(?!_)|^\*(?=\S)([\s\S]*?\S)\*(?!\*)/,
-  link: (0, _utils.edit)(/^!?\[(label)\]\((.*?)\)/)
-    .replace('label', inline._label)
-    .getRegex(),
-  reflink: (0, _utils.edit)(/^!?\[(label)\]\s*\[([^\]]*)\]/)
-    .replace('label', inline._label)
-    .getRegex()
+  link: (0, _utils.edit)(/^!?\[(label)\]\((.*?)\)/).replace('label', inline._label).getRegex(),
+  reflink: (0, _utils.edit)(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace('label', inline._label).getRegex()
 });
 /**
  * GFM Inline Grammar
@@ -116,6 +98,7 @@ const gfm = Object.assign({}, normal, {
   // ------------------------
   // extra
   emoji: /^(:)([a-z_\d+-]+?)\1/ // not real GFM but put it in here
+
 });
 exports.gfm = gfm;
 gfm.url = (0, _utils.edit)(gfm.url, 'i').replace('email', gfm._extended_email).getRegex();
@@ -125,10 +108,7 @@ gfm.url = (0, _utils.edit)(gfm.url, 'i').replace('email', gfm._extended_email).g
 
 const breaks = Object.assign({}, gfm, {
   br: (0, _utils.edit)(inline.br).replace('{2,}', '*').getRegex(),
-  text: (0, _utils.edit)(gfm.text)
-    .replace('\\b_', '\\b_| {2,}\\n')
-    .replace(/\{2,\}/g, '*')
-    .getRegex()
+  text: (0, _utils.edit)(gfm.text).replace('\\b_', '\\b_| {2,}\\n').replace(/\{2,\}/g, '*').getRegex()
 });
 /* eslint-ensable no-useless-escape */
 

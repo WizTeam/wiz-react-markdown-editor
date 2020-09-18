@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.generator = exports.tokenizer = void 0;
 
-var _rules = require('./rules');
+var _rules = require("./rules");
 
-var _utils = require('../utils');
+var _utils = require("../utils");
 
-var _utils2 = require('./marked/utils');
+var _utils2 = require("./marked/utils");
 
-var _utils3 = require('./utils');
+var _utils3 = require("./utils");
 
 // const CAN_NEST_RULES = ['strong', 'em', 'link', 'del', 'a_link', 'reference_link', 'html_tag']
 // disallowed html tags in https://github.github.com/gfm/#raw-html
@@ -22,7 +22,7 @@ delete validateRules.strong;
 delete validateRules.tail_header;
 delete validateRules.backlash;
 
-const correctUrl = (token) => {
+const correctUrl = token => {
   if (token && typeof token[4] === 'string') {
     const lastParenIndex = (0, _utils2.findClosingBracket)(token[4], '()');
 
@@ -48,7 +48,10 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
   const tokens = [];
   let pending = '';
   let pendingStartPos = pos;
-  const { superSubScript, footnote } = options;
+  const {
+    superSubScript,
+    footnote
+  } = options;
 
   const pushPending = () => {
     if (pending) {
@@ -146,6 +149,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       continue;
     } // strong | em
 
+
     const emRules = ['strong', 'em'];
     let inChunk;
 
@@ -153,13 +157,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       const to = inlineRules[rule].exec(src);
 
       if (to && (0, _utils.isLengthEven)(to[3])) {
-        const isValid = (0, _utils3.validateEmphasize)(
-          src,
-          to[0].length,
-          to[1],
-          pending,
-          validateRules
-        );
+        const isValid = (0, _utils3.validateEmphasize)(src, to[0].length, to[1], pending, validateRules);
 
         if (isValid) {
           inChunk = true;
@@ -175,15 +173,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
             range,
             marker,
             parent: tokens,
-            children: tokenizerFac(
-              to[2],
-              undefined,
-              inlineRules,
-              pos + to[1].length,
-              false,
-              labels,
-              options
-            ),
+            children: tokenizerFac(to[2], undefined, inlineRules, pos + to[1].length, false, labels, options),
             backlash: to[3]
           });
           src = src.substring(to[0].length);
@@ -202,8 +192,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       const to = inlineRules[rule].exec(src);
 
       if (to && (0, _utils.isLengthEven)(to[3])) {
-        if (rule === 'emoji' && !(0, _utils3.lowerPriority)(src, to[0].length, validateRules))
-          break;
+        if (rule === 'emoji' && !(0, _utils3.lowerPriority)(src, to[0].length, validateRules)) break;
         inChunk = true;
         pushPending();
         const range = {
@@ -229,15 +218,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
             range,
             marker,
             parent: tokens,
-            children: tokenizerFac(
-              to[2],
-              undefined,
-              inlineRules,
-              pos + to[1].length,
-              false,
-              labels,
-              options
-            ),
+            children: tokenizerFac(to[2], undefined, inlineRules, pos + to[1].length, false, labels, options),
             backlash: to[3]
           });
         }
@@ -270,6 +251,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       continue;
     } // superscript and subscript
 
+
     if (superSubScript) {
       const superSubTo = inlineRules.superscript.exec(src) || inlineRules.subscript.exec(src);
 
@@ -291,6 +273,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
         continue;
       }
     } // footnote identifier
+
 
     if (pos !== 0 && footnote) {
       const footnoteTo = inlineRules.footnote_identifier.exec(src);
@@ -314,11 +297,15 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       }
     } // image
 
+
     const imageTo = inlineRules.image.exec(src);
     correctUrl(imageTo);
 
     if (imageTo && (0, _utils.isLengthEven)(imageTo[3]) && (0, _utils.isLengthEven)(imageTo[5])) {
-      const { src: imageSrc, title } = (0, _utils3.parseSrcAndTitle)(imageTo[4]);
+      const {
+        src: imageSrc,
+        title
+      } = (0, _utils3.parseSrcAndTitle)(imageTo[4]);
       pushPending();
       tokens.push({
         type: 'image',
@@ -349,11 +336,15 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       continue;
     } // link
 
+
     const linkTo = inlineRules.link.exec(src);
     correctUrl(linkTo);
 
     if (linkTo && (0, _utils.isLengthEven)(linkTo[3]) && (0, _utils.isLengthEven)(linkTo[5])) {
-      const { src: href, title } = (0, _utils3.parseSrcAndTitle)(linkTo[4]);
+      const {
+        src: href,
+        title
+      } = (0, _utils3.parseSrcAndTitle)(linkTo[4]);
       pushPending();
       tokens.push({
         type: 'link',
@@ -368,15 +359,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
           start: pos,
           end: pos + linkTo[0].length
         },
-        children: tokenizerFac(
-          linkTo[2],
-          undefined,
-          inlineRules,
-          pos + linkTo[1].length,
-          false,
-          labels,
-          options
-        ),
+        children: tokenizerFac(linkTo[2], undefined, inlineRules, pos + linkTo[1].length, false, labels, options),
         backlash: {
           first: linkTo[3],
           second: linkTo[5]
@@ -389,12 +372,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
 
     const rLinkTo = inlineRules.reference_link.exec(src);
 
-    if (
-      rLinkTo &&
-      labels.has(rLinkTo[3] || rLinkTo[1]) &&
-      (0, _utils.isLengthEven)(rLinkTo[2]) &&
-      (0, _utils.isLengthEven)(rLinkTo[4])
-    ) {
+    if (rLinkTo && labels.has(rLinkTo[3] || rLinkTo[1]) && (0, _utils.isLengthEven)(rLinkTo[2]) && (0, _utils.isLengthEven)(rLinkTo[4])) {
       pushPending();
       tokens.push({
         type: 'reference_link',
@@ -420,12 +398,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
 
     const rImageTo = inlineRules.reference_image.exec(src);
 
-    if (
-      rImageTo &&
-      labels.has(rImageTo[3] || rImageTo[1]) &&
-      (0, _utils.isLengthEven)(rImageTo[2]) &&
-      (0, _utils.isLengthEven)(rImageTo[4])
-    ) {
+    if (rImageTo && labels.has(rImageTo[3] || rImageTo[1]) && (0, _utils.isLengthEven)(rImageTo[2]) && (0, _utils.isLengthEven)(rImageTo[4])) {
       pushPending();
       tokens.push({
         type: 'reference_image',
@@ -448,6 +421,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       continue;
     } // html escape
 
+
     const htmlEscapeTo = inlineRules.html_escape.exec(src);
 
     if (htmlEscapeTo) {
@@ -467,6 +441,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       pos = pos + len;
       continue;
     } // auto link extension
+
 
     const autoLinkExtTo = inlineRules.auto_link_extension.exec(src);
 
@@ -489,6 +464,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       pos = pos + autoLinkExtTo[0].length;
       continue;
     } // auto link
+
 
     const autoLTo = inlineRules.auto_link.exec(src);
 
@@ -513,6 +489,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       continue;
     } // html-tag
 
+
     const htmlTo = inlineRules.html_tag.exec(src);
     let attrs; // handle comment
 
@@ -536,11 +513,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       continue;
     }
 
-    if (
-      htmlTo &&
-      !disallowedHtmlTag.test(htmlTo[3]) &&
-      (attrs = (0, _utils3.getAttributes)(htmlTo[0]))
-    ) {
+    if (htmlTo && !disallowedHtmlTag.test(htmlTo[3]) && (attrs = (0, _utils3.getAttributes)(htmlTo[0]))) {
       const tag = htmlTo[3];
       const html = htmlTo[0];
       const len = htmlTo[0].length;
@@ -554,17 +527,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
         parent: tokens,
         attrs,
         content: htmlTo[4],
-        children: htmlTo[4]
-          ? tokenizerFac(
-              htmlTo[4],
-              undefined,
-              inlineRules,
-              pos + htmlTo[2].length,
-              false,
-              labels,
-              options
-            )
-          : '',
+        children: htmlTo[4] ? tokenizerFac(htmlTo[4], undefined, inlineRules, pos + htmlTo[2].length, false, labels, options) : '',
         range: {
           start: pos,
           end: pos + len
@@ -574,6 +537,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       pos = pos + len;
       continue;
     } // soft line break
+
 
     const softTo = inlineRules.soft_line_break.exec(src);
 
@@ -595,6 +559,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       pos += len;
       continue;
     } // hard line break
+
 
     const hardTo = inlineRules.hard_line_break.exec(src);
 
@@ -619,6 +584,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       pos += len;
       continue;
     } // tail header
+
 
     const tailTo = inlineRules.tail_header.exec(src);
 
@@ -649,22 +615,16 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
   return tokens;
 };
 
-const tokenizer = (
-  src,
-  { highlights = [], hasBeginRules = true, labels = new Map(), options = {} } = {}
-) => {
+const tokenizer = (src, {
+  highlights = [],
+  hasBeginRules = true,
+  labels = new Map(),
+  options = {}
+} = {}) => {
   const rules = Object.assign({}, _rules.inlineRules, _rules.inlineExtensionRules);
-  const tokens = tokenizerFac(
-    src,
-    hasBeginRules ? _rules.beginRules : null,
-    rules,
-    0,
-    true,
-    labels,
-    options
-  );
+  const tokens = tokenizerFac(src, hasBeginRules ? _rules.beginRules : null, rules, 0, true, labels, options);
 
-  const postTokenizer = (tokens) => {
+  const postTokenizer = tokens => {
     for (const token of tokens) {
       for (const light of highlights) {
         const highlight = (0, _utils.union)(token.range, light);
@@ -692,9 +652,10 @@ const tokenizer = (
 }; // transform `tokens` to text ignore the range of token
 // the opposite of tokenizer
 
+
 exports.tokenizer = tokenizer;
 
-const generator = (tokens) => {
+const generator = tokens => {
   let result = '';
 
   for (const token of tokens) {

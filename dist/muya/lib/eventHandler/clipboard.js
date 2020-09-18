@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
@@ -17,13 +17,17 @@ class Clipboard {
   }
 
   listen() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const docPasteHandler = (event) => {
+    const docPasteHandler = event => {
       contentState.docPasteHandler(event);
     };
 
-    const docCopyCutHandler = (event) => {
+    const docCopyCutHandler = event => {
       contentState.docCopyHandler(event);
 
       if (event.type === 'cut') {
@@ -33,7 +37,7 @@ class Clipboard {
       }
     };
 
-    const copyCutHandler = (event) => {
+    const copyCutHandler = event => {
       contentState.copyHandler(event, this._copyType, this._copyInfo);
 
       if (event.type === 'cut') {
@@ -45,7 +49,7 @@ class Clipboard {
       this._copyType = 'normal';
     };
 
-    const pasteHandler = (event) => {
+    const pasteHandler = event => {
       contentState.pasteHandler(event, this._pasteType);
       this._pasteType = 'normal';
       this.muya.dispatchChange();
@@ -79,11 +83,13 @@ class Clipboard {
    * @param {string|object} info  is the block key if it's string, or block if it's object
    */
 
+
   copy(type, info) {
     this._copyType = type;
     this._copyInfo = info;
     document.execCommand('copy');
   }
+
 }
 
 var _default = Clipboard;

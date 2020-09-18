@@ -1,17 +1,15 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-var _config = require('../config');
+var _config = require("../config");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* eslint-disable no-useless-escape */
 const FOOTNOTE_REG = /^\[\^([^\^\[\]\s]+?)\]:$/;
@@ -22,21 +20,25 @@ const checkAutoIndent = (text, offset) => {
   return /^(\{\}|\[\]|\(\)|><)$/.test(pairStr);
 };
 
-const getIndentSpace = (text) => {
+const getIndentSpace = text => {
   const match = /^(\s*)\S/.exec(text);
   return match ? match[1] : '';
 };
 
-const enterCtrl = (ContentState) => {
+const enterCtrl = ContentState => {
   // TODO@jocs this function need opti.
   ContentState.prototype.chopBlockByCursor = function (block, key, offset) {
     const newBlock = this.createBlock('p');
-    const { children } = block;
-    const index = children.findIndex((child) => child.key === key);
+    const {
+      children
+    } = block;
+    const index = children.findIndex(child => child.key === key);
     const activeLine = this.getBlock(key);
-    const { text } = activeLine;
+    const {
+      text
+    } = activeLine;
     newBlock.children = children.splice(index + 1);
-    newBlock.children.forEach((c) => (c.parent = newBlock.key));
+    newBlock.children.forEach(c => c.parent = newBlock.key);
     children[index].nextSibling = null;
 
     if (newBlock.children.length) {
@@ -64,7 +66,7 @@ const enterCtrl = (ContentState) => {
     const index = this.findIndex(parent.children, block);
     const partChildren = parent.children.splice(index + 1);
     block.nextSibling = null;
-    partChildren.forEach((b) => {
+    partChildren.forEach(b => {
       this.appendChild(container, b);
     });
     this.insertAfter(container, parent);
@@ -140,7 +142,9 @@ const enterCtrl = (ContentState) => {
       this.removeBlock(block);
     } else if (parent && parent.type === 'li') {
       if (parent.listItemType === 'task') {
-        const { checked } = parent.children[0];
+        const {
+          checked
+        } = parent.children[0];
         newBlock = this.createTaskItemBlock(null, checked);
       } else {
         newBlock = this.createBlockLi();
@@ -152,7 +156,7 @@ const enterCtrl = (ContentState) => {
       this.insertAfter(newBlock, parent);
       const index = this.findIndex(parent.children, block);
       const blocksInListItem = parent.children.splice(index + 1);
-      blocksInListItem.forEach((b) => this.appendChild(newBlock, b));
+      blocksInListItem.forEach(b => this.appendChild(newBlock, b));
       this.removeBlock(block);
       newBlock = newBlock.listItemType === 'task' ? newBlock.children[1] : newBlock.children[0];
     } else {
@@ -166,7 +170,9 @@ const enterCtrl = (ContentState) => {
       }
     }
 
-    const { key } = newBlock.children[0];
+    const {
+      key
+    } = newBlock.children[0];
     const offset = 0;
     this.cursor = {
       start: {
@@ -182,14 +188,21 @@ const enterCtrl = (ContentState) => {
   };
 
   ContentState.prototype.docEnterHandler = function (event) {
-    const { eventCenter } = this.muya;
-    const { selectedImage } = this; // Show image selector when you press Enter key and there is already one image selected.
+    const {
+      eventCenter
+    } = this.muya;
+    const {
+      selectedImage
+    } = this; // Show image selector when you press Enter key and there is already one image selected.
 
     if (selectedImage) {
       event.preventDefault();
       event.stopPropagation();
-      const { imageId, ...imageInfo } = selectedImage;
-      const imageWrapper = document.querySelector('#'.concat(imageId));
+      const {
+        imageId,
+        ...imageInfo
+      } = selectedImage;
+      const imageWrapper = document.querySelector("#".concat(imageId));
       const rect = imageWrapper.getBoundingClientRect();
       const reference = {
         getBoundingClientRect() {
@@ -197,6 +210,7 @@ const enterCtrl = (ContentState) => {
 
           return rect;
         }
+
       };
       eventCenter.dispatch('muya-image-selector', {
         reference,
@@ -208,14 +222,19 @@ const enterCtrl = (ContentState) => {
   };
 
   ContentState.prototype.enterHandler = function (event) {
-    const { start, end } = _selection.default.getCursorRange();
+    const {
+      start,
+      end
+    } = _selection.default.getCursorRange();
 
     if (!start || !end) {
       return event.preventDefault();
     }
 
     let block = this.getBlock(start.key);
-    const { text } = block;
+    const {
+      text
+    } = block;
     const endBlock = this.getBlock(end.key);
     let parent = this.getParent(block);
     event.preventDefault(); // Don't allow new lines in language identifiers (GH#569)
@@ -225,6 +244,7 @@ const enterCtrl = (ContentState) => {
       this.updateCodeLanguage(block, block.text.trim());
       return;
     } // handle select multiple blocks
+
 
     if (start.key !== end.key) {
       const key = start.key;
@@ -247,6 +267,7 @@ const enterCtrl = (ContentState) => {
       return this.enterHandler(event);
     } // handle select multiple charactors
 
+
     if (start.key === end.key && start.offset !== end.offset) {
       const key = start.key;
       const offset = start.offset;
@@ -265,13 +286,7 @@ const enterCtrl = (ContentState) => {
       return this.enterHandler(event);
     }
 
-    if (
-      block.type === 'span' &&
-      block.functionType === 'paragraphContent' &&
-      !this.getParent(block).parent &&
-      start.offset === text.length &&
-      FOOTNOTE_REG.test(text)
-    ) {
+    if (block.type === 'span' && block.functionType === 'paragraphContent' && !this.getParent(block).parent && start.offset === text.length && FOOTNOTE_REG.test(text)) {
       event.preventDefault();
       event.stopPropagation(); // Just to feet the `updateFootnote` API and add one white space.
 
@@ -293,9 +308,15 @@ const enterCtrl = (ContentState) => {
     // only cursor in `line block` can create `soft line break` and `hard line break`
     // handle line in code block
 
+
     if (event.shiftKey && block.type === 'span' && block.functionType === 'paragraphContent') {
-      let { offset } = start;
-      const { text, key } = block;
+      let {
+        offset
+      } = start;
+      const {
+        text,
+        key
+      } = block;
       const indent = getIndentSpace(text);
       block.text = text.substring(0, offset) + '\n' + indent + text.substring(offset);
       offset += 1 + indent.length;
@@ -311,15 +332,13 @@ const enterCtrl = (ContentState) => {
       };
       return this.partialRender();
     } else if (block.type === 'span' && block.functionType === 'codeContent') {
-      const { text, key } = block;
+      const {
+        text,
+        key
+      } = block;
       const autoIndent = checkAutoIndent(text, start.offset);
       const indent = getIndentSpace(text);
-      block.text =
-        text.substring(0, start.offset) +
-        '\n' +
-        (autoIndent ? indent + ' '.repeat(this.tabSize) + '\n' : '') +
-        indent +
-        text.substring(start.offset);
+      block.text = text.substring(0, start.offset) + '\n' + (autoIndent ? indent + ' '.repeat(this.tabSize) + '\n' : '') + indent + text.substring(start.offset);
       let offset = start.offset + 1 + indent.length;
 
       if (autoIndent) {
@@ -341,8 +360,12 @@ const enterCtrl = (ContentState) => {
     // Why not use `soft line break` or `hard line break` ?
     // Becasuse table cell only have one line.
 
+
     if (event.shiftKey && block.functionType === 'cellContent') {
-      const { text, key } = block;
+      const {
+        text,
+        key
+      } = block;
       const brTag = '<br/>';
       block.text = text.substring(0, start.offset) + brTag + text.substring(start.offset);
       const offset = start.offset + brTag.length;
@@ -359,7 +382,7 @@ const enterCtrl = (ContentState) => {
       return this.partialRender([block]);
     }
 
-    const getFirstBlockInNextRow = (row) => {
+    const getFirstBlockInNextRow = row => {
       let nextSibling = this.getBlock(row.nextSibling);
 
       if (!nextSibling) {
@@ -380,12 +403,13 @@ const enterCtrl = (ContentState) => {
       return this.firstInDescendant(nextSibling);
     }; // handle enter in table
 
+
     if (block.functionType === 'cellContent') {
       const row = this.closest(block, 'tr');
       const rowContainer = this.getBlock(row.parent);
       const table = this.closest(rowContainer, 'table');
 
-      if ((_config.isOsx && event.metaKey) || (!_config.isOsx && event.ctrlKey)) {
+      if (_config.isOsx && event.metaKey || !_config.isOsx && event.ctrlKey) {
         const nextRow = this.createRow(row, false);
 
         if (rowContainer.type === 'thead') {
@@ -408,7 +432,9 @@ const enterCtrl = (ContentState) => {
         table.row++;
       }
 
-      const { key } = getFirstBlockInNextRow(row);
+      const {
+        key
+      } = getFirstBlockInNextRow(row);
       const offset = 0;
       this.cursor = {
         start: {
@@ -428,18 +454,13 @@ const enterCtrl = (ContentState) => {
       parent = this.getParent(block);
     }
 
-    const paragraph = document.querySelector('#'.concat(block.key));
+    const paragraph = document.querySelector("#".concat(block.key));
 
-    if (
-      (parent && parent.type === 'li' && this.isOnlyChild(block)) ||
-      (parent &&
-        parent.type === 'li' &&
-        parent.listItemType === 'task' &&
-        parent.children.length === 2) // one `input` and one `p`
+    if (parent && parent.type === 'li' && this.isOnlyChild(block) || parent && parent.type === 'li' && parent.listItemType === 'task' && parent.children.length === 2 // one `input` and one `p`
     ) {
-      block = parent;
-      parent = this.getParent(block);
-    }
+        block = parent;
+        parent = this.getParent(block);
+      }
 
     const left = start.offset;
     const right = text.length - left;
@@ -447,122 +468,131 @@ const enterCtrl = (ContentState) => {
     let newBlock;
 
     switch (true) {
-      case left !== 0 && right !== 0: {
-        // cursor in the middle
-        let { pre, post } = _selection.default.chopHtmlByCursor(paragraph);
+      case left !== 0 && right !== 0:
+        {
+          // cursor in the middle
+          let {
+            pre,
+            post
+          } = _selection.default.chopHtmlByCursor(paragraph);
 
-        if (/^h\d$/.test(block.type)) {
-          if (block.headingStyle === 'atx') {
-            const PREFIX = /^#+/.exec(pre)[0];
-            post = ''.concat(PREFIX, ' ').concat(post);
-          }
-
-          block.children[0].text = pre;
-          newBlock = this.createBlock(type, {
-            headingStyle: block.headingStyle
-          });
-          const headerContent = this.createBlock('span', {
-            text: post,
-            functionType: block.headingStyle === 'atx' ? 'atxLine' : 'paragraphContent'
-          });
-          this.appendChild(newBlock, headerContent);
-
-          if (block.marker) {
-            newBlock.marker = block.marker;
-          }
-        } else if (block.type === 'p') {
-          newBlock = this.chopBlockByCursor(block, start.key, start.offset);
-        } else if (type === 'li') {
-          // handle task item
-          if (block.listItemType === 'task') {
-            const { checked } = block.children[0]; // block.children[0] is input[type=checkbox]
-
-            newBlock = this.chopBlockByCursor(block.children[1], start.key, start.offset);
-            newBlock = this.createTaskItemBlock(newBlock, checked);
-          } else {
-            newBlock = this.chopBlockByCursor(block.children[0], start.key, start.offset);
-            newBlock = this.createBlockLi(newBlock);
-            newBlock.listItemType = block.listItemType;
-            newBlock.bulletMarkerOrDelimiter = block.bulletMarkerOrDelimiter;
-          }
-
-          newBlock.isLooseListItem = block.isLooseListItem;
-        } else if (block.type === 'hr') {
-          const preText = text.substring(0, left);
-          const postText = text.substring(left); // Degrade thematice break to paragraph
-
-          if (preText.replace(/ /g, '').length < 3) {
-            block.type = 'p';
-            block.children[0].functionType = 'paragraphContent';
-          }
-
-          if (postText.replace(/ /g, '').length >= 3) {
-            newBlock = this.createBlock('hr');
-            const content = this.createBlock('span', {
-              functionType: 'thematicBreakLine',
-              text: postText
-            });
-            this.appendChild(newBlock, content);
-          } else {
-            newBlock = this.createBlockP(postText);
-          }
-
-          block.children[0].text = preText;
-        }
-
-        this.insertAfter(newBlock, block);
-        break;
-      }
-
-      case left === 0 && right === 0: {
-        // paragraph is empty
-        return this.enterInEmptyParagraph(block);
-      }
-
-      case left !== 0 && right === 0:
-      case left === 0 && right !== 0: {
-        // cursor at end of paragraph or at begin of paragraph
-        if (type === 'li') {
-          if (block.listItemType === 'task') {
-            const checked = false;
-            newBlock = this.createTaskItemBlock(null, checked);
-          } else {
-            newBlock = this.createBlockLi();
-            newBlock.listItemType = block.listItemType;
-            newBlock.bulletMarkerOrDelimiter = block.bulletMarkerOrDelimiter;
-          }
-
-          newBlock.isLooseListItem = block.isLooseListItem;
-        } else {
-          newBlock = this.createBlockP();
-        }
-
-        if (left === 0 && right !== 0) {
-          this.insertBefore(newBlock, block);
-          newBlock = block;
-        } else {
-          if (block.type === 'p') {
-            const lastLine = block.children[block.children.length - 1];
-
-            if (lastLine.text === '') {
-              this.removeBlock(lastLine);
+          if (/^h\d$/.test(block.type)) {
+            if (block.headingStyle === 'atx') {
+              const PREFIX = /^#+/.exec(pre)[0];
+              post = "".concat(PREFIX, " ").concat(post);
             }
+
+            block.children[0].text = pre;
+            newBlock = this.createBlock(type, {
+              headingStyle: block.headingStyle
+            });
+            const headerContent = this.createBlock('span', {
+              text: post,
+              functionType: block.headingStyle === 'atx' ? 'atxLine' : 'paragraphContent'
+            });
+            this.appendChild(newBlock, headerContent);
+
+            if (block.marker) {
+              newBlock.marker = block.marker;
+            }
+          } else if (block.type === 'p') {
+            newBlock = this.chopBlockByCursor(block, start.key, start.offset);
+          } else if (type === 'li') {
+            // handle task item
+            if (block.listItemType === 'task') {
+              const {
+                checked
+              } = block.children[0]; // block.children[0] is input[type=checkbox]
+
+              newBlock = this.chopBlockByCursor(block.children[1], start.key, start.offset);
+              newBlock = this.createTaskItemBlock(newBlock, checked);
+            } else {
+              newBlock = this.chopBlockByCursor(block.children[0], start.key, start.offset);
+              newBlock = this.createBlockLi(newBlock);
+              newBlock.listItemType = block.listItemType;
+              newBlock.bulletMarkerOrDelimiter = block.bulletMarkerOrDelimiter;
+            }
+
+            newBlock.isLooseListItem = block.isLooseListItem;
+          } else if (block.type === 'hr') {
+            const preText = text.substring(0, left);
+            const postText = text.substring(left); // Degrade thematice break to paragraph
+
+            if (preText.replace(/ /g, '').length < 3) {
+              block.type = 'p';
+              block.children[0].functionType = 'paragraphContent';
+            }
+
+            if (postText.replace(/ /g, '').length >= 3) {
+              newBlock = this.createBlock('hr');
+              const content = this.createBlock('span', {
+                functionType: 'thematicBreakLine',
+                text: postText
+              });
+              this.appendChild(newBlock, content);
+            } else {
+              newBlock = this.createBlockP(postText);
+            }
+
+            block.children[0].text = preText;
           }
 
           this.insertAfter(newBlock, block);
+          break;
         }
 
-        break;
-      }
+      case left === 0 && right === 0:
+        {
+          // paragraph is empty
+          return this.enterInEmptyParagraph(block);
+        }
 
-      default: {
-        newBlock = this.createBlockP();
-        this.insertAfter(newBlock, block);
-        break;
-      }
+      case left !== 0 && right === 0:
+      case left === 0 && right !== 0:
+        {
+          // cursor at end of paragraph or at begin of paragraph
+          if (type === 'li') {
+            if (block.listItemType === 'task') {
+              const checked = false;
+              newBlock = this.createTaskItemBlock(null, checked);
+            } else {
+              newBlock = this.createBlockLi();
+              newBlock.listItemType = block.listItemType;
+              newBlock.bulletMarkerOrDelimiter = block.bulletMarkerOrDelimiter;
+            }
+
+            newBlock.isLooseListItem = block.isLooseListItem;
+          } else {
+            newBlock = this.createBlockP();
+          }
+
+          if (left === 0 && right !== 0) {
+            this.insertBefore(newBlock, block);
+            newBlock = block;
+          } else {
+            if (block.type === 'p') {
+              const lastLine = block.children[block.children.length - 1];
+
+              if (lastLine.text === '') {
+                this.removeBlock(lastLine);
+              }
+            }
+
+            this.insertAfter(newBlock, block);
+          }
+
+          break;
+        }
+
+      default:
+        {
+          newBlock = this.createBlockP();
+          this.insertAfter(newBlock, block);
+          break;
+        }
     }
 
-    const getParagraphBlock = (block) => {
+    const getParagraphBlock = block => {
       if (block.type === 'li') {
         return block.listItemType === 'task' ? block.children[1] : block.children[0];
       } else {
@@ -603,14 +633,13 @@ const enterCtrl = (ContentState) => {
     }
 
     cursorBlock = getParagraphBlock(cursorBlock);
-    const key =
-      cursorBlock.type === 'p' || cursorBlock.type === 'pre'
-        ? cursorBlock.children[0].key
-        : cursorBlock.key;
+    const key = cursorBlock.type === 'p' || cursorBlock.type === 'pre' ? cursorBlock.children[0].key : cursorBlock.key;
     let offset = 0;
 
     if (htmlNeedFocus) {
-      const { text } = cursorBlock;
+      const {
+        text
+      } = cursorBlock;
       const match = /^[^\n]+\n[^\n]*/.exec(text);
       offset = match && match[0] ? match[0].length : 0;
     }

@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.renderBottomBar = exports.renderLeftBar = void 0;
 
-var _snabbdom = require('../snabbdom');
+var _snabbdom = require("../snabbdom");
 
 const renderLeftBar = () => {
   return (0, _snabbdom.h)('span.ag-drag-handler.left', {

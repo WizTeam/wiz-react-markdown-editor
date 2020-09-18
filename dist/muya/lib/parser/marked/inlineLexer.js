@@ -1,23 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _renderer = _interopRequireDefault(require('./renderer'));
+var _renderer = _interopRequireDefault(require("./renderer"));
 
-var _inlineRules = require('./inlineRules');
+var _inlineRules = require("./inlineRules");
 
-var _options = _interopRequireDefault(require('./options'));
+var _options = _interopRequireDefault(require("./options"));
 
-var _utils = require('./utils');
+var _utils = require("./utils");
 
-var _utils2 = require('../utils');
+var _utils2 = require("../utils");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Inline Lexer & Compiler
@@ -63,10 +61,17 @@ function InlineLexer(links, footnotes, options) {
  * Lexing/Compiling
  */
 
+
 InlineLexer.prototype.output = function (src) {
   // src = src
   // .replace(/\u00a0/g, ' ')
-  const { disableInline, emoji, math, superSubScript, footnote } = this.options;
+  const {
+    disableInline,
+    emoji,
+    math,
+    superSubScript,
+    footnote
+  } = this.options;
 
   if (disableInline) {
     return (0, _utils.escape)(src);
@@ -92,6 +97,7 @@ InlineLexer.prototype.output = function (src) {
       continue;
     } // footnote identifier
 
+
     if (footnote) {
       cap = this.rules.footnoteIdentifier.exec(src);
 
@@ -104,6 +110,7 @@ InlineLexer.prototype.output = function (src) {
         out += this.renderer.footnoteIdentifier(identifier, footnoteInfo);
       }
     } // tag
+
 
     cap = this.rules.tag.exec(src);
 
@@ -122,13 +129,10 @@ InlineLexer.prototype.output = function (src) {
 
       src = src.substring(cap[0].length);
       lastChar = cap[0].charAt(cap[0].length - 1);
-      out += this.options.sanitize
-        ? this.options.sanitizer
-          ? this.options.sanitizer(cap[0])
-          : (0, _utils.escape)(cap[0])
-        : cap[0];
+      out += this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : (0, _utils.escape)(cap[0]) : cap[0];
       continue;
     } // link
+
 
     cap = this.rules.link.exec(src);
 
@@ -170,6 +174,7 @@ InlineLexer.prototype.output = function (src) {
       continue;
     } // reflink, nolink
 
+
     cap = this.rules.reflink.exec(src) || this.rules.nolink.exec(src);
 
     if (cap) {
@@ -190,6 +195,7 @@ InlineLexer.prototype.output = function (src) {
       continue;
     } // math
 
+
     if (math) {
       cap = this.rules.math.exec(src);
 
@@ -201,6 +207,7 @@ InlineLexer.prototype.output = function (src) {
       }
     } // emoji
 
+
     if (emoji) {
       cap = this.rules.emoji.exec(src);
 
@@ -211,6 +218,7 @@ InlineLexer.prototype.output = function (src) {
         out += this.renderer.emoji(text, cap[2]);
       }
     } // superSubScript
+
 
     if (superSubScript) {
       cap = this.rules.superscript.exec(src) || this.rules.subscript.exec(src);
@@ -224,17 +232,12 @@ InlineLexer.prototype.output = function (src) {
       }
     } // strong
 
+
     cap = this.rules.strong.exec(src);
 
     if (cap) {
       const marker = cap[0].match(/^(?:_{1,2}|\*{1,2})/)[0];
-      const isValid = (0, _utils2.validateEmphasize)(
-        src,
-        cap[0].length,
-        marker,
-        lastChar,
-        this.highPriorityEmpRules
-      );
+      const isValid = (0, _utils2.validateEmphasize)(src, cap[0].length, marker, lastChar, this.highPriorityEmpRules);
 
       if (isValid) {
         src = src.substring(cap[0].length);
@@ -244,27 +247,21 @@ InlineLexer.prototype.output = function (src) {
       }
     } // em
 
+
     cap = this.rules.em.exec(src);
 
     if (cap) {
       const marker = cap[0].match(/^(?:_{1,2}|\*{1,2})/)[0];
-      const isValid = (0, _utils2.validateEmphasize)(
-        src,
-        cap[0].length,
-        marker,
-        lastChar,
-        this.highPriorityEmpRules
-      );
+      const isValid = (0, _utils2.validateEmphasize)(src, cap[0].length, marker, lastChar, this.highPriorityEmpRules);
 
       if (isValid) {
         src = src.substring(cap[0].length);
         lastChar = cap[0].charAt(cap[0].length - 1);
-        out += this.renderer.em(
-          this.output(cap[6] || cap[5] || cap[4] || cap[3] || cap[2] || cap[1])
-        );
+        out += this.renderer.em(this.output(cap[6] || cap[5] || cap[4] || cap[3] || cap[2] || cap[1]));
         continue;
       }
     } // code
+
 
     cap = this.rules.code.exec(src);
 
@@ -275,6 +272,7 @@ InlineLexer.prototype.output = function (src) {
       continue;
     } // br
 
+
     cap = this.rules.br.exec(src);
 
     if (cap) {
@@ -284,6 +282,7 @@ InlineLexer.prototype.output = function (src) {
       continue;
     } // del (gfm)
 
+
     cap = this.rules.del.exec(src);
 
     if (cap) {
@@ -292,6 +291,7 @@ InlineLexer.prototype.output = function (src) {
       out += this.renderer.del(this.output(cap[1]));
       continue;
     } // autolink
+
 
     cap = this.rules.autolink.exec(src);
 
@@ -310,6 +310,7 @@ InlineLexer.prototype.output = function (src) {
       out += this.renderer.link(href, null, text);
       continue;
     } // url (gfm)
+
 
     cap = this.rules.url.exec(src);
 
@@ -339,6 +340,7 @@ InlineLexer.prototype.output = function (src) {
       continue;
     } // text
 
+
     cap = this.rules.text.exec(src);
 
     if (cap) {
@@ -346,13 +348,7 @@ InlineLexer.prototype.output = function (src) {
       lastChar = cap[0].charAt(cap[0].length - 1);
 
       if (this.inRawBlock) {
-        out += this.renderer.text(
-          this.options.sanitize
-            ? this.options.sanitizer
-              ? this.options.sanitizer(cap[0])
-              : (0, _utils.escape)(cap[0])
-            : cap[0]
-        );
+        out += this.renderer.text(this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : (0, _utils.escape)(cap[0]) : cap[0]);
       } else {
         out += this.renderer.text((0, _utils.escape)(this.smartypants(cap[0])));
       }
@@ -375,33 +371,34 @@ InlineLexer.prototype.escapes = function (text) {
  * Compile Link
  */
 
+
 InlineLexer.prototype.outputLink = function (cap, link) {
   const href = link.href;
   const title = link.title ? (0, _utils.escape)(link.title) : null;
-  return cap[0].charAt(0) !== '!'
-    ? this.renderer.link(href, title, this.output(cap[1]))
-    : this.renderer.image(href, title, (0, _utils.escape)(cap[1]));
+  return cap[0].charAt(0) !== '!' ? this.renderer.link(href, title, this.output(cap[1])) : this.renderer.image(href, title, (0, _utils.escape)(cap[1]));
 };
 /**
  * Smartypants Transformations
  */
 
+
 InlineLexer.prototype.smartypants = function (text) {
   /* eslint-disable no-useless-escape */
   if (!this.options.smartypants) return text;
   return text // em-dashes
-    .replace(/---/g, '\u2014') // en-dashes
-    .replace(/--/g, '\u2013') // opening singles
-    .replace(/(^|[-\u2014/(\[{"\s])'/g, '$1\u2018') // closing singles & apostrophes
-    .replace(/'/g, '\u2019') // opening doubles
-    .replace(/(^|[-\u2014/(\[{\u2018\s])"/g, '$1\u201c') // closing doubles
-    .replace(/"/g, '\u201d') // ellipses
-    .replace(/\.{3}/g, '\u2026');
+  .replace(/---/g, '\u2014') // en-dashes
+  .replace(/--/g, '\u2013') // opening singles
+  .replace(/(^|[-\u2014/(\[{"\s])'/g, '$1\u2018') // closing singles & apostrophes
+  .replace(/'/g, '\u2019') // opening doubles
+  .replace(/(^|[-\u2014/(\[{\u2018\s])"/g, '$1\u201c') // closing doubles
+  .replace(/"/g, '\u201d') // ellipses
+  .replace(/\.{3}/g, '\u2026');
   /* eslint-ensable no-useless-escape */
 };
 /**
  * Mangle Links
  */
+
 
 InlineLexer.prototype.mangle = function (text) {
   if (!this.options.mangle) return text;

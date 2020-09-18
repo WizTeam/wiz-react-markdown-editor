@@ -1,52 +1,56 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = htmlTag;
 
-var _config = require('../../../config');
+var _config = require("../../../config");
 
-var _utils = require('../../../utils');
+var _utils = require("../../../utils");
 
-var _dompurify = _interopRequireDefault(require('../../../utils/dompurify'));
+var _dompurify = _interopRequireDefault(require("../../../utils/dompurify"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function htmlTag(h, cursor, block, token, outerClass) {
-  const { tag, openTag, closeTag, children, attrs } = token;
-  const className = children
-    ? this.getClassName(outerClass, block, token, cursor)
-    : _config.CLASS_OR_ID.AG_GRAY;
-  const tagClassName =
-    className === _config.CLASS_OR_ID.AG_HIDE ? className : _config.CLASS_OR_ID.AG_HTML_TAG;
-  const { start, end } = token.range;
+  const {
+    tag,
+    openTag,
+    closeTag,
+    children,
+    attrs
+  } = token;
+  const className = children ? this.getClassName(outerClass, block, token, cursor) : _config.CLASS_OR_ID.AG_GRAY;
+  const tagClassName = className === _config.CLASS_OR_ID.AG_HIDE ? className : _config.CLASS_OR_ID.AG_HTML_TAG;
+  const {
+    start,
+    end
+  } = token.range;
   const openContent = this.highlight(h, block, start, start + openTag.length, token);
   const closeContent = closeTag ? this.highlight(h, block, end - closeTag.length, end, token) : '';
-  const anchor =
-    Array.isArray(children) && tag !== 'ruby' // important
-      ? children.reduce((acc, to) => {
-          const chunk = this[(0, _utils.snakeToCamel)(to.type)](h, cursor, block, to, className);
-          return Array.isArray(chunk) ? [...acc, ...chunk] : [...acc, chunk];
-        }, [])
-      : '';
+  const anchor = Array.isArray(children) && tag !== 'ruby' // important
+  ? children.reduce((acc, to) => {
+    const chunk = this[(0, _utils.snakeToCamel)(to.type)](h, cursor, block, to, className);
+    return Array.isArray(chunk) ? [...acc, ...chunk] : [...acc, chunk];
+  }, []) : '';
 
   switch (tag) {
     // Handle html img.
-    case 'img': {
-      return this.image(h, cursor, block, token, outerClass);
-    }
+    case 'img':
+      {
+        return this.image(h, cursor, block, token, outerClass);
+      }
 
-    case 'br': {
-      return [h('span.'.concat(_config.CLASS_OR_ID.AG_HTML_TAG), [...openContent, h(tag)])];
-    }
+    case 'br':
+      {
+        return [h("span.".concat(_config.CLASS_OR_ID.AG_HTML_TAG), [...openContent, h(tag)])];
+      }
 
     default:
       // handle void html tag
       if (!closeTag) {
-        return [h('span.'.concat(_config.CLASS_OR_ID.AG_HTML_TAG), openContent)];
+        return [h("span.".concat(_config.CLASS_OR_ID.AG_HTML_TAG), openContent)];
       } else if (tag === 'ruby') {
         return this.htmlRuby(h, cursor, block, token, outerClass);
       } else {
@@ -54,13 +58,8 @@ function htmlTag(h, cursor, block, token, outerClass) {
         // Because we can not nest a block level element in span element(line is span element)
         // we also recommand user not use block level element in paragraph. use block element in html block.
         // Use code !sanitize(`<${tag}>`) to filter some malicious tags. for example: <embed>.
-        let selector =
-          _config.BLOCK_TYPE6.includes(tag) || !(0, _dompurify.default)('<'.concat(tag, '>'))
-            ? 'span'
-            : tag;
-        selector += '.'
-          .concat(_config.CLASS_OR_ID.AG_INLINE_RULE, '.')
-          .concat(_config.CLASS_OR_ID.AG_RAW_HTML);
+        let selector = _config.BLOCK_TYPE6.includes(tag) || !(0, _dompurify.default)("<".concat(tag, ">")) ? 'span' : tag;
+        selector += ".".concat(_config.CLASS_OR_ID.AG_INLINE_RULE, ".").concat(_config.CLASS_OR_ID.AG_RAW_HTML);
         const data = {
           attrs: {},
           dataset: {
@@ -77,14 +76,14 @@ function htmlTag(h, cursor, block, token, outerClass) {
         }
 
         if (attrs.id) {
-          selector += '#'.concat(attrs.id);
+          selector += "#".concat(attrs.id);
         }
 
         if (attrs.class && /\S/.test(attrs.class)) {
           const classNames = attrs.class.split(/\s+/);
 
           for (const className of classNames) {
-            selector += '.'.concat(className);
+            selector += ".".concat(className);
           }
         }
 
@@ -94,27 +93,16 @@ function htmlTag(h, cursor, block, token, outerClass) {
           }
         }
 
-        return [
-          h(
-            'span.'.concat(tagClassName, '.').concat(_config.CLASS_OR_ID.AG_OUTPUT_REMOVE),
-            {
-              attrs: {
-                spellcheck: 'false'
-              }
-            },
-            openContent
-          ),
-          h(''.concat(selector), data, anchor),
-          h(
-            'span.'.concat(tagClassName, '.').concat(_config.CLASS_OR_ID.AG_OUTPUT_REMOVE),
-            {
-              attrs: {
-                spellcheck: 'false'
-              }
-            },
-            closeContent
-          )
-        ];
+        return [h("span.".concat(tagClassName, ".").concat(_config.CLASS_OR_ID.AG_OUTPUT_REMOVE), {
+          attrs: {
+            spellcheck: 'false'
+          }
+        }, openContent), h("".concat(selector), data, anchor), h("span.".concat(tagClassName, ".").concat(_config.CLASS_OR_ID.AG_OUTPUT_REMOVE), {
+          attrs: {
+            spellcheck: 'false'
+          }
+        }, closeContent)];
       }
+
   }
 }

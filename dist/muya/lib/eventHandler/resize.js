@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
@@ -13,8 +13,7 @@ class Resize {
     this.listen();
   }
 
-  listen() {
-    // FIXME: Disabled due to #1648.
+  listen() {// FIXME: Disabled due to #1648.
     // const { codeBlockLineNumbers } = this.muya.options
     // if (!codeBlockLineNumbers) {
     //   return
@@ -29,6 +28,7 @@ class Resize {
     //   }
     // }, 300))
   }
+
 }
 
 var _default = Resize;

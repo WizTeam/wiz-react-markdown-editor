@@ -1,17 +1,15 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _baseFloat = _interopRequireDefault(require('../baseFloat'));
+var _baseFloat = _interopRequireDefault(require("../baseFloat"));
 
-var _config = require('../../config');
+var _config = require("../../config");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class BaseScrollFloat extends _baseFloat.default {
   constructor(muya, name, options = {}) {
@@ -23,7 +21,9 @@ class BaseScrollFloat extends _baseFloat.default {
   }
 
   createScrollElement() {
-    const { container } = this;
+    const {
+      container
+    } = this;
     const scrollElement = document.createElement('div');
     container.appendChild(scrollElement);
     this.scrollElement = scrollElement;
@@ -37,9 +37,12 @@ class BaseScrollFloat extends _baseFloat.default {
 
   listen() {
     super.listen();
-    const { eventCenter, container } = this.muya;
+    const {
+      eventCenter,
+      container
+    } = this.muya;
 
-    const handler = (event) => {
+    const handler = event => {
       if (!this.status || this.muya.keyboard.isComposed) return;
 
       switch (event.key) {
@@ -83,7 +86,7 @@ class BaseScrollFloat extends _baseFloat.default {
   }
 
   step(direction) {
-    let index = this.renderArray.findIndex((item) => {
+    let index = this.renderArray.findIndex(item => {
       return item === this.activeItem;
     });
     index = direction === 'next' ? index + 1 : index - 1;
@@ -99,13 +102,16 @@ class BaseScrollFloat extends _baseFloat.default {
   }
 
   selectItem(item) {
-    const { cb } = this;
+    const {
+      cb
+    } = this;
     cb(item); // delay hide to avoid dispatch enter hander
 
     setTimeout(this.hide.bind(this));
   }
 
   getItemElement() {}
+
 }
 
 var _default = BaseScrollFloat;

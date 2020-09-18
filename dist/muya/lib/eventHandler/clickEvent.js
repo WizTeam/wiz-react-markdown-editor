@@ -1,21 +1,19 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _domManipulate = require('../utils/domManipulate');
+var _domManipulate = require("../utils/domManipulate");
 
-var _getImageInfo = require('../utils/getImageInfo');
+var _getImageInfo = require("../utils/getImageInfo");
 
-var _config = require('../config');
+var _config = require("../config");
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class ClickEvent {
   constructor(muya) {
@@ -27,19 +25,29 @@ class ClickEvent {
   }
 
   contextClickBingding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const handler = (event) => {
+    const handler = event => {
       event.preventDefault();
       event.stopPropagation(); // Hide all float box and image transformer
 
-      const { keyboard } = this.muya;
+      const {
+        keyboard
+      } = this.muya;
 
       if (keyboard) {
         keyboard.hideAllFloatTools();
       }
 
-      const { start, end } = _selection.default.getCursorRange(); // Cursor out of editor
+      const {
+        start,
+        end
+      } = _selection.default.getCursorRange(); // Cursor out of editor
+
 
       if (!start || !end) {
         return;
@@ -48,12 +56,7 @@ class ClickEvent {
       const startBlock = contentState.getBlock(start.key);
       const nextTextBlock = contentState.findNextBlockInLocation(startBlock);
 
-      if (
-        nextTextBlock &&
-        nextTextBlock.key === end.key &&
-        end.offset === 0 &&
-        start.offset === startBlock.text.length
-      ) {
+      if (nextTextBlock && nextTextBlock.key === end.key && end.offset === 0 && start.offset === startBlock.text.length) {
         // Set cursor at the end of start block and reset cursor
         // Because if you right click at the end of one text block, the cursor.start will at the end of
         // start block and the cursor.end will at the next text block beginning. So we reset the cursor
@@ -80,9 +83,13 @@ class ClickEvent {
   }
 
   clickBinding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const handler = (event) => {
+    const handler = event => {
       const now = new Date().getTime();
 
       if (this.touchstartTime && now - this.touchstartTime >= 300) {
@@ -92,7 +99,9 @@ class ClickEvent {
 
       this.touchstartTime = null; //
 
-      const { target } = event; // handler table click
+      const {
+        target
+      } = event; // handler table click
 
       const toolItem = getToolItem(target);
       contentState.selectedImage = null;
@@ -108,6 +117,7 @@ class ClickEvent {
           contentState.tableToolBarClick(type);
         }
       } // Handle table drag bar click
+
 
       if (target.classList.contains('ag-drag-handler')) {
         event.preventDefault();
@@ -129,21 +139,18 @@ class ClickEvent {
         });
       } // Handle image and inline math preview click
 
+
       const markedImageText = target.previousElementSibling;
-      const mathRender = target.closest('.'.concat(_config.CLASS_OR_ID.AG_MATH_RENDER));
-      const rubyRender = target.closest('.'.concat(_config.CLASS_OR_ID.AG_RUBY_RENDER));
-      const imageWrapper = target.closest('.'.concat(_config.CLASS_OR_ID.AG_INLINE_IMAGE));
+      const mathRender = target.closest(".".concat(_config.CLASS_OR_ID.AG_MATH_RENDER));
+      const rubyRender = target.closest(".".concat(_config.CLASS_OR_ID.AG_RUBY_RENDER));
+      const imageWrapper = target.closest(".".concat(_config.CLASS_OR_ID.AG_INLINE_IMAGE));
       const codeCopy = target.closest('.ag-code-copy');
       const footnoteBackLink = target.closest('.ag-footnote-backlink');
-      const imageDelete =
-        target.closest('.ag-image-icon-delete') || target.closest('.ag-image-icon-close');
+      const imageDelete = target.closest('.ag-image-icon-delete') || target.closest('.ag-image-icon-close');
       const mathText = mathRender && mathRender.previousElementSibling;
       const rubyText = rubyRender && rubyRender.previousElementSibling;
 
-      if (
-        markedImageText &&
-        markedImageText.classList.contains(_config.CLASS_OR_ID.AG_IMAGE_MARKED_TEXT)
-      ) {
+      if (markedImageText && markedImageText.classList.contains(_config.CLASS_OR_ID.AG_IMAGE_MARKED_TEXT)) {
         eventCenter.dispatch('format-click', {
           event,
           formatType: 'image',
@@ -161,6 +168,7 @@ class ClickEvent {
         event.preventDefault();
         return this.muya.contentState.copyCodeBlock(event);
       } // Handle delete inline iamge by click delete icon.
+
 
       if (imageDelete && imageWrapper) {
         const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);
@@ -180,7 +188,7 @@ class ClickEvent {
         const identifier = figure.querySelector('span.ag-footnote-input').textContent;
 
         if (identifier) {
-          const footnoteIdentifier = document.querySelector('#noteref-'.concat(identifier));
+          const footnoteIdentifier = document.querySelector("#noteref-".concat(identifier));
 
           if (footnoteIdentifier) {
             footnoteIdentifier.scrollIntoView({
@@ -191,6 +199,7 @@ class ClickEvent {
 
         return;
       } // Handle image click, to select the current image
+
 
       if (target.tagName === 'IMG' && imageWrapper) {
         // Handle select image
@@ -213,16 +222,8 @@ class ClickEvent {
         });
         contentState.selectImage(imageInfo); // Handle show image transformer
 
-        const imageSelector =
-          imageInfo.imageId.indexOf('_') > -1
-            ? '#'.concat(imageInfo.imageId)
-            : '#'
-                .concat(imageInfo.key, '_')
-                .concat(imageInfo.imageId, '_')
-                .concat(imageInfo.token.range.start);
-        const imageContainer = document.querySelector(
-          ''.concat(imageSelector, ' .ag-image-container')
-        );
+        const imageSelector = imageInfo.imageId.indexOf('_') > -1 ? "#".concat(imageInfo.imageId) : "#".concat(imageInfo.key, "_").concat(imageInfo.imageId, "_").concat(imageInfo.token.range.start);
+        const imageContainer = document.querySelector("".concat(imageSelector, " .ag-image-container"));
         eventCenter.dispatch('muya-transformer', {
           reference: imageContainer,
           imageInfo
@@ -230,16 +231,14 @@ class ClickEvent {
         return;
       } // Handle click imagewrapper when it's empty or image load failed.
 
-      if (
-        imageWrapper &&
-        (imageWrapper.classList.contains('ag-empty-image') ||
-          imageWrapper.classList.contains('ag-image-fail'))
-      ) {
+
+      if (imageWrapper && (imageWrapper.classList.contains('ag-empty-image') || imageWrapper.classList.contains('ag-image-fail'))) {
         const rect = imageWrapper.getBoundingClientRect();
         const reference = {
           getBoundingClientRect() {
             return rect;
           }
+
         };
         const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);
         eventCenter.dispatch('muya-image-selector', {
@@ -263,6 +262,7 @@ class ClickEvent {
         return;
       } // handler container preview click
 
+
       const editIcon = target.closest('.ag-container-icon');
 
       if (editIcon) {
@@ -274,17 +274,15 @@ class ClickEvent {
         }
       } // handler to-do checkbox click
 
-      if (
-        target.tagName === 'INPUT' &&
-        target.classList.contains(_config.CLASS_OR_ID.AG_TASK_LIST_ITEM_CHECKBOX)
-      ) {
+
+      if (target.tagName === 'INPUT' && target.classList.contains(_config.CLASS_OR_ID.AG_TASK_LIST_ITEM_CHECKBOX)) {
         contentState.listItemCheckBoxClick(target);
       }
 
       contentState.clickHandler(event);
     };
 
-    const handleTouchEnd = (event) => {
+    const handleTouchEnd = event => {
       const now = new Date().getTime();
 
       if (this.touchstartTime && now - this.touchstartTime >= 300) {
@@ -294,7 +292,9 @@ class ClickEvent {
 
       this.touchstartTime = null; //
 
-      const { target } = event; // Handle table drag bar click
+      const {
+        target
+      } = event; // Handle table drag bar click
 
       if (target.classList.contains('ag-drag-handler')) {
         event.preventDefault();
@@ -322,14 +322,19 @@ class ClickEvent {
   }
 
   touchBinding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const handler = (event) => {
+    const handler = event => {
       this.touchstartTime = new Date().getTime();
     };
 
     eventCenter.attachDOMEvent(container, 'touchstart', handler);
   }
+
 }
 
 function getToolItem(target) {
@@ -341,13 +346,10 @@ function selectionText(node) {
   (0, _domManipulate.operateClassName)(node, 'remove', _config.CLASS_OR_ID.AG_HIDE);
   (0, _domManipulate.operateClassName)(node, 'add', _config.CLASS_OR_ID.AG_GRAY);
 
-  _selection.default.importSelection(
-    {
-      start: textLen,
-      end: textLen
-    },
-    node
-  );
+  _selection.default.importSelection({
+    start: textLen,
+    end: textLen
+  }, node);
 }
 
 var _default = ClickEvent;

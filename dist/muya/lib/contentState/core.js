@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-const coreApi = (ContentState) => {
+const coreApi = ContentState => {
   /**
    * Replace the word range with the given replacement.
    *
@@ -17,38 +17,37 @@ const coreApi = (ContentState) => {
    * @param {string} replacement The replacement.
    * @param {boolean} setCursor Shoud we update the editor cursor?
    */
-  ContentState.prototype.replaceWordInline = function (
-    line,
-    wordCursor,
-    replacement,
-    setCursor = false
-  ) {
-    const { start: lineStart, end: lineEnd } = line;
-    const { start: wordStart, end: wordEnd } = wordCursor; // Validate cursor ranges.
+  ContentState.prototype.replaceWordInline = function (line, wordCursor, replacement, setCursor = false) {
+    const {
+      start: lineStart,
+      end: lineEnd
+    } = line;
+    const {
+      start: wordStart,
+      end: wordEnd
+    } = wordCursor; // Validate cursor ranges.
 
     if (wordStart.key !== wordEnd.key) {
       throw new Error('Expect a single line word cursor: "start.key" is not equal to "end.key".');
     } else if (lineStart.key !== lineEnd.key) {
       throw new Error('Expect a single line line cursor: "start.key" is not equal to "end.key".');
     } else if (wordStart.offset > wordEnd.offset) {
-      throw new Error(
-        'Invalid word cursor offset: '
-          .concat(wordStart.offset, ' should be less ')
-          .concat(wordEnd.offset, '.')
-      );
+      throw new Error("Invalid word cursor offset: ".concat(wordStart.offset, " should be less ").concat(wordEnd.offset, "."));
     } else if (lineStart.key !== wordEnd.key) {
-      throw new Error(
-        'Cursor mismatch: Expect the same line but got '
-          .concat(lineStart.key, ' and ')
-          .concat(wordEnd.key, '.')
-      );
+      throw new Error("Cursor mismatch: Expect the same line but got ".concat(lineStart.key, " and ").concat(wordEnd.key, "."));
     } else if (lineStart.block.text.length < wordEnd.offset) {
       throw new Error('Invalid cursor: Replacement length is larger than line length.');
     }
 
-    const { block } = lineStart;
-    const { offset: left } = wordStart;
-    const { offset: right } = wordEnd; // Replace word range with replacement.
+    const {
+      block
+    } = lineStart;
+    const {
+      offset: left
+    } = wordStart;
+    const {
+      offset: right
+    } = wordEnd; // Replace word range with replacement.
 
     block.text = block.text.substr(0, left) + replacement + block.text.substr(right); // Update cursor
 

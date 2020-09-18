@@ -1,21 +1,28 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-const tocCtrl = (ContentState) => {
+const tocCtrl = ContentState => {
   ContentState.prototype.getTOC = function () {
-    const { blocks } = this;
+    const {
+      blocks
+    } = this;
     const toc = [];
 
     for (const block of blocks) {
       if (/^h\d$/.test(block.type)) {
-        const { headingStyle, key, type } = block;
-        const { text } = block.children[0];
-        const content =
-          headingStyle === 'setext' ? text.trim() : text.replace(/^ *#{1,6} {1,}/, '').trim();
+        const {
+          headingStyle,
+          key,
+          type
+        } = block;
+        const {
+          text
+        } = block.children[0];
+        const content = headingStyle === 'setext' ? text.trim() : text.replace(/^ *#{1,6} {1,}/, '').trim();
         const lvl = +type.substring(1);
         const slug = key;
         toc.push({

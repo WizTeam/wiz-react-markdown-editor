@@ -1,68 +1,31 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _render = _interopRequireDefault(require('../parser/render'));
+var _render = _interopRequireDefault(require("../parser/render"));
 
-var _parser = require('../parser');
+var _parser = require("../parser");
 
-var _utils = require('../utils');
+var _utils = require("../utils");
 
-var _marked = require('../parser/marked');
+var _marked = require("../parser/marked");
 
-var _exportMarkdown = _interopRequireDefault(require('./exportMarkdown'));
+var _exportMarkdown = _interopRequireDefault(require("./exportMarkdown"));
 
-var _turndownService = _interopRequireWildcard(require('./turndownService'));
+var _turndownService = _interopRequireWildcard(require("./turndownService"));
 
-var _index = require('../prism/index');
+var _index = require("../prism/index");
 
-var _config = require('../config');
+var _config = require("../config");
 
-function _getRequireWildcardCache() {
-  if (typeof WeakMap !== 'function') return null;
-  var cache = new WeakMap();
-  _getRequireWildcardCache = function () {
-    return cache;
-  };
-  return cache;
-}
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  }
-  if (obj === null || (typeof obj !== 'object' && typeof obj !== 'function')) {
-    return { default: obj };
-  }
-  var cache = _getRequireWildcardCache();
-  if (cache && cache.has(obj)) {
-    return cache.get(obj);
-  }
-  var newObj = {};
-  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-  for (var key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-      if (desc && (desc.get || desc.set)) {
-        Object.defineProperty(newObj, key, desc);
-      } else {
-        newObj[key] = obj[key];
-      }
-    }
-  }
-  newObj.default = obj;
-  if (cache) {
-    cache.set(obj, newObj);
-  }
-  return newObj;
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * translate markdown format to content state used by Mark Text
@@ -71,25 +34,23 @@ function _interopRequireDefault(obj) {
  */
 // To be disabled rules when parse markdown, Because content state don't need to parse inline rules
 // Just because turndown change `\n`(soft line break) to space, So we add `span.ag-soft-line-break` to workaround.
-const turnSoftBreakToSpan = (html) => {
+const turnSoftBreakToSpan = html => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString('<x-mt id="turn-root">'.concat(html, '</x-mt>'), 'text/html');
+  const doc = parser.parseFromString("<x-mt id=\"turn-root\">".concat(html, "</x-mt>"), 'text/html');
   const root = doc.querySelector('#turn-root');
 
-  const travel = (childNodes) => {
+  const travel = childNodes => {
     for (const node of childNodes) {
       if (node.nodeType === 3 && node.parentNode.tagName !== 'CODE') {
         let startLen = 0;
         let endLen = 0;
-        const text = node.nodeValue
-          .replace(/^(\n+)/, (_, p) => {
-            startLen = p.length;
-            return '';
-          })
-          .replace(/(\n+)$/, (_, p) => {
-            endLen = p.length;
-            return '';
-          });
+        const text = node.nodeValue.replace(/^(\n+)/, (_, p) => {
+          startLen = p.length;
+          return '';
+        }).replace(/(\n+)$/, (_, p) => {
+          endLen = p.length;
+          return '';
+        });
 
         if (/\n/.test(text)) {
           const tokens = text.split('\n');
@@ -127,7 +88,7 @@ const turnSoftBreakToSpan = (html) => {
   return root.innerHTML.trim();
 };
 
-const importRegister = (ContentState) => {
+const importRegister = ContentState => {
   // turn markdown to blocks
   ContentState.prototype.markdownToState = function (markdown) {
     // mock a root block...
@@ -140,7 +101,10 @@ const importRegister = (ContentState) => {
       nextSibling: null,
       children: []
     };
-    const { trimUnnecessaryCodeBlockEmptyLines, footnote } = this.muya.options;
+    const {
+      trimUnnecessaryCodeBlockEmptyLines,
+      footnote
+    } = this.muya.options;
     const tokens = new _marked.Lexer({
       disableInline: true,
       footnote
@@ -151,89 +115,19 @@ const importRegister = (ContentState) => {
     const parentList = [rootState];
     const languageLoaded = new Set();
 
-    while ((token = tokens.shift())) {
+    while (token = tokens.shift()) {
       switch (token.type) {
-        case 'frontmatter': {
-          const { lang, style } = token;
-          value = token.text.replace(/^\s+/, '').replace(/\s$/, '');
-          block = this.createBlock('pre', {
-            functionType: token.type,
-            lang,
-            style
-          });
-          const codeBlock = this.createBlock('code', {
-            lang
-          });
-          const codeContent = this.createBlock('span', {
-            text: value,
-            lang,
-            functionType: 'codeContent'
-          });
-          this.appendChild(codeBlock, codeContent);
-          this.appendChild(block, codeBlock);
-          this.appendChild(parentList[0], block);
-          break;
-        }
-
-        case 'hr': {
-          value = token.marker;
-          block = this.createBlock('hr');
-          const thematicBreakContent = this.createBlock('span', {
-            text: value,
-            functionType: 'thematicBreakLine'
-          });
-          this.appendChild(block, thematicBreakContent);
-          this.appendChild(parentList[0], block);
-          break;
-        }
-
-        case 'heading': {
-          const { headingStyle, depth, text, marker } = token;
-          value = headingStyle === 'atx' ? '#'.repeat(+depth) + ' '.concat(text) : text;
-          block = this.createBlock('h'.concat(depth), {
-            headingStyle
-          });
-          const headingContent = this.createBlock('span', {
-            text: value,
-            functionType: headingStyle === 'atx' ? 'atxLine' : 'paragraphContent'
-          });
-          this.appendChild(block, headingContent);
-
-          if (marker) {
-            block.marker = marker;
-          }
-
-          this.appendChild(parentList[0], block);
-          break;
-        }
-
-        case 'multiplemath': {
-          value = token.text;
-          block = this.createContainerBlock(token.type, value);
-          this.appendChild(parentList[0], block);
-          break;
-        }
-
-        case 'code': {
-          const { codeBlockStyle, text, lang: infostring = '' } = token; // GH#697, markedjs#1387
-
-          const lang = (infostring || '').match(/\S*/)[0];
-          value = text; // Fix: #1265.
-
-          if (
-            trimUnnecessaryCodeBlockEmptyLines &&
-            (value.endsWith('\n') || value.startsWith('\n'))
-          ) {
-            value = value.replace(/\n+$/, '').replace(/^\n+/, '');
-          }
-
-          if (/mermaid|flowchart|vega-lite|sequence/.test(lang)) {
-            block = this.createContainerBlock(lang, value);
-            this.appendChild(parentList[0], block);
-          } else {
+        case 'frontmatter':
+          {
+            const {
+              lang,
+              style
+            } = token;
+            value = token.text.replace(/^\s+/, '').replace(/\s$/, '');
             block = this.createBlock('pre', {
-              functionType: codeBlockStyle === 'fenced' ? 'fencecode' : 'indentcode',
-              lang
+              functionType: token.type,
+              lang,
+              style
             });
             const codeBlock = this.createBlock('code', {
               lang
@@ -243,249 +137,359 @@ const importRegister = (ContentState) => {
               lang,
               functionType: 'codeContent'
             });
-            const inputBlock = this.createBlock('span', {
-              text: lang,
-              functionType: 'languageInput'
-            });
+            this.appendChild(codeBlock, codeContent);
+            this.appendChild(block, codeBlock);
+            this.appendChild(parentList[0], block);
+            break;
+          }
 
-            if (lang && !languageLoaded.has(lang)) {
-              languageLoaded.add(lang);
-              (0, _index.loadLanguage)(lang)
-                .then((infoList) => {
+        case 'hr':
+          {
+            value = token.marker;
+            block = this.createBlock('hr');
+            const thematicBreakContent = this.createBlock('span', {
+              text: value,
+              functionType: 'thematicBreakLine'
+            });
+            this.appendChild(block, thematicBreakContent);
+            this.appendChild(parentList[0], block);
+            break;
+          }
+
+        case 'heading':
+          {
+            const {
+              headingStyle,
+              depth,
+              text,
+              marker
+            } = token;
+            value = headingStyle === 'atx' ? '#'.repeat(+depth) + " ".concat(text) : text;
+            block = this.createBlock("h".concat(depth), {
+              headingStyle
+            });
+            const headingContent = this.createBlock('span', {
+              text: value,
+              functionType: headingStyle === 'atx' ? 'atxLine' : 'paragraphContent'
+            });
+            this.appendChild(block, headingContent);
+
+            if (marker) {
+              block.marker = marker;
+            }
+
+            this.appendChild(parentList[0], block);
+            break;
+          }
+
+        case 'multiplemath':
+          {
+            value = token.text;
+            block = this.createContainerBlock(token.type, value);
+            this.appendChild(parentList[0], block);
+            break;
+          }
+
+        case 'code':
+          {
+            const {
+              codeBlockStyle,
+              text,
+              lang: infostring = ''
+            } = token; // GH#697, markedjs#1387
+
+            const lang = (infostring || '').match(/\S*/)[0];
+            value = text; // Fix: #1265.
+
+            if (trimUnnecessaryCodeBlockEmptyLines && (value.endsWith('\n') || value.startsWith('\n'))) {
+              value = value.replace(/\n+$/, '').replace(/^\n+/, '');
+            }
+
+            if (/mermaid|flowchart|vega-lite|sequence/.test(lang)) {
+              block = this.createContainerBlock(lang, value);
+              this.appendChild(parentList[0], block);
+            } else {
+              block = this.createBlock('pre', {
+                functionType: codeBlockStyle === 'fenced' ? 'fencecode' : 'indentcode',
+                lang
+              });
+              const codeBlock = this.createBlock('code', {
+                lang
+              });
+              const codeContent = this.createBlock('span', {
+                text: value,
+                lang,
+                functionType: 'codeContent'
+              });
+              const inputBlock = this.createBlock('span', {
+                text: lang,
+                functionType: 'languageInput'
+              });
+
+              if (lang && !languageLoaded.has(lang)) {
+                languageLoaded.add(lang);
+                (0, _index.loadLanguage)(lang).then(infoList => {
                   if (!Array.isArray(infoList)) return; // There are three status `loaded`, `noexist` and `cached`.
                   // if the status is `loaded`, indicated that it's a new loaded language
 
-                  const needRender = infoList.some(({ status }) => status === 'loaded');
+                  const needRender = infoList.some(({
+                    status
+                  }) => status === 'loaded');
 
                   if (needRender) {
                     this.render();
                   }
-                })
-                .catch((err) => {
+                }).catch(err => {
                   // if no parameter provided, will cause error.
                   console.warn(err);
                 });
+              }
+
+              this.appendChild(codeBlock, codeContent);
+              this.appendChild(block, inputBlock);
+              this.appendChild(block, codeBlock);
+              this.appendChild(parentList[0], block);
             }
 
-            this.appendChild(codeBlock, codeContent);
-            this.appendChild(block, inputBlock);
-            this.appendChild(block, codeBlock);
-            this.appendChild(parentList[0], block);
+            break;
           }
 
-          break;
-        }
+        case 'table':
+          {
+            const {
+              header,
+              align,
+              cells
+            } = token;
+            const table = this.createBlock('table');
+            const thead = this.createBlock('thead');
+            const tbody = this.createBlock('tbody');
+            const theadRow = this.createBlock('tr');
 
-        case 'table': {
-          const { header, align, cells } = token;
-          const table = this.createBlock('table');
-          const thead = this.createBlock('thead');
-          const tbody = this.createBlock('tbody');
-          const theadRow = this.createBlock('tr');
+            const restoreTableEscapeCharacters = text => {
+              // NOTE: markedjs replaces all escaped "|" ("\|") characters inside a cell with "|".
+              //       We have to re-escape the chraracter to not break the table.
+              return text.replace(/\|/g, '\\|');
+            };
 
-          const restoreTableEscapeCharacters = (text) => {
-            // NOTE: markedjs replaces all escaped "|" ("\|") characters inside a cell with "|".
-            //       We have to re-escape the chraracter to not break the table.
-            return text.replace(/\|/g, '\\|');
-          };
+            let i;
+            let j;
+            const headerLen = header.length;
 
-          let i;
-          let j;
-          const headerLen = header.length;
-
-          for (i = 0; i < headerLen; i++) {
-            const headText = header[i];
-            const th = this.createBlock('th', {
-              align: align[i] || '',
-              column: i
-            });
-            const cellContent = this.createBlock('span', {
-              text: restoreTableEscapeCharacters(headText),
-              functionType: 'cellContent'
-            });
-            this.appendChild(th, cellContent);
-            this.appendChild(theadRow, th);
-          }
-
-          const rowLen = cells.length;
-
-          for (i = 0; i < rowLen; i++) {
-            const rowBlock = this.createBlock('tr');
-            const rowContents = cells[i];
-            const colLen = rowContents.length;
-
-            for (j = 0; j < colLen; j++) {
-              const cell = rowContents[j];
-              const td = this.createBlock('td', {
-                align: align[j] || '',
-                column: j
+            for (i = 0; i < headerLen; i++) {
+              const headText = header[i];
+              const th = this.createBlock('th', {
+                align: align[i] || '',
+                column: i
               });
               const cellContent = this.createBlock('span', {
-                text: restoreTableEscapeCharacters(cell),
+                text: restoreTableEscapeCharacters(headText),
                 functionType: 'cellContent'
               });
-              this.appendChild(td, cellContent);
-              this.appendChild(rowBlock, td);
+              this.appendChild(th, cellContent);
+              this.appendChild(theadRow, th);
             }
 
-            this.appendChild(tbody, rowBlock);
+            const rowLen = cells.length;
+
+            for (i = 0; i < rowLen; i++) {
+              const rowBlock = this.createBlock('tr');
+              const rowContents = cells[i];
+              const colLen = rowContents.length;
+
+              for (j = 0; j < colLen; j++) {
+                const cell = rowContents[j];
+                const td = this.createBlock('td', {
+                  align: align[j] || '',
+                  column: j
+                });
+                const cellContent = this.createBlock('span', {
+                  text: restoreTableEscapeCharacters(cell),
+                  functionType: 'cellContent'
+                });
+                this.appendChild(td, cellContent);
+                this.appendChild(rowBlock, td);
+              }
+
+              this.appendChild(tbody, rowBlock);
+            }
+
+            Object.assign(table, {
+              row: cells.length,
+              column: header.length - 1
+            }); // set row and column
+
+            block = this.createBlock('figure');
+            block.functionType = 'table';
+            this.appendChild(thead, theadRow);
+            this.appendChild(block, table);
+            this.appendChild(table, thead);
+
+            if (tbody.children.length) {
+              this.appendChild(table, tbody);
+            }
+
+            this.appendChild(parentList[0], block);
+            break;
           }
 
-          Object.assign(table, {
-            row: cells.length,
-            column: header.length - 1
-          }); // set row and column
+        case 'html':
+          {
+            const text = token.text.trim(); // TODO: Treat html block which only contains one img as paragraph, we maybe add image block in the future.
 
-          block = this.createBlock('figure');
-          block.functionType = 'table';
-          this.appendChild(thead, theadRow);
-          this.appendChild(block, table);
-          this.appendChild(table, thead);
+            const isSingleImage = /^<img[^<>]+>$/.test(text);
 
-          if (tbody.children.length) {
-            this.appendChild(table, tbody);
+            if (isSingleImage) {
+              block = this.createBlock('p');
+              const contentBlock = this.createBlock('span', {
+                text
+              });
+              this.appendChild(block, contentBlock);
+              this.appendChild(parentList[0], block);
+            } else {
+              block = this.createHtmlBlock(text);
+              this.appendChild(parentList[0], block);
+            }
+
+            break;
           }
 
-          this.appendChild(parentList[0], block);
-          break;
-        }
+        case 'text':
+          {
+            value = token.text;
 
-        case 'html': {
-          const text = token.text.trim(); // TODO: Treat html block which only contains one img as paragraph, we maybe add image block in the future.
+            while (tokens[0].type === 'text') {
+              token = tokens.shift();
+              value += "\n".concat(token.text);
+            }
 
-          const isSingleImage = /^<img[^<>]+>$/.test(text);
-
-          if (isSingleImage) {
             block = this.createBlock('p');
             const contentBlock = this.createBlock('span', {
-              text
+              text: value
             });
             this.appendChild(block, contentBlock);
             this.appendChild(parentList[0], block);
-          } else {
-            block = this.createHtmlBlock(text);
+            break;
+          }
+
+        case 'paragraph':
+          {
+            value = token.text;
+            block = this.createBlock('p');
+            const contentBlock = this.createBlock('span', {
+              text: value
+            });
+            this.appendChild(block, contentBlock);
             this.appendChild(parentList[0], block);
+            break;
           }
 
-          break;
-        }
-
-        case 'text': {
-          value = token.text;
-
-          while (tokens[0].type === 'text') {
-            token = tokens.shift();
-            value += '\n'.concat(token.text);
+        case 'blockquote_start':
+          {
+            block = this.createBlock('blockquote');
+            this.appendChild(parentList[0], block);
+            parentList.unshift(block);
+            break;
           }
 
-          block = this.createBlock('p');
-          const contentBlock = this.createBlock('span', {
-            text: value
-          });
-          this.appendChild(block, contentBlock);
-          this.appendChild(parentList[0], block);
-          break;
-        }
+        case 'blockquote_end':
+          {
+            // Fix #1735 the blockquote maybe empty.
+            if (parentList[0].children.length === 0) {
+              const paragraphBlock = this.createBlockP();
+              this.appendChild(parentList[0], paragraphBlock);
+            }
 
-        case 'paragraph': {
-          value = token.text;
-          block = this.createBlock('p');
-          const contentBlock = this.createBlock('span', {
-            text: value
-          });
-          this.appendChild(block, contentBlock);
-          this.appendChild(parentList[0], block);
-          break;
-        }
-
-        case 'blockquote_start': {
-          block = this.createBlock('blockquote');
-          this.appendChild(parentList[0], block);
-          parentList.unshift(block);
-          break;
-        }
-
-        case 'blockquote_end': {
-          // Fix #1735 the blockquote maybe empty.
-          if (parentList[0].children.length === 0) {
-            const paragraphBlock = this.createBlockP();
-            this.appendChild(parentList[0], paragraphBlock);
+            parentList.shift();
+            break;
           }
 
-          parentList.shift();
-          break;
-        }
-
-        case 'footnote_start': {
-          block = this.createBlock('figure', {
-            functionType: 'footnote'
-          });
-          const identifierInput = this.createBlock('span', {
-            text: token.identifier,
-            functionType: 'footnoteInput'
-          });
-          this.appendChild(block, identifierInput);
-          this.appendChild(parentList[0], block);
-          parentList.unshift(block);
-          break;
-        }
-
-        case 'footnote_end': {
-          parentList.shift();
-          break;
-        }
-
-        case 'list_start': {
-          const { ordered, listType, start } = token;
-          block = this.createBlock(ordered === true ? 'ol' : 'ul');
-          block.listType = listType;
-
-          if (listType === 'order') {
-            block.start = /^\d+$/.test(start) ? start : 1;
+        case 'footnote_start':
+          {
+            block = this.createBlock('figure', {
+              functionType: 'footnote'
+            });
+            const identifierInput = this.createBlock('span', {
+              text: token.identifier,
+              functionType: 'footnoteInput'
+            });
+            this.appendChild(block, identifierInput);
+            this.appendChild(parentList[0], block);
+            parentList.unshift(block);
+            break;
           }
 
-          this.appendChild(parentList[0], block);
-          parentList.unshift(block);
-          break;
-        }
+        case 'footnote_end':
+          {
+            parentList.shift();
+            break;
+          }
 
-        case 'list_end': {
-          parentList.shift();
-          break;
-        }
+        case 'list_start':
+          {
+            const {
+              ordered,
+              listType,
+              start
+            } = token;
+            block = this.createBlock(ordered === true ? 'ol' : 'ul');
+            block.listType = listType;
+
+            if (listType === 'order') {
+              block.start = /^\d+$/.test(start) ? start : 1;
+            }
+
+            this.appendChild(parentList[0], block);
+            parentList.unshift(block);
+            break;
+          }
+
+        case 'list_end':
+          {
+            parentList.shift();
+            break;
+          }
 
         case 'loose_item_start':
-        case 'list_item_start': {
-          const { listItemType, bulletMarkerOrDelimiter, checked, type } = token;
-          block = this.createBlock('li', {
-            listItemType: checked !== undefined ? 'task' : listItemType,
-            bulletMarkerOrDelimiter,
-            isLooseListItem: type === 'loose_item_start'
-          });
-
-          if (checked !== undefined) {
-            const input = this.createBlock('input', {
-              checked
+        case 'list_item_start':
+          {
+            const {
+              listItemType,
+              bulletMarkerOrDelimiter,
+              checked,
+              type
+            } = token;
+            block = this.createBlock('li', {
+              listItemType: checked !== undefined ? 'task' : listItemType,
+              bulletMarkerOrDelimiter,
+              isLooseListItem: type === 'loose_item_start'
             });
-            this.appendChild(block, input);
+
+            if (checked !== undefined) {
+              const input = this.createBlock('input', {
+                checked
+              });
+              this.appendChild(block, input);
+            }
+
+            this.appendChild(parentList[0], block);
+            parentList.unshift(block);
+            break;
           }
 
-          this.appendChild(parentList[0], block);
-          parentList.unshift(block);
-          break;
-        }
+        case 'list_item_end':
+          {
+            parentList.shift();
+            break;
+          }
 
-        case 'list_item_end': {
-          parentList.shift();
-          break;
-        }
-
-        case 'space': {
-          break;
-        }
+        case 'space':
+          {
+            break;
+          }
 
         default:
-          console.warn('Unknown type '.concat(token.type));
+          console.warn("Unknown type ".concat(token.type));
           break;
       }
     }
@@ -496,7 +500,9 @@ const importRegister = (ContentState) => {
 
   ContentState.prototype.htmlToMarkdown = function (html, keeps = []) {
     // turn html to markdown
-    const { turndownConfig } = this;
+    const {
+      turndownConfig
+    } = this;
     const turndownService = new _turndownService.default(turndownConfig);
     (0, _turndownService.usePluginAddRules)(turndownService, keeps); // fix #752, but I don't know why the &nbsp; vanlished.
 
@@ -506,6 +512,7 @@ const importRegister = (ContentState) => {
     return markdown;
   }; // turn html to blocks
 
+
   ContentState.prototype.html2State = function (html) {
     const markdown = this.htmlToMarkdown(html, ['ruby', 'rt', 'u', 'br']);
     return this.markdownToState(markdown);
@@ -513,11 +520,18 @@ const importRegister = (ContentState) => {
 
   ContentState.prototype.getCodeMirrorCursor = function () {
     const blocks = this.getBlocks();
-    const { anchor, focus } = this.cursor;
+    const {
+      anchor,
+      focus
+    } = this.cursor;
     const anchorBlock = this.getBlock(anchor.key);
     const focusBlock = this.getBlock(focus.key);
-    const { text: anchorText } = anchorBlock;
-    const { text: focusText } = focusBlock;
+    const {
+      text: anchorText
+    } = anchorBlock;
+    const {
+      text: focusText
+    } = focusBlock;
 
     if (anchor.key === focus.key) {
       const minOffset = Math.min(anchor.offset, focus.offset);
@@ -525,75 +539,61 @@ const importRegister = (ContentState) => {
       const firstTextPart = anchorText.substring(0, minOffset);
       const secondTextPart = anchorText.substring(minOffset, maxOffset);
       const thirdTextPart = anchorText.substring(maxOffset);
-      anchorBlock.text =
-        firstTextPart +
-        (anchor.offset <= focus.offset ? _config.CURSOR_ANCHOR_DNA : _config.CURSOR_FOCUS_DNA) +
-        secondTextPart +
-        (anchor.offset <= focus.offset ? _config.CURSOR_FOCUS_DNA : _config.CURSOR_ANCHOR_DNA) +
-        thirdTextPart;
+      anchorBlock.text = firstTextPart + (anchor.offset <= focus.offset ? _config.CURSOR_ANCHOR_DNA : _config.CURSOR_FOCUS_DNA) + secondTextPart + (anchor.offset <= focus.offset ? _config.CURSOR_FOCUS_DNA : _config.CURSOR_ANCHOR_DNA) + thirdTextPart;
     } else {
-      anchorBlock.text =
-        anchorText.substring(0, anchor.offset) +
-        _config.CURSOR_ANCHOR_DNA +
-        anchorText.substring(anchor.offset);
-      focusBlock.text =
-        focusText.substring(0, focus.offset) +
-        _config.CURSOR_FOCUS_DNA +
-        focusText.substring(focus.offset);
+      anchorBlock.text = anchorText.substring(0, anchor.offset) + _config.CURSOR_ANCHOR_DNA + anchorText.substring(anchor.offset);
+      focusBlock.text = focusText.substring(0, focus.offset) + _config.CURSOR_FOCUS_DNA + focusText.substring(focus.offset);
     }
 
     const listIndentation = this.listIndentation;
     const markdown = new _exportMarkdown.default(blocks, listIndentation).generate();
-    const cursor = markdown.split('\n').reduce(
-      (acc, line, index) => {
-        const ach = line.indexOf(_config.CURSOR_ANCHOR_DNA);
-        const fch = line.indexOf(_config.CURSOR_FOCUS_DNA);
+    const cursor = markdown.split('\n').reduce((acc, line, index) => {
+      const ach = line.indexOf(_config.CURSOR_ANCHOR_DNA);
+      const fch = line.indexOf(_config.CURSOR_FOCUS_DNA);
 
-        if (ach > -1 && fch > -1) {
-          if (ach <= fch) {
-            Object.assign(acc.anchor, {
-              line: index,
-              ch: ach
-            });
-            Object.assign(acc.focus, {
-              line: index,
-              ch: fch - _config.CURSOR_ANCHOR_DNA.length
-            });
-          } else {
-            Object.assign(acc.focus, {
-              line: index,
-              ch: fch
-            });
-            Object.assign(acc.anchor, {
-              line: index,
-              ch: ach - _config.CURSOR_FOCUS_DNA.length
-            });
-          }
-        } else if (ach > -1) {
+      if (ach > -1 && fch > -1) {
+        if (ach <= fch) {
           Object.assign(acc.anchor, {
             line: index,
             ch: ach
           });
-        } else if (fch > -1) {
+          Object.assign(acc.focus, {
+            line: index,
+            ch: fch - _config.CURSOR_ANCHOR_DNA.length
+          });
+        } else {
           Object.assign(acc.focus, {
             line: index,
             ch: fch
           });
+          Object.assign(acc.anchor, {
+            line: index,
+            ch: ach - _config.CURSOR_FOCUS_DNA.length
+          });
         }
-
-        return acc;
-      },
-      {
-        anchor: {
-          line: 0,
-          ch: 0
-        },
-        focus: {
-          line: 0,
-          ch: 0
-        }
+      } else if (ach > -1) {
+        Object.assign(acc.anchor, {
+          line: index,
+          ch: ach
+        });
+      } else if (fch > -1) {
+        Object.assign(acc.focus, {
+          line: index,
+          ch: fch
+        });
       }
-    ); // remove CURSOR_FOCUS_DNA and CURSOR_ANCHOR_DNA
+
+      return acc;
+    }, {
+      anchor: {
+        line: 0,
+        ch: 0
+      },
+      focus: {
+        line: 0,
+        ch: 0
+      }
+    }); // remove CURSOR_FOCUS_DNA and CURSOR_ANCHOR_DNA
 
     anchorBlock.text = anchorText;
     focusBlock.text = focusText;
@@ -601,7 +601,10 @@ const importRegister = (ContentState) => {
   };
 
   ContentState.prototype.addCursorToMarkdown = function (markdown, cursor) {
-    const { anchor, focus } = cursor;
+    const {
+      anchor,
+      focus
+    } = cursor;
 
     if (!anchor || !focus) {
       return;
@@ -624,19 +627,10 @@ const importRegister = (ContentState) => {
       const firstTextPart = anchorText.substring(0, minOffset);
       const secondTextPart = anchorText.substring(minOffset, maxOffset);
       const thirdTextPart = anchorText.substring(maxOffset);
-      lines[anchor.line] =
-        firstTextPart +
-        (anchor.ch <= focus.ch ? _config.CURSOR_ANCHOR_DNA : _config.CURSOR_FOCUS_DNA) +
-        secondTextPart +
-        (anchor.ch <= focus.ch ? _config.CURSOR_FOCUS_DNA : _config.CURSOR_ANCHOR_DNA) +
-        thirdTextPart;
+      lines[anchor.line] = firstTextPart + (anchor.ch <= focus.ch ? _config.CURSOR_ANCHOR_DNA : _config.CURSOR_FOCUS_DNA) + secondTextPart + (anchor.ch <= focus.ch ? _config.CURSOR_FOCUS_DNA : _config.CURSOR_ANCHOR_DNA) + thirdTextPart;
     } else {
-      lines[anchor.line] =
-        anchorText.substring(0, anchor.ch) +
-        _config.CURSOR_ANCHOR_DNA +
-        anchorText.substring(anchor.ch);
-      lines[focus.line] =
-        focusText.substring(0, focus.ch) + _config.CURSOR_FOCUS_DNA + focusText.substring(focus.ch);
+      lines[anchor.line] = anchorText.substring(0, anchor.ch) + _config.CURSOR_ANCHOR_DNA + anchorText.substring(anchor.ch);
+      lines[focus.line] = focusText.substring(0, focus.ch) + _config.CURSOR_FOCUS_DNA + focusText.substring(focus.ch);
     }
 
     return {
@@ -653,16 +647,20 @@ const importRegister = (ContentState) => {
     };
     let count = 0;
 
-    const travel = (blocks) => {
+    const travel = blocks => {
       for (const block of blocks) {
-        let { key, text, children, editable } = block;
+        let {
+          key,
+          text,
+          children,
+          editable
+        } = block;
 
         if (text) {
           const offset = text.indexOf(_config.CURSOR_ANCHOR_DNA);
 
           if (offset > -1) {
-            block.text =
-              text.substring(0, offset) + text.substring(offset + _config.CURSOR_ANCHOR_DNA.length);
+            block.text = text.substring(0, offset) + text.substring(offset + _config.CURSOR_ANCHOR_DNA.length);
             text = block.text;
             count++;
 
@@ -677,9 +675,7 @@ const importRegister = (ContentState) => {
           const focusOffset = text.indexOf(_config.CURSOR_FOCUS_DNA);
 
           if (focusOffset > -1) {
-            block.text =
-              text.substring(0, focusOffset) +
-              text.substring(focusOffset + _config.CURSOR_FOCUS_DNA.length);
+            block.text = text.substring(0, focusOffset) + text.substring(focusOffset + _config.CURSOR_FOCUS_DNA.length);
             count++;
 
             if (editable) {
@@ -730,18 +726,29 @@ const importRegister = (ContentState) => {
     const render = new _render.default(this.muya);
     render.collectLabels(blocks);
 
-    const travelToken = (token) => {
-      const { type, attrs, children, tag, label, backlash } = token;
+    const travelToken = token => {
+      const {
+        type,
+        attrs,
+        children,
+        tag,
+        label,
+        backlash
+      } = token;
 
-      if (/reference_image|image/.test(type) || (type === 'html_tag' && tag === 'img')) {
+      if (/reference_image|image/.test(type) || type === 'html_tag' && tag === 'img') {
         if ((type === 'image' || type === 'html_tag') && attrs.src) {
           results.add(attrs.src);
         } else {
           const rawSrc = label + backlash.second;
 
           if (render.labels.has(rawSrc.toLowerCase())) {
-            const { href } = render.labels.get(rawSrc.toLowerCase());
-            const { src } = (0, _utils.getImageInfo)(href);
+            const {
+              href
+            } = render.labels.get(rawSrc.toLowerCase());
+            const {
+              src
+            } = (0, _utils.getImageInfo)(href);
 
             if (src) {
               results.add(src);
@@ -755,18 +762,19 @@ const importRegister = (ContentState) => {
       }
     };
 
-    const travel = (block) => {
-      const { text, children, type, functionType } = block;
+    const travel = block => {
+      const {
+        text,
+        children,
+        type,
+        functionType
+      } = block;
 
       if (children.length) {
         for (const b of children) {
           travel(b);
         }
-      } else if (
-        text &&
-        type === 'span' &&
-        /paragraphContent|atxLine|cellContent/.test(functionType)
-      ) {
+      } else if (text && type === 'span' && /paragraphContent|atxLine|cellContent/.test(functionType)) {
         const tokens = (0, _parser.tokenizer)(text, [], false, render.labels);
 
         for (const token of tokens) {

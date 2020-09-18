@@ -1,33 +1,35 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-var _dom = require('../selection/dom');
+var _dom = require("../selection/dom");
 
-var _config = require('../config');
+var _config = require("../config");
 
-var _getParentCheckBox = require('../utils/getParentCheckBox');
+var _getParentCheckBox = require("../utils/getParentCheckBox");
 
-var _cumputeCheckBoxStatus = require('../utils/cumputeCheckBoxStatus');
+var _cumputeCheckBoxStatus = require("../utils/cumputeCheckBoxStatus");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const clickCtrl = (ContentState) => {
+const clickCtrl = ContentState => {
   ContentState.prototype.clickHandler = function (event) {
-    const { eventCenter } = this.muya;
-    const { target } = event;
+    const {
+      eventCenter
+    } = this.muya;
+    const {
+      target
+    } = event;
 
     if ((0, _dom.isMuyaEditorElement)(target)) {
       const lastBlock = this.getLastBlock();
       const archor = this.findOutMostBlock(lastBlock);
-      const archorParagraph = document.querySelector('#'.concat(archor.key));
+      const archorParagraph = document.querySelector("#".concat(archor.key));
       const rect = archorParagraph.getBoundingClientRect(); // If click below the last paragraph
       // and the last paragraph is not empty, create a new empty paragraph
 
@@ -35,10 +37,7 @@ const clickCtrl = (ContentState) => {
         let needToInsertNewParagraph = false;
 
         if (lastBlock.type === 'span') {
-          if (
-            /atxLine|paragraphContent/.test(lastBlock.functionType) &&
-            /\S/.test(lastBlock.text)
-          ) {
+          if (/atxLine|paragraphContent/.test(lastBlock.functionType) && /\S/.test(lastBlock.text)) {
             needToInsertNewParagraph = true;
           }
 
@@ -70,7 +69,11 @@ const clickCtrl = (ContentState) => {
       }
     } // handle front menu click
 
-    const { start: oldStart, end: oldEnd } = this.cursor;
+
+    const {
+      start: oldStart,
+      end: oldEnd
+    } = this.cursor;
 
     if (oldStart && oldEnd) {
       let hasSameParent = false;
@@ -82,6 +85,7 @@ const clickCtrl = (ContentState) => {
         const endOutBlock = this.findOutMostBlock(endBlock);
         hasSameParent = startOutBlock === endOutBlock;
       } // show the muya-front-menu only when the cursor in the same paragraph
+
 
       if (target.closest('.ag-front-icon') && hasSameParent) {
         const currentBlock = this.findOutMostBlock(startBlock);
@@ -107,11 +111,16 @@ const clickCtrl = (ContentState) => {
       }
     }
 
-    const { start, end } = _selection.default.getCursorRange(); // fix #625, the selection maybe not in edit area.
+    const {
+      start,
+      end
+    } = _selection.default.getCursorRange(); // fix #625, the selection maybe not in edit area.
+
 
     if (!start || !end) {
       return;
     } // format-click
+
 
     const node = _selection.default.getSelectionStart();
 
@@ -119,10 +128,7 @@ const clickCtrl = (ContentState) => {
 
     let parentNode = inlineNode;
 
-    while (
-      parentNode !== null &&
-      parentNode.classList.contains(_config.CLASS_OR_ID.AG_INLINE_RULE)
-    ) {
+    while (parentNode !== null && parentNode.classList.contains(_config.CLASS_OR_ID.AG_INLINE_RULE)) {
       if (parentNode.tagName === 'A') {
         const formatType = 'link'; // auto link or []() link
 
@@ -146,41 +152,46 @@ const clickCtrl = (ContentState) => {
       let data = null;
 
       switch (inlineNode.tagName) {
-        case 'SPAN': {
-          if (inlineNode.hasAttribute('data-emoji')) {
-            formatType = 'emoji';
-            data = inlineNode.getAttribute('data-emoji');
-          } else if (inlineNode.classList.contains('ag-math-text')) {
-            formatType = 'inline_math';
-            data = inlineNode.textContent;
+        case 'SPAN':
+          {
+            if (inlineNode.hasAttribute('data-emoji')) {
+              formatType = 'emoji';
+              data = inlineNode.getAttribute('data-emoji');
+            } else if (inlineNode.classList.contains('ag-math-text')) {
+              formatType = 'inline_math';
+              data = inlineNode.textContent;
+            }
+
+            break;
           }
 
-          break;
-        }
+        case 'STRONG':
+          {
+            formatType = 'strong';
+            data = inlineNode.textContent;
+            break;
+          }
 
-        case 'STRONG': {
-          formatType = 'strong';
-          data = inlineNode.textContent;
-          break;
-        }
+        case 'EM':
+          {
+            formatType = 'em';
+            data = inlineNode.textContent;
+            break;
+          }
 
-        case 'EM': {
-          formatType = 'em';
-          data = inlineNode.textContent;
-          break;
-        }
+        case 'DEL':
+          {
+            formatType = 'del';
+            data = inlineNode.textContent;
+            break;
+          }
 
-        case 'DEL': {
-          formatType = 'del';
-          data = inlineNode.textContent;
-          break;
-        }
-
-        case 'CODE': {
-          formatType = 'inline_code';
-          data = inlineNode.textContent;
-          break;
-        }
+        case 'CODE':
+          {
+            formatType = 'inline_code';
+            data = inlineNode.textContent;
+            break;
+          }
       }
 
       if (formatType) {
@@ -195,20 +206,17 @@ const clickCtrl = (ContentState) => {
     const block = this.getBlock(start.key);
     let needRender = false; // is show format float box?
 
-    if (
-      start.key === end.key &&
-      start.offset !== end.offset &&
-      _config.HAS_TEXT_BLOCK_REG.test(block.type) &&
-      block.functionType !== 'codeContent' &&
-      block.functionType !== 'languageInput'
-    ) {
+    if (start.key === end.key && start.offset !== end.offset && _config.HAS_TEXT_BLOCK_REG.test(block.type) && block.functionType !== 'codeContent' && block.functionType !== 'languageInput') {
       const reference = this.getPositionReference();
-      const { formats } = this.selectionFormats();
+      const {
+        formats
+      } = this.selectionFormats();
       eventCenter.dispatch('muya-format-picker', {
         reference,
         formats
       });
     } // update '```xxx' to code block when you click other place or use press arrow key.
+
 
     if (block && start.key !== this.cursor.start.key) {
       const oldBlock = this.getBlock(this.cursor.start.key);
@@ -218,16 +226,15 @@ const clickCtrl = (ContentState) => {
       }
     } // change active status when paragraph changed
 
+
     if (start.key !== this.cursor.start.key || end.key !== this.cursor.end.key) {
       needRender = true;
     }
 
-    const needMarkedUpdate =
-      this.checkNeedRender(this.cursor) ||
-      this.checkNeedRender({
-        start,
-        end
-      });
+    const needMarkedUpdate = this.checkNeedRender(this.cursor) || this.checkNeedRender({
+      start,
+      end
+    });
 
     if (needRender) {
       this.cursor = {
@@ -278,9 +285,7 @@ const clickCtrl = (ContentState) => {
   };
 
   ContentState.prototype.updateChildrenCheckBoxState = function (checkbox, checked) {
-    const checkboxes = checkbox.parentElement.querySelectorAll(
-      'input ~ ul .'.concat(_config.CLASS_OR_ID.AG_TASK_LIST_ITEM_CHECKBOX)
-    );
+    const checkboxes = checkbox.parentElement.querySelectorAll("input ~ ul .".concat(_config.CLASS_OR_ID.AG_TASK_LIST_ITEM_CHECKBOX));
     const len = checkboxes.length;
 
     for (let i = 0; i < len; i++) {
@@ -292,11 +297,16 @@ const clickCtrl = (ContentState) => {
     }
   }; // handle task list item checkbox click
 
+
   ContentState.prototype.listItemCheckBoxClick = function (checkbox) {
-    const { checked } = checkbox;
+    const {
+      checked
+    } = checkbox;
     this.setCheckBoxState(checkbox, checked); // A task checked, then related task should be update
 
-    const { autoCheck } = this.muya.options;
+    const {
+      autoCheck
+    } = this.muya.options;
 
     if (autoCheck) {
       this.updateChildrenCheckBoxState(checkbox, checked);
@@ -306,7 +316,9 @@ const clickCtrl = (ContentState) => {
     const block = this.getBlock(checkbox.id);
     const parentBlock = this.getParent(block);
     const firstEditableBlock = this.firstInDescendant(parentBlock);
-    const { key } = firstEditableBlock;
+    const {
+      key
+    } = firstEditableBlock;
     const offset = 0;
     this.cursor = {
       start: {

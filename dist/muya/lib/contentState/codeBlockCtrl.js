@@ -1,27 +1,27 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _index = require('../prism/index');
+var _index = require("../prism/index");
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import resizeCodeBlockLineNumber from '../utils/resizeCodeLineNumber'
 const CODE_UPDATE_REP = /^`{3,}(.*)/;
 
-const codeBlockCtrl = (ContentState) => {
+const codeBlockCtrl = ContentState => {
   /**
-   * check edit language
-   */
+  * check edit language
+  */
   ContentState.prototype.checkEditLanguage = function () {
-    const { start } = _selection.default.getCursorRange();
+    const {
+      start
+    } = _selection.default.getCursorRange();
 
     if (!start) {
       return {
@@ -31,9 +31,11 @@ const codeBlockCtrl = (ContentState) => {
     }
 
     const startBlock = this.getBlock(start.key);
-    const paragraph = document.querySelector('#'.concat(start.key));
+    const paragraph = document.querySelector("#".concat(start.key));
     let lang = '';
-    const { text } = startBlock;
+    const {
+      text
+    } = startBlock;
 
     if (startBlock.type === 'span') {
       if (startBlock.functionType === 'languageInput') {
@@ -68,6 +70,7 @@ const codeBlockCtrl = (ContentState) => {
    * @param lang Language identifier
    */
 
+
   ContentState.prototype.updateCodeLanguage = function (block, lang) {
     if (lang && typeof lang === 'string') {
       (0, _index.loadLanguage)(lang);
@@ -82,10 +85,13 @@ const codeBlockCtrl = (ContentState) => {
         preBlock.lang = lang;
         preBlock.functionType = 'fencecode';
         nextSibling.lang = lang;
-        nextSibling.children.forEach((c) => (c.lang = lang));
+        nextSibling.children.forEach(c => c.lang = lang);
       } // Set cursor at the first line
 
-      const { key } = nextSibling.children[0];
+
+      const {
+        key
+      } = nextSibling.children[0];
       const offset = 0;
       this.cursor = {
         start: {
@@ -98,7 +104,7 @@ const codeBlockCtrl = (ContentState) => {
         }
       };
     } else {
-      block.text = block.text.replace(/^(`+)([^`]+$)/g, '$1'.concat(lang));
+      block.text = block.text.replace(/^(`+)([^`]+$)/g, "$1".concat(lang));
       this.codeBlockUpdate(block);
     }
 
@@ -108,15 +114,19 @@ const codeBlockCtrl = (ContentState) => {
    * [codeBlockUpdate if block updated to `pre` return true, else return false]
    */
 
+
   ContentState.prototype.codeBlockUpdate = function (block, code = '', lang) {
     if (block.type === 'span') {
       block = this.getParent(block);
     } // If it's not a p block, no need to update
 
+
     if (block.type !== 'p') return false; // If p block's children are more than one, no need to update
 
     if (block.children.length !== 1) return false;
-    const { text } = block.children[0];
+    const {
+      text
+    } = block.children[0];
     const match = CODE_UPDATE_REP.exec(text);
 
     if (match || lang) {
@@ -147,7 +157,9 @@ const codeBlockCtrl = (ContentState) => {
       this.appendChild(codeBlock, codeContent);
       this.appendChild(block, inputBlock);
       this.appendChild(block, codeBlock);
-      const { key } = codeContent;
+      const {
+        key
+      } = codeContent;
       const offset = code.length;
       this.cursor = {
         start: {
@@ -168,17 +180,19 @@ const codeBlockCtrl = (ContentState) => {
    * Copy the code block by click right-top copy icon in code block.
    */
 
+
   ContentState.prototype.copyCodeBlock = function (event) {
-    const { target } = event;
+    const {
+      target
+    } = event;
     const preEle = target.closest('pre');
     const preBlock = this.getBlock(preEle.id);
-    const codeBlock = preBlock.children.find((c) => c.type === 'code');
+    const codeBlock = preBlock.children.find(c => c.type === 'code');
     const codeContent = codeBlock.children[0].text;
     this.muya.clipboard.copy('copyCodeContent', codeContent);
   };
 
-  ContentState.prototype.resizeLineNumber = function () {
-    // FIXME: Disabled due to #1648.
+  ContentState.prototype.resizeLineNumber = function () {// FIXME: Disabled due to #1648.
     // const { codeBlockLineNumbers } = this.muya.options
     // if (!codeBlockLineNumbers) {
     //   return

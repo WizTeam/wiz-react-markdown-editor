@@ -1,44 +1,55 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _config = require('../config');
+var _config = require("../config");
 
-const imageCtrl = (ContentState) => {
+const imageCtrl = ContentState => {
   /**
    * insert inline image at the cursor position.
    */
-  ContentState.prototype.insertImage = function ({ alt = '', src = '', title = '' }) {
+  ContentState.prototype.insertImage = function ({
+    alt = '',
+    src = '',
+    title = ''
+  }) {
     const match = /(?:\/|\\)?([^./\\]+)\.[a-z]+$/.exec(src);
 
     if (!alt) {
       alt = match && match[1] ? match[1] : '';
     }
 
-    const { start, end } = this.cursor;
-    const { formats } = this.selectionFormats({
+    const {
+      start,
+      end
+    } = this.cursor;
+    const {
+      formats
+    } = this.selectionFormats({
       start,
       end
     });
-    const { key, offset: startOffset } = start;
-    const { offset: endOffset } = end;
+    const {
+      key,
+      offset: startOffset
+    } = start;
+    const {
+      offset: endOffset
+    } = end;
     const block = this.getBlock(key);
 
-    if (
-      block.type === 'span' &&
-      (block.functionType === 'codeContent' ||
-        block.functionType === 'languageInput' ||
-        block.functionType === 'thematicBreakLine')
-    ) {
+    if (block.type === 'span' && (block.functionType === 'codeContent' || block.functionType === 'languageInput' || block.functionType === 'thematicBreakLine')) {
       // You can not insert image into code block or language input...
       return;
     }
 
-    const { text } = block;
-    const imageFormat = formats.filter((f) => f.type === 'image'); // Only encode URLs but not local paths or data URLs
+    const {
+      text
+    } = block;
+    const imageFormat = formats.filter(f => f.type === 'image'); // Only encode URLs but not local paths or data URLs
 
     let imgUrl;
 
@@ -53,14 +64,10 @@ const imageCtrl = (ContentState) => {
     let srcAndTitle = imgUrl;
 
     if (srcAndTitle && title) {
-      srcAndTitle += ' "'.concat(title, '"');
+      srcAndTitle += " \"".concat(title, "\"");
     }
 
-    if (
-      imageFormat.length === 1 &&
-      imageFormat[0].range.start !== startOffset &&
-      imageFormat[0].range.end !== endOffset
-    ) {
+    if (imageFormat.length === 1 && imageFormat[0].range.start !== startOffset && imageFormat[0].range.end !== endOffset) {
       // Replace already existing image
       let imageAlt = alt; // Extract alt from image if there isn't an image source already (GH#562). E.g: ![old-alt]()
 
@@ -68,11 +75,11 @@ const imageCtrl = (ContentState) => {
         imageAlt = imageFormat[0].alt;
       }
 
-      const { start, end } = imageFormat[0].range;
-      block.text =
-        text.substring(0, start) +
-        '!['.concat(imageAlt, '](').concat(srcAndTitle, ')') +
-        text.substring(end);
+      const {
+        start,
+        end
+      } = imageFormat[0].range;
+      block.text = text.substring(0, start) + "![".concat(imageAlt, "](").concat(srcAndTitle, ")") + text.substring(end);
       this.cursor = {
         start: {
           key,
@@ -86,11 +93,10 @@ const imageCtrl = (ContentState) => {
     } else if (key !== end.key) {
       // Replace multi-line text
       const endBlock = this.getBlock(end.key);
-      const { text } = endBlock;
-      endBlock.text =
-        text.substring(0, endOffset) +
-        '!['.concat(alt, '](').concat(srcAndTitle, ')') +
-        text.substring(endOffset);
+      const {
+        text
+      } = endBlock;
+      endBlock.text = text.substring(0, endOffset) + "![".concat(alt, "](").concat(srcAndTitle, ")") + text.substring(endOffset);
       const offset = endOffset + 2;
       this.cursor = {
         start: {
@@ -105,10 +111,7 @@ const imageCtrl = (ContentState) => {
     } else {
       // Replace single-line text
       const imageAlt = startOffset !== endOffset ? text.substring(startOffset, endOffset) : alt;
-      block.text =
-        text.substring(0, start.offset) +
-        '!['.concat(imageAlt, '](').concat(srcAndTitle, ')') +
-        text.substring(end.offset);
+      block.text = text.substring(0, start.offset) + "![".concat(imageAlt, "](").concat(srcAndTitle, ")") + text.substring(end.offset);
       this.cursor = {
         start: {
           key,
@@ -125,11 +128,20 @@ const imageCtrl = (ContentState) => {
     this.muya.dispatchChange();
   };
 
-  ContentState.prototype.updateImage = function ({ imageId, key, token }, attrName, attrValue) {
+  ContentState.prototype.updateImage = function ({
+    imageId,
+    key,
+    token
+  }, attrName, attrValue) {
     // inline/left/center/right
     const block = this.getBlock(key);
-    const { range } = token;
-    const { start, end } = range;
+    const {
+      range
+    } = token;
+    const {
+      start,
+      end
+    } = range;
     const oldText = block.text;
     let imageText = '';
     const attrs = Object.assign({}, token.attrs);
@@ -137,14 +149,14 @@ const imageCtrl = (ContentState) => {
     imageText = '<img ';
 
     for (const attr of Object.keys(attrs)) {
-      imageText += ''.concat(attr, '="').concat(attrs[attr], '" ');
+      imageText += "".concat(attr, "=\"").concat(attrs[attr], "\" ");
     }
 
     imageText = imageText.trim();
     imageText += '>';
     block.text = oldText.substring(0, start) + imageText + oldText.substring(end);
     this.singleRender(block, false);
-    const image = document.querySelector('#'.concat(imageId, ' img'));
+    const image = document.querySelector("#".concat(imageId, " img"));
 
     if (image) {
       image.click();
@@ -152,13 +164,22 @@ const imageCtrl = (ContentState) => {
     }
   };
 
-  ContentState.prototype.replaceImage = function (
-    { key, token },
-    { alt = '', src = '', title = '' }
-  ) {
-    const { type } = token;
+  ContentState.prototype.replaceImage = function ({
+    key,
+    token
+  }, {
+    alt = '',
+    src = '',
+    title = ''
+  }) {
+    const {
+      type
+    } = token;
     const block = this.getBlock(key);
-    const { start, end } = token.range;
+    const {
+      start,
+      end
+    } = token.range;
     const oldText = block.text;
     let imageText = '';
 
@@ -176,12 +197,14 @@ const imageCtrl = (ContentState) => {
       }
 
       if (title) {
-        imageText += ' "'.concat(title, '"');
+        imageText += " \"".concat(title, "\"");
       }
 
       imageText += ')';
     } else if (type === 'html_tag') {
-      const { attrs } = token;
+      const {
+        attrs
+      } = token;
       Object.assign(attrs, {
         alt,
         src,
@@ -190,7 +213,7 @@ const imageCtrl = (ContentState) => {
       imageText = '<img ';
 
       for (const attr of Object.keys(attrs)) {
-        imageText += ''.concat(attr, '="').concat(attrs[attr], '" ');
+        imageText += "".concat(attr, "=\"").concat(attrs[attr], "\" ");
       }
 
       imageText = imageText.trim();
@@ -202,11 +225,19 @@ const imageCtrl = (ContentState) => {
     return this.muya.dispatchChange();
   };
 
-  ContentState.prototype.deleteImage = function ({ key, token }) {
+  ContentState.prototype.deleteImage = function ({
+    key,
+    token
+  }) {
     const block = this.getBlock(key);
     const oldText = block.text;
-    const { start, end } = token.range;
-    const { eventCenter } = this.muya;
+    const {
+      start,
+      end
+    } = token.range;
+    const {
+      eventCenter
+    } = this.muya;
     block.text = oldText.substring(0, start) + oldText.substring(end);
     this.cursor = {
       start: {
@@ -231,7 +262,9 @@ const imageCtrl = (ContentState) => {
 
   ContentState.prototype.selectImage = function (imageInfo) {
     this.selectedImage = imageInfo;
-    const { key } = imageInfo;
+    const {
+      key
+    } = imageInfo;
     const block = this.getBlock(key);
     const outMostBlock = this.findOutMostBlock(block);
     this.cursor = {
@@ -245,7 +278,9 @@ const imageCtrl = (ContentState) => {
       }
     }; // Fix #1568
 
-    const { start } = this.prevCursor;
+    const {
+      start
+    } = this.prevCursor;
     const oldBlock = this.findOutMostBlock(this.getBlock(start.key));
 
     if (oldBlock.key !== outMostBlock.key) {

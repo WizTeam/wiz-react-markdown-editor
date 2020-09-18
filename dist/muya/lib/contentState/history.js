@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _utils = require('../utils');
+var _utils = require("../utils");
 
-var _config = require('../config');
+var _config = require("../config");
 
 class History {
   constructor(contentState) {
@@ -20,7 +20,11 @@ class History {
     if (this.index > 0) {
       this.index = this.index - 1;
       const state = (0, _utils.deepCopy)(this.stack[this.index]);
-      const { blocks, cursor, renderRange } = state;
+      const {
+        blocks,
+        cursor,
+        renderRange
+      } = state;
       cursor.noHistory = true;
       this.contentState.blocks = blocks;
       this.contentState.renderRange = renderRange;
@@ -30,13 +34,20 @@ class History {
   }
 
   redo() {
-    const { index, stack } = this;
+    const {
+      index,
+      stack
+    } = this;
     const len = stack.length;
 
     if (index < len - 1) {
       this.index = index + 1;
       const state = (0, _utils.deepCopy)(stack[this.index]);
-      const { blocks, cursor, renderRange } = state;
+      const {
+        blocks,
+        cursor,
+        renderRange
+      } = state;
       cursor.noHistory = true;
       this.contentState.blocks = blocks;
       this.contentState.renderRange = renderRange;
@@ -62,6 +73,7 @@ class History {
     this.stack = [];
     this.index = -1;
   }
+
 }
 
 var _default = History;

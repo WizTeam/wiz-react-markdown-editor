@@ -1,21 +1,25 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _tableDragBarCtrl = require('./tableDragBarCtrl');
+var _tableDragBarCtrl = require("./tableDragBarCtrl");
 
-const tableSelectCellsCtrl = (ContentState) => {
+const tableSelectCellsCtrl = ContentState => {
   ContentState.prototype.handleCellMouseDown = function (event) {
     if (event.buttons === 2) {
       // the contextmenu is emit.
       return;
     }
 
-    const { eventCenter } = this.muya;
-    const { target } = event;
+    const {
+      eventCenter
+    } = this.muya;
+    const {
+      target
+    } = event;
     const cell = target.closest('th') || target.closest('td');
     const tableId = target.closest('table').id;
     const row = (0, _tableDragBarCtrl.getIndex)('left', cell);
@@ -32,21 +36,15 @@ const tableSelectCellsCtrl = (ContentState) => {
       cells: (0, _tableDragBarCtrl.getAllTableCells)(tableId),
       selectedCells: []
     };
-    const mouseMoveId = eventCenter.attachDOMEvent(
-      document.body,
-      'mousemove',
-      this.handleCellMouseMove.bind(this)
-    );
-    const mouseUpId = eventCenter.attachDOMEvent(
-      document.body,
-      'mouseup',
-      this.handleCellMouseUp.bind(this)
-    );
+    const mouseMoveId = eventCenter.attachDOMEvent(document.body, 'mousemove', this.handleCellMouseMove.bind(this));
+    const mouseUpId = eventCenter.attachDOMEvent(document.body, 'mouseup', this.handleCellMouseUp.bind(this));
     this.cellSelectEventIds.push(mouseMoveId, mouseUpId);
   };
 
   ContentState.prototype.handleCellMouseMove = function (event) {
-    const { target } = event;
+    const {
+      target
+    } = event;
     const cell = target.closest('th') || target.closest('td');
     const table = target.closest('table');
     const isOverSameTableCell = cell && table && table.id === this.cellSelectInfo.tableId;
@@ -73,7 +71,9 @@ const tableSelectCellsCtrl = (ContentState) => {
   };
 
   ContentState.prototype.handleCellMouseUp = function (event) {
-    const { eventCenter } = this.muya;
+    const {
+      eventCenter
+    } = this.muya;
 
     for (const id of this.cellSelectEventIds) {
       eventCenter.detachDOMEvent(id);
@@ -83,12 +83,18 @@ const tableSelectCellsCtrl = (ContentState) => {
 
     if (this.cellSelectInfo && this.cellSelectInfo.isStartSelect) {
       event.preventDefault();
-      const { tableId, selectedCells, anchor, focus } = this.cellSelectInfo; // Mouse up outside table, the focus is null
+      const {
+        tableId,
+        selectedCells,
+        anchor,
+        focus
+      } = this.cellSelectInfo; // Mouse up outside table, the focus is null
 
       if (!focus) {
         return;
       } // We need to handle this after click event, because click event is emited after mouseup(mouseup will be followed by a click envent), but we set
       // the `selectedTableCells` to null when click event emited.
+
 
       setTimeout(() => {
         this.selectedTableCells = {
@@ -97,7 +103,7 @@ const tableSelectCellsCtrl = (ContentState) => {
           // 1 base
           column: Math.abs(anchor.column - focus.column) + 1,
           // 1 base
-          cells: selectedCells.map((c) => {
+          cells: selectedCells.map(c => {
             delete c.ele;
             return c;
           })
@@ -110,7 +116,11 @@ const tableSelectCellsCtrl = (ContentState) => {
   };
 
   ContentState.prototype.calculateSelectedCells = function () {
-    const { anchor, focus, cells } = this.cellSelectInfo;
+    const {
+      anchor,
+      focus,
+      cells
+    } = this.cellSelectInfo;
     this.cellSelectInfo.selectedCells = [];
 
     if (focus) {
@@ -143,7 +153,10 @@ const tableSelectCellsCtrl = (ContentState) => {
   };
 
   ContentState.prototype.setSelectedCellsStyle = function () {
-    const { selectedCells, cells } = this.cellSelectInfo;
+    const {
+      selectedCells,
+      cells
+    } = this.cellSelectInfo;
 
     for (const row of cells) {
       for (const cell of row) {
@@ -156,7 +169,13 @@ const tableSelectCellsCtrl = (ContentState) => {
     }
 
     for (const cell of selectedCells) {
-      const { ele, top, right, bottom, left } = cell;
+      const {
+        ele,
+        top,
+        right,
+        bottom,
+        left
+      } = cell;
       ele.classList.add('ag-cell-selected');
 
       if (top) {
@@ -178,10 +197,17 @@ const tableSelectCellsCtrl = (ContentState) => {
   }; // Remove the content of selected table cell, delete the row/column if selected one row/column without content.
   // Delete the table if the selected whole table is empty.
 
+
   ContentState.prototype.deleteSelectedTableCells = function (isCut = false) {
-    const { tableId, cells } = this.selectedTableCells;
+    const {
+      tableId,
+      cells
+    } = this.selectedTableCells;
     const tableBlock = this.getBlock(tableId);
-    const { row, column } = tableBlock;
+    const {
+      row,
+      column
+    } = tableBlock;
     const rows = new Set();
     let lastColumn = null;
     let isSameColumn = true;
@@ -190,7 +216,9 @@ const tableSelectCellsCtrl = (ContentState) => {
     for (const cell of cells) {
       const cellBlock = this.getBlock(cell.key);
       const rowBlock = this.getParent(cellBlock);
-      const { column: cellColumn } = cellBlock;
+      const {
+        column: cellColumn
+      } = cellBlock;
       rows.add(rowBlock);
 
       if (cellBlock.children[0].text) {
@@ -208,8 +236,7 @@ const tableSelectCellsCtrl = (ContentState) => {
 
     const isOneColumnSelected = rows.size === +row + 1 && isSameColumn;
     const isOneRowSelected = cells.length === +column + 1 && rows.size === 1;
-    const isWholeTableSelected =
-      rows.size === +row + 1 && cells.length === (+row + 1) * (+column + 1);
+    const isWholeTableSelected = rows.size === +row + 1 && cells.length === (+row + 1) * (+column + 1);
 
     if (isCut && isWholeTableSelected) {
       this.selectedTableCells = null;
@@ -227,24 +254,18 @@ const tableSelectCellsCtrl = (ContentState) => {
 
       if (isOneColumnSelected) {
         // Remove one empty column
-        return this.editTable(
-          {
-            location: 'current',
-            action: 'remove',
-            target: 'column'
-          },
-          cellContentKey
-        );
+        return this.editTable({
+          location: 'current',
+          action: 'remove',
+          target: 'column'
+        }, cellContentKey);
       } else if (isOneRowSelected) {
         // Remove one empty row
-        return this.editTable(
-          {
-            location: 'current',
-            action: 'remove',
-            target: 'row'
-          },
-          cellContentKey
-        );
+        return this.editTable({
+          location: 'current',
+          action: 'remove',
+          target: 'row'
+        }, cellContentKey);
       } else if (isWholeTableSelected) {
         // Select whole empty table
         return this.deleteParagraph(tableId);
@@ -270,7 +291,7 @@ const tableSelectCellsCtrl = (ContentState) => {
       tableId: table.key,
       row: table.row + 1,
       column: table.column + 1,
-      cells: this.cellSelectInfo.selectedCells.map((c) => {
+      cells: this.cellSelectInfo.selectedCells.map(c => {
         delete c.ele;
         return c;
       })
@@ -281,8 +302,11 @@ const tableSelectCellsCtrl = (ContentState) => {
     return this.singleRender(table, false);
   }; // Return the cell block if yes, else return null.
 
+
   ContentState.prototype.isSingleCellSelected = function () {
-    const { selectedTableCells } = this;
+    const {
+      selectedTableCells
+    } = this;
 
     if (selectedTableCells && selectedTableCells.cells.length === 1) {
       const key = selectedTableCells.cells[0].key;
@@ -292,16 +316,18 @@ const tableSelectCellsCtrl = (ContentState) => {
     return null;
   }; // Return the cell block if yes, else return null.
 
-  ContentState.prototype.isWholeTableSelected = function () {
-    const { selectedTableCells } = this;
-    const table = selectedTableCells ? this.getBlock(selectedTableCells.tableId) : {};
-    const { row, column } = table;
 
-    if (
-      selectedTableCells &&
-      table &&
-      selectedTableCells.cells.length === (+row + 1) * (+column + 1)
-    ) {
+  ContentState.prototype.isWholeTableSelected = function () {
+    const {
+      selectedTableCells
+    } = this;
+    const table = selectedTableCells ? this.getBlock(selectedTableCells.tableId) : {};
+    const {
+      row,
+      column
+    } = table;
+
+    if (selectedTableCells && table && selectedTableCells.cells.length === (+row + 1) * (+column + 1)) {
       return table;
     }
 

@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, 'Renderer', {
+Object.defineProperty(exports, "Renderer", {
   enumerable: true,
   get: function () {
     return _renderer.default;
   }
 });
-Object.defineProperty(exports, 'Lexer', {
+Object.defineProperty(exports, "Lexer", {
   enumerable: true,
   get: function () {
     return _lexer.default;
   }
 });
-Object.defineProperty(exports, 'Parser', {
+Object.defineProperty(exports, "Parser", {
   enumerable: true,
   get: function () {
     return _parser.default;
@@ -23,17 +23,15 @@ Object.defineProperty(exports, 'Parser', {
 });
 exports.default = void 0;
 
-var _renderer = _interopRequireDefault(require('./renderer'));
+var _renderer = _interopRequireDefault(require("./renderer"));
 
-var _lexer = _interopRequireDefault(require('./lexer'));
+var _lexer = _interopRequireDefault(require("./lexer"));
 
-var _parser = _interopRequireDefault(require('./parser'));
+var _parser = _interopRequireDefault(require("./parser"));
 
-var _options = _interopRequireDefault(require('./options'));
+var _options = _interopRequireDefault(require("./options"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Marked
@@ -45,11 +43,7 @@ function marked(src, opt = {}) {
   }
 
   if (typeof src !== 'string') {
-    throw new Error(
-      'marked(): input parameter is of type ' +
-        Object.prototype.toString.call(src) +
-        ', string expected'
-    );
+    throw new Error('marked(): input parameter is of type ' + Object.prototype.toString.call(src) + ', string expected');
   }
 
   try {

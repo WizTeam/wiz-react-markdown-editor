@@ -1,17 +1,15 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _options = _interopRequireDefault(require('./options'));
+var _options = _interopRequireDefault(require("./options"));
 
-var _utils = require('./utils');
+var _utils = require("./utils");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Renderer
@@ -21,7 +19,7 @@ function Renderer(options = {}) {
 }
 
 Renderer.prototype.frontmatter = function (text) {
-  return '<pre class="front-matter">\n'.concat(text, '</pre>\n');
+  return "<pre class=\"front-matter\">\n".concat(text, "</pre>\n");
 };
 
 Renderer.prototype.multiplemath = function (text) {
@@ -32,7 +30,7 @@ Renderer.prototype.multiplemath = function (text) {
     output = this.options.mathRenderer(text, displayMode);
   }
 
-  return output || '<pre class="multiple-math">\n'.concat(text, '</pre>\n');
+  return output || "<pre class=\"multiple-math\">\n".concat(text, "</pre>\n");
 };
 
 Renderer.prototype.inlineMath = function (math) {
@@ -56,35 +54,26 @@ Renderer.prototype.emoji = function (text, emoji) {
 
 Renderer.prototype.script = function (content, marker) {
   const tagName = marker === '^' ? 'sup' : 'sub';
-  return '<'.concat(tagName, '>').concat(content, '</').concat(tagName, '>');
+  return "<".concat(tagName, ">").concat(content, "</").concat(tagName, ">");
 };
 
-Renderer.prototype.footnoteIdentifier = function (
-  identifier,
-  { footnoteId, footnoteIdentifierId, order }
-) {
-  return '<a href="#'
-    .concat(footnoteId ? 'fn'.concat(footnoteId) : '', '" class="footnote-ref" id="fnref')
-    .concat(footnoteIdentifierId, '" role="doc-noteref"><sup>')
-    .concat(order || identifier, '</sup></a>');
+Renderer.prototype.footnoteIdentifier = function (identifier, {
+  footnoteId,
+  footnoteIdentifierId,
+  order
+}) {
+  return "<a href=\"#".concat(footnoteId ? "fn".concat(footnoteId) : '', "\" class=\"footnote-ref\" id=\"fnref").concat(footnoteIdentifierId, "\" role=\"doc-noteref\"><sup>").concat(order || identifier, "</sup></a>");
 };
 
 Renderer.prototype.footnote = function (footnote) {
-  return (
-    '<section class="footnotes" role="doc-endnotes">\n<hr />\n<ol>\n' +
-    footnote +
-    '</ol>\n</section>\n'
-  );
+  return '<section class="footnotes" role="doc-endnotes">\n<hr />\n<ol>\n' + footnote + '</ol>\n</section>\n';
 };
 
-Renderer.prototype.footnoteItem = function (content, { footnoteId, footnoteIdentifierId }) {
-  return '<li id="fn'
-    .concat(footnoteId, '" role="doc-endnote">')
-    .concat(content, '<a href="#')
-    .concat(
-      footnoteIdentifierId ? 'fnref'.concat(footnoteIdentifierId) : '',
-      '" class="footnote-back" role="doc-backlink">\u21A9\uFE0E</a></li>'
-    );
+Renderer.prototype.footnoteItem = function (content, {
+  footnoteId,
+  footnoteIdentifierId
+}) {
+  return "<li id=\"fn".concat(footnoteId, "\" role=\"doc-endnote\">").concat(content, "<a href=\"#").concat(footnoteIdentifierId ? "fnref".concat(footnoteIdentifierId) : '', "\" class=\"footnote-back\" role=\"doc-backlink\">\u21A9\uFE0E</a></li>");
 };
 
 Renderer.prototype.code = function (code, infostring, escaped, codeBlockStyle) {
@@ -100,19 +89,8 @@ Renderer.prototype.code = function (code, infostring, escaped, codeBlockStyle) {
   }
 
   let className = codeBlockStyle === 'fenced' ? 'fenced-code-block' : 'indented-code-block';
-  className = lang
-    ? ''
-        .concat(className, ' ')
-        .concat(this.options.langPrefix)
-        .concat((0, _utils.escape)(lang, true))
-    : className;
-  return (
-    '<pre><code class="' +
-    className +
-    '">' +
-    (escaped ? code : (0, _utils.escape)(code, true)) +
-    '</code></pre>\n'
-  );
+  className = lang ? "".concat(className, " ").concat(this.options.langPrefix).concat((0, _utils.escape)(lang, true)) : className;
+  return '<pre><code class="' + className + '">' + (escaped ? code : (0, _utils.escape)(code, true)) + '</code></pre>\n';
 };
 
 Renderer.prototype.blockquote = function (quote) {
@@ -125,21 +103,9 @@ Renderer.prototype.html = function (html) {
 
 Renderer.prototype.heading = function (text, level, raw, slugger, headingStyle) {
   if (this.options.headerIds) {
-    return (
-      '<h' +
-      level +
-      ' id="' +
-      this.options.headerPrefix +
-      slugger.slug(raw) +
-      '" class="' +
-      headingStyle +
-      '">' +
-      text +
-      '</h' +
-      level +
-      '>\n'
-    );
+    return '<h' + level + ' id="' + this.options.headerPrefix + slugger.slug(raw) + '" class="' + headingStyle + '">' + text + '</h' + level + '>\n';
   } // ignore IDs
+
 
   return '<h' + level + '>' + text + '</h' + level + '>\n';
 };
@@ -160,15 +126,8 @@ Renderer.prototype.listitem = function (text, checked) {
     return '<li>' + text + '</li>\n';
   } // task list
 
-  return (
-    '<li class="task-list-item"><input type="checkbox"' +
-    (checked ? ' checked=""' : '') +
-    ' disabled=""' +
-    (this.options.xhtml ? ' /' : '') +
-    '> ' +
-    text +
-    '</li>\n'
-  );
+
+  return '<li class="task-list-item"><input type="checkbox"' + (checked ? ' checked=""' : '') + ' disabled=""' + (this.options.xhtml ? ' /' : '') + '> ' + text + '</li>\n';
 };
 
 Renderer.prototype.paragraph = function (text) {
@@ -189,6 +148,7 @@ Renderer.prototype.tablecell = function (content, flags) {
   const tag = flags.align ? '<' + type + ' align="' + flags.align + '">' : '<' + type + '>';
   return tag + content + '</' + type + '>\n';
 }; // span level renderer
+
 
 Renderer.prototype.strong = function (text) {
   return '<strong>' + text + '</strong>';

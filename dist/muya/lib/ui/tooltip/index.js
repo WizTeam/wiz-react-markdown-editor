@@ -1,18 +1,22 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-require('./index.css');
+require("./index.css");
 
 const position = (source, ele) => {
   const rect = source.getBoundingClientRect();
-  const { top, right, height } = rect;
+  const {
+    top,
+    right,
+    height
+  } = rect;
   Object.assign(ele.style, {
-    top: ''.concat(top + height + 15, 'px'),
-    left: ''.concat(right - ele.offsetWidth / 2 - 10, 'px')
+    top: "".concat(top + height + 15, "px"),
+    left: "".concat(right - ele.offsetWidth / 2 - 10, "px")
   });
 };
 
@@ -20,14 +24,21 @@ class Tooltip {
   constructor(muya) {
     this.muya = muya;
     this.cache = new WeakMap();
-    const { container, eventCenter } = this.muya;
+    const {
+      container,
+      eventCenter
+    } = this.muya;
     eventCenter.attachDOMEvent(container, 'mouseover', this.mouseOver.bind(this));
   }
 
   mouseOver(event) {
-    const { target } = event;
+    const {
+      target
+    } = event;
     const toolTipTarget = target.closest('[data-tooltip]');
-    const { eventCenter } = this.muya;
+    const {
+      eventCenter
+    } = this.muya;
 
     if (toolTipTarget && !this.cache.has(toolTipTarget)) {
       const tooltip = toolTipTarget.getAttribute('data-tooltip');
@@ -53,7 +64,9 @@ class Tooltip {
   }
 
   mouseLeave(event) {
-    const { target } = event;
+    const {
+      target
+    } = event;
 
     if (this.cache.has(target)) {
       const tooltipEle = this.cache.get(target);
@@ -61,6 +74,7 @@ class Tooltip {
       this.cache.delete(target);
     }
   }
+
 }
 
 var _default = Tooltip;

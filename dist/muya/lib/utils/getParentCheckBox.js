@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getParentCheckBox = void 0;
 
-var _config = require('../config');
+var _config = require("../config");
 
 const getParentCheckBox = function (checkbox) {
   const parent = checkbox.parentElement.parentElement.parentElement;

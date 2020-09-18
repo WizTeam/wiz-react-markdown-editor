@@ -1,53 +1,43 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = image;
 
-var _config = require('../../../config');
+var _config = require("../../../config");
 
-var _utils = require('../../../utils');
+var _utils = require("../../../utils");
 
-var _ = _interopRequireDefault(require('../../../assets/pngicon/image/2.png'));
+var _ = _interopRequireDefault(require("../../../assets/pngicon/image/2.png"));
 
-var _2 = _interopRequireDefault(require('../../../assets/pngicon/image_fail/2.png'));
+var _2 = _interopRequireDefault(require("../../../assets/pngicon/image_fail/2.png"));
 
-var _3 = _interopRequireDefault(require('../../../assets/pngicon/delete/2.png'));
+var _3 = _interopRequireDefault(require("../../../assets/pngicon/delete/2.png"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const renderIcon = (h, className, icon) => {
-  const selector = 'a.'.concat(className);
-  const iconVnode = h(
-    'i.icon',
-    h(
-      'i.icon-inner',
-      {
-        style: {
-          background: 'url('.concat(icon, ') no-repeat'),
-          'background-size': '100%'
-        }
-      },
-      ''
-    )
-  );
-  return h(
-    selector,
-    {
-      attrs: {
-        contenteditable: 'false'
-      }
-    },
-    iconVnode
-  );
+  const selector = "a.".concat(className);
+  const iconVnode = h('i.icon', h('i.icon-inner', {
+    style: {
+      background: "url(".concat(icon, ") no-repeat"),
+      'background-size': '100%'
+    }
+  }, ''));
+  return h(selector, {
+    attrs: {
+      contenteditable: 'false'
+    }
+  }, iconVnode);
 }; // I dont want operate dom directly, is there any better method? need help!
+
 
 function image(h, cursor, block, token, outerClass) {
   const imageInfo = (0, _utils.getImageInfo)(token.attrs.src);
-  const { selectedImage } = this.muya.contentState;
+  const {
+    selectedImage
+  } = this.muya.contentState;
   const data = {
     dataset: {
       raw: token.raw
@@ -60,26 +50,23 @@ function image(h, cursor, block, token, outerClass) {
     imageInfo.src = this.muya.options.transformImageUrl(imageInfo.src);
   }
 
-  let { src } = imageInfo;
+  let {
+    src
+  } = imageInfo;
   const alt = token.attrs.alt;
   const title = token.attrs.title;
   const width = token.attrs.width;
   const height = token.attrs.height;
 
   if (src) {
-    ({ id, isSuccess } = this.loadImageAsync(imageInfo, token.attrs));
+    ({
+      id,
+      isSuccess
+    } = this.loadImageAsync(imageInfo, token.attrs));
   }
 
-  let wrapperSelector = id
-    ? 'span#'
-        .concat(isSuccess ? block.key + '_' + id + '_' + token.range.start : id, '.')
-        .concat(_config.CLASS_OR_ID.AG_INLINE_IMAGE)
-    : 'span.'.concat(_config.CLASS_OR_ID.AG_INLINE_IMAGE);
-  const imageIcons = [
-    renderIcon(h, 'ag-image-icon-success', _.default),
-    renderIcon(h, 'ag-image-icon-fail', _2.default),
-    renderIcon(h, 'ag-image-icon-close', _3.default)
-  ];
+  let wrapperSelector = id ? "span#".concat(isSuccess ? block.key + '_' + id + '_' + token.range.start : id, ".").concat(_config.CLASS_OR_ID.AG_INLINE_IMAGE) : "span.".concat(_config.CLASS_OR_ID.AG_INLINE_IMAGE);
+  const imageIcons = [renderIcon(h, 'ag-image-icon-success', _.default), renderIcon(h, 'ag-image-icon-fail', _2.default), renderIcon(h, 'ag-image-icon-close', _3.default)];
 
   const renderImageContainer = (...args) => {
     const data = {};
@@ -92,16 +79,19 @@ function image(h, cursor, block, token, outerClass) {
       });
     }
 
-    return h('span.'.concat(_config.CLASS_OR_ID.AG_IMAGE_CONTAINER), data, args);
+    return h("span.".concat(_config.CLASS_OR_ID.AG_IMAGE_CONTAINER), data, args);
   };
 
   if (typeof token.attrs['data-align'] === 'string') {
-    wrapperSelector += '.'.concat(token.attrs['data-align']);
+    wrapperSelector += ".".concat(token.attrs['data-align']);
   } // the src image is still loading, so use the url Map base64.
+
 
   if (this.urlMap.has(src)) {
     // fix: it will generate a new id if the image is not loaded.
-    const { selectedImage } = this.muya.contentState;
+    const {
+      selectedImage
+    } = this.muya.contentState;
 
     if (selectedImage && selectedImage.token.attrs.src === src && selectedImage.imageId !== id) {
       selectedImage.imageId = id;
@@ -112,7 +102,7 @@ function image(h, cursor, block, token, outerClass) {
   }
 
   if (alt.startsWith('loading-')) {
-    wrapperSelector += '.'.concat(_config.CLASS_OR_ID.AG_IMAGE_UPLOADING);
+    wrapperSelector += ".".concat(_config.CLASS_OR_ID.AG_IMAGE_UPLOADING);
     Object.assign(data.dataset, {
       id: alt
     });
@@ -126,22 +116,22 @@ function image(h, cursor, block, token, outerClass) {
   if (src) {
     // image is loading...
     if (typeof isSuccess === 'undefined') {
-      wrapperSelector += '.'.concat(_config.CLASS_OR_ID.AG_IMAGE_LOADING);
+      wrapperSelector += ".".concat(_config.CLASS_OR_ID.AG_IMAGE_LOADING);
     } else if (isSuccess === true) {
-      wrapperSelector += '.'.concat(_config.CLASS_OR_ID.AG_IMAGE_SUCCESS);
+      wrapperSelector += ".".concat(_config.CLASS_OR_ID.AG_IMAGE_SUCCESS);
     } else {
-      wrapperSelector += '.'.concat(_config.CLASS_OR_ID.AG_IMAGE_FAIL);
+      wrapperSelector += ".".concat(_config.CLASS_OR_ID.AG_IMAGE_FAIL);
     } // Add image selected class name.
 
-    if (selectedImage) {
-      const { key, token: selectToken } = selectedImage;
 
-      if (
-        key === block.key &&
-        selectToken.range.start === token.range.start &&
-        selectToken.range.end === token.range.end
-      ) {
-        wrapperSelector += '.'.concat(_config.CLASS_OR_ID.AG_INLINE_IMAGE_SELECTED);
+    if (selectedImage) {
+      const {
+        key,
+        token: selectToken
+      } = selectedImage;
+
+      if (key === block.key && selectToken.range.start === token.range.start && selectToken.range.end === token.range.end) {
+        wrapperSelector += ".".concat(_config.CLASS_OR_ID.AG_INLINE_IMAGE_SELECTED);
       }
     }
 
@@ -169,20 +159,11 @@ function image(h, cursor, block, token, outerClass) {
       return h('img', data);
     };
 
-    return isSuccess
-      ? [
-          h(wrapperSelector, data, [
-            ...imageIcons,
-            renderImageContainer(
-              // An image description has inline elements as its contents.
-              // When an image is rendered to HTML, this is standardly used as the image’s alt attribute.
-              renderImage()
-            )
-          ])
-        ]
-      : [h(wrapperSelector, data, [...imageIcons, renderImageContainer()])];
+    return isSuccess ? [h(wrapperSelector, data, [...imageIcons, renderImageContainer( // An image description has inline elements as its contents.
+    // When an image is rendered to HTML, this is standardly used as the image’s alt attribute.
+    renderImage())])] : [h(wrapperSelector, data, [...imageIcons, renderImageContainer()])];
   } else {
-    wrapperSelector += '.'.concat(_config.CLASS_OR_ID.AG_EMPTY_IMAGE);
+    wrapperSelector += ".".concat(_config.CLASS_OR_ID.AG_EMPTY_IMAGE);
     return [h(wrapperSelector, data, [...imageIcons, renderImageContainer()])];
   }
 }

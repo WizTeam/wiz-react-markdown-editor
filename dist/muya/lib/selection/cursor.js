@@ -1,15 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _dom = require('./dom');
+var _dom = require("./dom");
 
 class Cursor {
   // You need to provide either `anchor`&&`focus` or `start`&&`end` or all.
-  constructor({ anchor, focus, start, end, noHistory = false }) {
+  constructor({
+    anchor,
+    focus,
+    start,
+    end,
+    noHistory = false
+  }) {
     if (anchor && focus && start && end) {
       this.anchor = anchor;
       this.focus = focus;
@@ -28,8 +34,8 @@ class Cursor {
           this.end = this.anchor;
         }
       } else {
-        const anchorParagraph = document.querySelector('#'.concat(anchor.key));
-        const focusParagraph = document.querySelector('#'.concat(focus.key));
+        const anchorParagraph = document.querySelector("#".concat(anchor.key));
+        const focusParagraph = document.querySelector("#".concat(focus.key));
         let order = true;
 
         if (anchorParagraph && focusParagraph) {
@@ -51,6 +57,7 @@ class Cursor {
 
     this.noHistory = noHistory;
   }
+
 }
 
 var _default = Cursor;

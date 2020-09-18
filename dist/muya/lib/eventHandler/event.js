@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _utils = require('../utils');
+var _utils = require("../utils");
 
 class EventCenter {
   constructor() {
@@ -16,6 +16,7 @@ class EventCenter {
    * [attachDOMEvent] bind event listener to target, and return a unique ID,
    * this ID
    */
+
 
   attachDOMEvent(target, event, listener, capture) {
     if (this.checkHasBind(target, event, listener, capture)) return false;
@@ -35,12 +36,18 @@ class EventCenter {
    * @param  {[type]} eventId [unique eventId]
    */
 
+
   detachDOMEvent(eventId) {
     if (!eventId) return false;
-    const index = this.events.findIndex((e) => e.eventId === eventId);
+    const index = this.events.findIndex(e => e.eventId === eventId);
 
     if (index > -1) {
-      const { target, event, listener, capture } = this.events[index];
+      const {
+        target,
+        event,
+        listener,
+        capture
+      } = this.events[index];
       target.removeEventListener(event, listener, capture);
       this.events.splice(index, 1);
     }
@@ -49,12 +56,14 @@ class EventCenter {
    * [detachAllDomEvents remove all the DOM events handler]
    */
 
+
   detachAllDomEvents() {
-    this.events.forEach((event) => this.detachDOMEvent(event.eventId));
+    this.events.forEach(event => this.detachDOMEvent(event.eventId));
   }
   /**
    * inner method for subscribe and subscribeOnce
    */
+
 
   _subscribe(event, listener, once = false) {
     const listeners = this.listeners[event];
@@ -73,6 +82,7 @@ class EventCenter {
    * [subscribe] subscribe custom event
    */
 
+
   subscribe(event, listener) {
     this._subscribe(event, listener);
   }
@@ -80,17 +90,19 @@ class EventCenter {
    * [unsubscribe] unsubscribe custom event
    */
 
+
   unsubscribe(event, listener) {
     const listeners = this.listeners[event];
 
-    if (Array.isArray(listeners) && listeners.find((l) => l.listener === listener)) {
-      const index = listeners.findIndex((l) => l.listener === listener);
+    if (Array.isArray(listeners) && listeners.find(l => l.listener === listener)) {
+      const index = listeners.findIndex(l => l.listener === listener);
       listeners.splice(index, 1);
     }
   }
   /**
    * [subscribeOnce] usbscribe event and listen once
    */
+
 
   subscribeOnce(event, listener) {
     this._subscribe(event, listener, true);
@@ -99,11 +111,15 @@ class EventCenter {
    * dispatch custom event
    */
 
+
   dispatch(event, ...data) {
     const eventListener = this.listeners[event];
 
     if (eventListener && Array.isArray(eventListener)) {
-      eventListener.forEach(({ listener, once }) => {
+      eventListener.forEach(({
+        listener,
+        once
+      }) => {
         listener(...data);
 
         if (once) {
@@ -113,20 +129,22 @@ class EventCenter {
     }
   } // Determine whether the event has been bind
 
+
   checkHasBind(cTarget, cEvent, cListener, cCapture) {
-    for (const { target, event, listener, capture } of this.events) {
-      if (
-        target === cTarget &&
-        event === cEvent &&
-        listener === cListener &&
-        capture === cCapture
-      ) {
+    for (const {
+      target,
+      event,
+      listener,
+      capture
+    } of this.events) {
+      if (target === cTarget && event === cEvent && listener === cListener && capture === cCapture) {
         return true;
       }
     }
 
     return false;
   }
+
 }
 
 var _default = EventCenter;

@@ -1,39 +1,25 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _fuzzaldrin = require('fuzzaldrin');
+var _fuzzaldrin = require("fuzzaldrin");
 
-var _snabbdom = require('../../parser/render/snabbdom');
+var _snabbdom = require("../../parser/render/snabbdom");
 
-var _utils = require('../../utils');
+var _utils = require("../../utils");
 
-var _baseScrollFloat = _interopRequireDefault(require('../baseScrollFloat'));
+var _baseScrollFloat = _interopRequireDefault(require("../baseScrollFloat"));
 
-var _config = require('./config');
+var _config = require("./config");
 
-require('./index.css');
+require("./index.css");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 class QuickInsert extends _baseScrollFloat.default {
   constructor(muya) {
@@ -53,7 +39,7 @@ class QuickInsert extends _baseScrollFloat.default {
   set renderObj(obj) {
     this._renderObj = obj;
     const renderArray = [];
-    Object.keys(obj).forEach((key) => {
+    Object.keys(obj).forEach(key => {
       renderArray.push(...obj[key]);
     });
     this.renderArray = renderArray;
@@ -66,61 +52,48 @@ class QuickInsert extends _baseScrollFloat.default {
   }
 
   render() {
-    const { scrollElement, activeItem, _renderObj } = this;
-    let children = Object.keys(_renderObj)
-      .filter((key) => {
-        return _renderObj[key].length !== 0;
-      })
-      .map((key) => {
-        const titleVnode = (0, _snabbdom.h)('div.title', key.toUpperCase());
-        const items = [];
+    const {
+      scrollElement,
+      activeItem,
+      _renderObj
+    } = this;
+    let children = Object.keys(_renderObj).filter(key => {
+      return _renderObj[key].length !== 0;
+    }).map(key => {
+      const titleVnode = (0, _snabbdom.h)('div.title', key.toUpperCase());
+      const items = [];
 
-        for (const item of _renderObj[key]) {
-          const { title, subTitle, label, icon, shortCut } = item;
-          const iconVnode = (0, _snabbdom.h)(
-            'div.icon-container',
-            (0, _snabbdom.h)(
-              'i.icon',
-              (0, _snabbdom.h)(
-                'i.icon-'.concat(label.replace(/\s/g, '-')),
-                {
-                  style: {
-                    background: 'url('.concat(icon, ') no-repeat'),
-                    'background-size': '100%'
-                  }
-                },
-                ''
-              )
-            )
-          );
-          const description = (0, _snabbdom.h)('div.description', [
-            (0, _snabbdom.h)('div.big-title', title),
-            (0, _snabbdom.h)('div.sub-title', subTitle)
-          ]);
-          const shortCutVnode = (0, _snabbdom.h)('div.short-cut', [
-            (0, _snabbdom.h)('span', shortCut)
-          ]);
-          const selector = activeItem.label === label ? 'div.item.active' : 'div.item';
-          items.push(
-            (0, _snabbdom.h)(
-              selector,
-              {
-                dataset: {
-                  label
-                },
-                on: {
-                  mousedown: () => {
-                    this.selectItem(item);
-                  }
-                }
-              },
-              [iconVnode, description, shortCutVnode]
-            )
-          );
-        }
+      for (const item of _renderObj[key]) {
+        const {
+          title,
+          subTitle,
+          label,
+          icon,
+          shortCut
+        } = item;
+        const iconVnode = (0, _snabbdom.h)('div.icon-container', (0, _snabbdom.h)('i.icon', (0, _snabbdom.h)("i.icon-".concat(label.replace(/\s/g, '-')), {
+          style: {
+            background: "url(".concat(icon, ") no-repeat"),
+            'background-size': '100%'
+          }
+        }, '')));
+        const description = (0, _snabbdom.h)('div.description', [(0, _snabbdom.h)('div.big-title', title), (0, _snabbdom.h)('div.sub-title', subTitle)]);
+        const shortCutVnode = (0, _snabbdom.h)('div.short-cut', [(0, _snabbdom.h)('span', shortCut)]);
+        const selector = activeItem.label === label ? 'div.item.active' : 'div.item';
+        items.push((0, _snabbdom.h)(selector, {
+          dataset: {
+            label
+          },
+          on: {
+            mousedown: () => {
+              this.selectItem(item);
+            }
+          }
+        }, [iconVnode, description, shortCutVnode]));
+      }
 
-        return (0, _snabbdom.h)('section', [titleVnode, ...items]);
-      });
+      return (0, _snabbdom.h)('section', [titleVnode, ...items]);
+    });
 
     if (children.length === 0) {
       children = (0, _snabbdom.h)('div.no-result', 'No result');
@@ -139,7 +112,9 @@ class QuickInsert extends _baseScrollFloat.default {
 
   listen() {
     super.listen();
-    const { eventCenter } = this.muya;
+    const {
+      eventCenter
+    } = this.muya;
     eventCenter.subscribe('muya-quick-insert', (reference, block, status) => {
       if (status) {
         this.block = block;
@@ -152,7 +127,9 @@ class QuickInsert extends _baseScrollFloat.default {
   }
 
   search(text) {
-    const { contentState } = this.muya;
+    const {
+      contentState
+    } = this.muya;
     const canInserFrontMatter = contentState.canInserFrontMatter(this.block);
     const obj = (0, _utils.deepCopy)(_config.quickInsertObj);
 
@@ -164,7 +141,7 @@ class QuickInsert extends _baseScrollFloat.default {
 
     if (text !== '') {
       result = {};
-      Object.keys(obj).forEach((key) => {
+      Object.keys(obj).forEach(key => {
         result[key] = (0, _fuzzaldrin.filter)(obj[key], text, {
           key: 'title'
         });
@@ -176,9 +153,13 @@ class QuickInsert extends _baseScrollFloat.default {
   }
 
   selectItem(item) {
-    const { contentState } = this.muya;
+    const {
+      contentState
+    } = this.muya;
     this.block.text = '';
-    const { key } = this.block;
+    const {
+      key
+    } = this.block;
     const offset = 0;
     contentState.cursor = {
       start: {
@@ -198,7 +179,7 @@ class QuickInsert extends _baseScrollFloat.default {
     } else {
       switch (item.label) {
         case 'paragraph':
-          console.log('editor.contentState.partialRender()');
+          console.log("editor.contentState.partialRender()");
           contentState.partialRender();
           break;
 
@@ -209,16 +190,20 @@ class QuickInsert extends _baseScrollFloat.default {
       }
     } // delay hide to avoid dispatch enter hander
 
+
     setTimeout(this.hide.bind(this));
   }
 
   getItemElement(item) {
-    const { label } = item;
-    return this.scrollElement.querySelector('[data-label="'.concat(label, '"]'));
+    const {
+      label
+    } = item;
+    return this.scrollElement.querySelector("[data-label=\"".concat(label, "\"]"));
   }
+
 }
 
-_defineProperty(QuickInsert, 'pluginName', 'quickInsert');
+_defineProperty(QuickInsert, "pluginName", 'quickInsert');
 
 var _default = QuickInsert;
 exports.default = _default;

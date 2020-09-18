@@ -1,17 +1,15 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const deleteCtrl = (ContentState) => {
+const deleteCtrl = ContentState => {
   // Handle `delete` keydown event on document.
   ContentState.prototype.docDeleteHandler = function (event) {
     if (this.selectedTableCells) {
@@ -21,7 +19,10 @@ const deleteCtrl = (ContentState) => {
   };
 
   ContentState.prototype.deleteHandler = function (event) {
-    const { start, end } = _selection.default.getCursorRange();
+    const {
+      start,
+      end
+    } = _selection.default.getCursorRange();
 
     if (!start || !end) {
       return;
@@ -37,7 +38,12 @@ const deleteCtrl = (ContentState) => {
       return;
     } // Only handle h1~h6 span block
 
-    const { type, text, key } = startBlock;
+
+    const {
+      type,
+      text,
+      key
+    } = startBlock;
 
     if (/span/.test(type) && start.offset === 0 && text[1] === '\n') {
       event.preventDefault();
@@ -60,10 +66,7 @@ const deleteCtrl = (ContentState) => {
 
       if (nextBlock && /h\d|span/.test(nextBlock.type)) {
         // if cursor at the end of code block-language input, do nothing!
-        if (
-          nextBlock.functionType === 'codeContent' &&
-          startBlock.functionType === 'languageInput'
-        ) {
+        if (nextBlock.functionType === 'codeContent' && startBlock.functionType === 'languageInput') {
           return;
         }
 
@@ -78,7 +81,7 @@ const deleteCtrl = (ContentState) => {
           parent = this.getParent(parent);
         }
 
-        toBeRemoved.forEach((b) => this.removeBlock(b));
+        toBeRemoved.forEach(b => this.removeBlock(b));
         const offset = start.offset;
         this.cursor = {
           start: {

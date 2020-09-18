@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _config = require('../config');
+var _config = require("../config");
 
-var _utils = require('../utils');
+var _utils = require("../utils");
 
-var _getImageInfo = require('../utils/getImageInfo');
+var _getImageInfo = require("../utils/getImageInfo");
 
 const LIST_REG = /ul|ol/;
 const LINE_BREAKS_REG = /\n/;
 
-const pasteCtrl = (ContentState) => {
+const pasteCtrl = ContentState => {
   // check paste type: `MERGE` or `NEWLINE`
   ContentState.prototype.checkPasteType = function (start, fragment) {
     const fragmentType = fragment.type;
@@ -33,10 +33,7 @@ const pasteCtrl = (ContentState) => {
       const list = listItem && listItem.type === 'li' ? this.getParent(listItem) : null;
 
       if (list) {
-        if (
-          list.listType === fragment.listType &&
-          listItem.bulletMarkerOrDelimiter === fragment.children[0].bulletMarkerOrDelimiter
-        ) {
+        if (list.listType === fragment.listType && listItem.bulletMarkerOrDelimiter === fragment.children[0].bulletMarkerOrDelimiter) {
           return 'MERGE';
         } else {
           return 'NEWLINE';
@@ -48,6 +45,7 @@ const pasteCtrl = (ContentState) => {
       return 'NEWLINE';
     }
   }; // Try to identify the data type.
+
 
   ContentState.prototype.checkCopyType = function (html, text) {
     let type = 'normal';
@@ -69,7 +67,8 @@ const pasteCtrl = (ContentState) => {
           }
         } // TODO: We could try to import HTML elements such as headings, text and lists to markdown for better UX.
 
-        type = _config.PARAGRAPH_TYPES.find((type) => type === tag) ? 'copyAsHtml' : type;
+
+        type = _config.PARAGRAPH_TYPES.find(type => type === tag) ? 'copyAsHtml' : type;
       }
     }
 
@@ -86,6 +85,7 @@ const pasteCtrl = (ContentState) => {
       }
     } // Prevent XSS and sanitize HTML.
 
+
     const sanitizedHtml = (0, _utils.sanitize)(html, _config.PREVIEW_DOMPURIFY_CONFIG);
     const tempWrapper = document.createElement('div');
     tempWrapper.innerHTML = sanitizedHtml; // Special process for turndown.js, needed for Number app on macOS.
@@ -96,7 +96,7 @@ const pasteCtrl = (ContentState) => {
       const row = table.querySelector('tr');
 
       if (row.firstElementChild.tagName !== 'TH') {
-        [...row.children].forEach((cell) => {
+        [...row.children].forEach(cell => {
           const th = document.createElement('th');
           th.innerHTML = cell.innerHTML;
           cell.replaceWith(th);
@@ -121,6 +121,7 @@ const pasteCtrl = (ContentState) => {
         }
       }
     } // Prevent it parse into a link if copy a url.
+
 
     const links = Array.from(tempWrapper.querySelectorAll('a'));
 
@@ -149,7 +150,7 @@ const pasteCtrl = (ContentState) => {
     const imagePath = this.muya.options.clipboardFilePath();
 
     if (imagePath && typeof imagePath === 'string' && _config.IMAGE_EXT_REG.test(imagePath)) {
-      const id = 'loading-'.concat((0, _utils.getUniqueId)());
+      const id = "loading-".concat((0, _utils.getUniqueId)());
 
       if (this.selectedImage) {
         this.replaceImage(this.selectedImage, {
@@ -164,13 +165,15 @@ const pasteCtrl = (ContentState) => {
       }
 
       const nSrc = await this.muya.options.imageAction(imagePath, id);
-      const { src } = (0, _utils.getImageInfo)(imagePath);
+      const {
+        src
+      } = (0, _utils.getImageInfo)(imagePath);
 
       if (src) {
         this.stateRender.urlMap.set(nSrc, src);
       }
 
-      const imageWrapper = this.muya.container.querySelector('span[data-id='.concat(id, ']'));
+      const imageWrapper = this.muya.container.querySelector("span[data-id=".concat(id, "]"));
 
       if (imageWrapper) {
         const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);
@@ -194,8 +197,9 @@ const pasteCtrl = (ContentState) => {
       }
     } // handle paste to create inline image
 
+
     if (file) {
-      const id = 'loading-'.concat((0, _utils.getUniqueId)());
+      const id = "loading-".concat((0, _utils.getUniqueId)());
 
       if (this.selectedImage) {
         this.replaceImage(this.selectedImage, {
@@ -211,12 +215,10 @@ const pasteCtrl = (ContentState) => {
 
       const reader = new FileReader();
 
-      reader.onload = (event) => {
+      reader.onload = event => {
         const base64 = event.target.result;
-        const imageWrapper = this.muya.container.querySelector('span[data-id='.concat(id, ']'));
-        const imageContainer = this.muya.container.querySelector(
-          'span[data-id='.concat(id, '] .ag-image-container')
-        );
+        const imageWrapper = this.muya.container.querySelector("span[data-id=".concat(id, "]"));
+        const imageContainer = this.muya.container.querySelector("span[data-id=".concat(id, "] .ag-image-container"));
         this.stateRender.urlMap.set(id, base64);
 
         if (imageContainer) {
@@ -237,7 +239,7 @@ const pasteCtrl = (ContentState) => {
         this.stateRender.urlMap.delete(id);
       }
 
-      const imageWrapper = this.muya.container.querySelector('span[data-id='.concat(id, ']'));
+      const imageWrapper = this.muya.container.querySelector("span[data-id=".concat(id, "]"));
 
       if (imageWrapper) {
         const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);
@@ -252,6 +254,7 @@ const pasteCtrl = (ContentState) => {
     return null;
   }; // Handle global events.
 
+
   ContentState.prototype.docPasteHandler = async function (event) {
     // TODO: Pasting into CodeMirror will not work for special data like images
     // or tables (HTML) because it's not handled.
@@ -262,6 +265,7 @@ const pasteCtrl = (ContentState) => {
     }
   }; // Handle `normal` and `pasteAsPlainText` paste for preview mode.
 
+
   ContentState.prototype.pasteHandler = async function (event, type = 'normal', rawText, rawHtml) {
     event.preventDefault();
     event.stopPropagation();
@@ -269,12 +273,16 @@ const pasteCtrl = (ContentState) => {
     let html = rawHtml || event.clipboardData.getData('text/html'); // Support pasted URLs from Firefox.
 
     if (_config.URL_REG.test(text) && !/\s/.test(text) && !html) {
-      html = '<a href="'.concat(text, '">').concat(text, '</a>');
+      html = "<a href=\"".concat(text, "\">").concat(text, "</a>");
     } // Remove crap from HTML such as meta data and styles.
+
 
     html = await this.standardizeHTML(html);
     let copyType = this.checkCopyType(html, text);
-    const { start, end } = this.cursor;
+    const {
+      start,
+      end
+    } = this.cursor;
     const startBlock = this.getBlock(start.key);
     const endBlock = this.getBlock(end.key);
     const parent = this.getParent(startBlock);
@@ -289,6 +297,7 @@ const pasteCtrl = (ContentState) => {
       return this.pasteHandler(event, type, rawText, rawHtml);
     } // NOTE: We should parse HTML if we can and use it instead the image (see GH#1271).
 
+
     if (!html) {
       const file = await this.pasteImage(event);
 
@@ -297,10 +306,11 @@ const pasteCtrl = (ContentState) => {
       }
     }
 
-    const appendHtml = (text) => {
-      startBlock.text =
-        startBlock.text.substring(0, start.offset) + text + startBlock.text.substring(start.offset);
-      const { key } = start;
+    const appendHtml = text => {
+      startBlock.text = startBlock.text.substring(0, start.offset) + text + startBlock.text.substring(start.offset);
+      const {
+        key
+      } = start;
       const offset = start.offset + text.length;
       this.cursor = {
         start: {
@@ -313,6 +323,7 @@ const pasteCtrl = (ContentState) => {
         }
       };
     }; // Prepare paste
+
 
     if (startBlock.type === 'span' && startBlock.functionType === 'languageInput') {
       // Extract the first line from the language identifier (GH#553)
@@ -343,7 +354,9 @@ const pasteCtrl = (ContentState) => {
         }
       }; // Hide code picker float box
 
-      const { eventCenter } = this.muya;
+      const {
+        eventCenter
+      } = this.muya;
       eventCenter.dispatch('muya-code-picker', {
         reference: null
       }); // Update code block language and render
@@ -357,7 +370,9 @@ const pasteCtrl = (ContentState) => {
       const prePartText = blockText.substring(0, start.offset);
       const postPartText = blockText.substring(end.offset);
       startBlock.text = prePartText + text + postPartText;
-      const { key } = startBlock;
+      const {
+        key
+      } = startBlock;
       const offset = start.offset + text.length;
       this.cursor = {
         start: {
@@ -374,11 +389,10 @@ const pasteCtrl = (ContentState) => {
 
     if (startBlock.functionType === 'cellContent') {
       const pendingText = text.trim().replace(/\n/g, '<br/>');
-      startBlock.text =
-        startBlock.text.substring(0, start.offset) +
-        pendingText +
-        startBlock.text.substring(end.offset);
-      const { key } = startBlock;
+      startBlock.text = startBlock.text.substring(0, start.offset) + pendingText + startBlock.text.substring(end.offset);
+      const {
+        key
+      } = startBlock;
       const offset = start.offset + pendingText.length;
       this.cursor = {
         start: {
@@ -393,51 +407,52 @@ const pasteCtrl = (ContentState) => {
       return this.partialRender();
     } // Handle paste event and transform data into internal block structure.
 
+
     if (copyType === 'copyAsHtml') {
       switch (type) {
-        case 'normal': {
-          const htmlBlock = this.createBlockP(text.trim());
-          this.insertAfter(htmlBlock, parent);
-          this.removeBlock(parent); // handler heading
-
-          this.insertHtmlBlock(htmlBlock);
-          break;
-        }
-
-        case 'pasteAsPlainText': {
-          const lines = text.trim().split(LINE_BREAKS_REG);
-          let htmlBlock = null;
-
-          if (!startBlock.text || lines.length > 1) {
-            htmlBlock = this.createBlockP((startBlock.text ? lines.slice(1) : lines).join('\n'));
-          }
-
-          if (htmlBlock) {
+        case 'normal':
+          {
+            const htmlBlock = this.createBlockP(text.trim());
             this.insertAfter(htmlBlock, parent);
+            this.removeBlock(parent); // handler heading
+
             this.insertHtmlBlock(htmlBlock);
+            break;
           }
 
-          if (startBlock.text) {
-            appendHtml(lines[0]);
-          } else {
-            this.removeBlock(parent);
-          }
+        case 'pasteAsPlainText':
+          {
+            const lines = text.trim().split(LINE_BREAKS_REG);
+            let htmlBlock = null;
 
-          break;
-        }
+            if (!startBlock.text || lines.length > 1) {
+              htmlBlock = this.createBlockP((startBlock.text ? lines.slice(1) : lines).join('\n'));
+            }
+
+            if (htmlBlock) {
+              this.insertAfter(htmlBlock, parent);
+              this.insertHtmlBlock(htmlBlock);
+            }
+
+            if (startBlock.text) {
+              appendHtml(lines[0]);
+            } else {
+              this.removeBlock(parent);
+            }
+
+            break;
+          }
       }
 
       return this.partialRender();
     }
 
-    const stateFragments =
-      type === 'pasteAsPlainText' || copyType === 'copyAsMarkdown'
-        ? this.markdownToState(text)
-        : this.html2State(html);
+    const stateFragments = type === 'pasteAsPlainText' || copyType === 'copyAsMarkdown' ? this.markdownToState(text) : this.html2State(html);
 
     if (stateFragments.length <= 0) {
       return;
     } // Step 1: if select content, cut the content, and chop the block text into two part by the cursor.
+
 
     const cacheText = endBlock.text.substring(end.offset);
     startBlock.text = startBlock.text.substring(0, start.offset); // Step 2: when insert the fragments, check begin a new block, or insert into pre block.
@@ -446,7 +461,7 @@ const pasteCtrl = (ContentState) => {
     const tailFragments = stateFragments.slice(1);
     const pasteType = this.checkPasteType(startBlock, firstFragment);
 
-    const getLastBlock = (blocks) => {
+    const getLastBlock = blocks => {
       const len = blocks.length;
       const lastBlock = blocks[len - 1];
 
@@ -467,97 +482,101 @@ const pasteCtrl = (ContentState) => {
     lastBlock.text += cacheText;
 
     switch (pasteType) {
-      case 'MERGE': {
-        if (LIST_REG.test(firstFragment.type)) {
-          const listItems = firstFragment.children;
-          const firstListItem = listItems[0];
-          const liChildren = firstListItem.children;
-          const originListItem = this.getParent(parent);
-          const originList = this.getParent(originListItem);
-          const targetListType = firstFragment.children[0].isLooseListItem;
-          const originListType = originList.children[0].isLooseListItem; // No matter copy loose list to tight list or vice versa, the result is one loose list.
+      case 'MERGE':
+        {
+          if (LIST_REG.test(firstFragment.type)) {
+            const listItems = firstFragment.children;
+            const firstListItem = listItems[0];
+            const liChildren = firstListItem.children;
+            const originListItem = this.getParent(parent);
+            const originList = this.getParent(originListItem);
+            const targetListType = firstFragment.children[0].isLooseListItem;
+            const originListType = originList.children[0].isLooseListItem; // No matter copy loose list to tight list or vice versa, the result is one loose list.
 
-          if (targetListType !== originListType) {
-            if (!targetListType) {
-              firstFragment.children.forEach((item) => (item.isLooseListItem = true));
+            if (targetListType !== originListType) {
+              if (!targetListType) {
+                firstFragment.children.forEach(item => item.isLooseListItem = true);
+              } else {
+                originList.children.forEach(item => item.isLooseListItem = true);
+              }
+            }
+
+            if (liChildren[0].type === 'p') {
+              // TODO @JOCS
+              startBlock.text += liChildren[0].children[0].text;
+              const tail = liChildren.slice(1);
+
+              if (tail.length) {
+                tail.forEach(t => {
+                  this.appendChild(originListItem, t);
+                });
+              }
+
+              const firstFragmentTail = listItems.slice(1);
+
+              if (firstFragmentTail.length) {
+                firstFragmentTail.forEach(t => {
+                  this.appendChild(originList, t);
+                });
+              }
             } else {
-              originList.children.forEach((item) => (item.isLooseListItem = true));
-            }
-          }
-
-          if (liChildren[0].type === 'p') {
-            // TODO @JOCS
-            startBlock.text += liChildren[0].children[0].text;
-            const tail = liChildren.slice(1);
-
-            if (tail.length) {
-              tail.forEach((t) => {
-                this.appendChild(originListItem, t);
+              listItems.forEach(c => {
+                this.appendChild(originList, c);
               });
             }
 
-            const firstFragmentTail = listItems.slice(1);
+            let target = originList;
+            tailFragments.forEach(block => {
+              this.insertAfter(block, target);
+              target = block;
+            });
+          } else if (firstFragment.type === 'p' || /^h\d/.test(firstFragment.type)) {
+            const text = firstFragment.children[0].text;
+            const lines = text.split('\n');
+            let target = parent;
 
-            if (firstFragmentTail.length) {
-              firstFragmentTail.forEach((t) => {
-                this.appendChild(originList, t);
-              });
+            if (parent.headingStyle === 'atx') {
+              startBlock.text += lines[0];
+
+              if (lines.length > 1) {
+                const pBlock = this.createBlockP(lines.slice(1).join('\n'));
+                this.insertAfter(parent, pBlock);
+                target = pBlock;
+              }
+            } else {
+              startBlock.text += text;
             }
-          } else {
-            listItems.forEach((c) => {
-              this.appendChild(originList, c);
+
+            tailFragments.forEach(block => {
+              this.insertAfter(block, target);
+              target = block;
             });
           }
 
-          let target = originList;
-          tailFragments.forEach((block) => {
+          break;
+        }
+
+      case 'NEWLINE':
+        {
+          let target = parent;
+          stateFragments.forEach(block => {
             this.insertAfter(block, target);
             target = block;
           });
-        } else if (firstFragment.type === 'p' || /^h\d/.test(firstFragment.type)) {
-          const text = firstFragment.children[0].text;
-          const lines = text.split('\n');
-          let target = parent;
 
-          if (parent.headingStyle === 'atx') {
-            startBlock.text += lines[0];
-
-            if (lines.length > 1) {
-              const pBlock = this.createBlockP(lines.slice(1).join('\n'));
-              this.insertAfter(parent, pBlock);
-              target = pBlock;
-            }
-          } else {
-            startBlock.text += text;
+          if (startBlock.text.length === 0) {
+            this.removeBlock(parent);
           }
 
-          tailFragments.forEach((block) => {
-            this.insertAfter(block, target);
-            target = block;
-          });
+          break;
         }
 
-        break;
-      }
-
-      case 'NEWLINE': {
-        let target = parent;
-        stateFragments.forEach((block) => {
-          this.insertAfter(block, target);
-          target = block;
-        });
-
-        if (startBlock.text.length === 0) {
-          this.removeBlock(parent);
+      default:
+        {
+          throw new Error('unknown paste type');
         }
-
-        break;
-      }
-
-      default: {
-        throw new Error('unknown paste type');
-      }
     } // Step 3: set cursor and render
+
 
     let cursorBlock = this.getBlock(key);
 

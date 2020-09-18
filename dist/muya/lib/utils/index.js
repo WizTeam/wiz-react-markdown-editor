@@ -1,32 +1,31 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.collectFootnotes = exports.verticalPositionInRect = exports.getParagraphReference = exports.sanitize = exports.mixins = exports.generateKeyHash = exports.genUpper2LowerKeyHash = exports.wordCount = exports.escapeInBlockHtml = exports.unescapeHtml = exports.escapeHtml = exports.getImageInfo = exports.checkImageContentType = exports.getPageTitle = exports.isOnline = exports.loadImage = exports.deepCopy = exports.deepCopyArray = exports.debounce = exports.throttle = exports.union = exports.conflict = exports.camelToSnake = exports.snakeToCamel = exports.isLengthEven = exports.isEven = exports.isOdd = exports.identity = exports.noop = exports.isMetaKey = exports.getLongUniqueId = exports.getUniqueId = void 0;
 
-var _dompurify = _interopRequireDefault(require('./dompurify'));
+var _dompurify = _interopRequireDefault(require("./dompurify"));
 
-var _config = require('../config');
+var _config = require("../config");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const ID_PREFIX = 'ag-';
 let id = 0;
 const TIMEOUT = 1500;
 
-const getUniqueId = () => ''.concat(ID_PREFIX).concat(id++);
+const getUniqueId = () => "".concat(ID_PREFIX).concat(id++);
 
 exports.getUniqueId = getUniqueId;
 
-const getLongUniqueId = () => ''.concat(getUniqueId(), '-').concat((+new Date()).toString(32));
+const getLongUniqueId = () => "".concat(getUniqueId(), "-").concat((+new Date()).toString(32));
 
 exports.getLongUniqueId = getLongUniqueId;
 
-const isMetaKey = ({ key }) =>
-  key === 'Shift' || key === 'Control' || key === 'Alt' || key === 'Meta';
+const isMetaKey = ({
+  key
+}) => key === 'Shift' || key === 'Control' || key === 'Alt' || key === 'Meta';
 
 exports.isMetaKey = isMetaKey;
 
@@ -34,15 +33,15 @@ const noop = () => {};
 
 exports.noop = noop;
 
-const identity = (i) => i;
+const identity = i => i;
 
 exports.identity = identity;
 
-const isOdd = (number) => Math.abs(number) % 2 === 1;
+const isOdd = number => Math.abs(number) % 2 === 1;
 
 exports.isOdd = isOdd;
 
-const isEven = (number) => Math.abs(number) % 2 === 0;
+const isEven = number => Math.abs(number) % 2 === 0;
 
 exports.isEven = isEven;
 
@@ -50,14 +49,15 @@ const isLengthEven = (str = '') => str.length % 2 === 0;
 
 exports.isLengthEven = isLengthEven;
 
-const snakeToCamel = (name) => name.replace(/_([a-z])/g, (p0, p1) => p1.toUpperCase());
+const snakeToCamel = name => name.replace(/_([a-z])/g, (p0, p1) => p1.toUpperCase());
 
 exports.snakeToCamel = snakeToCamel;
 
-const camelToSnake = (name) => name.replace(/([A-Z])/g, (_, p) => '-'.concat(p.toLowerCase()));
+const camelToSnake = name => name.replace(/([A-Z])/g, (_, p) => "-".concat(p.toLowerCase()));
 /**
  *  Are two arrays have intersection
  */
+
 
 exports.camelToSnake = camelToSnake;
 
@@ -67,7 +67,14 @@ const conflict = (arr1, arr2) => {
 
 exports.conflict = conflict;
 
-const union = ({ start: tStart, end: tEnd }, { start: lStart, end: lEnd, active }) => {
+const union = ({
+  start: tStart,
+  end: tEnd
+}, {
+  start: lStart,
+  end: lEnd,
+  active
+}) => {
   if (!(tEnd <= lStart || lEnd <= tStart)) {
     if (lStart < tStart) {
       return {
@@ -86,6 +93,7 @@ const union = ({ start: tStart, end: tEnd }, { start: lStart, end: lEnd, active 
 
   return null;
 }; // https://github.com/jashkenas/underscore
+
 
 exports.union = union;
 
@@ -132,6 +140,7 @@ const throttle = (func, wait = 50) => {
   };
 }; // simple implementation...
 
+
 exports.throttle = throttle;
 
 const debounce = (func, wait = 50) => {
@@ -146,7 +155,7 @@ const debounce = (func, wait = 50) => {
 
 exports.debounce = debounce;
 
-const deepCopyArray = (array) => {
+const deepCopyArray = array => {
   const result = [];
   const len = array.length;
   let i;
@@ -166,11 +175,12 @@ const deepCopyArray = (array) => {
   return result;
 }; // TODO: @jocs rewrite deepCopy
 
+
 exports.deepCopyArray = deepCopyArray;
 
-const deepCopy = (object) => {
+const deepCopy = object => {
   const obj = {};
-  Object.keys(object).forEach((key) => {
+  Object.keys(object).forEach(key => {
     if (typeof object[key] === 'object' && object[key] !== null) {
       if (Array.isArray(object[key])) {
         obj[key] = deepCopyArray(object[key]);
@@ -203,7 +213,7 @@ const loadImage = async (url, detectContentType = false) => {
       });
     };
 
-    image.onerror = (err) => {
+    image.onerror = err => {
       reject(err);
     };
 
@@ -219,11 +229,12 @@ const isOnline = () => {
 
 exports.isOnline = isOnline;
 
-const getPageTitle = (url) => {
+const getPageTitle = url => {
   // No need to request the title when it's not url.
   if (!url.startsWith('http')) {
     return '';
   } // No need to request the title when off line.
+
 
   if (!isOnline()) {
     return '';
@@ -241,7 +252,9 @@ const getPageTitle = (url) => {
         const contentType = req.getResponseHeader('Content-Type');
 
         if (/text\/html/.test(contentType)) {
-          const { response } = req;
+          const {
+            response
+          } = req;
 
           if (typeof response === 'string') {
             const match = response.match(/<title>(.*)<\/title>/);
@@ -258,7 +271,7 @@ const getPageTitle = (url) => {
     }
   };
 
-  const handleError = (e) => {
+  const handleError = e => {
     settle('');
   };
 
@@ -277,7 +290,7 @@ const getPageTitle = (url) => {
 
 exports.getPageTitle = getPageTitle;
 
-const checkImageContentType = (url) => {
+const checkImageContentType = url => {
   const req = new XMLHttpRequest();
   let settle;
   const promise = new Promise((resolve, reject) => {
@@ -320,6 +333,7 @@ const checkImageContentType = (url) => {
  * @param {string} baseUrl Base path; used on desktop to fix the relative image path.
  */
 
+
 exports.checkImageContentType = checkImageContentType;
 
 const getImageInfo = (src, baseUrl = window.DIRNAME) => {
@@ -327,10 +341,11 @@ const getImageInfo = (src, baseUrl = window.DIRNAME) => {
 
   const isUrl = _config.URL_REG.test(src); // Treat an URL with valid extension as image
 
+
   if (imageExtension) {
     const isAbsoluteLocal = /^(?:\/|\\\\|[a-zA-Z]:\\).+/.test(src);
 
-    if (isUrl || (!isAbsoluteLocal && !baseUrl)) {
+    if (isUrl || !isAbsoluteLocal && !baseUrl) {
       if (!isUrl && !baseUrl) {
         console.warn('"baseUrl" is not defined!');
       }
@@ -354,12 +369,14 @@ const getImageInfo = (src, baseUrl = window.DIRNAME) => {
     };
   } // Data url
 
+
   if (_config.DATA_URL_REG.test(src)) {
     return {
       isUnknownType: false,
       src
     };
   } // Url type is unknown
+
 
   return {
     isUnknownType: false,
@@ -369,41 +386,33 @@ const getImageInfo = (src, baseUrl = window.DIRNAME) => {
 
 exports.getImageInfo = getImageInfo;
 
-const escapeHtml = (html) => {
-  return html
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+const escapeHtml = html => {
+  return html.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 };
 
 exports.escapeHtml = escapeHtml;
 
-const unescapeHtml = (text) => {
-  return text
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+const unescapeHtml = text => {
+  return text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, '\'');
 };
 
 exports.unescapeHtml = unescapeHtml;
 
-const escapeInBlockHtml = (html) => {
+const escapeInBlockHtml = html => {
   return html.replace(/(<(style|script|title)[^<>]*>)([\s\S]*?)(<\/\2>)/g, (m, p1, p2, p3, p4) => {
-    return ''.concat(escapeHtml(p1)).concat(p3).concat(escapeHtml(p4));
+    return "".concat(escapeHtml(p1)).concat(p3).concat(escapeHtml(p4));
   });
 };
 
 exports.escapeInBlockHtml = escapeInBlockHtml;
 
-const wordCount = (markdown) => {
-  const paragraph = markdown.split(/\n{2,}/).filter((line) => line).length;
+const wordCount = markdown => {
+  const paragraph = markdown.split(/\n{2,}/).filter(line => line).length;
   let word = 0;
   let character = 0;
   let all = 0;
   const removedChinese = markdown.replace(/[\u4e00-\u9fa5]/g, '');
-  const tokens = removedChinese.split(/[\s\n]+/).filter((t) => t);
+  const tokens = removedChinese.split(/[\s\n]+/).filter(t => t);
   const chineseWordLength = markdown.length - removedChinese.length;
   word += chineseWordLength + tokens.length;
   character += tokens.reduce((acc, t) => acc + t.length, 0) + chineseWordLength;
@@ -420,9 +429,10 @@ const wordCount = (markdown) => {
  * also translate `_` to `-`]
  */
 
+
 exports.wordCount = wordCount;
 
-const genUpper2LowerKeyHash = (keys) => {
+const genUpper2LowerKeyHash = keys => {
   return keys.reduce((acc, key) => {
     const value = key.toLowerCase().replace(/_/g, '-');
     return Object.assign(acc, {
@@ -434,15 +444,17 @@ const genUpper2LowerKeyHash = (keys) => {
  * generate constants map, the value is the key.
  */
 
+
 exports.genUpper2LowerKeyHash = genUpper2LowerKeyHash;
 
-const generateKeyHash = (keys) => {
+const generateKeyHash = keys => {
   return keys.reduce((acc, key) => {
     return Object.assign(acc, {
       [key]: key
     });
   }, {});
 }; // mixins
+
 
 exports.generateKeyHash = generateKeyHash;
 
@@ -459,7 +471,14 @@ const sanitize = (html, options) => {
 exports.sanitize = sanitize;
 
 const getParagraphReference = (ele, id) => {
-  const { x, y, left, top, bottom, height } = ele.getBoundingClientRect();
+  const {
+    x,
+    y,
+    left,
+    top,
+    bottom,
+    height
+  } = ele.getBoundingClientRect();
   return {
     getBoundingClientRect() {
       return {
@@ -483,14 +502,19 @@ const getParagraphReference = (ele, id) => {
 exports.getParagraphReference = getParagraphReference;
 
 const verticalPositionInRect = (event, rect) => {
-  const { clientY } = event;
-  const { top, height } = rect;
+  const {
+    clientY
+  } = event;
+  const {
+    top,
+    height
+  } = rect;
   return clientY - top > height / 2 ? 'down' : 'up';
 };
 
 exports.verticalPositionInRect = verticalPositionInRect;
 
-const collectFootnotes = (blocks) => {
+const collectFootnotes = blocks => {
   const map = new Map();
 
   for (const block of blocks) {

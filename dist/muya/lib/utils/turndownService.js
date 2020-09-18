@@ -1,23 +1,23 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = exports.usePluginAddRules = void 0;
 
-var _turndown = _interopRequireDefault(require('turndown'));
+var _turndown = _interopRequireDefault(require("turndown"));
 
-var _index = require('./index');
+var _index = require("./index");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const turndownPluginGfm = require('joplin-turndown-plugin-gfm');
 
 const usePluginAddRules = (turndownService, keeps) => {
   // Use the gfm plugin
-  const { gfm } = turndownPluginGfm;
+  const {
+    gfm
+  } = turndownPluginGfm;
   turndownService.use(gfm); // We need a extra strikethrough rule because the strikethrough rule in gfm is single `~`.
 
   turndownService.addRule('strikethrough', {
@@ -26,22 +26,21 @@ const usePluginAddRules = (turndownService, keeps) => {
     replacement(content) {
       return '~~' + content + '~~';
     }
+
   });
   turndownService.addRule('paragraph', {
     filter: 'p',
     replacement: function (content, node) {
-      const isTaskListItemParagraph =
-        node.previousElementSibling && node.previousElementSibling.tagName === 'INPUT';
+      const isTaskListItemParagraph = node.previousElementSibling && node.previousElementSibling.tagName === 'INPUT';
       return isTaskListItemParagraph ? content + '\n\n' : '\n\n' + content + '\n\n';
     }
   });
   turndownService.addRule('listItem', {
     filter: 'li',
     replacement: function (content, node, options) {
-      content = content
-        .replace(/^\n+/, '') // remove leading newlines
-        .replace(/\n+$/, '\n') // replace trailing newlines with just a single one
-        .replace(/\n/gm, '\n  '); // indent
+      content = content.replace(/^\n+/, '') // remove leading newlines
+      .replace(/\n+$/, '\n') // replace trailing newlines with just a single one
+      .replace(/\n/gm, '\n  '); // indent
 
       let prefix = options.bulletListMarker + ' ';
       const parent = node.parentNode;
@@ -62,8 +61,9 @@ const usePluginAddRules = (turndownService, keeps) => {
     },
 
     replacement(content, node, options) {
-      return '$$\n'.concat(content, '\n$$');
+      return "$$\n".concat(content, "\n$$");
     }
+
   });
   turndownService.escape = _index.identity;
   turndownService.keep(keeps);

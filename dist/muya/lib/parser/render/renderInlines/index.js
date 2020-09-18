@@ -1,77 +1,75 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _backlashInToken = _interopRequireDefault(require('./backlashInToken'));
+var _backlashInToken = _interopRequireDefault(require("./backlashInToken"));
 
-var _backlash = _interopRequireDefault(require('./backlash'));
+var _backlash = _interopRequireDefault(require("./backlash"));
 
-var _highlight = _interopRequireDefault(require('./highlight'));
+var _highlight = _interopRequireDefault(require("./highlight"));
 
-var _header = _interopRequireDefault(require('./header'));
+var _header = _interopRequireDefault(require("./header"));
 
-var _link = _interopRequireDefault(require('./link'));
+var _link = _interopRequireDefault(require("./link"));
 
-var _htmlTag = _interopRequireDefault(require('./htmlTag'));
+var _htmlTag = _interopRequireDefault(require("./htmlTag"));
 
-var _hr = _interopRequireDefault(require('./hr'));
+var _hr = _interopRequireDefault(require("./hr"));
 
-var _tailHeader = _interopRequireDefault(require('./tailHeader'));
+var _tailHeader = _interopRequireDefault(require("./tailHeader"));
 
-var _hardLineBreak = _interopRequireDefault(require('./hardLineBreak'));
+var _hardLineBreak = _interopRequireDefault(require("./hardLineBreak"));
 
-var _softLineBreak = _interopRequireDefault(require('./softLineBreak'));
+var _softLineBreak = _interopRequireDefault(require("./softLineBreak"));
 
-var _codeFense = _interopRequireDefault(require('./codeFense'));
+var _codeFense = _interopRequireDefault(require("./codeFense"));
 
-var _inlineMath = _interopRequireDefault(require('./inlineMath'));
+var _inlineMath = _interopRequireDefault(require("./inlineMath"));
 
-var _autoLink = _interopRequireDefault(require('./autoLink'));
+var _autoLink = _interopRequireDefault(require("./autoLink"));
 
-var _autoLinkExtension = _interopRequireDefault(require('./autoLinkExtension'));
+var _autoLinkExtension = _interopRequireDefault(require("./autoLinkExtension"));
 
-var _loadImageAsync = _interopRequireDefault(require('./loadImageAsync'));
+var _loadImageAsync = _interopRequireDefault(require("./loadImageAsync"));
 
-var _image = _interopRequireDefault(require('./image'));
+var _image = _interopRequireDefault(require("./image"));
 
-var _delEmStringFactory = _interopRequireDefault(require('./delEmStringFactory'));
+var _delEmStringFactory = _interopRequireDefault(require("./delEmStringFactory"));
 
-var _emoji = _interopRequireDefault(require('./emoji'));
+var _emoji = _interopRequireDefault(require("./emoji"));
 
-var _inlineCode = _interopRequireDefault(require('./inlineCode'));
+var _inlineCode = _interopRequireDefault(require("./inlineCode"));
 
-var _text = _interopRequireDefault(require('./text'));
+var _text = _interopRequireDefault(require("./text"));
 
-var _del = _interopRequireDefault(require('./del'));
+var _del = _interopRequireDefault(require("./del"));
 
-var _em = _interopRequireDefault(require('./em'));
+var _em = _interopRequireDefault(require("./em"));
 
-var _strong = _interopRequireDefault(require('./strong'));
+var _strong = _interopRequireDefault(require("./strong"));
 
-var _htmlEscape = _interopRequireDefault(require('./htmlEscape'));
+var _htmlEscape = _interopRequireDefault(require("./htmlEscape"));
 
-var _multipleMath = _interopRequireDefault(require('./multipleMath'));
+var _multipleMath = _interopRequireDefault(require("./multipleMath"));
 
-var _referenceDefinition = _interopRequireDefault(require('./referenceDefinition'));
+var _referenceDefinition = _interopRequireDefault(require("./referenceDefinition"));
 
-var _htmlRuby = _interopRequireDefault(require('./htmlRuby'));
+var _htmlRuby = _interopRequireDefault(require("./htmlRuby"));
 
-var _referenceLink = _interopRequireDefault(require('./referenceLink'));
+var _referenceLink = _interopRequireDefault(require("./referenceLink"));
 
-var _referenceImage = _interopRequireDefault(require('./referenceImage'));
+var _referenceImage = _interopRequireDefault(require("./referenceImage"));
 
-var _superSubScript = _interopRequireDefault(require('./superSubScript'));
+var _superSubScript = _interopRequireDefault(require("./superSubScript"));
 
-var _footnoteIdentifier = _interopRequireDefault(require('./footnoteIdentifier'));
+var _footnoteIdentifier = _interopRequireDefault(require("./footnoteIdentifier"));
 
-var _tag = _interopRequireDefault(require('./tag'));
+var _tag = _interopRequireDefault(require("./tag"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default = {
   backlashInToken: _backlashInToken.default,

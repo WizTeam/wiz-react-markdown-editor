@@ -1,35 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _baseScrollFloat = _interopRequireDefault(require('../baseScrollFloat'));
+var _baseScrollFloat = _interopRequireDefault(require("../baseScrollFloat"));
 
-var _emojis = _interopRequireDefault(require('../emojis'));
+var _emojis = _interopRequireDefault(require("../emojis"));
 
-var _snabbdom = require('../../parser/render/snabbdom');
+var _snabbdom = require("../../parser/render/snabbdom");
 
-require('./index.css');
+require("./index.css");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 class EmojiPicker extends _baseScrollFloat.default {
   constructor(muya) {
@@ -46,7 +32,7 @@ class EmojiPicker extends _baseScrollFloat.default {
   set renderObj(obj) {
     this._renderObj = obj;
     const renderArray = [];
-    Object.keys(obj).forEach((key) => {
+    Object.keys(obj).forEach(key => {
       renderArray.push(...obj[key]);
     });
     this.renderArray = renderArray;
@@ -60,8 +46,13 @@ class EmojiPicker extends _baseScrollFloat.default {
 
   listen() {
     super.listen();
-    const { eventCenter } = this.muya;
-    eventCenter.subscribe('muya-emoji-picker', ({ reference, emojiNode }) => {
+    const {
+      eventCenter
+    } = this.muya;
+    eventCenter.subscribe('muya-emoji-picker', ({
+      reference,
+      emojiNode
+    }) => {
       if (!emojiNode) return this.hide();
       const text = emojiNode.textContent.trim();
 
@@ -69,7 +60,7 @@ class EmojiPicker extends _baseScrollFloat.default {
         const renderObj = this.emoji.search(text);
         this.renderObj = renderObj;
 
-        const cb = (item) => {
+        const cb = item => {
           this.muya.contentState.setEmoji(item);
         };
 
@@ -84,29 +75,30 @@ class EmojiPicker extends _baseScrollFloat.default {
   }
 
   render() {
-    const { scrollElement, _renderObj, activeItem, oldVnode } = this;
-    const children = Object.keys(_renderObj).map((category) => {
+    const {
+      scrollElement,
+      _renderObj,
+      activeItem,
+      oldVnode
+    } = this;
+    const children = Object.keys(_renderObj).map(category => {
       const title = (0, _snabbdom.h)('div.title', category);
 
-      const emojis = _renderObj[category].map((e) => {
+      const emojis = _renderObj[category].map(e => {
         const selector = activeItem === e ? 'div.item.active' : 'div.item';
-        return (0, _snabbdom.h)(
-          selector,
-          {
-            dataset: {
-              label: e.aliases[0]
-            },
-            props: {
-              title: e.description
-            },
-            on: {
-              click: () => {
-                this.selectItem(e);
-              }
-            }
+        return (0, _snabbdom.h)(selector, {
+          dataset: {
+            label: e.aliases[0]
           },
-          (0, _snabbdom.h)('span', e.emoji)
-        );
+          props: {
+            title: e.description
+          },
+          on: {
+            click: () => {
+              this.selectItem(e);
+            }
+          }
+        }, (0, _snabbdom.h)('span', e.emoji));
       });
 
       return (0, _snabbdom.h)('section', [title, (0, _snabbdom.h)('div.emoji-wrapper', emojis)]);
@@ -124,16 +116,17 @@ class EmojiPicker extends _baseScrollFloat.default {
 
   getItemElement(item) {
     const label = item.aliases[0];
-    return this.floatBox.querySelector('[data-label="'.concat(label, '"]'));
+    return this.floatBox.querySelector("[data-label=\"".concat(label, "\"]"));
   }
 
   destroy() {
     super.destroy();
     this.emoji.destroy();
   }
+
 }
 
-_defineProperty(EmojiPicker, 'pluginName', 'emojiPicker');
+_defineProperty(EmojiPicker, "pluginName", 'emojiPicker');
 
 var _default = EmojiPicker;
 exports.default = _default;

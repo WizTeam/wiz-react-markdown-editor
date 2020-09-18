@@ -1,17 +1,15 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = exports.transfromAliasToOrigin = exports.loadedCache = void 0;
 
-var _languages = _interopRequireDefault(require('./languages'));
+var _languages = _interopRequireDefault(require("./languages"));
 
-var _importResource = require('../utils/importResource');
+var _importResource = require("../utils/importResource");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 let peerDependentsMap = null;
 const loadedCache = new Set(['markup', 'css', 'clike', 'javascript']);
@@ -51,18 +49,19 @@ function getPeerDependents(mainLanguage) {
   return peerDependentsMap[mainLanguage] || [];
 } // Look for the origin languge by alias
 
-const transfromAliasToOrigin = (arr) => {
+
+const transfromAliasToOrigin = arr => {
   const result = [];
 
   for (const lang of arr) {
     if (_languages.default[lang]) {
       result.push(lang);
     } else {
-      const language = Object.keys(_languages.default).find((name) => {
+      const language = Object.keys(_languages.default).find(name => {
         const l = _languages.default[name];
 
         if (l.alias) {
-          return l.alias === lang || (Array.isArray(l.alias) && l.alias.includes(lang));
+          return l.alias === lang || Array.isArray(l.alias) && l.alias.includes(lang);
         }
 
         return false;
@@ -92,9 +91,7 @@ function initLoadLanguage(Prism) {
     }
 
     if (arr && !arr.length) {
-      return Promise.reject(
-        new Error('The first parameter should be a list of load languages or single language.')
-      );
+      return Promise.reject(new Error('The first parameter should be a list of load languages or single language.'));
     }
 
     if (!Array.isArray(arr)) {
@@ -107,24 +104,22 @@ function initLoadLanguage(Prism) {
     for (const language of transformedLangs) {
       // handle not existed
       if (!_languages.default[language]) {
-        promises.push(
-          Promise.resolve({
-            lang: language,
-            status: 'noexist'
-          })
-        );
+        promises.push(Promise.resolve({
+          lang: language,
+          status: 'noexist'
+        }));
         continue;
       } // handle already cached
 
+
       if (loadedCache.has(language)) {
-        promises.push(
-          Promise.resolve({
-            lang: language,
-            status: 'cached'
-          })
-        );
+        promises.push(Promise.resolve({
+          lang: language,
+          status: 'cached'
+        }));
         continue;
       } // Load dependencies first
+
 
       if (!withoutDependencies && _languages.default[language].require) {
         const results = await loadLanguages(_languages.default[language].require);
@@ -135,12 +130,10 @@ function initLoadLanguage(Prism) {
 
       await (0, _importResource.importPrismjs)(language);
       loadedCache.add(language);
-      promises.push(
-        Promise.resolve({
-          status: 'loaded',
-          lang: language
-        })
-      ); // Reload dependents
+      promises.push(Promise.resolve({
+        status: 'loaded',
+        lang: language
+      })); // Reload dependents
 
       const dependents = getPeerDependents(language).filter(function (dependent) {
         // If dependent language was already loaded,

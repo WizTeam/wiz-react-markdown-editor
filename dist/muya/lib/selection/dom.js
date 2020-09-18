@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.compareParagraphsOrder = exports.getCursorPositionWithinMarkedText = exports.getClosestBlockContainer = exports.getFirstSelectableLeafNode = exports.traverseUp = exports.isMuyaEditorElement = exports.isBlockContainer = exports.isAganippeParagraph = exports.findOutMostParagraph = exports.findNearestParagraph = exports.getOffsetOfParagraph = exports.getTextContent = void 0;
 
-var _config = require('../config');
+var _config = require("../config");
 
 const CHOP_TEXT_REG = /(\*{1,3})([^*]+)(\1)/g;
 
@@ -18,7 +18,7 @@ const getTextContent = (node, blackList) => {
 
   let text = '';
 
-  if (blackList.some((className) => node.classList && node.classList.contains(className))) {
+  if (blackList.some(className => node.classList && node.classList.contains(className))) {
     return text;
   }
 
@@ -64,21 +64,16 @@ const getOffsetOfParagraph = (node, paragraph) => {
     preSibling = preSibling.previousSibling;
 
     if (preSibling) {
-      offset += getTextContent(preSibling, [
-        _config.CLASS_OR_ID.AG_MATH_RENDER,
-        _config.CLASS_OR_ID.AG_RUBY_RENDER
-      ]).length;
+      offset += getTextContent(preSibling, [_config.CLASS_OR_ID.AG_MATH_RENDER, _config.CLASS_OR_ID.AG_RUBY_RENDER]).length;
     }
   } while (preSibling);
 
-  return node === paragraph || node.parentNode === paragraph
-    ? offset
-    : offset + getOffsetOfParagraph(node.parentNode, paragraph);
+  return node === paragraph || node.parentNode === paragraph ? offset : offset + getOffsetOfParagraph(node.parentNode, paragraph);
 };
 
 exports.getOffsetOfParagraph = getOffsetOfParagraph;
 
-const findNearestParagraph = (node) => {
+const findNearestParagraph = node => {
   if (!node) {
     return null;
   }
@@ -93,7 +88,7 @@ const findNearestParagraph = (node) => {
 
 exports.findNearestParagraph = findNearestParagraph;
 
-const findOutMostParagraph = (node) => {
+const findOutMostParagraph = node => {
   do {
     const parentNode = node.parentNode;
     if (isMuyaEditorElement(parentNode) && isAganippeParagraph(node)) return node;
@@ -103,25 +98,19 @@ const findOutMostParagraph = (node) => {
 
 exports.findOutMostParagraph = findOutMostParagraph;
 
-const isAganippeParagraph = (element) => {
-  return (
-    element && element.classList && element.classList.contains(_config.CLASS_OR_ID.AG_PARAGRAPH)
-  );
+const isAganippeParagraph = element => {
+  return element && element.classList && element.classList.contains(_config.CLASS_OR_ID.AG_PARAGRAPH);
 };
 
 exports.isAganippeParagraph = isAganippeParagraph;
 
-const isBlockContainer = (element) => {
-  return (
-    element &&
-    element.nodeType !== 3 &&
-    _config.blockContainerElementNames.indexOf(element.nodeName.toLowerCase()) !== -1
-  );
+const isBlockContainer = element => {
+  return element && element.nodeType !== 3 && _config.blockContainerElementNames.indexOf(element.nodeName.toLowerCase()) !== -1;
 };
 
 exports.isBlockContainer = isBlockContainer;
 
-const isMuyaEditorElement = (element) => {
+const isMuyaEditorElement = element => {
   return element && element.id === _config.CLASS_OR_ID.AG_EDITOR_ID;
 };
 
@@ -138,6 +127,7 @@ const traverseUp = (current, testElementFunction) => {
         return current;
       } // do not traverse upwards past the nearest containing editor
 
+
       if (isMuyaEditorElement(current)) {
         return false;
       }
@@ -151,12 +141,13 @@ const traverseUp = (current, testElementFunction) => {
 
 exports.traverseUp = traverseUp;
 
-const getFirstSelectableLeafNode = (element) => {
+const getFirstSelectableLeafNode = element => {
   while (element && element.firstChild) {
     element = element.firstChild;
   } // We don't want to set the selection to an element that can't have children, this messes up Gecko.
 
-  element = traverseUp(element, (el) => {
+
+  element = traverseUp(element, el => {
     return _config.emptyElementNames.indexOf(el.nodeName.toLowerCase()) === -1;
   }); // Selecting at the beginning of a table doesn't work in PhantomJS.
 
@@ -173,8 +164,8 @@ const getFirstSelectableLeafNode = (element) => {
 
 exports.getFirstSelectableLeafNode = getFirstSelectableLeafNode;
 
-const getClosestBlockContainer = (node) => {
-  return traverseUp(node, (node) => {
+const getClosestBlockContainer = node => {
+  return traverseUp(node, node => {
     return isBlockContainer(node) || isMuyaEditorElement(node);
   });
 };
@@ -201,8 +192,13 @@ const getCursorPositionWithinMarkedText = (markedText, cursorOffset) => {
     }
   } while (match);
 
-  chunks.forEach((chunk) => {
-    const { index, leftSymbol, rightSymbol, lastIndex } = chunk;
+  chunks.forEach(chunk => {
+    const {
+      index,
+      leftSymbol,
+      rightSymbol,
+      lastIndex
+    } = chunk;
 
     if (cursorOffset > index && cursorOffset < lastIndex) {
       result = {

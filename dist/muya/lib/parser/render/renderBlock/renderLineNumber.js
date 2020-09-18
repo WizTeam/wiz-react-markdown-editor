@@ -1,16 +1,18 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _snabbdom = require('../snabbdom');
+var _snabbdom = require("../snabbdom");
 
 const NEW_LINE_EXP = /\n(?!$)/g;
 
-const renderLineNumberRows = (codeContent) => {
-  const { text } = codeContent;
+const renderLineNumberRows = codeContent => {
+  const {
+    text
+  } = codeContent;
   const match = text.match(NEW_LINE_EXP);
   let linesNum = match ? match.length + 1 : 1;
 

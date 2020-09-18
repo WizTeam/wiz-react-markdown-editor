@@ -1,27 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _config = require('../config');
+var _config = require("../config");
 
-var _dom = require('../selection/dom');
+var _dom = require("../selection/dom");
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // If the next block is header, put cursor after the `#{1,6} *`
 const adjustOffset = (offset, block, event) => {
-  if (
-    /^span$/.test(block.type) &&
-    block.functionType === 'atxLine' &&
-    event.key === _config.EVENT_KEYS.ArrowDown
-  ) {
+  if (/^span$/.test(block.type) && block.functionType === 'atxLine' && event.key === _config.EVENT_KEYS.ArrowDown) {
     const match = /^\s{0,3}(?:#{1,6})(?:\s{1,}|$)/.exec(block.text);
 
     if (match) {
@@ -32,10 +26,10 @@ const adjustOffset = (offset, block, event) => {
   return offset;
 };
 
-const arrowCtrl = (ContentState) => {
+const arrowCtrl = ContentState => {
   ContentState.prototype.findNextRowCell = function (cell) {
     if (cell.functionType !== 'cellContent') {
-      throw new Error('block with type '.concat(cell && cell.type, ' is not a table cell'));
+      throw new Error("block with type ".concat(cell && cell.type, " is not a table cell"));
     }
 
     const thOrTd = this.getParent(cell);
@@ -63,7 +57,7 @@ const arrowCtrl = (ContentState) => {
 
   ContentState.prototype.findPrevRowCell = function (cell) {
     if (cell.functionType !== 'cellContent') {
-      throw new Error('block with type '.concat(cell && cell.type, ' is not a table cell'));
+      throw new Error("block with type ".concat(cell && cell.type, " is not a table cell"));
     }
 
     const thOrTd = this.getParent(cell);
@@ -88,45 +82,55 @@ const arrowCtrl = (ContentState) => {
   };
 
   ContentState.prototype.docArrowHandler = function (event) {
-    const { selectedImage } = this;
+    const {
+      selectedImage
+    } = this;
 
     if (selectedImage) {
-      const { key, token } = selectedImage;
-      const { start, end } = token.range;
+      const {
+        key,
+        token
+      } = selectedImage;
+      const {
+        start,
+        end
+      } = token.range;
       event.preventDefault();
       event.stopPropagation();
       const block = this.getBlock(key);
 
       switch (event.key) {
         case _config.EVENT_KEYS.ArrowUp:
-        case _config.EVENT_KEYS.ArrowLeft: {
-          this.cursor = {
-            start: {
-              key,
-              offset: start
-            },
-            end: {
-              key,
-              offset: start
-            }
-          };
-          break;
-        }
+        case _config.EVENT_KEYS.ArrowLeft:
+          {
+            this.cursor = {
+              start: {
+                key,
+                offset: start
+              },
+              end: {
+                key,
+                offset: start
+              }
+            };
+            break;
+          }
 
         case _config.EVENT_KEYS.ArrowDown:
-        case _config.EVENT_KEYS.ArrowRight: {
-          this.cursor = {
-            start: {
-              key,
-              offset: end
-            },
-            end: {
-              key,
-              offset: end
-            }
-          };
-          break;
-        }
+        case _config.EVENT_KEYS.ArrowRight:
+          {
+            this.cursor = {
+              start: {
+                key,
+                offset: end
+              },
+              end: {
+                key,
+                offset: end
+              }
+            };
+            break;
+          }
       }
 
       this.muya.keyboard.hideAllFloatTools();
@@ -143,21 +147,25 @@ const arrowCtrl = (ContentState) => {
     const preBlock = this.findPreBlockInLocation(block);
     const nextBlock = this.findNextBlockInLocation(block);
 
-    const { start, end } = _selection.default.getCursorRange();
+    const {
+      start,
+      end
+    } = _selection.default.getCursorRange();
 
-    const { topOffset, bottomOffset } = _selection.default.getCursorYOffset(paragraph);
+    const {
+      topOffset,
+      bottomOffset
+    } = _selection.default.getCursorYOffset(paragraph);
 
     if (!start || !end) {
       return;
     } // fix #101
 
-    if (
-      event.key === _config.EVENT_KEYS.ArrowRight &&
-      node &&
-      node.classList &&
-      node.classList.contains(_config.CLASS_OR_ID.AG_MATH_TEXT)
-    ) {
-      const { right } = _selection.default.getCaretOffsets(node);
+
+    if (event.key === _config.EVENT_KEYS.ArrowRight && node && node.classList && node.classList.contains(_config.CLASS_OR_ID.AG_MATH_TEXT)) {
+      const {
+        right
+      } = _selection.default.getCaretOffsets(node);
 
       if (right === 0 && start.key === end.key && start.offset === end.offset) {
         // It's not recommended to use such lower API, but it's work well.
@@ -165,18 +173,12 @@ const arrowCtrl = (ContentState) => {
       }
     } // Just do nothing if the cursor is not collapsed or `shiftKey` pressed
 
-    if (
-      (start.key === end.key && start.offset !== end.offset) ||
-      start.key !== end.key ||
-      event.shiftKey
-    ) {
+
+    if (start.key === end.key && start.offset !== end.offset || start.key !== end.key || event.shiftKey) {
       return;
     }
 
-    if (
-      (event.key === _config.EVENT_KEYS.ArrowUp && topOffset > 0) ||
-      (event.key === _config.EVENT_KEYS.ArrowDown && bottomOffset > 0)
-    ) {
+    if (event.key === _config.EVENT_KEYS.ArrowUp && topOffset > 0 || event.key === _config.EVENT_KEYS.ArrowDown && bottomOffset > 0) {
       if (!/pre/.test(block.type) || block.functionType !== 'cellContent') {
         return;
       }
@@ -206,12 +208,7 @@ const arrowCtrl = (ContentState) => {
       if (activeBlock) {
         event.preventDefault();
         event.stopPropagation();
-        let offset =
-          activeBlock.type === 'p'
-            ? 0
-            : event.key === _config.EVENT_KEYS.ArrowUp
-            ? activeBlock.text.length
-            : 0;
+        let offset = activeBlock.type === 'p' ? 0 : event.key === _config.EVENT_KEYS.ArrowUp ? activeBlock.text.length : 0;
         offset = adjustOffset(offset, activeBlock, event);
         const key = activeBlock.type === 'p' ? activeBlock.children[0].key : activeBlock.key;
         this.cursor = {
@@ -228,10 +225,7 @@ const arrowCtrl = (ContentState) => {
       }
     }
 
-    if (
-      event.key === _config.EVENT_KEYS.ArrowUp ||
-      (event.key === _config.EVENT_KEYS.ArrowLeft && start.offset === 0)
-    ) {
+    if (event.key === _config.EVENT_KEYS.ArrowUp || event.key === _config.EVENT_KEYS.ArrowLeft && start.offset === 0) {
       event.preventDefault();
       event.stopPropagation();
       if (!preBlock) return;
@@ -248,10 +242,7 @@ const arrowCtrl = (ContentState) => {
         }
       };
       return this.partialRender();
-    } else if (
-      event.key === _config.EVENT_KEYS.ArrowDown ||
-      (event.key === _config.EVENT_KEYS.ArrowRight && start.offset === block.text.length)
-    ) {
+    } else if (event.key === _config.EVENT_KEYS.ArrowDown || event.key === _config.EVENT_KEYS.ArrowRight && start.offset === block.text.length) {
       event.preventDefault();
       event.stopPropagation();
       let key;

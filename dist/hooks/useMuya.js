@@ -1,43 +1,41 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.useMuya = useMuya;
 
-var _react = require('react');
+var _react = require("react");
 
-var _lib = _interopRequireDefault(require('../muya/lib'));
+var _lib = _interopRequireDefault(require("../muya/lib"));
 
-var _tablePicker = _interopRequireDefault(require('../muya/lib/ui/tablePicker'));
+var _tablePicker = _interopRequireDefault(require("../muya/lib/ui/tablePicker"));
 
-var _quickInsert = _interopRequireDefault(require('../muya/lib/ui/quickInsert'));
+var _quickInsert = _interopRequireDefault(require("../muya/lib/ui/quickInsert"));
 
-var _codePicker = _interopRequireDefault(require('../muya/lib/ui/codePicker'));
+var _codePicker = _interopRequireDefault(require("../muya/lib/ui/codePicker"));
 
-var _emojiPicker = _interopRequireDefault(require('../muya/lib/ui/emojiPicker'));
+var _emojiPicker = _interopRequireDefault(require("../muya/lib/ui/emojiPicker"));
 
-var _imagePicker = _interopRequireDefault(require('../muya/lib/ui/imagePicker'));
+var _imagePicker = _interopRequireDefault(require("../muya/lib/ui/imagePicker"));
 
-var _imageSelector = _interopRequireDefault(require('../muya/lib/ui/imageSelector'));
+var _imageSelector = _interopRequireDefault(require("../muya/lib/ui/imageSelector"));
 
-var _transformer = _interopRequireDefault(require('../muya/lib/ui/transformer'));
+var _transformer = _interopRequireDefault(require("../muya/lib/ui/transformer"));
 
-var _linkTools = _interopRequireDefault(require('../muya/lib/ui/linkTools'));
+var _linkTools = _interopRequireDefault(require("../muya/lib/ui/linkTools"));
 
-var _footnoteTool = _interopRequireDefault(require('../muya/lib/ui/footnoteTool'));
+var _footnoteTool = _interopRequireDefault(require("../muya/lib/ui/footnoteTool"));
 
-var _tableTools = _interopRequireDefault(require('../muya/lib/ui/tableTools'));
+var _tableTools = _interopRequireDefault(require("../muya/lib/ui/tableTools"));
 
-var _frontMenu = _interopRequireDefault(require('../muya/lib/ui/frontMenu'));
+var _frontMenu = _interopRequireDefault(require("../muya/lib/ui/frontMenu"));
 
-var _tagInsert = _interopRequireDefault(require('../muya/lib/ui/tagInsert'));
+var _tagInsert = _interopRequireDefault(require("../muya/lib/ui/tagInsert"));
 
-var _utils = require('../utils/utils');
+var _utils = require("../utils/utils");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import ImageToolbar from '../muya/lib/ui/imageToolbar';
 // import FormatPicker from '../muya/lib/ui/formatPicker';
@@ -56,10 +54,12 @@ if (!_utils.os.isAndroid && !_utils.os.isPhone) {
 
   _lib.default.use(_imagePicker.default); // Muya.use(ImageToolbar);
 
+
   _lib.default.use(_transformer.default); // Muya.use(FormatPicker);
 
+
   _lib.default.use(_linkTools.default, {
-    jumpClick: (obj) => {
+    jumpClick: obj => {
       if (obj.token.type === 'link') {
         try {
           window.open(obj.href);
@@ -80,18 +80,13 @@ if (!_utils.os.isAndroid && !_utils.os.isPhone) {
 }
 
 function formatOptions(options) {
-  Object.assign(
-    options,
-    /dark/i.test(options.theme)
-      ? {
-          mermaidTheme: 'dark',
-          vegaTheme: 'dark'
-        }
-      : {
-          mermaidTheme: 'default',
-          vegaTheme: 'latimes'
-        }
-  );
+  Object.assign(options, /dark/i.test(options.theme) ? {
+    mermaidTheme: 'dark',
+    vegaTheme: 'dark'
+  } : {
+    mermaidTheme: 'default',
+    vegaTheme: 'latimes'
+  });
   return options;
 }
 
@@ -99,15 +94,12 @@ function useMuya(eleRef, options) {
   const [editor, setEditor] = (0, _react.useState)();
   (0, _react.useEffect)(() => {
     if (eleRef.current) {
-      setEditor(
-        new Proxy(new _lib.default(eleRef.current, formatOptions(options)), {
-          get(target, key, proxy) {
-            return key === 'setOptions'
-              ? (opt, ...arg) => Reflect.apply(target[key], target, [formatOptions(opt), ...arg])
-              : Reflect.get(target, key, proxy);
-          }
-        })
-      );
+      setEditor(new Proxy(new _lib.default(eleRef.current, formatOptions(options)), {
+        get(target, key, proxy) {
+          return key === 'setOptions' ? (opt, ...arg) => Reflect.apply(target[key], target, [formatOptions(opt), ...arg]) : Reflect.get(target, key, proxy);
+        }
+
+      }));
     }
 
     return () => {

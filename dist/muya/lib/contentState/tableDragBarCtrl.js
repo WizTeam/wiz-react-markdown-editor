@@ -1,23 +1,23 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = exports.getIndex = exports.getAllTableCells = void 0;
 
 const calculateAspects = (tableId, barType) => {
-  const table = document.querySelector('#'.concat(tableId));
+  const table = document.querySelector("#".concat(tableId));
 
   if (barType === 'bottom') {
     const firstRow = table.querySelector('tr');
-    return Array.from(firstRow.children).map((cell) => cell.clientWidth);
+    return Array.from(firstRow.children).map(cell => cell.clientWidth);
   } else {
-    return Array.from(table.querySelectorAll('tr')).map((row) => row.clientHeight);
+    return Array.from(table.querySelectorAll('tr')).map(row => row.clientHeight);
   }
 };
 
-const getAllTableCells = (tableId) => {
-  const table = document.querySelector('#'.concat(tableId));
+const getAllTableCells = tableId => {
+  const table = document.querySelector("#".concat(tableId));
   const rows = table.querySelectorAll('tr');
   const cells = [];
 
@@ -53,7 +53,7 @@ const getIndex = (barType, cell) => {
 exports.getIndex = getIndex;
 
 const getDragCells = (tableId, barType, index) => {
-  const table = document.querySelector('#'.concat(tableId));
+  const table = document.querySelector("#".concat(tableId));
   const dragCells = [];
 
   if (barType === 'left') {
@@ -76,7 +76,7 @@ const getDragCells = (tableId, barType, index) => {
   return dragCells;
 };
 
-const tableDragBarCtrl = (ContentState) => {
+const tableDragBarCtrl = ContentState => {
   ContentState.prototype.handleMouseDown = function (event) {
     event.preventDefault();
     let _event = event;
@@ -85,8 +85,14 @@ const tableDragBarCtrl = (ContentState) => {
       _event = event.touches[0];
     }
 
-    const { eventCenter } = this.muya;
-    const { clientX, clientY, target } = _event;
+    const {
+      eventCenter
+    } = this.muya;
+    const {
+      clientX,
+      clientY,
+      target
+    } = _event;
     const tableId = target.closest('table').id;
     const barType = target.classList.contains('left') ? 'left' : 'bottom';
     const index = getIndex(barType, target);
@@ -112,6 +118,7 @@ const tableDragBarCtrl = (ContentState) => {
       }
     } //
 
+
     let moveType = '';
     let upType = '';
 
@@ -123,11 +130,8 @@ const tableDragBarCtrl = (ContentState) => {
       upType = 'mouseup';
     } //
 
-    const mouseMoveId = eventCenter.attachDOMEvent(
-      document,
-      moveType,
-      this.handleMouseMove.bind(this)
-    );
+
+    const mouseMoveId = eventCenter.attachDOMEvent(document, moveType, this.handleMouseMove.bind(this));
     const mouseUpId = eventCenter.attachDOMEvent(document, upType, this.handleMouseUp.bind(this));
     this.dragEventIds.push(mouseMoveId, mouseUpId);
   };
@@ -137,15 +141,19 @@ const tableDragBarCtrl = (ContentState) => {
       return;
     } //
 
+
     let _event = event;
 
     if (event.type.startsWith('touch')) {
       _event = event.touches[0];
     } //
 
-    const { barType } = this.dragInfo;
+
+    const {
+      barType
+    } = this.dragInfo;
     const attrName = barType === 'bottom' ? 'clientX' : 'clientY';
-    const offset = (this.dragInfo.offset = _event[attrName] - this.dragInfo[attrName]);
+    const offset = this.dragInfo.offset = _event[attrName] - this.dragInfo[attrName];
 
     if (Math.abs(offset) < 5) {
       return;
@@ -159,7 +167,9 @@ const tableDragBarCtrl = (ContentState) => {
   };
 
   ContentState.prototype.handleMouseUp = function (event) {
-    const { eventCenter } = this.muya;
+    const {
+      eventCenter
+    } = this.muya;
 
     for (const id of this.dragEventIds) {
       eventCenter.detachDOMEvent(id);
@@ -180,9 +190,11 @@ const tableDragBarCtrl = (ContentState) => {
   };
 
   ContentState.prototype.hideUnnecessaryBar = function () {
-    const { barType } = this.dragInfo;
+    const {
+      barType
+    } = this.dragInfo;
     const hideClassName = barType === 'bottom' ? 'left' : 'bottom';
-    const needHideBar = document.querySelector('.ag-drag-handler.'.concat(hideClassName));
+    const needHideBar = document.querySelector(".ag-drag-handler.".concat(hideClassName));
 
     if (needHideBar) {
       needHideBar.style.display = 'none';
@@ -190,7 +202,11 @@ const tableDragBarCtrl = (ContentState) => {
   };
 
   ContentState.prototype.calculateCurIndex = function () {
-    let { offset, aspects, index } = this.dragInfo;
+    let {
+      offset,
+      aspects,
+      index
+    } = this.dragInfo;
     let curIndex = index;
     const len = aspects.length;
     let i;
@@ -233,21 +249,32 @@ const tableDragBarCtrl = (ContentState) => {
   };
 
   ContentState.prototype.setDragTargetStyle = function () {
-    const { offset, barType, dragCells } = this.dragInfo;
+    const {
+      offset,
+      barType,
+      dragCells
+    } = this.dragInfo;
 
     for (const cell of dragCells) {
       if (!cell.classList.contains('ag-drag-cell')) {
         cell.classList.add('ag-drag-cell');
-        cell.classList.add('ag-drag-'.concat(barType));
+        cell.classList.add("ag-drag-".concat(barType));
       }
 
       const valueName = barType === 'bottom' ? 'translateX' : 'translateY';
-      cell.style.transform = ''.concat(valueName, '(').concat(offset, 'px)');
+      cell.style.transform = "".concat(valueName, "(").concat(offset, "px)");
     }
   };
 
   ContentState.prototype.setSwitchStyle = function () {
-    const { index, offset, curIndex, barType, aspects, cells } = this.dragInfo;
+    const {
+      index,
+      offset,
+      curIndex,
+      barType,
+      aspects,
+      cells
+    } = this.dragInfo;
     const aspect = aspects[index];
     const len = aspects.length;
     let i;
@@ -259,7 +286,7 @@ const tableDragBarCtrl = (ContentState) => {
             const cell = row[i];
 
             if (i > index && i <= curIndex) {
-              cell.style.transform = 'translateX('.concat(-aspect, 'px)');
+              cell.style.transform = "translateX(".concat(-aspect, "px)");
             } else if (i !== index) {
               cell.style.transform = 'translateX(0px)';
             }
@@ -271,7 +298,7 @@ const tableDragBarCtrl = (ContentState) => {
 
           for (const cell of row) {
             if (i > index && i <= curIndex) {
-              cell.style.transform = 'translateY('.concat(-aspect, 'px)');
+              cell.style.transform = "translateY(".concat(-aspect, "px)");
             } else if (i !== index) {
               cell.style.transform = 'translateY(0px)';
             }
@@ -285,7 +312,7 @@ const tableDragBarCtrl = (ContentState) => {
             const cell = row[i];
 
             if (i >= curIndex && i < index) {
-              cell.style.transform = 'translateX('.concat(aspect, 'px)');
+              cell.style.transform = "translateX(".concat(aspect, "px)");
             } else if (i !== index) {
               cell.style.transform = 'translateX(0px)';
             }
@@ -297,7 +324,7 @@ const tableDragBarCtrl = (ContentState) => {
 
           for (const cell of row) {
             if (i >= curIndex && i < index) {
-              cell.style.transform = 'translateY('.concat(aspect, 'px)');
+              cell.style.transform = "translateY(".concat(aspect, "px)");
             } else if (i !== index) {
               cell.style.transform = 'translateY(0px)';
             }
@@ -308,7 +335,14 @@ const tableDragBarCtrl = (ContentState) => {
   };
 
   ContentState.prototype.setDropTargetStyle = function () {
-    const { dragCells, barType, curIndex, index, aspects, offset } = this.dragInfo;
+    const {
+      dragCells,
+      barType,
+      curIndex,
+      index,
+      aspects,
+      offset
+    } = this.dragInfo;
     let move = 0;
     let i;
 
@@ -324,15 +358,21 @@ const tableDragBarCtrl = (ContentState) => {
 
     for (const cell of dragCells) {
       cell.classList.remove('ag-drag-cell');
-      cell.classList.remove('ag-drag-'.concat(barType));
+      cell.classList.remove("ag-drag-".concat(barType));
       cell.classList.add('ag-cell-transform');
       const valueName = barType === 'bottom' ? 'translateX' : 'translateY';
-      cell.style.transform = ''.concat(valueName, '(').concat(move, 'px)');
+      cell.style.transform = "".concat(valueName, "(").concat(move, "px)");
     }
   };
 
   ContentState.prototype.switchTableData = function () {
-    const { barType, index, curIndex, tableId, offset } = this.dragInfo;
+    const {
+      barType,
+      index,
+      curIndex,
+      tableId,
+      offset
+    } = this.dragInfo;
     const table = this.getBlock(tableId);
     const tHead = table.children[0];
     const tBody = table.children[1];
@@ -341,14 +381,21 @@ const tableDragBarCtrl = (ContentState) => {
 
     if (index !== curIndex) {
       // Cursor in the same cell.
-      const { start, end } = this.cursor;
+      const {
+        start,
+        end
+      } = this.cursor;
       let key = null;
 
       if (barType === 'bottom') {
         for (const row of rows) {
           const isCursorCell = row.children[index].children[0].key === start.key;
-          const { text } = row.children[index].children[0];
-          const { align } = row.children[index];
+          const {
+            text
+          } = row.children[index].children[0];
+          const {
+            align
+          } = row.children[index];
 
           if (offset > 0) {
             for (i = index; i < curIndex; i++) {

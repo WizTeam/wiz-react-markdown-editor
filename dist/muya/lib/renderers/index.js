@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _importResource = require('../utils/importResource');
+var _importResource = require("../utils/importResource");
 
 const rendererCache = new Map();
 /**
@@ -13,7 +13,7 @@ const rendererCache = new Map();
  * @param {string} name the renderer name: katex, sequence, flowchart, mermaid, vega-lite
  */
 
-const loadRenderer = async (name) => {
+const loadRenderer = async name => {
   if (!rendererCache.has(name)) {
     let m;
 
@@ -43,7 +43,7 @@ const loadRenderer = async (name) => {
         break;
 
       default:
-        throw new Error('Unknown diagram name '.concat(name));
+        throw new Error("Unknown diagram name ".concat(name));
     }
   }
 

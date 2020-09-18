@@ -1,35 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _baseFloat = _interopRequireDefault(require('../baseFloat'));
+var _baseFloat = _interopRequireDefault(require("../baseFloat"));
 
-var _snabbdom = require('../../parser/render/snabbdom');
+var _snabbdom = require("../../parser/render/snabbdom");
 
-var _config = _interopRequireDefault(require('./config'));
+var _config = _interopRequireDefault(require("./config"));
 
-require('./index.css');
+require("./index.css");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 const defaultOptions = {
   placement: 'bottom',
@@ -51,15 +37,20 @@ class LinkTools extends _baseFloat.default {
     this.options = opts;
     this.icons = _config.default;
     this.hideTimer = null;
-    const linkContainer = (this.linkContainer = document.createElement('div'));
+    const linkContainer = this.linkContainer = document.createElement('div');
     this.container.appendChild(linkContainer);
     this.listen();
   }
 
   listen() {
-    const { eventCenter } = this.muya;
+    const {
+      eventCenter
+    } = this.muya;
     super.listen();
-    eventCenter.subscribe('muya-link-tools', ({ reference, linkInfo }) => {
+    eventCenter.subscribe('muya-link-tools', ({
+      reference,
+      linkInfo
+    }) => {
       if (reference) {
         this.linkInfo = linkInfo;
         setTimeout(() => {
@@ -92,42 +83,35 @@ class LinkTools extends _baseFloat.default {
   }
 
   render() {
-    const { icons, oldVnode, linkContainer } = this;
-    const children = icons.map((i) => {
+    const {
+      icons,
+      oldVnode,
+      linkContainer
+    } = this;
+    const children = icons.map(i => {
       let icon;
       let iconWrapperSelector;
 
       if (i.icon) {
         // SVG icon Asset
         iconWrapperSelector = 'div.icon-wrapper';
-        icon = (0, _snabbdom.h)(
-          'i.icon',
-          (0, _snabbdom.h)(
-            'i.icon-inner',
-            {
-              style: {
-                background: 'url('.concat(i.icon, ') no-repeat'),
-                'background-size': '100%'
-              }
-            },
-            ''
-          )
-        );
+        icon = (0, _snabbdom.h)('i.icon', (0, _snabbdom.h)('i.icon-inner', {
+          style: {
+            background: "url(".concat(i.icon, ") no-repeat"),
+            'background-size': '100%'
+          }
+        }, ''));
       }
 
       const iconWrapper = (0, _snabbdom.h)(iconWrapperSelector, icon);
-      let itemSelector = 'li.item.'.concat(i.type);
-      return (0, _snabbdom.h)(
-        itemSelector,
-        {
-          on: {
-            click: (event) => {
-              this.selectItem(event, i);
-            }
+      let itemSelector = "li.item.".concat(i.type);
+      return (0, _snabbdom.h)(itemSelector, {
+        on: {
+          click: event => {
+            this.selectItem(event, i);
           }
-        },
-        iconWrapper
-      );
+        }
+      }, iconWrapper);
     });
     const vnode = (0, _snabbdom.h)('ul', children);
 
@@ -143,7 +127,9 @@ class LinkTools extends _baseFloat.default {
   selectItem(event, item) {
     event.preventDefault();
     event.stopPropagation();
-    const { contentState } = this.muya;
+    const {
+      contentState
+    } = this.muya;
 
     switch (item.type) {
       case 'unlink':
@@ -157,9 +143,10 @@ class LinkTools extends _baseFloat.default {
         break;
     }
   }
+
 }
 
-_defineProperty(LinkTools, 'pluginName', 'linkTools');
+_defineProperty(LinkTools, "pluginName", 'linkTools');
 
 var _default = LinkTools;
 exports.default = _default;

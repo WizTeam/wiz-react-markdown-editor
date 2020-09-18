@@ -1,23 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _renderer = _interopRequireDefault(require('./renderer'));
+var _renderer = _interopRequireDefault(require("./renderer"));
 
-var _inlineLexer = _interopRequireDefault(require('./inlineLexer'));
+var _inlineLexer = _interopRequireDefault(require("./inlineLexer"));
 
-var _slugger = _interopRequireDefault(require('./slugger'));
+var _slugger = _interopRequireDefault(require("./slugger"));
 
-var _textRenderer = _interopRequireDefault(require('./textRenderer'));
+var _textRenderer = _interopRequireDefault(require("./textRenderer"));
 
-var _options = _interopRequireDefault(require('./options'));
+var _options = _interopRequireDefault(require("./options"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Parsing & Compiling
@@ -37,16 +35,13 @@ function Parser(options) {
  * Parse Loop
  */
 
+
 Parser.prototype.parse = function (src) {
   this.inline = new _inlineLexer.default(src.links, src.footnotes, this.options); // use an InlineLexer with a TextRenderer to extract pure text
 
-  this.inlineText = new _inlineLexer.default(
-    src.links,
-    src.footnotes,
-    Object.assign({}, this.options, {
-      renderer: new _textRenderer.default()
-    })
-  );
+  this.inlineText = new _inlineLexer.default(src.links, src.footnotes, Object.assign({}, this.options, {
+    renderer: new _textRenderer.default()
+  }));
   this.tokens = src.reverse();
   this.footnotes = src.footnotes;
   let out = '';
@@ -61,6 +56,7 @@ Parser.prototype.parse = function (src) {
  * Next Token
  */
 
+
 Parser.prototype.next = function () {
   this.token = this.tokens.pop();
   return this.token;
@@ -69,12 +65,14 @@ Parser.prototype.next = function () {
  * Preview Next Token
  */
 
+
 Parser.prototype.peek = function () {
   return this.tokens[this.tokens.length - 1] || 0;
 };
 /**
  * Parse Text Tokens
  */
+
 
 Parser.prototype.parseText = function () {
   let body = this.token.text;
@@ -89,169 +87,194 @@ Parser.prototype.parseText = function () {
  * Parse Current Token
  */
 
+
 Parser.prototype.tok = function () {
   switch (this.token.type) {
-    case 'frontmatter': {
-      return this.renderer.frontmatter(this.token.text);
-    }
-
-    case 'space': {
-      return '';
-    }
-
-    case 'hr': {
-      return this.renderer.hr();
-    }
-
-    case 'heading': {
-      return this.renderer.heading(
-        this.inline.output(this.token.text),
-        this.token.depth,
-        unescape(this.inlineText.output(this.token.text)),
-        this.slugger,
-        this.token.headingStyle
-      );
-    }
-
-    case 'multiplemath': {
-      const { text } = this.token;
-      return this.renderer.multiplemath(text);
-    }
-
-    case 'code': {
-      const { codeBlockStyle, text, lang, escaped } = this.token;
-      return this.renderer.code(text, lang, escaped, codeBlockStyle);
-    }
-
-    case 'table': {
-      let header = '';
-      let body = '';
-      let i;
-      let row;
-      let cell;
-      let j; // header
-
-      cell = '';
-
-      for (i = 0; i < this.token.header.length; i++) {
-        cell += this.renderer.tablecell(this.inline.output(this.token.header[i]), {
-          header: true,
-          align: this.token.align[i]
-        });
+    case 'frontmatter':
+      {
+        return this.renderer.frontmatter(this.token.text);
       }
 
-      header += this.renderer.tablerow(cell);
+    case 'space':
+      {
+        return '';
+      }
 
-      for (i = 0; i < this.token.cells.length; i++) {
-        row = this.token.cells[i];
+    case 'hr':
+      {
+        return this.renderer.hr();
+      }
+
+    case 'heading':
+      {
+        return this.renderer.heading(this.inline.output(this.token.text), this.token.depth, unescape(this.inlineText.output(this.token.text)), this.slugger, this.token.headingStyle);
+      }
+
+    case 'multiplemath':
+      {
+        const {
+          text
+        } = this.token;
+        return this.renderer.multiplemath(text);
+      }
+
+    case 'code':
+      {
+        const {
+          codeBlockStyle,
+          text,
+          lang,
+          escaped
+        } = this.token;
+        return this.renderer.code(text, lang, escaped, codeBlockStyle);
+      }
+
+    case 'table':
+      {
+        let header = '';
+        let body = '';
+        let i;
+        let row;
+        let cell;
+        let j; // header
+
         cell = '';
 
-        for (j = 0; j < row.length; j++) {
-          cell += this.renderer.tablecell(this.inline.output(row[j]), {
-            header: false,
-            align: this.token.align[j]
+        for (i = 0; i < this.token.header.length; i++) {
+          cell += this.renderer.tablecell(this.inline.output(this.token.header[i]), {
+            header: true,
+            align: this.token.align[i]
           });
         }
 
-        body += this.renderer.tablerow(cell);
+        header += this.renderer.tablerow(cell);
+
+        for (i = 0; i < this.token.cells.length; i++) {
+          row = this.token.cells[i];
+          cell = '';
+
+          for (j = 0; j < row.length; j++) {
+            cell += this.renderer.tablecell(this.inline.output(row[j]), {
+              header: false,
+              align: this.token.align[j]
+            });
+          }
+
+          body += this.renderer.tablerow(cell);
+        }
+
+        return this.renderer.table(header, body);
       }
 
-      return this.renderer.table(header, body);
-    }
+    case 'blockquote_start':
+      {
+        let body = '';
 
-    case 'blockquote_start': {
-      let body = '';
+        while (this.next().type !== 'blockquote_end') {
+          body += this.tok();
+        }
 
-      while (this.next().type !== 'blockquote_end') {
-        body += this.tok();
+        return this.renderer.blockquote(body);
       }
-
-      return this.renderer.blockquote(body);
-    }
     // All the tokens will be footnotes if it after a footnote_start token. Because we put all footnote token at the end.
 
-    case 'footnote_start': {
-      let body = '';
-      let itemBody = '';
-      this.footnoteIdentifier = this.token.identifier;
+    case 'footnote_start':
+      {
+        let body = '';
+        let itemBody = '';
+        this.footnoteIdentifier = this.token.identifier;
 
-      while (this.next()) {
-        if (this.token.type === 'footnote_end') {
-          const footnoteInfo = this.footnotes[this.footnoteIdentifier];
-          body += this.renderer.footnoteItem(itemBody, footnoteInfo);
-          this.footnoteIdentifier = '';
-          itemBody = '';
-        } else if (this.token.type === 'footnote_start') {
-          this.footnoteIdentifier = this.token.identifier;
-          itemBody = '';
+        while (this.next()) {
+          if (this.token.type === 'footnote_end') {
+            const footnoteInfo = this.footnotes[this.footnoteIdentifier];
+            body += this.renderer.footnoteItem(itemBody, footnoteInfo);
+            this.footnoteIdentifier = '';
+            itemBody = '';
+          } else if (this.token.type === 'footnote_start') {
+            this.footnoteIdentifier = this.token.identifier;
+            itemBody = '';
+          } else {
+            itemBody += this.tok();
+          }
+        }
+
+        return this.renderer.footnote(body);
+      }
+
+    case 'list_start':
+      {
+        let body = '';
+        let taskList = false;
+        const {
+          ordered,
+          start
+        } = this.token;
+
+        while (this.next().type !== 'list_end') {
+          if (this.token.checked !== undefined) {
+            taskList = true;
+          }
+
+          body += this.tok();
+        }
+
+        return this.renderer.list(body, ordered, start, taskList);
+      }
+
+    case 'list_item_start':
+      {
+        let body = '';
+        const {
+          checked
+        } = this.token;
+
+        while (this.next().type !== 'list_item_end') {
+          body += this.token.type === 'text' ? this.parseText() : this.tok();
+        }
+
+        return this.renderer.listitem(body, checked);
+      }
+
+    case 'loose_item_start':
+      {
+        let body = '';
+        const {
+          checked
+        } = this.token;
+
+        while (this.next().type !== 'list_item_end') {
+          body += this.tok();
+        }
+
+        return this.renderer.listitem(body, checked);
+      }
+
+    case 'html':
+      {
+        // TODO parse inline content if parameter markdown=1
+        return this.renderer.html(this.token.text);
+      }
+
+    case 'paragraph':
+      {
+        return this.renderer.paragraph(this.inline.output(this.token.text));
+      }
+
+    case 'text':
+      {
+        return this.renderer.paragraph(this.parseText());
+      }
+
+    default:
+      {
+        const errMsg = 'Token with "' + this.token.type + '" type was not found.';
+
+        if (this.options.silent) {
+          console.error(errMsg);
         } else {
-          itemBody += this.tok();
+          throw new Error(errMsg);
         }
       }
-
-      return this.renderer.footnote(body);
-    }
-
-    case 'list_start': {
-      let body = '';
-      let taskList = false;
-      const { ordered, start } = this.token;
-
-      while (this.next().type !== 'list_end') {
-        if (this.token.checked !== undefined) {
-          taskList = true;
-        }
-
-        body += this.tok();
-      }
-
-      return this.renderer.list(body, ordered, start, taskList);
-    }
-
-    case 'list_item_start': {
-      let body = '';
-      const { checked } = this.token;
-
-      while (this.next().type !== 'list_item_end') {
-        body += this.token.type === 'text' ? this.parseText() : this.tok();
-      }
-
-      return this.renderer.listitem(body, checked);
-    }
-
-    case 'loose_item_start': {
-      let body = '';
-      const { checked } = this.token;
-
-      while (this.next().type !== 'list_item_end') {
-        body += this.tok();
-      }
-
-      return this.renderer.listitem(body, checked);
-    }
-
-    case 'html': {
-      // TODO parse inline content if parameter markdown=1
-      return this.renderer.html(this.token.text);
-    }
-
-    case 'paragraph': {
-      return this.renderer.paragraph(this.inline.output(this.token.text));
-    }
-
-    case 'text': {
-      return this.renderer.paragraph(this.parseText());
-    }
-
-    default: {
-      const errMsg = 'Token with "' + this.token.type + '" type was not found.';
-
-      if (this.options.silent) {
-        console.error(errMsg);
-      } else {
-        throw new Error(errMsg);
-      }
-    }
   }
 };
 

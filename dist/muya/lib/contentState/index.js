@@ -1,154 +1,91 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _config = require('../config');
+var _config = require("../config");
 
-var _utils = require('../utils');
+var _utils = require("../utils");
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-var _render = _interopRequireDefault(require('../parser/render'));
+var _render = _interopRequireDefault(require("../parser/render"));
 
-var _enterCtrl = _interopRequireDefault(require('./enterCtrl'));
+var _enterCtrl = _interopRequireDefault(require("./enterCtrl"));
 
-var _updateCtrl = _interopRequireDefault(require('./updateCtrl'));
+var _updateCtrl = _interopRequireDefault(require("./updateCtrl"));
 
-var _backspaceCtrl = _interopRequireDefault(require('./backspaceCtrl'));
+var _backspaceCtrl = _interopRequireDefault(require("./backspaceCtrl"));
 
-var _deleteCtrl = _interopRequireDefault(require('./deleteCtrl'));
+var _deleteCtrl = _interopRequireDefault(require("./deleteCtrl"));
 
-var _codeBlockCtrl = _interopRequireDefault(require('./codeBlockCtrl'));
+var _codeBlockCtrl = _interopRequireDefault(require("./codeBlockCtrl"));
 
-var _tableBlockCtrl = _interopRequireDefault(require('./tableBlockCtrl'));
+var _tableBlockCtrl = _interopRequireDefault(require("./tableBlockCtrl"));
 
-var _tableDragBarCtrl = _interopRequireDefault(require('./tableDragBarCtrl'));
+var _tableDragBarCtrl = _interopRequireDefault(require("./tableDragBarCtrl"));
 
-var _tableSelectCellsCtrl = _interopRequireDefault(require('./tableSelectCellsCtrl'));
+var _tableSelectCellsCtrl = _interopRequireDefault(require("./tableSelectCellsCtrl"));
 
-var _core = _interopRequireDefault(require('./core'));
+var _core = _interopRequireDefault(require("./core"));
 
-var _history = _interopRequireDefault(require('./history'));
+var _history = _interopRequireDefault(require("./history"));
 
-var _arrowCtrl = _interopRequireDefault(require('./arrowCtrl'));
+var _arrowCtrl = _interopRequireDefault(require("./arrowCtrl"));
 
-var _pasteCtrl = _interopRequireDefault(require('./pasteCtrl'));
+var _pasteCtrl = _interopRequireDefault(require("./pasteCtrl"));
 
-var _copyCutCtrl = _interopRequireDefault(require('./copyCutCtrl'));
+var _copyCutCtrl = _interopRequireDefault(require("./copyCutCtrl"));
 
-var _paragraphCtrl = _interopRequireDefault(require('./paragraphCtrl'));
+var _paragraphCtrl = _interopRequireDefault(require("./paragraphCtrl"));
 
-var _tabCtrl = _interopRequireDefault(require('./tabCtrl'));
+var _tabCtrl = _interopRequireDefault(require("./tabCtrl"));
 
-var _formatCtrl = _interopRequireDefault(require('./formatCtrl'));
+var _formatCtrl = _interopRequireDefault(require("./formatCtrl"));
 
-var _searchCtrl = _interopRequireDefault(require('./searchCtrl'));
+var _searchCtrl = _interopRequireDefault(require("./searchCtrl"));
 
-var _containerCtrl = _interopRequireDefault(require('./containerCtrl'));
+var _containerCtrl = _interopRequireDefault(require("./containerCtrl"));
 
-var _htmlBlock = _interopRequireDefault(require('./htmlBlock'));
+var _htmlBlock = _interopRequireDefault(require("./htmlBlock"));
 
-var _clickCtrl = _interopRequireDefault(require('./clickCtrl'));
+var _clickCtrl = _interopRequireDefault(require("./clickCtrl"));
 
-var _inputCtrl = _interopRequireDefault(require('./inputCtrl'));
+var _inputCtrl = _interopRequireDefault(require("./inputCtrl"));
 
-var _tocCtrl = _interopRequireDefault(require('./tocCtrl'));
+var _tocCtrl = _interopRequireDefault(require("./tocCtrl"));
 
-var _emojiCtrl = _interopRequireDefault(require('./emojiCtrl'));
+var _emojiCtrl = _interopRequireDefault(require("./emojiCtrl"));
 
-var _imageCtrl = _interopRequireDefault(require('./imageCtrl'));
+var _imageCtrl = _interopRequireDefault(require("./imageCtrl"));
 
-var _linkCtrl = _interopRequireDefault(require('./linkCtrl'));
+var _linkCtrl = _interopRequireDefault(require("./linkCtrl"));
 
-var _dragDropCtrl = _interopRequireDefault(require('./dragDropCtrl'));
+var _dragDropCtrl = _interopRequireDefault(require("./dragDropCtrl"));
 
-var _footnoteCtrl = _interopRequireDefault(require('./footnoteCtrl'));
+var _footnoteCtrl = _interopRequireDefault(require("./footnoteCtrl"));
 
-var _importMarkdown = _interopRequireDefault(require('../utils/importMarkdown'));
+var _importMarkdown = _interopRequireDefault(require("../utils/importMarkdown"));
 
-var _cursor = _interopRequireDefault(require('../selection/cursor'));
+var _cursor = _interopRequireDefault(require("../selection/cursor"));
 
-var _escapeCharacter = _interopRequireWildcard(require('../parser/escapeCharacter'));
+var _escapeCharacter = _interopRequireWildcard(require("../parser/escapeCharacter"));
 
-function _getRequireWildcardCache() {
-  if (typeof WeakMap !== 'function') return null;
-  var cache = new WeakMap();
-  _getRequireWildcardCache = function () {
-    return cache;
-  };
-  return cache;
-}
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  }
-  if (obj === null || (typeof obj !== 'object' && typeof obj !== 'function')) {
-    return { default: obj };
-  }
-  var cache = _getRequireWildcardCache();
-  if (cache && cache.has(obj)) {
-    return cache.get(obj);
-  }
-  var newObj = {};
-  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-  for (var key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-      if (desc && (desc.get || desc.set)) {
-        Object.defineProperty(newObj, key, desc);
-      } else {
-        newObj[key] = obj[key];
-      }
-    }
-  }
-  newObj.default = obj;
-  if (cache) {
-    cache.set(obj, newObj);
-  }
-  return newObj;
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const prototypes = [
-  _core.default,
-  _tabCtrl.default,
-  _enterCtrl.default,
-  _updateCtrl.default,
-  _backspaceCtrl.default,
-  _deleteCtrl.default,
-  _codeBlockCtrl.default,
-  _arrowCtrl.default,
-  _pasteCtrl.default,
-  _copyCutCtrl.default,
-  _tableBlockCtrl.default,
-  _tableDragBarCtrl.default,
-  _tableSelectCellsCtrl.default,
-  _paragraphCtrl.default,
-  _formatCtrl.default,
-  _searchCtrl.default,
-  _containerCtrl.default,
-  _htmlBlock.default,
-  _clickCtrl.default,
-  _inputCtrl.default,
-  _tocCtrl.default,
-  _emojiCtrl.default,
-  _imageCtrl.default,
-  _linkCtrl.default,
-  _dragDropCtrl.default,
-  _footnoteCtrl.default,
-  _importMarkdown.default
-];
+const prototypes = [_core.default, _tabCtrl.default, _enterCtrl.default, _updateCtrl.default, _backspaceCtrl.default, _deleteCtrl.default, _codeBlockCtrl.default, _arrowCtrl.default, _pasteCtrl.default, _copyCutCtrl.default, _tableBlockCtrl.default, _tableDragBarCtrl.default, _tableSelectCellsCtrl.default, _paragraphCtrl.default, _formatCtrl.default, _searchCtrl.default, _containerCtrl.default, _htmlBlock.default, _clickCtrl.default, _inputCtrl.default, _tocCtrl.default, _emojiCtrl.default, _imageCtrl.default, _linkCtrl.default, _dragDropCtrl.default, _footnoteCtrl.default, _importMarkdown.default];
 
 class ContentState {
   constructor(muya, options) {
-    const { bulletListMarker } = options;
+    const {
+      bulletListMarker
+    } = options;
     this.muya = muya;
     Object.assign(this, options); // Use to cache the keys which you don't want to remove.
 
@@ -224,7 +161,11 @@ class ContentState {
     }
 
     const handler = () => {
-      const { blocks, renderRange, currentCursor } = this;
+      const {
+        blocks,
+        renderRange,
+        currentCursor
+      } = this;
       this.history.push({
         blocks,
         renderRange,
@@ -236,11 +177,7 @@ class ContentState {
     this.currentCursor = cursor;
 
     if (!cursor.noHistory) {
-      if (
-        this.prevCursor &&
-        (this.prevCursor.start.key !== cursor.start.key ||
-          this.prevCursor.end.key !== cursor.end.key)
-      ) {
+      if (this.prevCursor && (this.prevCursor.start.key !== cursor.start.key || this.prevCursor.end.key !== cursor.end.key)) {
         handler();
       } else {
         if (this.historyTimer) clearTimeout(this.historyTimer);
@@ -255,7 +192,10 @@ class ContentState {
 
   init() {
     const lastBlock = this.getLastBlock();
-    const { key, text } = lastBlock;
+    const {
+      key,
+      text
+    } = lastBlock;
     const offset = text.length;
     this.searchMatches = {
       value: '',
@@ -263,6 +203,7 @@ class ContentState {
       matches: [],
       // matches
       index: -1 // active match
+
     };
     this.cursor = {
       start: {
@@ -277,14 +218,20 @@ class ContentState {
   }
 
   getHistory() {
-    const { stack, index } = this.history;
+    const {
+      stack,
+      index
+    } = this.history;
     return {
       stack,
       index
     };
   }
 
-  setHistory({ stack, index }) {
+  setHistory({
+    stack,
+    index
+  }) {
     Object.assign(this.history, {
       stack,
       index
@@ -296,7 +243,10 @@ class ContentState {
   }
 
   setNextRenderRange() {
-    const { start, end } = this.cursor;
+    const {
+      start,
+      end
+    } = this.cursor;
     const startBlock = this.getBlock(start.key);
     const endBlock = this.getBlock(end.key);
     const startOutMostBlock = this.findOutMostBlock(startBlock);
@@ -311,7 +261,10 @@ class ContentState {
   render(isRenderCursor = true, clearCache = false) {
     const {
       blocks,
-      searchMatches: { matches, index }
+      searchMatches: {
+        matches,
+        index
+      }
     } = this;
     const activeBlocks = this.getActiveBlocks();
 
@@ -338,15 +291,18 @@ class ContentState {
   partialRender(isRenderCursor = true) {
     const {
       blocks,
-      searchMatches: { matches, index }
+      searchMatches: {
+        matches,
+        index
+      }
     } = this;
     const activeBlocks = this.getActiveBlocks();
     const [startKey, endKey] = this.renderRange;
     matches.forEach((m, i) => {
       m.active = i === index;
     });
-    const startIndex = startKey ? blocks.findIndex((block) => block.key === startKey) : 0;
-    const endIndex = endKey ? blocks.findIndex((block) => block.key === endKey) + 1 : blocks.length;
+    const startIndex = startKey ? blocks.findIndex(block => block.key === startKey) : 0;
+    const endIndex = endKey ? blocks.findIndex(block => block.key === endKey) + 1 : blocks.length;
     const needRenderBlocks = blocks.slice(startIndex, endIndex);
     this.setNextRenderRange();
     this.stateRender.collectLabels(blocks);
@@ -364,7 +320,10 @@ class ContentState {
   singleRender(block, isRenderCursor = true) {
     const {
       blocks,
-      searchMatches: { matches, index }
+      searchMatches: {
+        matches,
+        index
+      }
     } = this;
     const activeBlocks = this.getActiveBlocks();
     matches.forEach((m, i) => {
@@ -387,6 +346,7 @@ class ContentState {
    * a `span` block must in a `p block` or `pre block` and `p block`'s children must be `span` blocks.
    */
 
+
   createBlock(type = 'span', extras = {}) {
     const key = (0, _utils.getUniqueId)();
     const blockData = {
@@ -405,10 +365,7 @@ class ContentState {
     }
 
     if (extras.functionType === 'codeContent' && extras.text) {
-      const CHAR_REG = new RegExp(
-        '('.concat(_escapeCharacter.escapeCharacters.join('|'), ')'),
-        'gi'
-      );
+      const CHAR_REG = new RegExp("(".concat(_escapeCharacter.escapeCharacters.join('|'), ")"), 'gi');
       extras.text = extras.text.replace(CHAR_REG, (_, p) => {
         return _escapeCharacter.default[p];
       });
@@ -428,9 +385,13 @@ class ContentState {
   }
 
   isCollapse(cursor = this.cursor) {
-    const { start, end } = cursor;
+    const {
+      start,
+      end
+    } = cursor;
     return start.key === end.key && start.offset === end.offset;
   } // getBlocks
+
 
   getBlocks() {
     return this.blocks;
@@ -444,14 +405,16 @@ class ContentState {
     if (!key) return null;
     let result = null;
 
-    const travel = (blocks) => {
+    const travel = blocks => {
       for (const block of blocks) {
         if (block.key === key) {
           result = block;
           return;
         }
 
-        const { children } = block;
+        const {
+          children
+        } = block;
 
         if (children.length) {
           travel(children);
@@ -472,7 +435,9 @@ class ContentState {
       block.parent = parent ? parent.key : null;
       block.preSibling = preBlock ? preBlock.key : null;
       block.nextSibling = nextBlock ? nextBlock.key : null;
-      const { children } = block;
+      const {
+        children
+      } = block;
       const len = children.length;
 
       if (children && len) {
@@ -498,6 +463,7 @@ class ContentState {
 
     return null;
   } // return block and its parents
+
 
   getParents(block) {
     const result = [];
@@ -526,16 +492,17 @@ class ContentState {
    * @return {Boolean}        [description]
    */
 
+
   isInclude(parent, target) {
     const children = parent.children;
 
     if (children.length === 0) {
       return false;
     } else {
-      if (children.some((child) => child.key === target.key)) {
+      if (children.some(child => child.key === target.key)) {
         return true;
       } else {
-        return children.some((child) => this.isInclude(child, target));
+        return children.some(child => this.isInclude(child, target));
       }
     }
   }
@@ -543,7 +510,7 @@ class ContentState {
   removeTextOrBlock(block) {
     if (block.functionType === 'languageInput') return;
 
-    const checkerIn = (block) => {
+    const checkerIn = block => {
       if (this.exemption.has(block.key)) {
         return true;
       } else {
@@ -552,14 +519,14 @@ class ContentState {
       }
     };
 
-    const checkerOut = (block) => {
+    const checkerOut = block => {
       const children = block.children;
 
       if (children.length) {
-        if (children.some((child) => this.exemption.has(child.key))) {
+        if (children.some(child => this.exemption.has(child.key))) {
           return true;
         } else {
-          return children.some((child) => checkerOut(child));
+          return children.some(child => checkerOut(child));
         }
       } else {
         return false;
@@ -568,10 +535,12 @@ class ContentState {
 
     if (checkerIn(block) || checkerOut(block)) {
       block.text = '';
-      const { children } = block;
+      const {
+        children
+      } = block;
 
       if (children.length) {
-        children.forEach((child) => this.removeTextOrBlock(child));
+        children.forEach(child => this.removeTextOrBlock(child));
       }
     } else if (block.editable) {
       this.removeBlock(block);
@@ -580,6 +549,7 @@ class ContentState {
   /**
    * remove blocks between before and after, and includes after block.
    */
+
 
   removeBlocks(before, after, isRemoveAfter = true, isRecursion = false) {
     if (!isRecursion) {
@@ -727,7 +697,7 @@ class ContentState {
   }
 
   findIndex(children, block) {
-    return children.findIndex((child) => child === block);
+    return children.findIndex(child => child === block);
   }
 
   prependChild(parent, block) {
@@ -787,11 +757,7 @@ class ContentState {
   isOnlyRemoveableChild(block) {
     if (block.editable === false) return false;
     const parent = this.getParent(block);
-    return (
-      (parent ? parent.children : this.blocks).filter(
-        (child) => child.editable && child.functionType !== 'languageInput'
-      ).length === 1
-    );
+    return (parent ? parent.children : this.blocks).filter(child => child.editable && child.functionType !== 'languageInput').length === 1;
   }
 
   getLastChild(block) {
@@ -812,10 +778,7 @@ class ContentState {
     if (block.children.length === 0 && _config.HAS_TEXT_BLOCK_REG.test(block.type)) {
       return block;
     } else if (children.length) {
-      if (
-        children[0].type === 'input' ||
-        (children[0].type === 'div' && children[0].editable === false)
-      ) {
+      if (children[0].type === 'input' || children[0].type === 'div' && children[0].editable === false) {
         // handle task item
         return this.firstInDescendant(children[1]);
       } else {
@@ -843,12 +806,7 @@ class ContentState {
     const parent = this.getParent(block);
     const preBlock = this.getPreSibling(block);
 
-    if (
-      block.preSibling &&
-      preBlock.type !== 'input' &&
-      preBlock.type !== 'div' &&
-      preBlock.editable !== false
-    ) {
+    if (block.preSibling && preBlock.type !== 'input' && preBlock.type !== 'div' && preBlock.editable !== false) {
       // handle task item and table
       return this.lastInDescendant(preBlock);
     } else if (parent) {
@@ -872,11 +830,20 @@ class ContentState {
   }
 
   getPositionReference() {
-    const { fontSize, lineHeight } = this.muya.options;
-    const { start } = this.cursor;
+    const {
+      fontSize,
+      lineHeight
+    } = this.muya.options;
+    const {
+      start
+    } = this.cursor;
     const block = this.getBlock(start.key);
 
-    const { x, y, width } = _selection.default.getCursorCoords();
+    const {
+      x,
+      y,
+      width
+    } = _selection.default.getCursorCoords();
 
     const height = fontSize * lineHeight;
     const bottom = y + height;
@@ -908,7 +875,9 @@ class ContentState {
   }
 
   getLastBlock() {
-    const { blocks } = this;
+    const {
+      blocks
+    } = this;
     const len = blocks.length;
     return this.lastInDescendant(blocks[len - 1]);
   }
@@ -927,7 +896,10 @@ class ContentState {
   }
 
   getAnchor(block) {
-    const { type, functionType } = block;
+    const {
+      type,
+      functionType
+    } = block;
 
     if (type !== 'span') {
       return null;
@@ -943,8 +915,9 @@ class ContentState {
   clear() {
     this.history.clearHistory();
   }
+
 }
 
-prototypes.forEach((ctrl) => ctrl(ContentState));
+prototypes.forEach(ctrl => ctrl(ContentState));
 var _default = ContentState;
 exports.default = _default;

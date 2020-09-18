@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.inlineExtensionRules = exports.inlineRules = exports.beginRules = void 0;
 
-var _escapeCharacter = require('./escapeCharacter');
+var _escapeCharacter = require("./escapeCharacter");
 
 /* eslint-disable no-useless-escape */
 const beginRules = {
@@ -37,7 +37,7 @@ const inlineRules = {
   tail_header: /^(\s{1,}#{1,})(\s*)$/,
   html_tag: /^(<!--[\s\S]*?-->|(<([a-zA-Z]{1}[a-zA-Z\d-]*) *[^\n<>]* *(?:\/)?>)(?:([\s\S]*?)(<\/\3 *>))?)/,
   // raw html
-  html_escape: new RegExp('^('.concat(_escapeCharacter.escapeCharacters.join('|'), ')'), 'i'),
+  html_escape: new RegExp("^(".concat(_escapeCharacter.escapeCharacters.join('|'), ")"), 'i'),
   soft_line_break: /^(\n)(?!\n)/,
   hard_line_break: /^( {2,})(\n)(?!\n)/,
   // patched math marker `$`

@@ -1,19 +1,17 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = exports.checkEditEmoji = exports.validEmoji = void 0;
 
-var _fuzzaldrin = require('fuzzaldrin');
+var _fuzzaldrin = require("fuzzaldrin");
 
-var _emojisJson = _interopRequireDefault(require('./emojisJson'));
+var _emojisJson = _interopRequireDefault(require("./emojisJson"));
 
-var _config = require('../../config');
+var _config = require("../../config");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const emojisForSearch = {};
 
@@ -32,8 +30,9 @@ for (const emoji of _emojisJson.default) {
  * check if one emoji code is in emojis, return undefined or found emoji
  */
 
-const validEmoji = (text) => {
-  return _emojisJson.default.find((emoji) => {
+
+const validEmoji = text => {
+  return _emojisJson.default.find(emoji => {
     return emoji.aliases.includes(text);
   });
 };
@@ -41,9 +40,10 @@ const validEmoji = (text) => {
  * check edit emoji
  */
 
+
 exports.validEmoji = validEmoji;
 
-const checkEditEmoji = (node) => {
+const checkEditEmoji = node => {
   if (node && node.classList.contains(_config.CLASS_OR_ID.AG_EMOJI_MARKED_TEXT)) {
     return node;
   }
@@ -59,10 +59,12 @@ class Emoji {
   }
 
   search(text) {
-    const { cache } = this;
+    const {
+      cache
+    } = this;
     if (cache.has(text)) return cache.get(text);
     const result = {};
-    Object.keys(emojisForSearch).forEach((category) => {
+    Object.keys(emojisForSearch).forEach(category => {
       const list = (0, _fuzzaldrin.filter)(emojisForSearch[category], text, {
         key: 'search'
       });
@@ -78,6 +80,7 @@ class Emoji {
   destroy() {
     return this.cache.clear();
   }
+
 }
 
 var _default = Emoji;

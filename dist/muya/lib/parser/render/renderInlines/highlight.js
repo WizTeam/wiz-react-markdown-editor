@@ -1,43 +1,48 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = highlight;
 
-var _utils = require('../../../utils');
+var _utils = require("../../../utils");
 
 // change text to highlight vdom
 function highlight(h, block, rStart, rEnd, token) {
-  const { text } = block;
-  const { highlights } = token;
+  const {
+    text
+  } = block;
+  const {
+    highlights
+  } = token;
   let result = [];
   const unions = [];
   let pos = rStart;
 
   if (highlights) {
     for (const light of highlights) {
-      const un = (0, _utils.union)(
-        {
-          start: rStart,
-          end: rEnd
-        },
-        light
-      );
+      const un = (0, _utils.union)({
+        start: rStart,
+        end: rEnd
+      }, light);
       if (un) unions.push(un);
     }
   }
 
   if (unions.length) {
     for (const u of unions) {
-      const { start, end, active } = u;
+      const {
+        start,
+        end,
+        active
+      } = u;
       const className = this.getHighlightClassName(active);
 
       if (pos < start) {
         result.push(text.substring(pos, start));
       }
 
-      result.push(h('span.'.concat(className), text.substring(start, end)));
+      result.push(h("span.".concat(className), text.substring(start, end)));
       pos = end;
     }
 

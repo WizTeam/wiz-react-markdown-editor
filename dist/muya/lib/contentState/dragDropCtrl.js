@@ -1,30 +1,31 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _dom = require('../selection/dom');
+var _dom = require("../selection/dom");
 
-var _utils = require('../utils');
+var _utils = require("../utils");
 
-var _getImageInfo = require('../utils/getImageInfo');
+var _getImageInfo = require("../utils/getImageInfo");
 
-var _config = require('../config');
+var _config = require("../config");
 
 const GHOST_ID = 'mu-dragover-ghost';
 const GHOST_HEIGHT = 3;
 
-const dragDropCtrl = (ContentState) => {
+const dragDropCtrl = ContentState => {
   ContentState.prototype.hideGhost = function () {
     this.dropAnchor = null;
-    const ghost = document.querySelector('#'.concat(GHOST_ID));
+    const ghost = document.querySelector("#".concat(GHOST_ID));
     ghost && ghost.remove();
   };
   /**
    * create the ghost element.
    */
+
 
   ContentState.prototype.createGhost = function (event) {
     const target = event.target;
@@ -44,7 +45,7 @@ const dragDropCtrl = (ContentState) => {
     }
 
     if (anchor) {
-      const anchorParagraph = this.muya.container.querySelector('#'.concat(anchor.key));
+      const anchorParagraph = this.muya.container.querySelector("#".concat(anchor.key));
       const rect = anchorParagraph.getBoundingClientRect();
       const position = (0, _utils.verticalPositionInRect)(event, rect);
       this.dropAnchor = {
@@ -52,7 +53,7 @@ const dragDropCtrl = (ContentState) => {
         anchor
       }; // create ghost
 
-      ghost = document.querySelector('#'.concat(GHOST_ID));
+      ghost = document.querySelector("#".concat(GHOST_ID));
 
       if (!ghost) {
         ghost = document.createElement('div');
@@ -61,12 +62,9 @@ const dragDropCtrl = (ContentState) => {
       }
 
       Object.assign(ghost.style, {
-        width: ''.concat(rect.width, 'px'),
-        left: ''.concat(rect.left, 'px'),
-        top:
-          position === 'up'
-            ? ''.concat(rect.top - GHOST_HEIGHT, 'px')
-            : ''.concat(rect.top + rect.height, 'px')
+        width: "".concat(rect.width, "px"),
+        left: "".concat(rect.left, "px"),
+        top: position === 'up' ? "".concat(rect.top - GHOST_HEIGHT, "px") : "".concat(rect.top + rect.height, "px")
       });
     }
   };
@@ -80,9 +78,9 @@ const dragDropCtrl = (ContentState) => {
 
     if (event.dataTransfer.types.includes('text/uri-list')) {
       const items = Array.from(event.dataTransfer.items);
-      const hasUriItem = items.some((i) => i.type === 'text/uri-list');
-      const hasTextItem = items.some((i) => i.type === 'text/plain');
-      const hasHtmlItem = items.some((i) => i.type === 'text/html');
+      const hasUriItem = items.some(i => i.type === 'text/uri-list');
+      const hasTextItem = items.some(i => i.type === 'text/plain');
+      const hasHtmlItem = items.some(i => i.type === 'text/html');
 
       if (hasUriItem && hasHtmlItem && !hasTextItem) {
         this.createGhost(event);
@@ -91,10 +89,7 @@ const dragDropCtrl = (ContentState) => {
     }
 
     if (event.dataTransfer.types.indexOf('Files') >= 0) {
-      if (
-        event.dataTransfer.items.length === 1 &&
-        event.dataTransfer.items[0].type.indexOf('image') > -1
-      ) {
+      if (event.dataTransfer.items.length === 1 && event.dataTransfer.items[0].type.indexOf('image') > -1) {
         event.preventDefault();
         this.createGhost(event);
         event.dataTransfer.dropEffect = 'copy';
@@ -111,13 +106,15 @@ const dragDropCtrl = (ContentState) => {
 
   ContentState.prototype.dropHandler = async function (event) {
     event.preventDefault();
-    const { dropAnchor } = this;
+    const {
+      dropAnchor
+    } = this;
     this.hideGhost(); // handle drag/drop web link image.
 
     if (event.dataTransfer.items.length) {
       for (const item of event.dataTransfer.items) {
         if (item.kind === 'string' && item.type === 'text/uri-list') {
-          item.getAsString(async (str) => {
+          item.getAsString(async str => {
             if (_config.URL_REG.test(str) && dropAnchor) {
               let isImage = false;
 
@@ -130,9 +127,12 @@ const dragDropCtrl = (ContentState) => {
               }
 
               if (!isImage) return;
-              const text = '![]('.concat(str, ')');
+              const text = "![](".concat(str, ")");
               const imageBlock = this.createBlockP(text);
-              const { anchor, position } = dropAnchor;
+              const {
+                anchor,
+                position
+              } = dropAnchor;
 
               if (position === 'up') {
                 this.insertBefore(imageBlock, anchor);
@@ -167,14 +167,20 @@ const dragDropCtrl = (ContentState) => {
         fileList.push(file);
       }
 
-      const image = fileList.find((file) => /image/.test(file.type));
+      const image = fileList.find(file => /image/.test(file.type));
 
       if (image && dropAnchor) {
-        const { name, path } = image;
-        const id = 'loading-'.concat((0, _utils.getUniqueId)());
-        const text = '!['.concat(id, '](').concat(path, ')');
+        const {
+          name,
+          path
+        } = image;
+        const id = "loading-".concat((0, _utils.getUniqueId)());
+        const text = "![".concat(id, "](").concat(path, ")");
         const imageBlock = this.createBlockP(text);
-        const { anchor, position } = dropAnchor;
+        const {
+          anchor,
+          position
+        } = dropAnchor;
 
         if (position === 'up') {
           this.insertBefore(imageBlock, anchor);
@@ -196,13 +202,15 @@ const dragDropCtrl = (ContentState) => {
         };
         this.render();
         const nSrc = await this.muya.options.imageAction(path, id, name);
-        const { src } = (0, _utils.getImageInfo)(path);
+        const {
+          src
+        } = (0, _utils.getImageInfo)(path);
 
         if (src) {
           this.stateRender.urlMap.set(nSrc, src);
         }
 
-        const imageWrapper = this.muya.container.querySelector('span[data-id='.concat(id, ']'));
+        const imageWrapper = this.muya.container.querySelector("span[data-id=".concat(id, "]"));
 
         if (imageWrapper) {
           const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);

@@ -1,18 +1,23 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-const linkCtrl = (ContentState) => {
+const linkCtrl = ContentState => {
   /**
    * Change a link into text.
    */
   ContentState.prototype.unlink = function (linkInfo) {
-    const { key, token } = linkInfo;
+    const {
+      key,
+      token
+    } = linkInfo;
     const block = this.getBlock(key);
-    const { text } = block;
+    const {
+      text
+    } = block;
     let anchor;
 
     switch (token.type) {
@@ -24,15 +29,16 @@ const linkCtrl = (ContentState) => {
         anchor = token.href;
         break;
 
-      case 'text': {
-        const match = /^\[(.+?)\]/.exec(token.raw);
+      case 'text':
+        {
+          const match = /^\[(.+?)\]/.exec(token.raw);
 
-        if (match && match[1]) {
-          anchor = match[1];
+          if (match && match[1]) {
+            anchor = match[1];
+          }
+
+          break;
         }
-
-        break;
-      }
     }
 
     if (!anchor) {

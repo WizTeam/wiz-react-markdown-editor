@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
@@ -13,12 +13,15 @@ const FUNCTION_TYPE_LANG = {
   html: 'markup'
 };
 
-const containerCtrl = (ContentState) => {
+const containerCtrl = ContentState => {
   ContentState.prototype.createContainerBlock = function (functionType, value = '') {
     const figureBlock = this.createBlock('figure', {
       functionType
     });
-    const { preBlock, preview } = this.createPreAndPreview(functionType, value);
+    const {
+      preBlock,
+      preview
+    } = this.createPreAndPreview(functionType, value);
     this.appendChild(figureBlock, preBlock);
     this.appendChild(figureBlock, preview);
     return figureBlock;
@@ -66,18 +69,25 @@ const containerCtrl = (ContentState) => {
     block.type = 'figure';
     block.functionType = functionType;
     block.children = [];
-    const { preBlock, preview } = this.createPreAndPreview(functionType, value);
+    const {
+      preBlock,
+      preview
+    } = this.createPreAndPreview(functionType, value);
     this.appendChild(block, preBlock);
     this.appendChild(block, preview);
     return preBlock.children[0].children[0];
   };
 
   ContentState.prototype.handleContainerBlockClick = function (figureEle) {
-    const { id } = figureEle;
+    const {
+      id
+    } = figureEle;
     const mathBlock = this.getBlock(id);
     const preBlock = mathBlock.children[0];
     const firstLine = preBlock.children[0].children[0];
-    const { key } = firstLine;
+    const {
+      key
+    } = firstLine;
     const offset = 0;
     this.cursor = {
       start: {
@@ -93,20 +103,20 @@ const containerCtrl = (ContentState) => {
   };
 
   ContentState.prototype.updateMathBlock = function (block) {
-    const { type } = block;
+    const {
+      type
+    } = block;
     if (type !== 'p') return false;
-    const { text } = block.children[0];
+    const {
+      text
+    } = block.children[0];
     const functionType = 'multiplemath';
     const content = text.trim();
 
     if (content === '$$') {
       return this.initContainerBlock(functionType, block);
     } else if (/^\$\$([^$]+)\$\$$/.test(content)) {
-      return this.initContainerBlock(
-        functionType,
-        block,
-        content.replace(/^\$\$([^$]+)\$\$$/, (arg, $1) => $1)
-      );
+      return this.initContainerBlock(functionType, block, content.replace(/^\$\$([^$]+)\$\$$/, (arg, $1) => $1));
     }
 
     return false;

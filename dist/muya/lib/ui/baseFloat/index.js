@@ -1,23 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _popper = _interopRequireDefault(require('popper.js/dist/esm/popper'));
+var _popper = _interopRequireDefault(require("popper.js/dist/esm/popper"));
 
-var _elementResizeDetector = _interopRequireDefault(require('element-resize-detector'));
+var _elementResizeDetector = _interopRequireDefault(require("element-resize-detector"));
 
-var _utils = require('../../utils');
+var _utils = require("../../utils");
 
-var _config = require('../../config');
+var _config = require("../../config");
 
-require('./index.css');
+require("./index.css");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const defaultOptions = () => ({
   placement: 'bottom-start',
@@ -44,7 +42,9 @@ class BaseFloat {
   }
 
   init() {
-    const { showArrow } = this.options;
+    const {
+      showArrow
+    } = this.options;
     const floatBox = document.createElement('div');
     const container = document.createElement('div'); // Use to remember whick float container is shown.
 
@@ -65,11 +65,14 @@ class BaseFloat {
       strategy: 'scroll'
     }); // use polyfill
 
-    erd.listenTo(container, (ele) => {
-      const { offsetWidth, offsetHeight } = ele;
+    erd.listenTo(container, ele => {
+      const {
+        offsetWidth,
+        offsetHeight
+      } = ele;
       Object.assign(floatBox.style, {
-        width: ''.concat(offsetWidth, 'px'),
-        height: ''.concat(offsetHeight, 'px')
+        width: "".concat(offsetWidth, "px"),
+        height: "".concat(offsetHeight, "px")
       });
       this.popper && this.popper.update();
     }); // const ro = new ResizeObserver(entries => {
@@ -86,20 +89,26 @@ class BaseFloat {
   }
 
   listen() {
-    const { eventCenter, container } = this.muya;
-    const { floatBox } = this;
+    const {
+      eventCenter,
+      container
+    } = this.muya;
+    const {
+      floatBox
+    } = this;
 
-    const keydownHandler = (event) => {
+    const keydownHandler = event => {
       if (event.key === _config.EVENT_KEYS.Escape) {
         this.hide();
       }
     };
 
-    const scrollHandler = (event) => {
+    const scrollHandler = event => {
       if (typeof this.lastScrollTop !== 'number') {
         this.lastScrollTop = event.target.scrollTop;
         return;
       } // only when scoll distance great than 50px, then hide the float box.
+
 
       if (this.status && Math.abs(event.target.scrollTop - this.lastScrollTop) > 50) {
         this.hide();
@@ -107,7 +116,7 @@ class BaseFloat {
     };
 
     eventCenter.attachDOMEvent(document, 'click', this.hide.bind(this));
-    eventCenter.attachDOMEvent(floatBox, 'click', (event) => {
+    eventCenter.attachDOMEvent(floatBox, 'click', event => {
       event.stopPropagation();
       event.preventDefault();
     });
@@ -116,7 +125,9 @@ class BaseFloat {
   }
 
   hide() {
-    const { eventCenter } = this.muya;
+    const {
+      eventCenter
+    } = this.muya;
     if (!this.status) return;
     this.status = false;
 
@@ -130,9 +141,16 @@ class BaseFloat {
   }
 
   show(reference, cb = _utils.noop) {
-    const { floatBox } = this;
-    const { eventCenter } = this.muya;
-    const { placement, modifiers } = this.options;
+    const {
+      floatBox
+    } = this;
+    const {
+      eventCenter
+    } = this.muya;
+    const {
+      placement,
+      modifiers
+    } = this.options;
 
     if (this.popper && this.popper.destroy) {
       this.popper.destroy();
@@ -154,6 +172,7 @@ class BaseFloat {
 
     this.floatBox.remove();
   }
+
 }
 
 var _default = BaseFloat;

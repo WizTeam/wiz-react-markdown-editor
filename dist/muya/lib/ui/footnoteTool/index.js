@@ -1,40 +1,26 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _baseFloat = _interopRequireDefault(require('../baseFloat'));
+var _baseFloat = _interopRequireDefault(require("../baseFloat"));
 
-var _snabbdom = require('../../parser/render/snabbdom');
+var _snabbdom = require("../../parser/render/snabbdom");
 
-var _ = _interopRequireDefault(require('../../assets/pngicon/warning/2.png'));
+var _ = _interopRequireDefault(require("../../assets/pngicon/warning/2.png"));
 
-require('./index.css');
+require("./index.css");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-const getFootnoteText = (block) => {
+const getFootnoteText = block => {
   let text = '';
 
-  const travel = (block) => {
+  const travel = block => {
     if (block.children.length === 0 && block.text) {
       text += block.text;
     } else if (block.children.length) {
@@ -73,16 +59,22 @@ class LinkTools extends _baseFloat.default {
     this.footnotes = null;
     this.options = opts;
     this.hideTimer = null;
-    const toolContainer = (this.toolContainer = document.createElement('div'));
+    const toolContainer = this.toolContainer = document.createElement('div');
     this.container.appendChild(toolContainer);
     this.floatBox.classList.add('ag-footnote-tool-container');
     this.listen();
   }
 
   listen() {
-    const { eventCenter } = this.muya;
+    const {
+      eventCenter
+    } = this.muya;
     super.listen();
-    eventCenter.subscribe('muya-footnote-tool', ({ reference, identifier, footnotes }) => {
+    eventCenter.subscribe('muya-footnote-tool', ({
+      reference,
+      identifier,
+      footnotes
+    }) => {
       if (reference) {
         this.footnotes = footnotes;
         this.identifier = identifier;
@@ -116,24 +108,22 @@ class LinkTools extends _baseFloat.default {
   }
 
   render() {
-    const { oldVnode, toolContainer, identifier, footnotes } = this;
+    const {
+      oldVnode,
+      toolContainer,
+      identifier,
+      footnotes
+    } = this;
     const hasFootnote = footnotes.has(identifier);
     const iconWrapperSelector = 'div.icon-wrapper';
-    const icon = (0, _snabbdom.h)(
-      'i.icon',
-      (0, _snabbdom.h)(
-        'i.icon-inner',
-        {
-          style: {
-            background: 'url('.concat(_.default, ') no-repeat'),
-            'background-size': '100%'
-          }
-        },
-        ''
-      )
-    );
+    const icon = (0, _snabbdom.h)('i.icon', (0, _snabbdom.h)('i.icon-inner', {
+      style: {
+        background: "url(".concat(_.default, ") no-repeat"),
+        'background-size': '100%'
+      }
+    }, ''));
     const iconWrapper = (0, _snabbdom.h)(iconWrapperSelector, icon);
-    let text = "Can't find footnote with syntax [^abc]:";
+    let text = 'Can\'t find footnote with syntax [^abc]:';
 
     if (hasFootnote) {
       const footnoteBlock = footnotes.get(identifier);
@@ -145,17 +135,13 @@ class LinkTools extends _baseFloat.default {
     }
 
     const textNode = (0, _snabbdom.h)('span.text', text);
-    const button = (0, _snabbdom.h)(
-      'a.btn',
-      {
-        on: {
-          click: (event) => {
-            this.buttonClick(event, hasFootnote);
-          }
+    const button = (0, _snabbdom.h)('a.btn', {
+      on: {
+        click: event => {
+          this.buttonClick(event, hasFootnote);
         }
-      },
-      hasFootnote ? 'Go to' : 'Create'
-    );
+      }
+    }, hasFootnote ? 'Go to' : 'Create');
     const children = [textNode, button];
 
     if (!hasFootnote) {
@@ -176,12 +162,15 @@ class LinkTools extends _baseFloat.default {
   buttonClick(event, hasFootnote) {
     event.preventDefault();
     event.stopPropagation();
-    const { identifier, footnotes } = this;
+    const {
+      identifier,
+      footnotes
+    } = this;
 
     if (hasFootnote) {
       const block = footnotes.get(identifier);
       const key = block.key;
-      const ele = document.querySelector('#'.concat(key));
+      const ele = document.querySelector("#".concat(key));
       ele.scrollIntoView({
         behavior: 'smooth'
       });
@@ -191,9 +180,10 @@ class LinkTools extends _baseFloat.default {
 
     return this.hide();
   }
+
 }
 
-_defineProperty(LinkTools, 'pluginName', 'footnoteTool');
+_defineProperty(LinkTools, "pluginName", 'footnoteTool');
 
 var _default = LinkTools;
 exports.default = _default;

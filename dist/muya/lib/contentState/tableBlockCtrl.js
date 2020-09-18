@@ -1,16 +1,19 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _utils = require('../utils');
+var _utils = require("../utils");
 
 const TABLE_BLOCK_REG = /^\|.*?(\\*)\|.*?(\\*)\|/;
 
-const tableBlockCtrl = (ContentState) => {
-  ContentState.prototype.createTableInFigure = function ({ rows, columns }, tableContents = []) {
+const tableBlockCtrl = ContentState => {
+  ContentState.prototype.createTableInFigure = function ({
+    rows,
+    columns
+  }, tableContents = []) {
     const table = this.createBlock('table', {
       row: rows - 1,
       // zero base
@@ -49,8 +52,13 @@ const tableBlockCtrl = (ContentState) => {
     return table;
   };
 
-  ContentState.prototype.createFigure = function ({ rows, columns }) {
-    const { end } = this.cursor;
+  ContentState.prototype.createFigure = function ({
+    rows,
+    columns
+  }) {
+    const {
+      end
+    } = this.cursor;
     const table = this.createTableInFigure({
       rows,
       columns
@@ -72,7 +80,9 @@ const tableBlockCtrl = (ContentState) => {
     }
 
     this.appendChild(figureBlock, table);
-    const { key } = this.firstInDescendant(table); // fist cell key in thead
+    const {
+      key
+    } = this.firstInDescendant(table); // fist cell key in thead
 
     const offset = 0;
     this.cursor = {
@@ -96,7 +106,9 @@ const tableBlockCtrl = (ContentState) => {
   };
 
   ContentState.prototype.initTable = function (block) {
-    const { text } = block.children[0];
+    const {
+      text
+    } = block.children[0];
     const rowHeader = [];
     const len = text.length;
     let i;
@@ -119,18 +131,13 @@ const tableBlockCtrl = (ContentState) => {
 
     const columns = rowHeader.length;
     const rows = 2;
-    const table = this.createTableInFigure(
-      {
-        rows,
-        columns
-      },
-      [
-        rowHeader.map((text) => ({
-          text,
-          align: ''
-        }))
-      ]
-    );
+    const table = this.createTableInFigure({
+      rows,
+      columns
+    }, [rowHeader.map(text => ({
+      text,
+      align: ''
+    }))]);
     block.type = 'figure';
     block.text = '';
     block.children = [];
@@ -141,7 +148,9 @@ const tableBlockCtrl = (ContentState) => {
 
   ContentState.prototype.tableToolBarClick = function (type) {
     const {
-      start: { key }
+      start: {
+        key
+      }
     } = this.cursor;
     const block = this.getBlock(key);
     const parentBlock = this.getParent(block);
@@ -150,125 +159,38 @@ const tableBlockCtrl = (ContentState) => {
       throw new Error('table is not active');
     }
 
-    const { column, align } = parentBlock;
+    const {
+      column,
+      align
+    } = parentBlock;
     const table = this.closest(block, 'table');
     const figure = this.getBlock(table.parent);
 
     switch (type) {
       case 'left':
       case 'center':
-      case 'right': {
-        const newAlign = align === type ? '' : type;
-        table.children.forEach((rowContainer) => {
-          rowContainer.children.forEach((row) => {
-            row.children[column].align = newAlign;
-          });
-        });
-        this.muya.eventCenter.dispatch('stateChange');
-        this.partialRender();
-        break;
-      }
-
-      case 'delete': {
-        const newLine = this.createBlock('span');
-        figure.children = [];
-        this.appendChild(figure, newLine);
-        figure.type = 'p';
-        figure.text = '';
-        const key = newLine.key;
-        const offset = 0;
-        this.cursor = {
-          start: {
-            key,
-            offset
-          },
-          end: {
-            key,
-            offset
-          }
-        };
-        this.muya.eventCenter.dispatch('stateChange');
-        this.partialRender();
-        break;
-      }
-
-      case 'table': {
-        const { eventCenter } = this.muya;
-        const figureKey = figure.key;
-        const tableEle = document.querySelector('#'.concat(figureKey, ' [data-label=table]'));
-        const { row = 1, column = 1 } = table; // zero base
-
-        const handler = (row, column) => {
-          const { row: oldRow, column: oldColumn } = table;
-          let tBody = table.children[1];
-          const tHead = table.children[0];
-          const headerRow = tHead.children[0];
-          const bodyRows = tBody ? tBody.children : [];
-          let i;
-
-          if (column > oldColumn) {
-            for (i = oldColumn + 1; i <= column; i++) {
-              const th = this.createBlock('th', {
-                column: i,
-                align: ''
-              });
-              const thContent = this.createBlock('span', {
-                functionType: 'cellContent'
-              });
-              this.appendChild(th, thContent);
-              this.appendChild(headerRow, th);
-              bodyRows.forEach((bodyRow) => {
-                const td = this.createBlock('td', {
-                  column: i,
-                  align: ''
-                });
-                const tdContent = this.createBlock('span', {
-                  functionType: 'cellContent'
-                });
-                this.appendChild(td, tdContent);
-                this.appendChild(bodyRow, td);
-              });
-            }
-          } else if (column < oldColumn) {
-            const rows = [headerRow, ...bodyRows];
-            rows.forEach((row) => {
-              while (row.children.length > column + 1) {
-                const lastChild = row.children[row.children.length - 1];
-                this.removeBlock(lastChild);
-              }
+      case 'right':
+        {
+          const newAlign = align === type ? '' : type;
+          table.children.forEach(rowContainer => {
+            rowContainer.children.forEach(row => {
+              row.children[column].align = newAlign;
             });
-          }
-
-          if (row < oldRow) {
-            while (tBody.children.length > row) {
-              const lastRow = tBody.children[tBody.children.length - 1];
-              this.removeBlock(lastRow);
-            }
-
-            if (tBody.children.length === 0) {
-              this.removeBlock(tBody);
-            }
-          } else if (row > oldRow) {
-            if (!tBody) {
-              tBody = this.createBlock('tbody');
-              this.appendChild(table, tBody);
-            }
-
-            const oneHeaderRow = tHead.children[0];
-
-            for (i = oldRow + 1; i <= row; i++) {
-              const bodyRow = this.createRow(oneHeaderRow, false);
-              this.appendChild(tBody, bodyRow);
-            }
-          }
-
-          Object.assign(table, {
-            row,
-            column
           });
-          const cursorBlock = this.firstInDescendant(headerRow);
-          const key = cursorBlock.key;
-          const offset = cursorBlock.text.length;
+          this.muya.eventCenter.dispatch('stateChange');
+          this.partialRender();
+          break;
+        }
+
+      case 'delete':
+        {
+          const newLine = this.createBlock('span');
+          figure.children = [];
+          this.appendChild(figure, newLine);
+          figure.type = 'p';
+          figure.text = '';
+          const key = newLine.key;
+          const offset = 0;
           this.cursor = {
             start: {
               key,
@@ -281,23 +203,124 @@ const tableBlockCtrl = (ContentState) => {
           };
           this.muya.eventCenter.dispatch('stateChange');
           this.partialRender();
-        };
+          break;
+        }
 
-        const reference = (0, _utils.getParagraphReference)(tableEle, tableEle.id);
-        eventCenter.dispatch(
-          'muya-table-picker',
-          {
+      case 'table':
+        {
+          const {
+            eventCenter
+          } = this.muya;
+          const figureKey = figure.key;
+          const tableEle = document.querySelector("#".concat(figureKey, " [data-label=table]"));
+          const {
+            row = 1,
+            column = 1
+          } = table; // zero base
+
+          const handler = (row, column) => {
+            const {
+              row: oldRow,
+              column: oldColumn
+            } = table;
+            let tBody = table.children[1];
+            const tHead = table.children[0];
+            const headerRow = tHead.children[0];
+            const bodyRows = tBody ? tBody.children : [];
+            let i;
+
+            if (column > oldColumn) {
+              for (i = oldColumn + 1; i <= column; i++) {
+                const th = this.createBlock('th', {
+                  column: i,
+                  align: ''
+                });
+                const thContent = this.createBlock('span', {
+                  functionType: 'cellContent'
+                });
+                this.appendChild(th, thContent);
+                this.appendChild(headerRow, th);
+                bodyRows.forEach(bodyRow => {
+                  const td = this.createBlock('td', {
+                    column: i,
+                    align: ''
+                  });
+                  const tdContent = this.createBlock('span', {
+                    functionType: 'cellContent'
+                  });
+                  this.appendChild(td, tdContent);
+                  this.appendChild(bodyRow, td);
+                });
+              }
+            } else if (column < oldColumn) {
+              const rows = [headerRow, ...bodyRows];
+              rows.forEach(row => {
+                while (row.children.length > column + 1) {
+                  const lastChild = row.children[row.children.length - 1];
+                  this.removeBlock(lastChild);
+                }
+              });
+            }
+
+            if (row < oldRow) {
+              while (tBody.children.length > row) {
+                const lastRow = tBody.children[tBody.children.length - 1];
+                this.removeBlock(lastRow);
+              }
+
+              if (tBody.children.length === 0) {
+                this.removeBlock(tBody);
+              }
+            } else if (row > oldRow) {
+              if (!tBody) {
+                tBody = this.createBlock('tbody');
+                this.appendChild(table, tBody);
+              }
+
+              const oneHeaderRow = tHead.children[0];
+
+              for (i = oldRow + 1; i <= row; i++) {
+                const bodyRow = this.createRow(oneHeaderRow, false);
+                this.appendChild(tBody, bodyRow);
+              }
+            }
+
+            Object.assign(table, {
+              row,
+              column
+            });
+            const cursorBlock = this.firstInDescendant(headerRow);
+            const key = cursorBlock.key;
+            const offset = cursorBlock.text.length;
+            this.cursor = {
+              start: {
+                key,
+                offset
+              },
+              end: {
+                key,
+                offset
+              }
+            };
+            this.muya.eventCenter.dispatch('stateChange');
+            this.partialRender();
+          };
+
+          const reference = (0, _utils.getParagraphReference)(tableEle, tableEle.id);
+          eventCenter.dispatch('muya-table-picker', {
             row,
             column
-          },
-          reference,
-          handler.bind(this)
-        );
-      }
+          }, reference, handler.bind(this));
+        }
     }
   }; // insert/remove row/column
 
-  ContentState.prototype.editTable = function ({ location, action, target }, cellContentKey) {
+
+  ContentState.prototype.editTable = function ({
+    location,
+    action,
+    target
+  }, cellContentKey) {
     let block;
     let start;
     let end;
@@ -305,7 +328,10 @@ const tableBlockCtrl = (ContentState) => {
     if (cellContentKey) {
       block = this.getBlock(cellContentKey);
     } else {
-      ({ start, end } = this.cursor);
+      ({
+        start,
+        end
+      } = this.cursor);
 
       if (start.key !== end.key) {
         throw new Error('Cursor is not in one block, can not editTable');
@@ -329,17 +355,14 @@ const tableBlockCtrl = (ContentState) => {
 
     if (target === 'row') {
       if (action === 'insert') {
-        const newRow =
-          location === 'previous' && cellBlock.type === 'th'
-            ? this.createRow(currentRow, true)
-            : this.createRow(currentRow, false);
+        const newRow = location === 'previous' && cellBlock.type === 'th' ? this.createRow(currentRow, true) : this.createRow(currentRow, false);
 
         if (location === 'previous') {
           this.insertBefore(newRow, currentRow);
 
           if (cellBlock.type === 'th') {
             this.removeBlock(currentRow);
-            currentRow.children.forEach((cell) => (cell.type = 'td'));
+            currentRow.children.forEach(cell => cell.type = 'td');
             const firstRow = tbody.children[0];
             this.insertBefore(currentRow, firstRow);
           }
@@ -362,7 +385,7 @@ const tableBlockCtrl = (ContentState) => {
             if (!currentRow.nextSibling) return;
             this.removeBlock(headRow);
             this.removeBlock(currentRow);
-            currentRow.children.forEach((cell) => (cell.type = 'th'));
+            currentRow.children.forEach(cell => cell.type = 'th');
             this.appendChild(thead, currentRow);
           } else {
             const preRow = this.getPreSibling(currentRow);
@@ -374,13 +397,12 @@ const tableBlockCtrl = (ContentState) => {
             this.removeBlock(currentRow);
             this.removeBlock(firstRow);
             this.appendChild(thead, firstRow);
-            firstRow.children.forEach((cell) => (cell.type = 'th'));
+            firstRow.children.forEach(cell => cell.type = 'th');
             cursorBlock = firstRow.children[columnIndex].children[0];
           }
 
           if (cellBlock.type === 'td' && (currentRow.preSibling || currentRow.nextSibling)) {
-            cursorBlock = (this.getNextSibling(currentRow) || this.getPreSibling(currentRow))
-              .children[columnIndex].children[0];
+            cursorBlock = (this.getNextSibling(currentRow) || this.getPreSibling(currentRow)).children[columnIndex].children[0];
             this.removeBlock(currentRow);
           }
         } else {
@@ -402,7 +424,7 @@ const tableBlockCtrl = (ContentState) => {
       }
     } else if (target === 'column') {
       if (action === 'insert') {
-        [...thead.children, ...tbody.children].forEach((tableRow) => {
+        [...thead.children, ...tbody.children].forEach(tableRow => {
           const targetCell = tableRow.children[columnIndex];
           const cell = this.createBlock(targetCell.type, {
             align: ''
@@ -422,20 +444,12 @@ const tableBlockCtrl = (ContentState) => {
             cell.column = i;
           });
         });
-        cursorBlock =
-          location === 'left'
-            ? this.getPreSibling(cellBlock).children[0]
-            : this.getNextSibling(cellBlock).children[0]; // handle remove column
+        cursorBlock = location === 'left' ? this.getPreSibling(cellBlock).children[0] : this.getNextSibling(cellBlock).children[0]; // handle remove column
       } else {
         if (currentRow.children.length <= 2) return;
-        [...thead.children, ...tbody.children].forEach((tableRow) => {
+        [...thead.children, ...tbody.children].forEach(tableRow => {
           const targetCell = tableRow.children[columnIndex];
-          const removeCell =
-            location === 'left'
-              ? this.getPreSibling(targetCell)
-              : location === 'current'
-              ? targetCell
-              : this.getNextSibling(targetCell);
+          const removeCell = location === 'left' ? this.getPreSibling(targetCell) : location === 'current' ? targetCell : this.getNextSibling(targetCell);
 
           if (removeCell === cellBlock) {
             cursorBlock = this.findNextBlockInLocation(block);
@@ -457,7 +471,9 @@ const tableBlockCtrl = (ContentState) => {
     });
 
     if (cursorBlock) {
-      const { key } = cursorBlock;
+      const {
+        key
+      } = cursorBlock;
       const offset = 0;
       this.cursor = {
         start: {
@@ -481,27 +497,32 @@ const tableBlockCtrl = (ContentState) => {
   };
 
   ContentState.prototype.getTableBlock = function () {
-    const { start, end } = this.cursor;
+    const {
+      start,
+      end
+    } = this.cursor;
     const startBlock = this.getBlock(start.key);
     const endBlock = this.getBlock(end.key);
     const startParents = this.getParents(startBlock);
     const endParents = this.getParents(endBlock);
-    const affiliation = startParents.filter((p) => endParents.includes(p));
+    const affiliation = startParents.filter(p => endParents.includes(p));
 
     if (affiliation.length) {
-      const figure = affiliation.find((p) => p.type === 'figure');
+      const figure = affiliation.find(p => p.type === 'figure');
       return figure;
     }
   };
 
   ContentState.prototype.tableBlockUpdate = function (block) {
-    const { type } = block;
+    const {
+      type
+    } = block;
     if (type !== 'p') return false;
-    const { text } = block.children[0];
+    const {
+      text
+    } = block.children[0];
     const match = TABLE_BLOCK_REG.exec(text);
-    return match && (0, _utils.isLengthEven)(match[1]) && (0, _utils.isLengthEven)(match[2])
-      ? this.initTable(block)
-      : false;
+    return match && (0, _utils.isLengthEven)(match[1]) && (0, _utils.isLengthEven)(match[2]) ? this.initTable(block) : false;
   };
 };
 

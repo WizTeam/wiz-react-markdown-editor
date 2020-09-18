@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.findClosingBracket = exports.rtrim = exports.splitCells = exports.noop = exports.cleanUrl = exports.edit = exports.unescape = exports.escape = exports.getUniqueId = void 0;
@@ -47,14 +47,12 @@ escape.escapeReplaceNoEncode = /[<>"']|&(?!#?\w+;)/g;
 
 const unescape = function unescape(html) {
   // explicitly match decimal, hex, and named HTML entities
-  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/gi, function (_, n) {
+  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig, function (_, n) {
     n = n.toLowerCase();
     if (n === 'colon') return ':';
 
     if (n.charAt(0) === '#') {
-      return n.charAt(1) === 'x'
-        ? String.fromCharCode(parseInt(n.substring(2), 16))
-        : String.fromCharCode(+n.substring(1));
+      return n.charAt(1) === 'x' ? String.fromCharCode(parseInt(n.substring(2), 16)) : String.fromCharCode(+n.substring(1));
     }
 
     return '';
@@ -87,18 +85,12 @@ const cleanUrl = function cleanUrl(sanitize, base, href) {
     let prot = '';
 
     try {
-      prot = decodeURIComponent(unescape(href))
-        .replace(/[^\w:]/g, '')
-        .toLowerCase();
+      prot = decodeURIComponent(unescape(href)).replace(/[^\w:]/g, '').toLowerCase();
     } catch (e) {
       return null;
     }
 
-    if (
-      prot.indexOf('javascript:') === 0 ||
-      prot.indexOf('vbscript:') === 0 ||
-      prot.indexOf('data:') === 0
-    ) {
+    if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0 || prot.indexOf('data:') === 0) {
       return null;
     }
   }
@@ -195,12 +187,14 @@ const splitCells = function splitCells(tableRow, count) {
 // /c*$/ is vulnerable to REDOS.
 // invert: Remove suffix of non-c chars instead. Default falsey.
 
+
 exports.splitCells = splitCells;
 
 const rtrim = function rtrim(str, c, invert) {
   if (str.length === 0) {
     return '';
   } // Length of suffix matching the invert condition.
+
 
   let suffLen = 0; // Step left until we fail to match the invert condition.
 

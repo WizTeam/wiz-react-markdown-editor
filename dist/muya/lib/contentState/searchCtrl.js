@@ -1,20 +1,22 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _execall = _interopRequireDefault(require('execall'));
+var _execall = _interopRequireDefault(require("execall"));
 
-var _config = require('../config');
+var _config = require("../config");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const matchString = (text, value, options) => {
-  const { isCaseSensitive, isWholeWord, isRegexp } = options;
+  const {
+    isCaseSensitive,
+    isWholeWord,
+    isRegexp
+  } = options;
   /* eslint-disable no-useless-escape */
 
   const SPECIAL_CHAR_REG = /[\[\]\\^$.\|\?\*\+\(\)\/]{1}/g;
@@ -29,13 +31,13 @@ const matchString = (text, value, options) => {
   }
 
   if (!isRegexp) {
-    regStr = value.replace(SPECIAL_CHAR_REG, (p) => {
-      return p === '\\' ? '\\\\' : '\\'.concat(p);
+    regStr = value.replace(SPECIAL_CHAR_REG, p => {
+      return p === '\\' ? '\\\\' : "\\".concat(p);
     });
   }
 
   if (isWholeWord) {
-    regStr = '\\b'.concat(regStr, '\\b');
+    regStr = "\\b".concat(regStr, "\\b");
   }
 
   try {
@@ -47,24 +49,33 @@ const matchString = (text, value, options) => {
   }
 };
 
-const searchCtrl = (ContentState) => {
+const searchCtrl = ContentState => {
   ContentState.prototype.replaceOne = function (match, value) {
-    const { start, end, key } = match;
+    const {
+      start,
+      end,
+      key
+    } = match;
     const block = this.getBlock(key);
-    const { text } = block;
+    const {
+      text
+    } = block;
     block.text = text.substring(0, start) + value + text.substring(end);
   };
 
-  ContentState.prototype.replace = function (
-    replaceValue,
-    opt = {
-      isSingle: true
-    }
-  ) {
-    const { isSingle } = opt;
+  ContentState.prototype.replace = function (replaceValue, opt = {
+    isSingle: true
+  }) {
+    const {
+      isSingle
+    } = opt;
     delete opt.isSingle;
     const searchOptions = Object.assign({}, _config.defaultSearchOption, opt);
-    const { matches, value, index } = this.searchMatches;
+    const {
+      matches,
+      value,
+      index
+    } = this.searchMatches;
 
     if (matches.length) {
       if (isSingle) {
@@ -77,15 +88,24 @@ const searchCtrl = (ContentState) => {
       }
 
       const highlightIndex = index < matches.length - 1 ? index : index - 1;
-      this.search(value, { ...searchOptions, highlightIndex: isSingle ? highlightIndex : -1 });
+      this.search(value, { ...searchOptions,
+        highlightIndex: isSingle ? highlightIndex : -1
+      });
     }
   };
 
   ContentState.prototype.setCursorToHighlight = function () {
-    const { matches, index } = this.searchMatches;
+    const {
+      matches,
+      index
+    } = this.searchMatches;
     const match = matches[index];
     if (!match) return;
-    const { key, start, end } = match;
+    const {
+      key,
+      start,
+      end
+    } = match;
     this.cursor = {
       noHistory: true,
       start: {
@@ -99,11 +119,13 @@ const searchCtrl = (ContentState) => {
     };
   };
 
-  ContentState.prototype.find = function (
-    action
-    /* prev next */
+  ContentState.prototype.find = function (action
+  /* prev next */
   ) {
-    let { matches, index } = this.searchMatches;
+    let {
+      matches,
+      index
+    } = this.searchMatches;
     const len = matches.length;
     if (!len) return;
     index = action === 'next' ? index + 1 : index - 1;
@@ -116,24 +138,29 @@ const searchCtrl = (ContentState) => {
   ContentState.prototype.search = function (value, opt = {}) {
     const matches = [];
     const options = Object.assign({}, _config.defaultSearchOption, opt);
-    const { highlightIndex } = options;
-    const { blocks } = this;
+    const {
+      highlightIndex
+    } = options;
+    const {
+      blocks
+    } = this;
 
-    const travel = (blocks) => {
+    const travel = blocks => {
       for (const block of blocks) {
-        let { text, key } = block;
+        let {
+          text,
+          key
+        } = block;
 
         if (text && typeof text === 'string') {
           const strMatches = matchString(text, value, options);
-          matches.push(
-            ...strMatches.map((m) => {
-              return {
-                key,
-                start: m.index,
-                end: m.index + m.match.length
-              };
-            })
-          );
+          matches.push(...strMatches.map(m => {
+            return {
+              key,
+              start: m.index,
+              end: m.index + m.match.length
+            };
+          }));
         }
 
         if (block.children.length) {

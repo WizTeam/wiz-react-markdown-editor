@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getLinkInfo = void 0;
 
-var _dom = require('../selection/dom');
+var _dom = require("../selection/dom");
 
-var _parser = require('../parser');
+var _parser = require("../parser");
 
-const getLinkInfo = (a) => {
+const getLinkInfo = a => {
   const paragraph = (0, _dom.findNearestParagraph)(a);
   const raw = a.getAttribute('data-raw');
   const start = a.getAttribute('data-start');

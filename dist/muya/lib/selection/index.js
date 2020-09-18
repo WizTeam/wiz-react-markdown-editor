@@ -1,25 +1,23 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _cursor = _interopRequireDefault(require('./cursor'));
+var _cursor = _interopRequireDefault(require("./cursor"));
 
-var _config = require('../config');
+var _config = require("../config");
 
-var _dom = require('./dom');
+var _dom = require("./dom");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * This file is copy from [medium-editor](https://github.com/yabwe/medium-editor)
  * and customize for specialized use.
  */
-const filterOnlyParentElements = (node) => {
+const filterOnlyParentElements = node => {
   return (0, _dom.isBlockContainer)(node) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
 };
 
@@ -49,6 +47,7 @@ class Selection {
   //      subsequent to an anchor tag if it would otherwise be placed right at the trailing edge inside the
   //      anchor. This cursor positioning, even though visually equivalent to the user, can affect behavior
   //      in MS IE.
+
 
   importSelection(selectionState, root, favorLaterSelectionAnchor) {
     if (!selectionState || !root) {
@@ -81,11 +80,7 @@ class Selection {
     // For these cases, we want the selection to start at a very specific location, so we should NOT
     // automatically move the cursor to the beginning of the first actual chunk of text
 
-    if (
-      favorLaterSelectionAnchor ||
-      selectionState.startsWithImage ||
-      typeof selectionState.emptyBlocksIndex !== 'undefined'
-    ) {
+    if (favorLaterSelectionAnchor || selectionState.startsWithImage || typeof selectionState.emptyBlocksIndex !== 'undefined') {
       allowRangeToStartAtEndOfNode = true;
     }
 
@@ -96,14 +91,11 @@ class Selection {
         continue;
       } // If we hit a text node, we need to add the amount of characters to the overall count
 
+
       if (node.nodeType === 3 && !foundEnd) {
         nextCharIndex = charIndex + node.length; // Check if we're at or beyond the start of the selection we're importing
 
-        if (
-          !foundStart &&
-          selectionState.start >= charIndex &&
-          selectionState.start <= nextCharIndex
-        ) {
+        if (!foundStart && selectionState.start >= charIndex && selectionState.start <= nextCharIndex) {
           // NOTE: We only want to allow a selection to start at the END of an element if
           //  allowRangeToStartAtEndOfNode is true
           if (allowRangeToStartAtEndOfNode || selectionState.start < nextCharIndex) {
@@ -117,6 +109,7 @@ class Selection {
             lastTextNode = node;
           }
         } // We've found the start of the selection, check if we're at or beyond the end of the selection we're importing
+
 
         if (foundStart && selectionState.end >= charIndex && selectionState.end <= nextCharIndex) {
           if (!selectionState.trailingImageCount) {
@@ -166,18 +159,16 @@ class Selection {
     // to make the selection start at, we should fall back to starting the selection
     // at the END of the last text node we found
 
+
     if (!foundStart && lastTextNode) {
       range.setStart(lastTextNode, lastTextNode.length);
       range.setEnd(lastTextNode, lastTextNode.length);
     }
 
     if (typeof selectionState.emptyBlocksIndex !== 'undefined') {
-      range = this.importSelectionMoveCursorPastBlocks(
-        root,
-        selectionState.emptyBlocksIndex,
-        range
-      );
+      range = this.importSelectionMoveCursorPastBlocks(root, selectionState.emptyBlocksIndex, range);
     } // If the selection is right at the ending edge of a link, put it outside the anchor tag instead of inside.
+
 
     if (favorLaterSelectionAnchor) {
       range = this.importSelectionMoveCursorPastAnchor(selectionState, range);
@@ -186,17 +177,13 @@ class Selection {
     this.selectRange(range);
   } // Utility method called from importSelection only
 
+
   importSelectionMoveCursorPastAnchor(selectionState, range) {
     const nodeInsideAnchorTagFunction = function (node) {
       return node.nodeName.toLowerCase() === 'a';
     };
 
-    if (
-      selectionState.start === selectionState.end &&
-      range.startContainer.nodeType === 3 &&
-      range.startOffset === range.startContainer.nodeValue.length &&
-      (0, _dom.traverseUp)(range.startContainer, nodeInsideAnchorTagFunction)
-    ) {
+    if (selectionState.start === selectionState.end && range.startContainer.nodeType === 3 && range.startOffset === range.startContainer.nodeValue.length && (0, _dom.traverseUp)(range.startContainer, nodeInsideAnchorTagFunction)) {
       let prevNode = range.startContainer;
       let currentNode = range.startContainer.parentNode;
 
@@ -212,11 +199,7 @@ class Selection {
       if (currentNode !== null && currentNode.nodeName.toLowerCase() === 'a') {
         let currentNodeIndex = null;
 
-        for (
-          let i = 0;
-          currentNodeIndex === null && i < currentNode.parentNode.childNodes.length;
-          i++
-        ) {
+        for (let i = 0; currentNodeIndex === null && i < currentNode.parentNode.childNodes.length; i++) {
           if (currentNode.parentNode.childNodes[i] === currentNode) {
             currentNodeIndex = i;
           }
@@ -231,13 +214,9 @@ class Selection {
   } // Uses the emptyBlocksIndex calculated by getIndexRelativeToAdjacentEmptyBlocks
   // to move the cursor back to the start of the correct paragraph
 
+
   importSelectionMoveCursorPastBlocks(root, index = 1, range) {
-    const treeWalker = this.doc.createTreeWalker(
-      root,
-      NodeFilter.SHOW_ELEMENT,
-      filterOnlyParentElements,
-      false
-    );
+    const treeWalker = this.doc.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, filterOnlyParentElements, false);
     const startContainer = range.startContainer;
     let startBlock;
     let targetNode;
@@ -247,14 +226,12 @@ class Selection {
     // which is a block element, we want the treewalker to start at the previous sibling
     // and NOT at the parent of the textnode
 
-    if (
-      startContainer.nodeType === 3 &&
-      (0, _dom.isBlockContainer)(startContainer.previousSibling)
-    ) {
+    if (startContainer.nodeType === 3 && (0, _dom.isBlockContainer)(startContainer.previousSibling)) {
       startBlock = startContainer.previousSibling;
     } else {
       startBlock = (0, _dom.getClosestBlockContainer)(startContainer);
     } // Skip over empty blocks until we hit the block we want the selection to be in
+
 
     while (treeWalker.nextNode()) {
       if (!targetNode) {
@@ -270,6 +247,7 @@ class Selection {
           break;
         } // If we find a non-empty block, ignore the emptyBlocksIndex and just put selection here
 
+
         if (targetNode.textContent.length > 0) {
           break;
         }
@@ -281,10 +259,12 @@ class Selection {
     } // We're selecting a high-level block node, so make sure the cursor gets moved into the deepest
     // element at the beginning of the block
 
+
     range.setStart((0, _dom.getFirstSelectableLeafNode)(targetNode), 0);
     return range;
   } // https://stackoverflow.com/questions/4176923/html-of-selected-text
   // by Tim Down
+
 
   getSelectionHtml() {
     const sel = this.doc.getSelection();
@@ -307,9 +287,14 @@ class Selection {
   }
 
   chopHtmlByCursor(root) {
-    const { left } = this.getCaretOffsets(root);
+    const {
+      left
+    } = this.getCaretOffsets(root);
     const markedText = root.textContent;
-    const { type, info } = (0, _dom.getCursorPositionWithinMarkedText)(markedText, left);
+    const {
+      type,
+      info
+    } = (0, _dom.getCursorPositionWithinMarkedText)(markedText, left);
     const pre = markedText.slice(0, left);
     const post = markedText.slice(left);
 
@@ -322,8 +307,8 @@ class Selection {
 
       case 'IN':
         return {
-          pre: ''.concat(pre).concat(info),
-          post: ''.concat(info).concat(post)
+          pre: "".concat(pre).concat(info),
+          post: "".concat(info).concat(post)
         };
 
       case 'LEFT':
@@ -346,6 +331,7 @@ class Selection {
    *  @param {Range} A Range representing cursor position. Will window.getSelection if none is passed.
    *  @return {Object} 'left' and 'right' attributes contain offsets from beginning and end of Element
    */
+
 
   getCaretOffsets(element, range) {
     let preCaretRange;
@@ -397,8 +383,11 @@ class Selection {
    *  @param {boolean} moveCursorToStart  A boolean representing whether or not to set the caret to the beginning of the prior selection.
    */
 
+
   clearSelection(moveCursorToStart) {
-    const { rangeCount } = this.doc.getSelection();
+    const {
+      rangeCount
+    } = this.doc.getSelection();
     if (!rangeCount) return;
 
     if (moveCursorToStart) {
@@ -413,6 +402,7 @@ class Selection {
    * @param  {DomElement}  node    Element where to jump
    * @param  {integer}     offset  Where in the element should we jump, 0 by default
    */
+
 
   moveCursor(node, offset) {
     this.select(node, offset);
@@ -436,6 +426,7 @@ class Selection {
   // how-can-i-get-the-element-the-caret-is-in-with-javascript-when-using-contenteditable
   // by You
 
+
   getSelectionStart() {
     const node = this.doc.getSelection().anchorNode;
     const startNode = node && node.nodeType === 3 ? node.parentNode : node;
@@ -443,9 +434,12 @@ class Selection {
   }
 
   setCursorRange(cursorRange) {
-    const { anchor, focus } = cursorRange;
-    const anchorParagraph = document.querySelector('#'.concat(anchor.key));
-    const focusParagraph = document.querySelector('#'.concat(focus.key));
+    const {
+      anchor,
+      focus
+    } = cursorRange;
+    const anchorParagraph = document.querySelector("#".concat(anchor.key));
+    const focusParagraph = document.querySelector("#".concat(focus.key));
 
     const getNodeAndOffset = (node, offset) => {
       if (node.nodeType === 3) {
@@ -462,21 +456,15 @@ class Selection {
 
       for (i = 0; i < len; i++) {
         const child = childNodes[i];
-        const textContent = (0, _dom.getTextContent)(child, [
-          _config.CLASS_OR_ID.AG_MATH_RENDER,
-          _config.CLASS_OR_ID.AG_RUBY_RENDER
-        ]);
+        const textContent = (0, _dom.getTextContent)(child, [_config.CLASS_OR_ID.AG_MATH_RENDER, _config.CLASS_OR_ID.AG_RUBY_RENDER]);
         const textLength = textContent.length;
 
         if (child.classList && child.classList.contains(_config.CLASS_OR_ID.AG_FRONT_ICON)) {
           continue;
         } // Fix #1460 - put the cursor at the next text node or element if it can be put at the last of /^\n$/ or the next text node/element.
 
-        if (
-          /^\n$/.test(textContent) && i !== len - 1
-            ? count + textLength > offset
-            : count + textLength >= offset
-        ) {
+
+        if (/^\n$/.test(textContent) && i !== len - 1 ? count + textLength > offset : count + textLength >= offset) {
           if (child.classList && child.classList.contains('ag-inline-image')) {
             const imageContainer = child.querySelector('.ag-image-container');
             const hasImg = imageContainer.querySelector('img');
@@ -525,19 +513,20 @@ class Selection {
       };
     };
 
-    let { node: anchorNode, offset: anchorOffset } = getNodeAndOffset(
-      anchorParagraph,
-      anchor.offset
-    );
-    let { node: focusNode, offset: focusOffset } = getNodeAndOffset(focusParagraph, focus.offset);
+    let {
+      node: anchorNode,
+      offset: anchorOffset
+    } = getNodeAndOffset(anchorParagraph, anchor.offset);
+    let {
+      node: focusNode,
+      offset: focusOffset
+    } = getNodeAndOffset(focusParagraph, focus.offset);
 
-    if (
-      anchorNode.nodeType === 3 ||
-      (anchorNode.nodeType === 1 && !anchorNode.classList.contains('ag-image-container'))
-    ) {
+    if (anchorNode.nodeType === 3 || anchorNode.nodeType === 1 && !anchorNode.classList.contains('ag-image-container')) {
       anchorOffset = Math.min(anchorOffset, anchorNode.textContent.length);
       focusOffset = Math.min(focusOffset, focusNode.textContent.length);
     } // First set the anchor node and anchor offset, make it collapsed
+
 
     this.select(anchorNode, anchorOffset); // Secondly, set the focus node and focus offset.
 
@@ -555,7 +544,12 @@ class Selection {
   }
 
   getCursorRange() {
-    let { anchorNode, anchorOffset, focusNode, focusOffset } = this.doc.getSelection();
+    let {
+      anchorNode,
+      anchorOffset,
+      focusNode,
+      focusOffset
+    } = this.doc.getSelection();
     const isAnchorValid = this.isValidCursorNode(anchorNode);
     const isFocusValid = this.isValidCursorNode(focusNode);
     let needFix = false;
@@ -579,12 +573,8 @@ class Selection {
       });
     } // fix bug click empty line, the cursor will jump to the end of pre line.
 
-    if (
-      anchorNode === focusNode &&
-      anchorOffset === focusOffset &&
-      anchorNode.textContent === '\n' &&
-      focusOffset === 0
-    ) {
+
+    if (anchorNode === focusNode && anchorOffset === focusOffset && anchorNode.textContent === '\n' && focusOffset === 0) {
       focusOffset = anchorOffset = 1;
     }
 
@@ -593,54 +583,32 @@ class Selection {
     let aOffset = (0, _dom.getOffsetOfParagraph)(anchorNode, anchorParagraph) + anchorOffset;
     let fOffset = (0, _dom.getOffsetOfParagraph)(focusNode, focusParagraph) + focusOffset; // fix input after image.
 
-    if (
-      anchorNode === focusNode &&
-      anchorOffset === focusOffset &&
-      anchorNode.parentNode.classList.contains('ag-image-container') &&
-      anchorNode.previousElementSibling &&
-      anchorNode.previousElementSibling.nodeName === 'IMG'
-    ) {
+    if (anchorNode === focusNode && anchorOffset === focusOffset && anchorNode.parentNode.classList.contains('ag-image-container') && anchorNode.previousElementSibling && anchorNode.previousElementSibling.nodeName === 'IMG') {
       const imageWrapper = anchorNode.parentNode.parentNode;
       const preElement = imageWrapper.previousElementSibling;
       aOffset = 0;
 
       if (preElement) {
         aOffset += (0, _dom.getOffsetOfParagraph)(preElement, anchorParagraph);
-        aOffset += (0, _dom.getTextContent)(preElement, [
-          _config.CLASS_OR_ID.AG_MATH_RENDER,
-          _config.CLASS_OR_ID.AG_RUBY_RENDER
-        ]).length;
+        aOffset += (0, _dom.getTextContent)(preElement, [_config.CLASS_OR_ID.AG_MATH_RENDER, _config.CLASS_OR_ID.AG_RUBY_RENDER]).length;
       }
 
-      aOffset += (0, _dom.getTextContent)(imageWrapper, [
-        _config.CLASS_OR_ID.AG_MATH_RENDER,
-        _config.CLASS_OR_ID.AG_RUBY_RENDER
-      ]).length;
+      aOffset += (0, _dom.getTextContent)(imageWrapper, [_config.CLASS_OR_ID.AG_MATH_RENDER, _config.CLASS_OR_ID.AG_RUBY_RENDER]).length;
       fOffset = aOffset;
     }
 
-    if (
-      anchorNode === focusNode &&
-      anchorNode.nodeType === 1 &&
-      anchorNode.classList.contains('ag-image-container')
-    ) {
+    if (anchorNode === focusNode && anchorNode.nodeType === 1 && anchorNode.classList.contains('ag-image-container')) {
       const imageWrapper = anchorNode.parentNode;
       const preElement = imageWrapper.previousElementSibling;
       aOffset = 0;
 
       if (preElement) {
         aOffset += (0, _dom.getOffsetOfParagraph)(preElement, anchorParagraph);
-        aOffset += (0, _dom.getTextContent)(preElement, [
-          _config.CLASS_OR_ID.AG_MATH_RENDER,
-          _config.CLASS_OR_ID.AG_RUBY_RENDER
-        ]).length;
+        aOffset += (0, _dom.getTextContent)(preElement, [_config.CLASS_OR_ID.AG_MATH_RENDER, _config.CLASS_OR_ID.AG_RUBY_RENDER]).length;
       }
 
       if (anchorOffset === 1) {
-        aOffset += (0, _dom.getTextContent)(imageWrapper, [
-          _config.CLASS_OR_ID.AG_MATH_RENDER,
-          _config.CLASS_OR_ID.AG_RUBY_RENDER
-        ]).length;
+        aOffset += (0, _dom.getTextContent)(imageWrapper, [_config.CLASS_OR_ID.AG_MATH_RENDER, _config.CLASS_OR_ID.AG_RUBY_RENDER]).length;
       }
 
       fOffset = aOffset;
@@ -666,9 +634,15 @@ class Selection {
     return result;
   } // topOffset is the line counts above cursor, and bottomOffset is line counts bellow cursor.
 
+
   getCursorYOffset(paragraph) {
-    const { y } = this.getCursorCoords();
-    const { height, top } = paragraph.getBoundingClientRect();
+    const {
+      y
+    } = this.getCursorCoords();
+    const {
+      height,
+      top
+    } = paragraph.getBoundingClientRect();
     const lineHeight = parseFloat(getComputedStyle(paragraph).lineHeight);
     const topOffset = Math.round((y - top) / lineHeight);
     const bottomOffset = Math.round((top + height - lineHeight - y) / lineHeight);
@@ -695,21 +669,17 @@ class Selection {
         if (rects.length === 0 && range.startContainer) {
           var _range$startContainer, _range$startContainer2;
 
-          rects =
-            range.startContainer.nodeType === Node.ELEMENT_NODE
-              ? range.startContainer.getClientRects()
-              : (_range$startContainer =
-                  (_range$startContainer2 = range.startContainer.parentElement) === null ||
-                  _range$startContainer2 === void 0
-                    ? void 0
-                    : _range$startContainer2.getClientRects()) !== null &&
-                _range$startContainer !== void 0
-              ? _range$startContainer
-              : [];
+          rects = range.startContainer.nodeType === Node.ELEMENT_NODE ? range.startContainer.getClientRects() : (_range$startContainer = (_range$startContainer2 = range.startContainer.parentElement) === null || _range$startContainer2 === void 0 ? void 0 : _range$startContainer2.getClientRects()) !== null && _range$startContainer !== void 0 ? _range$startContainer : [];
         }
 
         if (rects.length) {
-          const { left, top, x: rectX, y: rectY, width: rWidth } = rects[0];
+          const {
+            left,
+            top,
+            x: rectX,
+            y: rectY,
+            width: rWidth
+          } = rects[0];
           x = rectX || left;
           y = rectY || top;
           width = rWidth;
@@ -729,6 +699,7 @@ class Selection {
     const endNode = node && node.nodeType === 3 ? node.parentNode : node;
     return endNode;
   }
+
 }
 
 var _default = new Selection(document);

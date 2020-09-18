@@ -1,27 +1,25 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _renderers = _interopRequireDefault(require('../../renderers'));
+var _renderers = _interopRequireDefault(require("../../renderers"));
 
-var _config = require('../../config');
+var _config = require("../../config");
 
-var _utils = require('../../utils');
+var _utils = require("../../utils");
 
-var _snabbdom = require('./snabbdom');
+var _snabbdom = require("./snabbdom");
 
-var _rules = require('../rules');
+var _rules = require("../rules");
 
-var _renderInlines = _interopRequireDefault(require('./renderInlines'));
+var _renderInlines = _interopRequireDefault(require("./renderInlines"));
 
-var _renderBlock = _interopRequireDefault(require('./renderBlock'));
+var _renderBlock = _interopRequireDefault(require("./renderBlock"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class StateRender {
   constructor(muya) {
@@ -44,14 +42,18 @@ class StateRender {
     this.container = container;
   } // collect link reference definition
 
+
   collectLabels(blocks) {
     this.labels.clear();
 
-    const travel = (block) => {
-      const { text, children } = block;
+    const travel = block => {
+      const {
+        text,
+        children
+      } = block;
 
       if (children && children.length) {
-        children.forEach((c) => travel(c));
+        children.forEach(c => travel(c));
       } else if (text) {
         const tokens = _rules.beginRules.reference_definition.exec(text);
 
@@ -68,13 +70,19 @@ class StateRender {
       }
     };
 
-    blocks.forEach((b) => travel(b));
+    blocks.forEach(b => travel(b));
   }
 
   checkConflicted(block, token, cursor) {
-    const { start, end } = cursor;
+    const {
+      start,
+      end
+    } = cursor;
     const key = block.key;
-    const { start: tokenStart, end: tokenEnd } = token.range;
+    const {
+      start: tokenStart,
+      end: tokenEnd
+    } = token.range;
 
     if (key !== start.key && key !== end.key) {
       return false;
@@ -83,20 +91,12 @@ class StateRender {
     } else if (key !== start.key && key === end.key) {
       return (0, _utils.conflict)([tokenStart, tokenEnd], [end.offset, end.offset]);
     } else {
-      return (
-        (0, _utils.conflict)([tokenStart, tokenEnd], [start.offset, start.offset]) ||
-        (0, _utils.conflict)([tokenStart, tokenEnd], [end.offset, end.offset])
-      );
+      return (0, _utils.conflict)([tokenStart, tokenEnd], [start.offset, start.offset]) || (0, _utils.conflict)([tokenStart, tokenEnd], [end.offset, end.offset]);
     }
   }
 
   getClassName(outerClass, block, token, cursor) {
-    return (
-      outerClass ||
-      (this.checkConflicted(block, token, cursor)
-        ? _config.CLASS_OR_ID.AG_GRAY
-        : _config.CLASS_OR_ID.AG_HIDE)
-    );
+    return outerClass || (this.checkConflicted(block, token, cursor) ? _config.CLASS_OR_ID.AG_GRAY : _config.CLASS_OR_ID.AG_HIDE);
   }
 
   getHighlightClassName(active) {
@@ -104,25 +104,24 @@ class StateRender {
   }
 
   getSelector(block, activeBlocks) {
-    const { cursor, selectedBlock } = this.muya.contentState;
+    const {
+      cursor,
+      selectedBlock
+    } = this.muya.contentState;
     const type = block.type === 'hr' ? 'p' : block.type;
-    const isActive =
-      activeBlocks.some((b) => b.key === block.key) || block.key === cursor.start.key;
-    let selector = ''
-      .concat(type, '#')
-      .concat(block.key, '.')
-      .concat(_config.CLASS_OR_ID.AG_PARAGRAPH);
+    const isActive = activeBlocks.some(b => b.key === block.key) || block.key === cursor.start.key;
+    let selector = "".concat(type, "#").concat(block.key, ".").concat(_config.CLASS_OR_ID.AG_PARAGRAPH);
 
     if (isActive) {
-      selector += '.'.concat(_config.CLASS_OR_ID.AG_ACTIVE);
+      selector += ".".concat(_config.CLASS_OR_ID.AG_ACTIVE);
     }
 
     if (type === 'span') {
-      selector += '.ag-'.concat((0, _utils.camelToSnake)(block.functionType));
+      selector += ".ag-".concat((0, _utils.camelToSnake)(block.functionType));
     }
 
     if (!block.parent && selectedBlock && block.key === selectedBlock.key) {
-      selector += '.'.concat(_config.CLASS_OR_ID.AG_SELECTED);
+      selector += ".".concat(_config.CLASS_OR_ID.AG_SELECTED);
     }
 
     return selector;
@@ -136,7 +135,9 @@ class StateRender {
       });
 
       for (const [key, value] of this.mermaidCache.entries()) {
-        const { code } = value;
+        const {
+          code
+        } = value;
         const target = document.querySelector(key);
 
         if (!target) {
@@ -174,7 +175,10 @@ class StateRender {
           continue;
         }
 
-        const { code, functionType } = value;
+        const {
+          code,
+          functionType
+        } = value;
         const render = RENDER_MAP[functionType];
         const options = {};
 
@@ -200,10 +204,7 @@ class StateRender {
             await render(key, JSON.parse(code), options);
           }
         } catch (err) {
-          target.innerHTML = '< Invalid '.concat(
-            functionType === 'flowchart' ? 'Flow Chart' : 'Sequence',
-            ' Codes >'
-          );
+          target.innerHTML = "< Invalid ".concat(functionType === 'flowchart' ? 'Flow Chart' : 'Sequence', " Codes >");
           target.classList.add(_config.CLASS_OR_ID.AG_MATH_ERROR);
         }
       }
@@ -213,8 +214,8 @@ class StateRender {
   }
 
   render(blocks, activeBlocks, matches) {
-    const selector = 'div#'.concat(_config.CLASS_OR_ID.AG_EDITOR_ID);
-    const children = blocks.map((block) => {
+    const selector = "div#".concat(_config.CLASS_OR_ID.AG_EDITOR_ID);
+    const children = blocks.map(block => {
       return this.renderBlock(null, block, activeBlocks, matches, true);
     });
     const newVdom = (0, _snabbdom.h)(selector, children);
@@ -226,19 +227,15 @@ class StateRender {
     this.codeCache.clear();
   } // Only render the blocks which you updated
 
+
   partialRender(blocks, activeBlocks, matches, startKey, endKey) {
     const cursorOutMostBlock = activeBlocks[activeBlocks.length - 1]; // If cursor is not in render blocks, need to render cursor block independently
 
     const needRenderCursorBlock = blocks.indexOf(cursorOutMostBlock) === -1;
-    const newVnode = (0, _snabbdom.h)(
-      'section',
-      blocks.map((block) => this.renderBlock(null, block, activeBlocks, matches))
-    );
+    const newVnode = (0, _snabbdom.h)('section', blocks.map(block => this.renderBlock(null, block, activeBlocks, matches)));
     const html = (0, _snabbdom.toHTML)(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1');
     const needToRemoved = [];
-    const firstOldDom = startKey
-      ? document.querySelector('#'.concat(startKey))
-      : document.querySelector('div#'.concat(_config.CLASS_OR_ID.AG_EDITOR_ID)).firstElementChild;
+    const firstOldDom = startKey ? document.querySelector("#".concat(startKey)) : document.querySelector("div#".concat(_config.CLASS_OR_ID.AG_EDITOR_ID)).firstElementChild;
 
     if (!firstOldDom) {
       // TODO@Jocs Just for fix #541, Because I'll rewrite block and render method, it will nolonger have this issue.
@@ -255,11 +252,13 @@ class StateRender {
 
     nextSibling && needToRemoved.push(nextSibling);
     firstOldDom.insertAdjacentHTML('beforebegin', html);
-    Array.from(needToRemoved).forEach((dom) => dom.remove()); // Render cursor block independently
+    Array.from(needToRemoved).forEach(dom => dom.remove()); // Render cursor block independently
 
     if (needRenderCursorBlock) {
-      const { key } = cursorOutMostBlock;
-      const cursorDom = document.querySelector('#'.concat(key));
+      const {
+        key
+      } = cursorOutMostBlock;
+      const cursorDom = document.querySelector("#".concat(key));
 
       if (cursorDom) {
         const oldCursorVnode = (0, _snabbdom.toVNode)(cursorDom);
@@ -280,8 +279,9 @@ class StateRender {
    * @param {array} matches
    */
 
+
   singleRender(block, activeBlocks, matches) {
-    const selector = '#'.concat(block.key);
+    const selector = "#".concat(block.key);
     const newVdom = this.renderBlock(null, block, activeBlocks, matches, true);
     const rootDom = document.querySelector(selector);
     const oldVdom = (0, _snabbdom.toVNode)(rootDom);
@@ -290,6 +290,7 @@ class StateRender {
     this.renderDiagram();
     this.codeCache.clear();
   }
+
 }
 
 (0, _utils.mixins)(StateRender, _renderInlines.default, _renderBlock.default);

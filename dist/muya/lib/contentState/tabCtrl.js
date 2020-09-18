@@ -1,19 +1,17 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-var _config = require('../config');
+var _config = require("../config");
 
-var _parser = require('../parser');
+var _parser = require("../parser");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * parseSelector
@@ -58,21 +56,9 @@ const parseSelector = (str = '') => {
   };
 };
 
-const BOTH_SIDES_FORMATS = [
-  'strong',
-  'em',
-  'inline_code',
-  'image',
-  'link',
-  'reference_image',
-  'reference_link',
-  'emoji',
-  'del',
-  'html_tag',
-  'inline_math'
-];
+const BOTH_SIDES_FORMATS = ['strong', 'em', 'inline_code', 'image', 'link', 'reference_image', 'reference_link', 'emoji', 'del', 'html_tag', 'inline_math'];
 
-const tabCtrl = (ContentState) => {
+const tabCtrl = ContentState => {
   ContentState.prototype.findNextCell = function (block) {
     if (block.functionType !== 'cellContent') {
       throw new Error('only th and td can have next cell');
@@ -116,7 +102,10 @@ const tabCtrl = (ContentState) => {
   };
 
   ContentState.prototype.isIndentableListItem = function () {
-    const { start, end } = this.cursor;
+    const {
+      start,
+      end
+    } = this.cursor;
     const startBlock = this.getBlock(start.key);
     const parent = this.getParent(startBlock);
 
@@ -129,6 +118,7 @@ const tabCtrl = (ContentState) => {
     if (listItem.type !== 'li' || start.key !== end.key || start.offset !== end.offset) {
       return false;
     } // Now we know it's a list item. Check whether we can indent the list item.
+
 
     const list = this.getParent(listItem);
     return list && /ol|ul/.test(list.type) && listItem.preSibling;
@@ -184,7 +174,9 @@ const tabCtrl = (ContentState) => {
   };
 
   ContentState.prototype.indentListItem = function () {
-    const { start } = this.cursor;
+    const {
+      start
+    } = this.cursor;
     const startBlock = this.getBlock(start.key);
     const parent = this.getParent(startBlock);
     const listItem = this.getParent(parent);
@@ -199,6 +191,7 @@ const tabCtrl = (ContentState) => {
       this.appendChild(prevListItem, newList);
     } // Update item type only if we insert into an existing list
 
+
     if (newList.children.length !== 0) {
       listItem.isLooseListItem = newList.children[0].isLooseListItem;
     }
@@ -210,15 +203,15 @@ const tabCtrl = (ContentState) => {
   ContentState.prototype.insertTab = function () {
     const tabSize = this.tabSize;
     const tabCharacter = String.fromCharCode(160).repeat(tabSize);
-    const { start, end } = this.cursor;
+    const {
+      start,
+      end
+    } = this.cursor;
     const startBlock = this.getBlock(start.key);
     const endBlock = this.getBlock(end.key);
 
     if (start.key === end.key && start.offset === end.offset) {
-      startBlock.text =
-        startBlock.text.substring(0, start.offset) +
-        tabCharacter +
-        endBlock.text.substring(end.offset);
+      startBlock.text = startBlock.text.substring(0, start.offset) + tabCharacter + endBlock.text.substring(end.offset);
       const key = start.key;
       const offset = start.offset + tabCharacter.length;
       this.cursor = {
@@ -236,7 +229,9 @@ const tabCtrl = (ContentState) => {
   };
 
   ContentState.prototype.checkCursorAtEndFormat = function (text, offset) {
-    const { labels } = this.stateRender;
+    const {
+      labels
+    } = this.stateRender;
     const tokens = (0, _parser.tokenizer)(text, {
       hasBeginRules: false,
       labels,
@@ -244,7 +239,7 @@ const tabCtrl = (ContentState) => {
     });
     let result = null;
 
-    const walkTokens = (tkns) => {
+    const walkTokens = tkns => {
       for (const token of tkns) {
         const {
           marker,
@@ -258,7 +253,10 @@ const tabCtrl = (ContentState) => {
           isFullLink,
           label
         } = token;
-        const { start, end } = range;
+        const {
+          start,
+          end
+        } = range;
 
         if (BOTH_SIDES_FORMATS.includes(type) && offset > start && offset < end) {
           switch (type) {
@@ -267,44 +265,25 @@ const tabCtrl = (ContentState) => {
             case 'inline_code':
             case 'emoji':
             case 'del':
-            case 'inline_math': {
-              if (marker && offset === end - marker.length) {
-                result = {
-                  offset: marker.length
-                };
-                return;
-              }
+            case 'inline_math':
+              {
+                if (marker && offset === end - marker.length) {
+                  result = {
+                    offset: marker.length
+                  };
+                  return;
+                }
 
-              break;
-            }
+                break;
+              }
 
             case 'image':
-            case 'link': {
-              const linkTitleLen = (srcAndTitle || hrefAndTitle).length;
-              const secondLashLen = backlash && backlash.second ? backlash.second.length : 0;
+            case 'link':
+              {
+                const linkTitleLen = (srcAndTitle || hrefAndTitle).length;
+                const secondLashLen = backlash && backlash.second ? backlash.second.length : 0;
 
-              if (offset === end - 3 - (linkTitleLen + secondLashLen)) {
-                result = {
-                  offset: 2
-                };
-                return;
-              } else if (offset === end - 1) {
-                result = {
-                  offset: 1
-                };
-                return;
-              }
-
-              break;
-            }
-
-            case 'reference_image':
-            case 'reference_link': {
-              const labelLen = label ? label.length : 0;
-              const secondLashLen = backlash && backlash.second ? backlash.second.length : 0;
-
-              if (isFullLink) {
-                if (offset === end - 3 - labelLen - secondLashLen) {
+                if (offset === end - 3 - (linkTitleLen + secondLashLen)) {
                   result = {
                     offset: 2
                   };
@@ -315,26 +294,49 @@ const tabCtrl = (ContentState) => {
                   };
                   return;
                 }
-              } else if (offset === end - 1) {
-                result = {
-                  offset: 1
-                };
-                return;
+
+                break;
               }
 
-              break;
-            }
+            case 'reference_image':
+            case 'reference_link':
+              {
+                const labelLen = label ? label.length : 0;
+                const secondLashLen = backlash && backlash.second ? backlash.second.length : 0;
 
-            case 'html_tag': {
-              if (closeTag && offset === end - closeTag.length) {
-                result = {
-                  offset: closeTag.length
-                };
-                return;
+                if (isFullLink) {
+                  if (offset === end - 3 - labelLen - secondLashLen) {
+                    result = {
+                      offset: 2
+                    };
+                    return;
+                  } else if (offset === end - 1) {
+                    result = {
+                      offset: 1
+                    };
+                    return;
+                  }
+                } else if (offset === end - 1) {
+                  result = {
+                    offset: 1
+                  };
+                  return;
+                }
+
+                break;
               }
 
-              break;
-            }
+            case 'html_tag':
+              {
+                if (closeTag && offset === end - closeTag.length) {
+                  result = {
+                    offset: closeTag.length
+                  };
+                  return;
+                }
+
+                break;
+              }
 
             default:
               break;
@@ -355,7 +357,10 @@ const tabCtrl = (ContentState) => {
     // disable tab focus
     event.preventDefault();
 
-    const { start, end } = _selection.default.getCursorRange();
+    const {
+      start,
+      end
+    } = _selection.default.getCursorRange();
 
     if (!start || !end) {
       return;
@@ -374,49 +379,52 @@ const tabCtrl = (ContentState) => {
       return;
     } // Handle `tab` to jump to the end of format when the cursor is at the end of format content.
 
-    if (
-      start.key === end.key &&
-      start.offset === end.offset &&
-      _config.HAS_TEXT_BLOCK_REG.test(startBlock.type) &&
-      startBlock.functionType !== 'codeContent' && // code content has no inline syntax
-      startBlock.functionType !== 'languageInput' // language input textarea has no inline syntax
-    ) {
-      const { text, key } = startBlock;
-      const { offset } = start;
-      const atEnd = this.checkCursorAtEndFormat(text, offset);
 
-      if (atEnd) {
-        this.cursor = {
-          start: {
-            key,
-            offset: offset + atEnd.offset
-          },
-          end: {
-            key,
-            offset: offset + atEnd.offset
-          }
-        };
-        return this.partialRender();
-      }
-    } // Auto-complete of inline html tag and html block and `html` code block.
-
-    if (
-      start.key === end.key &&
-      start.offset === end.offset &&
-      startBlock.type === 'span' &&
-      (!startBlock.functionType ||
-        (startBlock.functionType === 'codeContent' &&
-          /markup|html|xml|svg|mathml/.test(startBlock.lang)))
+    if (start.key === end.key && start.offset === end.offset && _config.HAS_TEXT_BLOCK_REG.test(startBlock.type) && startBlock.functionType !== 'codeContent' && // code content has no inline syntax
+    startBlock.functionType !== 'languageInput' // language input textarea has no inline syntax
     ) {
-      const { text } = startBlock;
+        const {
+          text,
+          key
+        } = startBlock;
+        const {
+          offset
+        } = start;
+        const atEnd = this.checkCursorAtEndFormat(text, offset);
+
+        if (atEnd) {
+          this.cursor = {
+            start: {
+              key,
+              offset: offset + atEnd.offset
+            },
+            end: {
+              key,
+              offset: offset + atEnd.offset
+            }
+          };
+          return this.partialRender();
+        }
+      } // Auto-complete of inline html tag and html block and `html` code block.
+
+
+    if (start.key === end.key && start.offset === end.offset && startBlock.type === 'span' && (!startBlock.functionType || startBlock.functionType === 'codeContent' && /markup|html|xml|svg|mathml/.test(startBlock.lang))) {
+      const {
+        text
+      } = startBlock;
       const lastWordBeforeCursor = text.substring(0, start.offset).split(/\s+/).pop();
-      const { tag, isVoid, id, className } = parseSelector(lastWordBeforeCursor);
+      const {
+        tag,
+        isVoid,
+        id,
+        className
+      } = parseSelector(lastWordBeforeCursor);
 
       if (tag) {
         const preText = text.substring(0, start.offset - lastWordBeforeCursor.length);
         const postText = text.substring(end.offset);
         if (!tag) return;
-        let html = '<'.concat(tag);
+        let html = "<".concat(tag);
         const key = startBlock.key;
         let startOffset = 0;
         let endOffset = 0;
@@ -445,11 +453,11 @@ const tabCtrl = (ContentState) => {
         }
 
         if (id) {
-          html += ' id="'.concat(id, '"');
+          html += " id=\"".concat(id, "\"");
         }
 
         if (className) {
-          html += ' class="'.concat(className, '"');
+          html += " class=\"".concat(className, "\"");
         }
 
         html += '>';
@@ -459,7 +467,7 @@ const tabCtrl = (ContentState) => {
         }
 
         if (!isVoid) {
-          html += '</'.concat(tag, '>');
+          html += "</".concat(tag, ">");
         }
 
         startBlock.text = preText + html + postText;
@@ -477,6 +485,7 @@ const tabCtrl = (ContentState) => {
       }
     } // Handle `tab` key in table cell.
 
+
     let nextCell;
 
     if (start.key === end.key && startBlock.functionType === 'cellContent') {
@@ -486,7 +495,9 @@ const tabCtrl = (ContentState) => {
     }
 
     if (nextCell) {
-      const { key } = nextCell;
+      const {
+        key
+      } = nextCell;
       const offset = 0;
       this.cursor = {
         start: {

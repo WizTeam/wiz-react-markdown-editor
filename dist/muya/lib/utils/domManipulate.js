@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.insertAfter = exports.insertBefore = exports.operateClassName = void 0;
@@ -18,6 +18,7 @@ const insertBefore = (newNode, originNode) => {
   const parentNode = originNode.parentNode;
   parentNode.insertBefore(newNode, originNode);
 }; // DOM operations
+
 
 exports.insertBefore = insertBefore;
 

@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
@@ -51,151 +51,170 @@ class ExportMarkdown {
 
       switch (block.type) {
         case 'p':
-        case 'hr': {
-          this.insertLineBreak(result, indent);
-          result.push(this.translateBlocks2Markdown(block.children, indent));
-          break;
-        }
+        case 'hr':
+          {
+            this.insertLineBreak(result, indent);
+            result.push(this.translateBlocks2Markdown(block.children, indent));
+            break;
+          }
 
-        case 'span': {
-          result.push(this.normalizeParagraphText(block, indent));
-          break;
-        }
+        case 'span':
+          {
+            result.push(this.normalizeParagraphText(block, indent));
+            break;
+          }
 
         case 'h1':
         case 'h2':
         case 'h3':
         case 'h4':
         case 'h5':
-        case 'h6': {
-          this.insertLineBreak(result, indent);
-          result.push(this.normalizeHeaderText(block, indent));
-          break;
-        }
-
-        case 'figure': {
-          this.insertLineBreak(result, indent);
-
-          switch (block.functionType) {
-            case 'table': {
-              const table = block.children[0];
-              result.push(this.normalizeTable(table, indent));
-              break;
-            }
-
-            case 'html': {
-              result.push(this.normalizeHTML(block, indent));
-              break;
-            }
-
-            case 'footnote': {
-              result.push(this.normalizeFootnote(block, indent));
-              break;
-            }
-
-            case 'multiplemath': {
-              result.push(this.normalizeMultipleMath(block, indent));
-              break;
-            }
-
-            case 'mermaid':
-            case 'flowchart':
-            case 'sequence':
-            case 'vega-lite': {
-              result.push(this.normalizeContainer(block, indent));
-              break;
-            }
-          }
-
-          break;
-        }
-
-        case 'li': {
-          const insertNewLine = block.isLooseListItem; // helper variable to correct the first tight item in a nested list
-
-          this.isLooseParentList = insertNewLine;
-
-          if (insertNewLine) {
+        case 'h6':
+          {
             this.insertLineBreak(result, indent);
+            result.push(this.normalizeHeaderText(block, indent));
+            break;
           }
 
-          result.push(this.normalizeListItem(block, indent + listIndent));
-          this.isLooseParentList = true;
-          break;
-        }
-
-        case 'ul': {
-          let insertNewLine = this.isLooseParentList;
-          this.isLooseParentList = true; // Start a new list without separation due changing the bullet or ordered list delimiter starts a new list.
-
-          const { bulletMarkerOrDelimiter } = block.children[0];
-
-          if (lastListBullet && lastListBullet !== bulletMarkerOrDelimiter) {
-            insertNewLine = false;
-          }
-
-          lastListBullet = bulletMarkerOrDelimiter;
-
-          if (insertNewLine) {
+        case 'figure':
+          {
             this.insertLineBreak(result, indent);
+
+            switch (block.functionType) {
+              case 'table':
+                {
+                  const table = block.children[0];
+                  result.push(this.normalizeTable(table, indent));
+                  break;
+                }
+
+              case 'html':
+                {
+                  result.push(this.normalizeHTML(block, indent));
+                  break;
+                }
+
+              case 'footnote':
+                {
+                  result.push(this.normalizeFootnote(block, indent));
+                  break;
+                }
+
+              case 'multiplemath':
+                {
+                  result.push(this.normalizeMultipleMath(block, indent));
+                  break;
+                }
+
+              case 'mermaid':
+              case 'flowchart':
+              case 'sequence':
+              case 'vega-lite':
+                {
+                  result.push(this.normalizeContainer(block, indent));
+                  break;
+                }
+            }
+
+            break;
           }
 
-          this.listType.push({
-            type: 'ul'
-          });
-          result.push(this.normalizeList(block, indent, listIndent));
-          this.listType.pop();
-          break;
-        }
+        case 'li':
+          {
+            const insertNewLine = block.isLooseListItem; // helper variable to correct the first tight item in a nested list
 
-        case 'ol': {
-          let insertNewLine = this.isLooseParentList;
-          this.isLooseParentList = true; // Start a new list without separation due changing the bullet or ordered list delimiter starts a new list.
+            this.isLooseParentList = insertNewLine;
 
-          const { bulletMarkerOrDelimiter } = block.children[0];
+            if (insertNewLine) {
+              this.insertLineBreak(result, indent);
+            }
 
-          if (lastListBullet && lastListBullet !== bulletMarkerOrDelimiter) {
-            insertNewLine = false;
+            result.push(this.normalizeListItem(block, indent + listIndent));
+            this.isLooseParentList = true;
+            break;
           }
 
-          lastListBullet = bulletMarkerOrDelimiter;
+        case 'ul':
+          {
+            let insertNewLine = this.isLooseParentList;
+            this.isLooseParentList = true; // Start a new list without separation due changing the bullet or ordered list delimiter starts a new list.
 
-          if (insertNewLine) {
+            const {
+              bulletMarkerOrDelimiter
+            } = block.children[0];
+
+            if (lastListBullet && lastListBullet !== bulletMarkerOrDelimiter) {
+              insertNewLine = false;
+            }
+
+            lastListBullet = bulletMarkerOrDelimiter;
+
+            if (insertNewLine) {
+              this.insertLineBreak(result, indent);
+            }
+
+            this.listType.push({
+              type: 'ul'
+            });
+            result.push(this.normalizeList(block, indent, listIndent));
+            this.listType.pop();
+            break;
+          }
+
+        case 'ol':
+          {
+            let insertNewLine = this.isLooseParentList;
+            this.isLooseParentList = true; // Start a new list without separation due changing the bullet or ordered list delimiter starts a new list.
+
+            const {
+              bulletMarkerOrDelimiter
+            } = block.children[0];
+
+            if (lastListBullet && lastListBullet !== bulletMarkerOrDelimiter) {
+              insertNewLine = false;
+            }
+
+            lastListBullet = bulletMarkerOrDelimiter;
+
+            if (insertNewLine) {
+              this.insertLineBreak(result, indent);
+            }
+
+            const listCount = block.start !== undefined ? block.start : 1;
+            this.listType.push({
+              type: 'ol',
+              listCount
+            });
+            result.push(this.normalizeList(block, indent, listIndent));
+            this.listType.pop();
+            break;
+          }
+
+        case 'pre':
+          {
             this.insertLineBreak(result, indent);
+
+            if (block.functionType === 'frontmatter') {
+              result.push(this.normalizeFrontMatter(block, indent));
+            } else {
+              result.push(this.normalizeCodeBlock(block, indent));
+            }
+
+            break;
           }
 
-          const listCount = block.start !== undefined ? block.start : 1;
-          this.listType.push({
-            type: 'ol',
-            listCount
-          });
-          result.push(this.normalizeList(block, indent, listIndent));
-          this.listType.pop();
-          break;
-        }
-
-        case 'pre': {
-          this.insertLineBreak(result, indent);
-
-          if (block.functionType === 'frontmatter') {
-            result.push(this.normalizeFrontMatter(block, indent));
-          } else {
-            result.push(this.normalizeCodeBlock(block, indent));
+        case 'blockquote':
+          {
+            this.insertLineBreak(result, indent);
+            result.push(this.normalizeBlockquote(block, indent));
+            break;
           }
 
-          break;
-        }
-
-        case 'blockquote': {
-          this.insertLineBreak(result, indent);
-          result.push(this.normalizeBlockquote(block, indent));
-          break;
-        }
-
-        default: {
-          console.warn('translateBlocks2Markdown: Unknown block type:', block.type);
-          break;
-        }
+        default:
+          {
+            console.warn('translateBlocks2Markdown: Unknown block type:', block.type);
+            break;
+          }
       }
     }
 
@@ -204,35 +223,41 @@ class ExportMarkdown {
 
   insertLineBreak(result, indent) {
     if (!result.length) return;
-    result.push(''.concat(indent, '\n'));
+    result.push("".concat(indent, "\n"));
   }
 
   normalizeParagraphText(block, indent) {
-    const { text } = block;
+    const {
+      text
+    } = block;
     const lines = text.split('\n');
-    return lines.map((line) => ''.concat(indent).concat(line)).join('\n') + '\n';
+    return lines.map(line => "".concat(indent).concat(line)).join('\n') + '\n';
   }
 
   normalizeHeaderText(block, indent) {
-    const { headingStyle, marker } = block;
-    const { text } = block.children[0];
+    const {
+      headingStyle,
+      marker
+    } = block;
+    const {
+      text
+    } = block.children[0];
 
     if (headingStyle === 'atx') {
       const match = text.match(/(#{1,6})(.*)/);
-      const atxHeadingText = ''.concat(match[1], ' ').concat(match[2].trim());
-      return ''.concat(indent).concat(atxHeadingText, '\n');
+      const atxHeadingText = "".concat(match[1], " ").concat(match[2].trim());
+      return "".concat(indent).concat(atxHeadingText, "\n");
     } else if (headingStyle === 'setext') {
       const lines = text.trim().split('\n');
-      return (
-        lines.map((line) => ''.concat(indent).concat(line)).join('\n') +
-        '\n'.concat(indent).concat(marker.trim(), '\n')
-      );
+      return lines.map(line => "".concat(indent).concat(line)).join('\n') + "\n".concat(indent).concat(marker.trim(), "\n");
     }
   }
 
   normalizeBlockquote(block, indent) {
-    const { children } = block;
-    const newIndent = ''.concat(indent, '> ');
+    const {
+      children
+    } = block;
+    const newIndent = "".concat(indent, "> ");
     return this.translateBlocks2Markdown(children, newIndent);
   }
 
@@ -268,33 +293,27 @@ class ExportMarkdown {
     result.push(startToken);
 
     for (const line of block.children[0].children) {
-      result.push(''.concat(line.text, '\n'));
+      result.push("".concat(line.text, "\n"));
     }
 
     result.push(endToken);
     return result.join('');
   }
 
-  normalizeMultipleMath(
-    block,
-    /* figure */
-    indent
-  ) {
+  normalizeMultipleMath(block,
+  /* figure */
+  indent) {
     const result = [];
-    result.push(''.concat(indent, '$$\n'));
+    result.push("".concat(indent, "$$\n"));
 
     for (const line of block.children[0].children[0].children) {
-      result.push(
-        ''
-          .concat(indent)
-          .concat(line.text)
-          .concat(line.text.endsWith('\n') ? '' : '\n')
-      );
+      result.push("".concat(indent).concat(line.text).concat(line.text.endsWith('\n') ? '' : '\n'));
     }
 
-    result.push(''.concat(indent, '$$\n'));
+    result.push("".concat(indent, "$$\n"));
     return result.join('');
   } // `mermaid` `flowchart` `sequence` `vega-lite`
+
 
   normalizeContainer(block, indent) {
     const result = [];
@@ -302,7 +321,7 @@ class ExportMarkdown {
     result.push('```' + diagramType + '\n');
 
     for (const line of block.children[0].children[0].children) {
-      result.push(''.concat(line.text, '\n'));
+      result.push("".concat(line.text, "\n"));
     }
 
     result.push('```\n');
@@ -313,17 +332,19 @@ class ExportMarkdown {
     const result = [];
     const codeContent = block.children[1].children[0];
     const textList = codeContent.text.split('\n');
-    const { functionType } = block;
+    const {
+      functionType
+    } = block;
 
     if (functionType === 'fencecode') {
-      result.push(''.concat(indent).concat(block.lang ? '```' + block.lang + '\n' : '```\n'));
-      textList.forEach((text) => {
-        result.push(''.concat(indent).concat(text, '\n'));
+      result.push("".concat(indent).concat(block.lang ? '```' + block.lang + '\n' : '```\n'));
+      textList.forEach(text => {
+        result.push("".concat(indent).concat(text, "\n"));
       });
       result.push(indent + '```\n');
     } else {
-      textList.forEach((text) => {
-        result.push(''.concat(indent, '    ').concat(text, '\n'));
+      textList.forEach(text => {
+        result.push("".concat(indent, "    ").concat(text, "\n"));
       });
     }
 
@@ -337,7 +358,7 @@ class ExportMarkdown {
     const lines = codeContentText.split('\n');
 
     for (const line of lines) {
-      result.push(''.concat(indent).concat(line, '\n'));
+      result.push("".concat(indent).concat(line, "\n"));
     }
 
     return result.join('');
@@ -345,26 +366,27 @@ class ExportMarkdown {
 
   normalizeTable(table, indent) {
     const result = [];
-    const { row, column } = table;
+    const {
+      row,
+      column
+    } = table;
     const tableData = [];
     const tHeader = table.children[0];
     const tBody = table.children[1];
 
-    const escapeText = (str) => {
+    const escapeText = str => {
       return str.replace(/([^\\])\|/g, '$1\\|');
     };
 
-    tableData.push(
-      tHeader.children[0].children.map((th) => escapeText(th.children[0].text).trim())
-    );
+    tableData.push(tHeader.children[0].children.map(th => escapeText(th.children[0].text).trim()));
 
     if (tBody) {
-      tBody.children.forEach((bodyRow) => {
-        tableData.push(bodyRow.children.map((td) => escapeText(td.children[0].text).trim()));
+      tBody.children.forEach(bodyRow => {
+        tableData.push(bodyRow.children.map(td => escapeText(td.children[0].text).trim()));
       });
     }
 
-    const columnWidth = tHeader.children[0].children.map((th) => ({
+    const columnWidth = tHeader.children[0].children.map(th => ({
       width: 5,
       align: th.align
     }));
@@ -378,48 +400,39 @@ class ExportMarkdown {
     }
 
     tableData.forEach((r, i) => {
-      const rs =
-        indent +
-        '|' +
-        r
-          .map((cell, j) => {
-            const raw = ' '.concat(cell + ' '.repeat(columnWidth[j].width));
-            return raw.substring(0, columnWidth[j].width);
-          })
-          .join('|') +
-        '|';
+      const rs = indent + '|' + r.map((cell, j) => {
+        const raw = " ".concat(cell + ' '.repeat(columnWidth[j].width));
+        return raw.substring(0, columnWidth[j].width);
+      }).join('|') + '|';
       result.push(rs);
 
       if (i === 0) {
-        const cutOff =
-          indent +
-          '|' +
-          columnWidth
-            .map(({ width, align }) => {
-              let raw = '-'.repeat(width - 2);
+        const cutOff = indent + '|' + columnWidth.map(({
+          width,
+          align
+        }) => {
+          let raw = '-'.repeat(width - 2);
 
-              switch (align) {
-                case 'left':
-                  raw = ':'.concat(raw, ' ');
-                  break;
+          switch (align) {
+            case 'left':
+              raw = ":".concat(raw, " ");
+              break;
 
-                case 'center':
-                  raw = ':'.concat(raw, ':');
-                  break;
+            case 'center':
+              raw = ":".concat(raw, ":");
+              break;
 
-                case 'right':
-                  raw = ' '.concat(raw, ':');
-                  break;
+            case 'right':
+              raw = " ".concat(raw, ":");
+              break;
 
-                default:
-                  raw = ' '.concat(raw, ' ');
-                  break;
-              }
+            default:
+              raw = " ".concat(raw, " ");
+              break;
+          }
 
-              return raw;
-            })
-            .join('|') +
-          '|';
+          return raw;
+        }).join('|') + '|';
         result.push(cutOff);
       }
     });
@@ -427,7 +440,9 @@ class ExportMarkdown {
   }
 
   normalizeList(block, indent, listIndent) {
-    const { children } = block;
+    const {
+      children
+    } = block;
     return this.translateBlocks2Markdown(children, indent, listIndent);
   }
 
@@ -435,29 +450,35 @@ class ExportMarkdown {
     const result = [];
     const listInfo = this.listType[this.listType.length - 1];
     const isUnorderedList = listInfo.type === 'ul';
-    let { children, bulletMarkerOrDelimiter } = block;
+    let {
+      children,
+      bulletMarkerOrDelimiter
+    } = block;
     let itemMarker;
 
     if (isUnorderedList) {
-      itemMarker = bulletMarkerOrDelimiter ? ''.concat(bulletMarkerOrDelimiter, ' ') : '- ';
+      itemMarker = bulletMarkerOrDelimiter ? "".concat(bulletMarkerOrDelimiter, " ") : '- ';
     } else {
       // NOTE: GitHub and Bitbucket limit the list count to 99 but this is nowhere defined.
       //  We limit the number to 99 for Daring Fireball Markdown to prevent indentation issues.
       let n = listInfo.listCount;
 
-      if ((this.listIndentation === 'dfm' && n > 99) || n > 999999999) {
+      if (this.listIndentation === 'dfm' && n > 99 || n > 999999999) {
         n = 1;
       }
 
       listInfo.listCount++;
       const delimiter = bulletMarkerOrDelimiter || '.';
-      itemMarker = ''.concat(n).concat(delimiter, ' ');
+      itemMarker = "".concat(n).concat(delimiter, " ");
     } // Subsequent paragraph indentation
+
 
     const newIndent = indent + ' '.repeat(itemMarker.length); // New list indentation. We already added one space to the indentation
 
     let listIndent = '';
-    const { listIndentation } = this;
+    const {
+      listIndentation
+    } = this;
 
     if (listIndentation === 'dfm') {
       listIndent = ' '.repeat(4 - itemMarker.length);
@@ -468,23 +489,22 @@ class ExportMarkdown {
     //  we integrate tabs in blockquotes and subsequent paragraphs and how to combine with spaces?
     //  I don't know how to combine tabs and spaces and it seems not specified, so work for another day.
 
+
     if (isUnorderedList && block.listItemType === 'task') {
       const firstChild = children[0];
       itemMarker += firstChild.checked ? '[x] ' : '[ ] ';
       children = children.slice(1);
     }
 
-    result.push(''.concat(indent).concat(itemMarker));
-    result.push(
-      this.translateBlocks2Markdown(children, newIndent, listIndent).substring(newIndent.length)
-    );
+    result.push("".concat(indent).concat(itemMarker));
+    result.push(this.translateBlocks2Markdown(children, newIndent, listIndent).substring(newIndent.length));
     return result.join('');
   }
 
   normalizeFootnote(block, indent) {
     const result = [];
     const identifier = block.children[0].text;
-    result.push(''.concat(indent, '[^').concat(identifier, ']:'));
+    result.push("".concat(indent, "[^").concat(identifier, "]:"));
     const hasMultipleBlocks = block.children.length > 2 || block.children[1].type !== 'p';
 
     if (hasMultipleBlocks) {
@@ -499,6 +519,7 @@ class ExportMarkdown {
 
     return result.join('');
   }
+
 }
 
 var _default = ExportMarkdown;

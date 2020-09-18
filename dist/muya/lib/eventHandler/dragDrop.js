@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
@@ -15,9 +15,12 @@ class DragDrop {
   }
 
   dragStartBinding() {
-    const { container, eventCenter } = this.muya;
+    const {
+      container,
+      eventCenter
+    } = this.muya;
 
-    const dragStartHandler = (event) => {
+    const dragStartHandler = event => {
       if (event.target.tagName === 'IMG') {
         return event.preventDefault();
       }
@@ -27,9 +30,13 @@ class DragDrop {
   }
 
   dragOverBinding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const dragoverHandler = (event) => {
+    const dragoverHandler = event => {
       contentState.dragoverHandler(event);
     };
 
@@ -37,9 +44,13 @@ class DragDrop {
   }
 
   dropBinding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const dropHandler = (event) => {
+    const dropHandler = event => {
       contentState.dropHandler(event);
     };
 
@@ -47,14 +58,18 @@ class DragDrop {
   }
 
   dragendBinding() {
-    const { eventCenter, contentState } = this.muya;
+    const {
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const dragleaveHandler = (event) => {
+    const dragleaveHandler = event => {
       contentState.dragleaveHandler(event);
     };
 
     eventCenter.attachDOMEvent(window, 'dragleave', dragleaveHandler);
   }
+
 }
 
 var _default = DragDrop;

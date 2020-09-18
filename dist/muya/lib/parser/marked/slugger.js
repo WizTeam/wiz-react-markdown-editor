@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
@@ -15,12 +15,9 @@ function Slugger() {
  * Convert string to unique id
  */
 
+
 Slugger.prototype.slug = function (value) {
-  let slug = value
-    .toLowerCase()
-    .trim()
-    .replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, '')
-    .replace(/\s/g, '-');
+  let slug = value.toLowerCase().trim().replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, '').replace(/\s/g, '-');
 
   if (this.seen.hasOwnProperty(slug)) {
     const originalSlug = slug;

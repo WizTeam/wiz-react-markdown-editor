@@ -1,35 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _baseFloat = _interopRequireDefault(require('../baseFloat'));
+var _baseFloat = _interopRequireDefault(require("../baseFloat"));
 
-var _snabbdom = require('../../parser/render/snabbdom');
+var _snabbdom = require("../../parser/render/snabbdom");
 
-require('./index.css');
+require("./index.css");
 
-var _config = require('../../config');
+var _config = require("../../config");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 class TablePicker extends _baseFloat.default {
   constructor(muya) {
@@ -42,13 +28,15 @@ class TablePicker extends _baseFloat.default {
     this.oldVnode = null;
     this.current = null;
     this.select = null;
-    const tableContainer = (this.tableContainer = document.createElement('div'));
+    const tableContainer = this.tableContainer = document.createElement('div');
     this.container.appendChild(tableContainer);
     this.listen();
   }
 
   listen() {
-    const { eventCenter } = this.muya;
+    const {
+      eventCenter
+    } = this.muya;
     super.listen();
     eventCenter.subscribe('muya-table-picker', (data, reference, cb) => {
       if (!this.status) {
@@ -61,10 +49,22 @@ class TablePicker extends _baseFloat.default {
   }
 
   render() {
-    const { row, column } = this.checkerCount;
-    const { row: cRow, column: cColumn } = this.current;
-    const { row: sRow, column: sColumn } = this.select;
-    const { tableContainer, oldVnode } = this;
+    const {
+      row,
+      column
+    } = this.checkerCount;
+    const {
+      row: cRow,
+      column: cColumn
+    } = this.current;
+    const {
+      row: sRow,
+      column: sColumn
+    } = this.select;
+    const {
+      tableContainer,
+      oldVnode
+    } = this;
     const tableRows = [];
     let i;
     let j;
@@ -89,75 +89,63 @@ class TablePicker extends _baseFloat.default {
           cellSelector += '.selected';
         }
 
-        cells.push(
-          (0, _snabbdom.h)(cellSelector, {
-            key: j.toString(),
-            dataset: {
-              row: i.toString(),
-              column: j.toString()
+        cells.push((0, _snabbdom.h)(cellSelector, {
+          key: j.toString(),
+          dataset: {
+            row: i.toString(),
+            column: j.toString()
+          },
+          on: {
+            mouseenter: event => {
+              const {
+                target
+              } = event;
+              const r = target.getAttribute('data-row');
+              const c = target.getAttribute('data-column');
+              this.select = {
+                row: r,
+                column: c
+              };
+              this.render();
             },
-            on: {
-              mouseenter: (event) => {
-                const { target } = event;
-                const r = target.getAttribute('data-row');
-                const c = target.getAttribute('data-column');
-                this.select = {
-                  row: r,
-                  column: c
-                };
-                this.render();
-              },
-              click: (_) => {
-                this.selectItem();
-              }
+            click: _ => {
+              this.selectItem();
             }
-          })
-        );
+          }
+        }));
       }
 
       tableRows.push((0, _snabbdom.h)(rowSelector, cells));
     }
 
-    const tableFooter = (0, _snabbdom.h)('div.footer', [
-      (0, _snabbdom.h)('input.row-input', {
-        props: {
-          type: 'text',
-          value: +this.select.row + 1
-        },
-        on: {
-          keyup: (event) => {
-            this.keyupHandler(event, 'row');
-          }
+    const tableFooter = (0, _snabbdom.h)('div.footer', [(0, _snabbdom.h)('input.row-input', {
+      props: {
+        type: 'text',
+        value: +this.select.row + 1
+      },
+      on: {
+        keyup: event => {
+          this.keyupHandler(event, 'row');
         }
-      }),
-      'x',
-      (0, _snabbdom.h)('input.column-input', {
-        props: {
-          type: 'text',
-          value: +this.select.column + 1
-        },
-        on: {
-          keyup: (event) => {
-            this.keyupHandler(event, 'column');
-          }
+      }
+    }), 'x', (0, _snabbdom.h)('input.column-input', {
+      props: {
+        type: 'text',
+        value: +this.select.column + 1
+      },
+      on: {
+        keyup: event => {
+          this.keyupHandler(event, 'column');
         }
-      }),
-      (0, _snabbdom.h)(
-        'button',
-        {
-          on: {
-            click: (_) => {
-              this.selectItem();
-            }
-          }
-        },
-        'OK'
-      )
-    ]);
-    const vnode = (0, _snabbdom.h)('div', [
-      (0, _snabbdom.h)('div.checker', tableRows),
-      tableFooter
-    ]);
+      }
+    }), (0, _snabbdom.h)('button', {
+      on: {
+        click: _ => {
+          this.selectItem();
+        }
+      }
+    }, 'OK')]);
+    const vnode = (0, _snabbdom.h)('div', [(0, _snabbdom.h)('div.checker', tableRows), tableFooter]);
 
     if (oldVnode) {
       (0, _snabbdom.patch)(oldVnode, vnode);
@@ -195,14 +183,20 @@ class TablePicker extends _baseFloat.default {
   }
 
   selectItem() {
-    const { cb } = this;
-    const { row, column } = this.select;
+    const {
+      cb
+    } = this;
+    const {
+      row,
+      column
+    } = this.select;
     cb(Math.max(row, 0), Math.max(column, 0));
     this.hide();
   }
+
 }
 
-_defineProperty(TablePicker, 'pluginName', 'tablePicker');
+_defineProperty(TablePicker, "pluginName", 'tablePicker');
 
 var _default = TablePicker;
 exports.default = _default;

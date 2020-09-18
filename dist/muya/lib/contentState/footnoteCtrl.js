@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
@@ -9,10 +9,15 @@ exports.default = void 0;
 const FOOTNOTE_REG = /^\[\^([^\^\[\]\s]+?)\]: /;
 /* eslint-enable no-useless-escape */
 
-const footnoteCtrl = (ContentState) => {
+const footnoteCtrl = ContentState => {
   ContentState.prototype.updateFootnote = function (block, line) {
-    const { start, end } = this.cursor;
-    const { text } = line;
+    const {
+      start,
+      end
+    } = this.cursor;
+    const {
+      text
+    } = line;
     const match = FOOTNOTE_REG.exec(text);
     const footnoteIdentifer = match[1];
     const sectionWrapper = this.createBlock('figure', {
@@ -27,7 +32,9 @@ const footnoteCtrl = (ContentState) => {
     this.appendChild(sectionWrapper, pBlock);
     this.insertBefore(sectionWrapper, block);
     this.removeBlock(block);
-    const { key } = pBlock.children[0];
+    const {
+      key
+    } = pBlock.children[0];
     this.cursor = {
       start: {
         key,
@@ -48,9 +55,11 @@ const footnoteCtrl = (ContentState) => {
   };
 
   ContentState.prototype.createFootnote = function (identifier) {
-    const { blocks } = this;
+    const {
+      blocks
+    } = this;
     const lastBlock = blocks[blocks.length - 1];
-    const newBlock = this.createBlockP('[^'.concat(identifier, ']: '));
+    const newBlock = this.createBlockP("[^".concat(identifier, "]: "));
     this.insertAfter(newBlock, lastBlock);
     const key = newBlock.children[0].key;
     const offset = newBlock.children[0].text.length;
@@ -66,7 +75,7 @@ const footnoteCtrl = (ContentState) => {
     };
     const sectionWrapper = this.updateFootnote(newBlock, newBlock.children[0]);
     const id = sectionWrapper.key;
-    const footnoteEle = document.querySelector('#'.concat(id));
+    const footnoteEle = document.querySelector("#".concat(id));
 
     if (footnoteEle) {
       footnoteEle.scrollIntoView({

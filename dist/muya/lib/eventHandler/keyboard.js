@@ -1,23 +1,21 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _config = require('../config');
+var _config = require("../config");
 
-var _selection = _interopRequireDefault(require('../selection'));
+var _selection = _interopRequireDefault(require("../selection"));
 
-var _dom = require('../selection/dom');
+var _dom = require("../selection/dom");
 
-var _utils = require('../utils');
+var _utils = require("../utils");
 
-var _emojis = require('../ui/emojis');
+var _emojis = require("../ui/emojis");
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class Keyboard {
   constructor(muya) {
@@ -57,9 +55,13 @@ class Keyboard {
   }
 
   recordIsComposed() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const handler = (event) => {
+    const handler = event => {
       if (event.type === 'compositionstart') {
         this.isComposed = true;
         this.inputDom = _selection.default.getSelectionStart();
@@ -80,24 +82,28 @@ class Keyboard {
   }
 
   dispatchEditorState() {
-    const { container, eventCenter } = this.muya;
+    const {
+      container,
+      eventCenter
+    } = this.muya;
     let timer = null;
 
-    const changeHandler = (event) => {
-      if (
-        event.type === 'keyup' &&
-        (event.key === _config.EVENT_KEYS.ArrowUp || event.key === _config.EVENT_KEYS.ArrowDown) &&
-        this.shownFloat.size > 0
-      ) {
+    const changeHandler = event => {
+      if (event.type === 'keyup' && (event.key === _config.EVENT_KEYS.ArrowUp || event.key === _config.EVENT_KEYS.ArrowDown) && this.shownFloat.size > 0) {
         return;
       } // Cursor outside editor area or over not editable elements.
+
 
       if (event.target.closest('[contenteditable=false]')) {
         return;
       } // We need check cursor is null, because we may copy the html preview content,
       // and no need to dispatch change.
 
-      const { start, end } = _selection.default.getCursorRange();
+
+      const {
+        start,
+        end
+      } = _selection.default.getCursorRange();
 
       if (!start || !end) {
         return;
@@ -119,35 +125,46 @@ class Keyboard {
   }
 
   keydownBinding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const docHandler = (event) => {
+    const docHandler = event => {
       switch (event.code) {
         case _config.EVENT_KEYS.Enter:
           return contentState.docEnterHandler(event);
 
-        case _config.EVENT_KEYS.Space: {
-          if (contentState.selectedImage) {
-            const { token } = contentState.selectedImage;
-            const { src } = (0, _utils.getImageInfo)(token.src || token.attrs.src);
+        case _config.EVENT_KEYS.Space:
+          {
+            if (contentState.selectedImage) {
+              const {
+                token
+              } = contentState.selectedImage;
+              const {
+                src
+              } = (0, _utils.getImageInfo)(token.src || token.attrs.src);
 
-            if (src) {
-              eventCenter.dispatch('preview-image', {
-                data: src
-              });
+              if (src) {
+                eventCenter.dispatch('preview-image', {
+                  data: src
+                });
+              }
             }
+
+            break;
           }
 
-          break;
-        }
+        case _config.EVENT_KEYS.Backspace:
+          {
+            return contentState.docBackspaceHandler(event);
+          }
 
-        case _config.EVENT_KEYS.Backspace: {
-          return contentState.docBackspaceHandler(event);
-        }
-
-        case _config.EVENT_KEYS.Delete: {
-          return contentState.docDeleteHandler(event);
-        }
+        case _config.EVENT_KEYS.Delete:
+          {
+            return contentState.docDeleteHandler(event);
+          }
 
         case _config.EVENT_KEYS.ArrowUp: // fallthrough
 
@@ -161,32 +178,16 @@ class Keyboard {
       }
     };
 
-    const handler = (event) => {
+    const handler = event => {
       if (event.metaKey || event.ctrlKey) {
         container.classList.add('ag-meta-or-ctrl');
       }
 
-      if (
-        this.shownFloat.size > 0 &&
-        (event.key === _config.EVENT_KEYS.Enter ||
-          event.key === _config.EVENT_KEYS.Escape ||
-          event.key === _config.EVENT_KEYS.Tab ||
-          event.key === _config.EVENT_KEYS.ArrowUp ||
-          event.key === _config.EVENT_KEYS.ArrowDown)
-      ) {
+      if (this.shownFloat.size > 0 && (event.key === _config.EVENT_KEYS.Enter || event.key === _config.EVENT_KEYS.Escape || event.key === _config.EVENT_KEYS.Tab || event.key === _config.EVENT_KEYS.ArrowUp || event.key === _config.EVENT_KEYS.ArrowDown)) {
         let needPreventDefault = false;
 
         for (const tool of this.shownFloat) {
-          if (
-            tool.name === 'ag-format-picker' ||
-            tool.name === 'ag-table-picker' ||
-            tool.name === 'ag-quick-insert' ||
-            tool.name === 'ag-emoji-picker' ||
-            tool.name === 'ag-front-menu' ||
-            tool.name === 'ag-list-picker' ||
-            tool.name === 'ag-tag-insert' ||
-            tool.name === 'ag-image-selector'
-          ) {
+          if (tool.name === 'ag-format-picker' || tool.name === 'ag-table-picker' || tool.name === 'ag-quick-insert' || tool.name === 'ag-emoji-picker' || tool.name === 'ag-front-menu' || tool.name === 'ag-list-picker' || tool.name === 'ag-tag-insert' || tool.name === 'ag-image-selector') {
             needPreventDefault = true;
             break;
           }
@@ -195,6 +196,7 @@ class Keyboard {
         if (needPreventDefault) {
           event.preventDefault();
         } // event.stopPropagation()
+
 
         return;
       }
@@ -244,9 +246,13 @@ class Keyboard {
   }
 
   inputBinding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const inputHandler = (event) => {
+    const inputHandler = event => {
       if (!this.isComposed) {
         contentState.inputHandler(event);
         this.muya.dispatchChange();
@@ -258,19 +264,9 @@ class Keyboard {
           var _event$data$length, _event$data;
 
           this.inputDom.innerText = event.data;
-          startNode.lastElementChild
-            ? startNode.replaceChild(this.inputDom, startNode.lastElementChild)
-            : startNode.parentNode.replaceChild(this.inputDom, startNode);
+          startNode.lastElementChild ? startNode.replaceChild(this.inputDom, startNode.lastElementChild) : startNode.parentNode.replaceChild(this.inputDom, startNode);
 
-          _selection.default.select(
-            this.inputDom,
-            (_event$data$length =
-              (_event$data = event.data) === null || _event$data === void 0
-                ? void 0
-                : _event$data.length) !== null && _event$data$length !== void 0
-              ? _event$data$length
-              : 0
-          );
+          _selection.default.select(this.inputDom, (_event$data$length = (_event$data = event.data) === null || _event$data === void 0 ? void 0 : _event$data.length) !== null && _event$data$length !== void 0 ? _event$data$length : 0);
         }
 
         if (event.data === null) {
@@ -280,13 +276,16 @@ class Keyboard {
         }
       }
 
-      const { lang, paragraph } = contentState.checkEditLanguage();
+      const {
+        lang,
+        paragraph
+      } = contentState.checkEditLanguage();
 
       if (lang) {
         eventCenter.dispatch('muya-code-picker', {
           reference: (0, _utils.getParagraphReference)(paragraph, paragraph.id),
           lang,
-          cb: (item) => {
+          cb: item => {
             contentState.selectLanguage(paragraph, item.name);
           }
         });
@@ -302,9 +301,13 @@ class Keyboard {
   }
 
   keyupBinding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
 
-    const handler = (event) => {
+    const handler = event => {
       container.classList.remove('ag-meta-or-ctrl'); // check if edit emoji
 
       const node = _selection.default.getSelectionStart();
@@ -313,15 +316,7 @@ class Keyboard {
       const emojiNode = (0, _emojis.checkEditEmoji)(node);
       contentState.selectedImage = null;
 
-      if (
-        paragraph &&
-        emojiNode &&
-        event.key !== _config.EVENT_KEYS.Enter &&
-        event.key !== _config.EVENT_KEYS.ArrowDown &&
-        event.key !== _config.EVENT_KEYS.ArrowUp &&
-        event.key !== _config.EVENT_KEYS.Tab &&
-        event.key !== _config.EVENT_KEYS.Escape
-      ) {
+      if (paragraph && emojiNode && event.key !== _config.EVENT_KEYS.Enter && event.key !== _config.EVENT_KEYS.ArrowDown && event.key !== _config.EVENT_KEYS.ArrowUp && event.key !== _config.EVENT_KEYS.Tab && event.key !== _config.EVENT_KEYS.Escape) {
         const reference = (0, _utils.getParagraphReference)(emojiNode, paragraph.id);
         eventCenter.dispatch('muya-emoji-picker', {
           reference,
@@ -335,27 +330,28 @@ class Keyboard {
         });
       }
 
-      const { anchor, focus, start, end } = _selection.default.getCursorRange();
+      const {
+        anchor,
+        focus,
+        start,
+        end
+      } = _selection.default.getCursorRange();
 
       if (!anchor || !focus) {
         return;
       }
 
       if (!this.isComposed) {
-        const { anchor: oldAnchor, focus: oldFocus } = contentState.cursor;
+        const {
+          anchor: oldAnchor,
+          focus: oldFocus
+        } = contentState.cursor;
 
-        if (
-          anchor.key !== oldAnchor.key ||
-          anchor.offset !== oldAnchor.offset ||
-          focus.key !== oldFocus.key ||
-          focus.offset !== oldFocus.offset
-        ) {
-          const needRender =
-            contentState.checkNeedRender(contentState.cursor) ||
-            contentState.checkNeedRender({
-              start,
-              end
-            });
+        if (anchor.key !== oldAnchor.key || anchor.offset !== oldAnchor.offset || focus.key !== oldFocus.key || focus.offset !== oldFocus.offset) {
+          const needRender = contentState.checkNeedRender(contentState.cursor) || contentState.checkNeedRender({
+            start,
+            end
+          });
           contentState.cursor = {
             anchor,
             focus
@@ -369,14 +365,11 @@ class Keyboard {
 
       const block = contentState.getBlock(anchor.key);
 
-      if (
-        anchor.key === focus.key &&
-        anchor.offset !== focus.offset &&
-        block.functionType !== 'codeContent' &&
-        block.functionType !== 'languageInput'
-      ) {
+      if (anchor.key === focus.key && anchor.offset !== focus.offset && block.functionType !== 'codeContent' && block.functionType !== 'languageInput') {
         const reference = contentState.getPositionReference();
-        const { formats } = contentState.selectionFormats();
+        const {
+          formats
+        } = contentState.selectionFormats();
         eventCenter.dispatch('muya-format-picker', {
           reference,
           formats
@@ -390,6 +383,7 @@ class Keyboard {
 
     eventCenter.attachDOMEvent(container, 'keyup', handler); // temp use input event
   }
+
 }
 
 var _default = Keyboard;
