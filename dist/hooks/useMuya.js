@@ -46,13 +46,7 @@ if (!_utils.os.isAndroid && !_utils.os.isPhone) {
 
   _lib.default.use(_codePicker.default);
 
-  _lib.default.use(_emojiPicker.default);
-
-  _lib.default.use(_imageSelector.default, {
-    unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
-  });
-
-  _lib.default.use(_imagePicker.default); // Muya.use(ImageToolbar);
+  _lib.default.use(_emojiPicker.default); // Muya.use(ImageToolbar);
 
 
   _lib.default.use(_transformer.default); // Muya.use(FormatPicker);
@@ -78,6 +72,12 @@ if (!_utils.os.isAndroid && !_utils.os.isPhone) {
 
   _lib.default.use(_tagInsert.default);
 }
+
+_lib.default.use(_imageSelector.default, {
+  unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
+});
+
+_lib.default.use(_imagePicker.default);
 
 function formatOptions(options) {
   Object.assign(options, /dark/i.test(options.theme) ? {

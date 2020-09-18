@@ -21,10 +21,6 @@ if (!os.isAndroid && !os.isPhone) {
   Muya.use(QuickInsert);
   Muya.use(CodePicker);
   Muya.use(EmojiPicker);
-  Muya.use(ImageSelector, {
-    unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
-  });
-  Muya.use(ImagePathPicker);
   // Muya.use(ImageToolbar);
   Muya.use(Transformer);
   // Muya.use(FormatPicker);
@@ -44,6 +40,10 @@ if (!os.isAndroid && !os.isPhone) {
   Muya.use(FrontMenu);
   Muya.use(TagInsert);
 }
+Muya.use(ImageSelector, {
+  unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
+});
+Muya.use(ImagePathPicker);
 
 function formatOptions(options) {
   Object.assign(
