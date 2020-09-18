@@ -793,6 +793,21 @@ const paragraphCtrl = (ContentState) => {
     );
   };
 
+  ContentState.prototype.isSelectLine = function ({ start, end }) {
+    const startBlock = this.getBlock(start.key);
+    const endBlock = this.getBlock(end.key);
+    const { start: cursorStart, end: cursorEnd } = this.cursor;
+    const { startOffset, endOffset } = window.getSelection().getRangeAt(0);
+
+    return (
+      startBlock.key === cursorStart.key &&
+      startOffset === 0 &&
+      endBlock.key === cursorEnd.key &&
+      endOffset === endBlock.text.length &&
+      !this.muya.keyboard.isComposed
+    );
+  };
+
   ContentState.prototype.selectAllContent = function () {
     const firstTextBlock = this.getFirstBlock();
     const lastTextBlock = this.getLastBlock();
