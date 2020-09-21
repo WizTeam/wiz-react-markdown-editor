@@ -21,7 +21,11 @@ var _imagePicker = _interopRequireDefault(require("../muya/lib/ui/imagePicker"))
 
 var _imageSelector = _interopRequireDefault(require("../muya/lib/ui/imageSelector"));
 
+var _imageToolbar = _interopRequireDefault(require("../muya/lib/ui/imageToolbar"));
+
 var _transformer = _interopRequireDefault(require("../muya/lib/ui/transformer"));
+
+var _formatPicker = _interopRequireDefault(require("../muya/lib/ui/formatPicker"));
 
 var _linkTools = _interopRequireDefault(require("../muya/lib/ui/linkTools"));
 
@@ -37,18 +41,18 @@ var _utils = require("../utils/utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import ImageToolbar from '../muya/lib/ui/imageToolbar';
-// import FormatPicker from '../muya/lib/ui/formatPicker';
-if (!_utils.os.isAndroid && !_utils.os.isPhone) {
+if (_utils.os.isPc) {
   _lib.default.use(_quickInsert.default);
 
   _lib.default.use(_codePicker.default);
 
-  _lib.default.use(_emojiPicker.default); // Muya.use(ImageToolbar);
+  _lib.default.use(_emojiPicker.default);
 
+  _lib.default.use(_imageToolbar.default);
 
-  _lib.default.use(_transformer.default); // Muya.use(FormatPicker);
+  _lib.default.use(_transformer.default);
 
+  _lib.default.use(_formatPicker.default);
 
   _lib.default.use(_linkTools.default, {
     jumpClick: obj => {

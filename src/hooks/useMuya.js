@@ -6,9 +6,9 @@ import CodePicker from '../muya/lib/ui/codePicker';
 import EmojiPicker from '../muya/lib/ui/emojiPicker';
 import ImagePathPicker from '../muya/lib/ui/imagePicker';
 import ImageSelector from '../muya/lib/ui/imageSelector';
-// import ImageToolbar from '../muya/lib/ui/imageToolbar';
+import ImageToolbar from '../muya/lib/ui/imageToolbar';
 import Transformer from '../muya/lib/ui/transformer';
-// import FormatPicker from '../muya/lib/ui/formatPicker';
+import FormatPicker from '../muya/lib/ui/formatPicker';
 import LinkTools from '../muya/lib/ui/linkTools';
 import FootnoteTool from '../muya/lib/ui/footnoteTool';
 import TableBarTools from '../muya/lib/ui/tableTools';
@@ -16,13 +16,13 @@ import FrontMenu from '../muya/lib/ui/frontMenu';
 import TagInsert from '../muya/lib/ui/tagInsert';
 import { os } from '../utils/utils';
 
-if (!os.isAndroid && !os.isPhone) {
+if (os.isPc) {
   Muya.use(QuickInsert);
   Muya.use(CodePicker);
   Muya.use(EmojiPicker);
-  // Muya.use(ImageToolbar);
+  Muya.use(ImageToolbar);
   Muya.use(Transformer);
-  // Muya.use(FormatPicker);
+  Muya.use(FormatPicker);
   Muya.use(LinkTools, {
     jumpClick: (obj) => {
       if (obj.token.type === 'link') {
