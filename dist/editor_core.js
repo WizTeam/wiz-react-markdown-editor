@@ -152,18 +152,25 @@ function Editor(props) {
   (0, _react.useEffect)(() => {
     function handleSelectionChange(changes) {
       const {
-        y
+        y: editorTop
       } = changes.cursorCoords;
+      const y = editorTop + document.scrollingElement.scrollTop;
       const container = editor.container; //
 
       if (typewriter) {
         (0, _utils.animatedScrollTo)(container, container.scrollTop + y - STANDAR_Y, 100);
       } // 快到底部时，向下滚动
+      // if (container.clientHeight - y < 100) {
+      //   const editableHeight = container.clientHeight - 100;
+      //   animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
+      // }
 
 
-      if (container.clientHeight - y < 100) {
-        const editableHeight = container.clientHeight - 100;
-        (0, _utils.animatedScrollTo)(container, container.scrollTop + (y - editableHeight), 0);
+      const containerTop = container.getBoundingClientRect().top;
+
+      if (window.innerHeight - containerTop - y < 100) {
+        const editableHeight = containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight;
+        (0, _utils.animatedScrollTo)(document.scrollingElement, editableHeight, 0);
       }
     }
 
