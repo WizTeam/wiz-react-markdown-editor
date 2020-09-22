@@ -161,9 +161,9 @@ function Editor(props) {
       //   animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
       // }
       const containerTop = container.getBoundingClientRect().top;
-      if (window.innerHeight - containerTop - y < 100) {
+      if (window.innerHeight - 250 - containerTop - y < 100) {
         const editableHeight =
-          containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight;
+          containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight + 250;
         animatedScrollTo(document.scrollingElement, editableHeight, 0);
       }
     }

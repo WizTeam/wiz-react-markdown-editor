@@ -168,8 +168,8 @@ function Editor(props) {
 
       const containerTop = container.getBoundingClientRect().top;
 
-      if (window.innerHeight - containerTop - y < 100) {
-        const editableHeight = containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight;
+      if (window.innerHeight - 250 - containerTop - y < 100) {
+        const editableHeight = containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight + 250;
         (0, _utils.animatedScrollTo)(document.scrollingElement, editableHeight, 0);
       }
     }
