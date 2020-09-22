@@ -87,7 +87,8 @@ function Editor(props) {
     resourceUrl,
     readOnly,
     wordList,
-    editorFocus
+    editorFocus,
+    bottomHeight
   } = props; //
 
   const editorRef = (0, _react.useRef)();
@@ -152,9 +153,9 @@ function Editor(props) {
   (0, _react.useEffect)(() => {
     function handleSelectionChange(changes) {
       const {
-        y: editorTop
-      } = changes.cursorCoords;
-      const y = editorTop + document.scrollingElement.scrollTop;
+        y
+      } = changes.cursorCoords; // const y = editorTop + document.scrollingElement.scrollTop;
+
       const container = editor.container; //
 
       if (typewriter) {
@@ -164,12 +165,16 @@ function Editor(props) {
       //   const editableHeight = container.clientHeight - 100;
       //   animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
       // }
+      // const containerTop = container.getBoundingClientRect().top;
+      // if (window.innerHeight - 250 - containerTop - y < 100) {
+      //   const editableHeight =
+      //     containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight + 250;
+      //   animatedScrollTo(document.scrollingElement, editableHeight, 0);
+      // }
 
 
-      const containerTop = container.getBoundingClientRect().top;
-
-      if (window.innerHeight - 250 - containerTop - y < 100) {
-        const editableHeight = containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight + 250;
+      if (window.innerHeight - y < bottomHeight) {
+        const editableHeight = y + document.scrollingElement.scrollTop + bottomHeight - window.innerHeight;
         (0, _utils.animatedScrollTo)(document.scrollingElement, editableHeight, 0);
       }
     }
@@ -206,7 +211,7 @@ function Editor(props) {
         editor.off('change', props.onChange);
         editor.off('selectionChange', handleSelectionChange);
       }
-    };
+    }; // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, props.onChange, theme, typewriter]);
   (0, _react.useEffect)(() => {
     var _editor$tagInsert;
@@ -271,7 +276,8 @@ Editor.propTypes = {
   resourceUrl: _propTypes.default.string,
   readOnly: _propTypes.default.bool,
   wordList: _propTypes.default.array,
-  editorFocus: _propTypes.default.func
+  editorFocus: _propTypes.default.func,
+  bottomHeight: _propTypes.default.number
 };
 Editor.defaultProps = {
   width: '100%',
@@ -284,7 +290,8 @@ Editor.defaultProps = {
   resourceUrl: '',
   readOnly: false,
   wordList: [],
-  editorFocus: () => {}
+  editorFocus: () => {},
+  bottomHeight: 100
 };
 var _default = Editor;
 exports.default = _default;

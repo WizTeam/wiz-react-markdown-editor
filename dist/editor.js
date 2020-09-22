@@ -145,7 +145,8 @@ MarkdownEditor.propTypes = {
   markdown: _propTypes.default.string,
   resourceUrl: _propTypes.default.string,
   readOnly: _propTypes.default.bool,
-  wordList: _propTypes.default.array
+  wordList: _propTypes.default.array,
+  bottomHeight: _propTypes.default.number
 };
 MarkdownEditor.defaultProps = {
   width: '100%',
@@ -158,7 +159,8 @@ MarkdownEditor.defaultProps = {
   markdown: '',
   resourceUrl: '',
   readOnly: false,
-  wordList: []
+  wordList: [],
+  bottomHeight: undefined
 };
 var _default = MarkdownEditor;
 exports.default = _default;

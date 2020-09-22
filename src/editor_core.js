@@ -66,7 +66,8 @@ function Editor(props) {
     resourceUrl,
     readOnly,
     wordList,
-    editorFocus
+    editorFocus,
+    bottomHeight
   } = props;
   //
   const editorRef = useRef();
@@ -147,8 +148,8 @@ function Editor(props) {
 
   useEffect(() => {
     function handleSelectionChange(changes) {
-      const { y: editorTop } = changes.cursorCoords;
-      const y = editorTop + document.scrollingElement.scrollTop;
+      const { y } = changes.cursorCoords;
+      // const y = editorTop + document.scrollingElement.scrollTop;
       const container = editor.container;
       //
       if (typewriter) {
@@ -160,10 +161,16 @@ function Editor(props) {
       //   const editableHeight = container.clientHeight - 100;
       //   animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
       // }
-      const containerTop = container.getBoundingClientRect().top;
-      if (window.innerHeight - 250 - containerTop - y < 100) {
+      // const containerTop = container.getBoundingClientRect().top;
+      // if (window.innerHeight - 250 - containerTop - y < 100) {
+      //   const editableHeight =
+      //     containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight + 250;
+      //   animatedScrollTo(document.scrollingElement, editableHeight, 0);
+      // }
+
+      if (window.innerHeight - y < bottomHeight) {
         const editableHeight =
-          containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight + 250;
+          y + document.scrollingElement.scrollTop + bottomHeight - window.innerHeight;
         animatedScrollTo(document.scrollingElement, editableHeight, 0);
       }
     }
@@ -197,6 +204,7 @@ function Editor(props) {
         editor.off('selectionChange', handleSelectionChange);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, props.onChange, theme, typewriter]);
 
   useEffect(() => {
@@ -269,7 +277,8 @@ Editor.propTypes = {
   resourceUrl: PropTypes.string,
   readOnly: PropTypes.bool,
   wordList: PropTypes.array,
-  editorFocus: PropTypes.func
+  editorFocus: PropTypes.func,
+  bottomHeight: PropTypes.number
 };
 
 Editor.defaultProps = {
@@ -283,7 +292,8 @@ Editor.defaultProps = {
   resourceUrl: '',
   readOnly: false,
   wordList: [],
-  editorFocus: () => {}
+  editorFocus: () => {},
+  bottomHeight: 100
 };
 
 export default Editor;

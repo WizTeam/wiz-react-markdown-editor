@@ -119,7 +119,8 @@ MarkdownEditor.propTypes = {
   markdown: PropTypes.string,
   resourceUrl: PropTypes.string,
   readOnly: PropTypes.bool,
-  wordList: PropTypes.array
+  wordList: PropTypes.array,
+  bottomHeight: PropTypes.number
 };
 
 MarkdownEditor.defaultProps = {
@@ -133,7 +134,8 @@ MarkdownEditor.defaultProps = {
   markdown: '',
   resourceUrl: '',
   readOnly: false,
-  wordList: []
+  wordList: [],
+  bottomHeight: undefined
 };
 
 export default MarkdownEditor;
