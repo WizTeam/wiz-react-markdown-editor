@@ -147,7 +147,8 @@ function Editor(props) {
 
   useEffect(() => {
     function handleSelectionChange(changes) {
-      const { y } = changes.cursorCoords;
+      const { y: editorTop } = changes.cursorCoords;
+      const y = editorTop + document.scrollingElement.scrollTop;
       const container = editor.container;
       //
       if (typewriter) {
@@ -155,9 +156,15 @@ function Editor(props) {
       }
 
       // 快到底部时，向下滚动
-      if (container.clientHeight - y < 100) {
-        const editableHeight = container.clientHeight - 100;
-        animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
+      // if (container.clientHeight - y < 100) {
+      //   const editableHeight = container.clientHeight - 100;
+      //   animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
+      // }
+      const containerTop = container.getBoundingClientRect().top;
+      if (window.innerHeight - containerTop - y < 100) {
+        const editableHeight =
+          containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight;
+        animatedScrollTo(document.scrollingElement, editableHeight, 0);
       }
     }
     function handleSystemThemeChange(e) {
