@@ -1310,7 +1310,7 @@ i.ag-footnote-backlink {
 
 @media screen and (max-width: 1100px) {
   div.ag-show-quick-insert-hint p.ag-paragraph.ag-active > span.ag-paragraph-content:first-of-type:empty::after {
-    content: '';
+    content: ' ';
   }
 }
 
