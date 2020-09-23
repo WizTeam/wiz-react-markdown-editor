@@ -173,9 +173,9 @@ function Editor(props) {
       // }
 
 
-      if (window.innerHeight - y < bottomHeight) {
-        const editableHeight = y + document.scrollingElement.scrollTop + bottomHeight - window.innerHeight;
-        (0, _utils.animatedScrollTo)(document.scrollingElement, editableHeight, 0);
+      if (window.outerHeight - bottomHeight < y + 30) {
+        const editableHeight = y + 30 - window.outerHeight + bottomHeight;
+        (0, _utils.animatedScrollTo)(document.scrollingElement, document.scrollingElement.scrollTop + editableHeight, 0);
       }
     }
 
