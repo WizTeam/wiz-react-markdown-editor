@@ -539,12 +539,12 @@ function getContainer(originContainer, options) {
     container.classList.add('ag-show-quick-insert-hint');
   }
 
-  container.setAttribute('contenteditable', true);
-  container.setAttribute('autocorrect', false);
-  container.setAttribute('autocomplete', 'off'); // NOTE: The browser is not able to correct misspelled words words without
+  container.setAttribute('contenteditable', true); // container.setAttribute('autocorrect', false);
+  // container.setAttribute('autocomplete', 'off');
+  // NOTE: The browser is not able to correct misspelled words words without
   // a custom implementation like in Mark Text.
+  // container.setAttribute('spellcheck', !!spellcheckEnabled);
 
-  container.setAttribute('spellcheck', !!spellcheckEnabled);
   container.appendChild(rootDom);
   originContainer.replaceWith(container);
   return container;
