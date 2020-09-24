@@ -981,7 +981,8 @@ span.ag-warn.ag-emoji-marked-text {
 }
 
 .ag-inline-image.ag-image-loading {
-  width: 400px;
+  max-width: 400px;
+  width: 100%;
   height: 250px;
   margin: 0 auto;
   vertical-align: bottom;
