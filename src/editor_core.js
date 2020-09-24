@@ -122,11 +122,11 @@ function Editor(props) {
   }, [MuyaOptions]);
 
   useEffect(() => {
-    if (oldMd !== markdown) {
-      editor?.setOptions({
+    if (oldMd !== markdown && editor) {
+      editor.setOptions({
         transformImageUrl
       });
-      editor?.setMarkdown(markdown, 0);
+      editor.setMarkdown(markdown, 0);
       oldMd = markdown;
     } else {
       editor?.setOptions(
@@ -136,9 +136,7 @@ function Editor(props) {
         true
       );
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transformImageUrl, markdown]);
+  }, [transformImageUrl, markdown, editor]);
 
   useEffect(() => {
     if (editor && editor.container) {

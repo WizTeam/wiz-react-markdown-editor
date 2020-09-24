@@ -132,19 +132,18 @@ function Editor(props) {
     editor === null || editor === void 0 ? void 0 : editor.setOptions(MuyaOptions, true); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MuyaOptions]);
   (0, _react.useEffect)(() => {
-    if (oldMd !== markdown) {
-      editor === null || editor === void 0 ? void 0 : editor.setOptions({
+    if (oldMd !== markdown && editor) {
+      editor.setOptions({
         transformImageUrl
       });
-      editor === null || editor === void 0 ? void 0 : editor.setMarkdown(markdown, 0);
+      editor.setMarkdown(markdown, 0);
       oldMd = markdown;
     } else {
       editor === null || editor === void 0 ? void 0 : editor.setOptions({
         transformImageUrl
       }, true);
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  }, [transformImageUrl, markdown]);
+    }
+  }, [transformImageUrl, markdown, editor]);
   (0, _react.useEffect)(() => {
     if (editor && editor.container) {
       editor.container.setAttribute('contenteditable', !readOnly);

@@ -199,7 +199,8 @@ function useImperative(ref, editor) {
       removeTableRow,
       removeTable,
       saveCursor,
-      resetCursor
+      resetCursor,
+      focus: () => editor === null || editor === void 0 ? void 0 : editor.focus()
     };
   }, [editor]);
 }

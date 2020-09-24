@@ -213,7 +213,7 @@ const App = () => {
         <button type="button" onClick={() => setReadOnly(!readOnly)}>
           readOnly
         </button>
-        <button type="button" onClick={() => editorFocus.current()}>
+        <button type="button" onClick={() => editorRef.current.focus()}>
           editor focus
         </button>
       </div>
@@ -313,7 +313,7 @@ const App = () => {
           focus={focusMode}
           typewriter={typewriterMode}
           onSelectImages={chooseImage}
-          markdown={markdown}
+          markdown="# Note Title"
           resourceUrl={data?.resourceUrl}
           readOnly={readOnly}
           contentId={data?.contentId}

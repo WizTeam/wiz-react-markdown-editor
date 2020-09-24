@@ -183,7 +183,8 @@ export default function useImperative(ref, editor) {
         removeTableRow,
         removeTable,
         saveCursor,
-        resetCursor
+        resetCursor,
+        focus: () => editor?.focus()
       };
     },
     [editor]
