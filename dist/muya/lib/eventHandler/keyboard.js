@@ -65,7 +65,33 @@ class Keyboard {
       if (event.type === 'compositionstart') {
         this.isComposed = true;
         this.inputDom = _selection.default.getSelectionStart();
+        const textNode = document.createTextNode('\u200B');
+        this.tempTextNode = textNode;
+        this.inputDom.insertBefore(textNode, this.inputDom.firstChild);
       } else if (event.type === 'compositionend') {
+        if (this.tempTextNode) {
+          const sel = document.getSelection();
+          const range = sel.getRangeAt(0);
+          const startContainer = range.startContainer;
+          let startOffset = range.startOffset;
+
+          if (this.inputDom.innerText !== '\u200B' && this.tempTextNode.nodeValue.indexOf('\u200B') > -1) {
+            this.tempTextNode.nodeValue = this.tempTextNode.nodeValue.replace('\u200B', '');
+
+            if (startContainer === this.tempTextNode) {
+              if (startOffset > this.tempTextNode.nodeValue.length) {
+                startOffset = this.tempTextNode.nodeValue.length;
+              }
+
+              sel.collapse(startContainer, startOffset);
+            } // } else {
+            //   console.log('no parent');
+
+          }
+
+          this.tempTextNode = null;
+        }
+
         setTimeout(() => {
           this.isComposed = false;
         }, 30);
@@ -256,25 +282,23 @@ class Keyboard {
       if (!this.isComposed) {
         contentState.inputHandler(event);
         this.muya.dispatchChange();
-      } else if (this.isComposed) {
-        // safari空行时会输出<span>
-        const startNode = _selection.default.getSelectionStart();
+      } // else if (this.isComposed) {
+      //   // safari空行时会输出<span>
+      //   const startNode = selection.getSelectionStart();
+      //   if (this.inputDom !== startNode) {
+      //     this.inputDom.innerText = event.data;
+      //     startNode.lastElementChild
+      //       ? startNode.replaceChild(this.inputDom, startNode.lastElementChild)
+      //       : startNode.parentNode.replaceChild(this.inputDom, startNode);
+      //     selection.select(this.inputDom, event.data?.length ?? 0);
+      //   }
+      //   if (event.data === null) {
+      //     event.preventDefault();
+      //     event.stopPropagation();
+      //     return;
+      //   }
+      // }
 
-        if (this.inputDom !== startNode) {
-          var _event$data$length, _event$data;
-
-          this.inputDom.innerText = event.data;
-          startNode.lastElementChild ? startNode.replaceChild(this.inputDom, startNode.lastElementChild) : startNode.parentNode.replaceChild(this.inputDom, startNode);
-
-          _selection.default.select(this.inputDom, (_event$data$length = (_event$data = event.data) === null || _event$data === void 0 ? void 0 : _event$data.length) !== null && _event$data$length !== void 0 ? _event$data$length : 0);
-        }
-
-        if (event.data === null) {
-          event.preventDefault();
-          event.stopPropagation();
-          return;
-        }
-      }
 
       const {
         lang,

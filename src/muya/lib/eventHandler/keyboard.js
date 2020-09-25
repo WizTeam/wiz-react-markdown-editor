@@ -45,12 +45,34 @@ class Keyboard {
       if (event.type === 'compositionstart') {
         this.isComposed = true;
         this.inputDom = selection.getSelectionStart();
+        const textNode = document.createTextNode('\u200B');
+        this.tempTextNode = textNode;
+        this.inputDom.insertBefore(textNode, this.inputDom.firstChild);
       } else if (event.type === 'compositionend') {
+        if (this.tempTextNode) {
+          const sel = document.getSelection();
+          const range = sel.getRangeAt(0);
+          const startContainer = range.startContainer;
+          let startOffset = range.startOffset;
+          if (this.inputDom.innerText !== '\u200B' &&
+            this.tempTextNode.nodeValue.indexOf('\u200B') > -1 ) {
+            this.tempTextNode.nodeValue = this.tempTextNode.nodeValue.replace('\u200B', '');
+            if (startContainer === this.tempTextNode) {
+              if (startOffset > this.tempTextNode.nodeValue.length) {
+                startOffset = this.tempTextNode.nodeValue.length;
+              }
+              sel.collapse(startContainer, startOffset);
+            }
+          // } else {
+          //   console.log('no parent');
+          }
+          this.tempTextNode = null;
+        }
         setTimeout(() => {
           this.isComposed = false;
         }, 30);
-        this.inputDom = null;
-        // Because the compose event will not cause `input` event, So need call `inputHandler` by ourself
+        this.inputDom = null; // Because the compose event will not cause `input` event, So need call `inputHandler` by ourself
+
         contentState.inputHandler(event);
         eventCenter.dispatch('stateChange');
       }
@@ -206,22 +228,23 @@ class Keyboard {
       if (!this.isComposed) {
         contentState.inputHandler(event);
         this.muya.dispatchChange();
-      } else if (this.isComposed) {
-        // safari空行时会输出<span>
-        const startNode = selection.getSelectionStart();
-        if (this.inputDom !== startNode) {
-          this.inputDom.innerText = event.data;
-          startNode.lastElementChild
-            ? startNode.replaceChild(this.inputDom, startNode.lastElementChild)
-            : startNode.parentNode.replaceChild(this.inputDom, startNode);
-          selection.select(this.inputDom, event.data?.length ?? 0);
-        }
-        if (event.data === null) {
-          event.preventDefault();
-          event.stopPropagation();
-          return;
-        }
       }
+      // else if (this.isComposed) {
+      //   // safari空行时会输出<span>
+      //   const startNode = selection.getSelectionStart();
+      //   if (this.inputDom !== startNode) {
+      //     this.inputDom.innerText = event.data;
+      //     startNode.lastElementChild
+      //       ? startNode.replaceChild(this.inputDom, startNode.lastElementChild)
+      //       : startNode.parentNode.replaceChild(this.inputDom, startNode);
+      //     selection.select(this.inputDom, event.data?.length ?? 0);
+      //   }
+      //   if (event.data === null) {
+      //     event.preventDefault();
+      //     event.stopPropagation();
+      //     return;
+      //   }
+      // }
       const { lang, paragraph } = contentState.checkEditLanguage();
       if (lang) {
         eventCenter.dispatch('muya-code-picker', {
