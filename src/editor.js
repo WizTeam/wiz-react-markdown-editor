@@ -91,10 +91,15 @@ const MarkdownEditor = forwardRef((props, ref) => {
 
   return (
     <EditorCore
-      onChange={handleChange}
       markdown={markdown}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...editorCoreProp}
+      onChange={(content) => {
+        handleChange(content);
+        if (editorCoreProp.onChange) {
+          editorCoreProp.onChange(content);
+        }
+      }}
       editorRef={ref}
     />
   );
