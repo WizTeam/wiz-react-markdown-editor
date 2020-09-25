@@ -167,7 +167,11 @@ const dragDropCtrl = ContentState => {
         fileList.push(file);
       }
 
-      const image = fileList.find(file => /image/.test(file.type));
+      let image = fileList.find(file => /image/.test(file.type));
+
+      if (this.muya.options.onInsertImageFromData) {
+        image = await this.muya.options.onInsertImageFromData(image);
+      }
 
       if (image && dropAnchor) {
         const {

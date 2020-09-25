@@ -67,7 +67,8 @@ function Editor(props) {
     readOnly,
     wordList,
     editorFocus,
-    bottomHeight
+    bottomHeight,
+    onInsertImageFromData
   } = props;
   //
   const editorRef = useRef();
@@ -83,12 +84,13 @@ function Editor(props) {
     () => ({
       focusMode: focus,
       theme,
-      imagePathPicker: onSelectImages
+      imagePathPicker: onSelectImages,
+      onInsertImageFromData
       // markdown,
       // transformImageUrl
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [focus, onSelectImages, theme, resourceUrl]
+    [focus, onSelectImages, theme, resourceUrl, onInsertImageFromData]
   );
 
   const editor = useMuya(editorRef, MuyaOptions);

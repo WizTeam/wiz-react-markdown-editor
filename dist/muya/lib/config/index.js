@@ -176,7 +176,7 @@ const MUYA_DEFAULT_OPTION = {
   // implementation like in Mark Text.
   spellcheckEnabled: false,
   // transform the image to local folder, cloud or just return the local path
-  imageAction: null,
+  imageAction: path => path,
   // Call Electron open dialog or input element type is file.
   imagePathPicker: null,
   clipboardFilePath: () => {},

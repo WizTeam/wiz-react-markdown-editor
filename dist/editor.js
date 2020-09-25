@@ -127,10 +127,16 @@ const MarkdownEditor = /*#__PURE__*/(0, _react.forwardRef)((props, ref) => {
     };
   }, [contentId, markdown]);
   return /*#__PURE__*/_react.default.createElement(_editor_core.default, _extends({
-    onChange: handleChange,
     markdown: markdown // eslint-disable-next-line react/jsx-props-no-spreading
 
   }, editorCoreProp, {
+    onChange: content => {
+      handleChange(content);
+
+      if (editorCoreProp.onChange) {
+        editorCoreProp.onChange(content);
+      }
+    },
     editorRef: ref
   }));
 });
