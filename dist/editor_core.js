@@ -72,7 +72,6 @@ const useStyles = (0, _styles.makeStyles)({
   }
 });
 const STANDAR_Y = 320;
-let oldMd = '';
 
 function Editor(props) {
   const classes = useStyles(); //
@@ -134,16 +133,11 @@ function Editor(props) {
     editor === null || editor === void 0 ? void 0 : editor.setOptions(MuyaOptions, true); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MuyaOptions]);
   (0, _react.useEffect)(() => {
-    if (oldMd !== markdown && editor) {
+    if (editor) {
       editor.setOptions({
         transformImageUrl
       });
       editor.setMarkdown(markdown, 0);
-      oldMd = markdown;
-    } else {
-      editor === null || editor === void 0 ? void 0 : editor.setOptions({
-        transformImageUrl
-      }, true);
     }
   }, [transformImageUrl, markdown, editor]);
   (0, _react.useEffect)(() => {
