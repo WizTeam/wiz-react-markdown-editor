@@ -161,21 +161,19 @@ const dragDropCtrl = ContentState => {
         }
         this.render()
 
-        if (this.muya.options.imageAction) {
-          const nSrc = await this.muya.options.imageAction(path, id, name)
-          const { src } = getImageSrc(path)
-          if (src) {
-            this.stateRender.urlMap.set(nSrc, src)
-          }
-          const imageWrapper = this.muya.container.querySelector(`span[data-id=${id}]`)
+        const nSrc = await this.muya.options.imageAction(path, id, name);
+        const { src } = getImageSrc(path)
+        if (src) {
+          this.stateRender.urlMap.set(nSrc, src)
+        }
+        const imageWrapper = this.muya.container.querySelector(`span[data-id=${id}]`)
 
-          if (imageWrapper) {
-            const imageInfo = getImageInfo(imageWrapper)
-            this.replaceImage(imageInfo, {
-              alt: name,
-              src: nSrc
-            })
-          }
+        if (imageWrapper) {
+          const imageInfo = getImageInfo(imageWrapper)
+          this.replaceImage(imageInfo, {
+            alt: name,
+            src: nSrc
+          })
         }
       }
       this.muya.eventCenter.dispatch('stateChange')

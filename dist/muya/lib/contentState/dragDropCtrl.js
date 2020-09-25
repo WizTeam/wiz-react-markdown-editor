@@ -205,26 +205,23 @@ const dragDropCtrl = ContentState => {
           }
         };
         this.render();
+        const nSrc = await this.muya.options.imageAction(path, id, name);
+        const {
+          src
+        } = (0, _utils.getImageInfo)(path);
 
-        if (this.muya.options.imageAction) {
-          const nSrc = await this.muya.options.imageAction(path, id, name);
-          const {
-            src
-          } = (0, _utils.getImageInfo)(path);
+        if (src) {
+          this.stateRender.urlMap.set(nSrc, src);
+        }
 
-          if (src) {
-            this.stateRender.urlMap.set(nSrc, src);
-          }
+        const imageWrapper = this.muya.container.querySelector("span[data-id=".concat(id, "]"));
 
-          const imageWrapper = this.muya.container.querySelector("span[data-id=".concat(id, "]"));
-
-          if (imageWrapper) {
-            const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);
-            this.replaceImage(imageInfo, {
-              alt: name,
-              src: nSrc
-            });
-          }
+        if (imageWrapper) {
+          const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);
+          this.replaceImage(imageInfo, {
+            alt: name,
+            src: nSrc
+          });
         }
       }
 
