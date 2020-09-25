@@ -167,7 +167,11 @@ const dragDropCtrl = ContentState => {
         fileList.push(file);
       }
 
-      const image = fileList.find(file => /image/.test(file.type));
+      let image = fileList.find(file => /image/.test(file.type));
+
+      if (this.muya.options.onInsertImageFromData) {
+        image = await this.muya.options.onInsertImageFromData(image);
+      }
 
       if (image && dropAnchor) {
         const {
@@ -201,23 +205,26 @@ const dragDropCtrl = ContentState => {
           }
         };
         this.render();
-        const nSrc = await this.muya.options.imageAction(path, id, name);
-        const {
-          src
-        } = (0, _utils.getImageInfo)(path);
 
-        if (src) {
-          this.stateRender.urlMap.set(nSrc, src);
-        }
+        if (this.muya.options.imageAction) {
+          const nSrc = await this.muya.options.imageAction(path, id, name);
+          const {
+            src
+          } = (0, _utils.getImageInfo)(path);
 
-        const imageWrapper = this.muya.container.querySelector("span[data-id=".concat(id, "]"));
+          if (src) {
+            this.stateRender.urlMap.set(nSrc, src);
+          }
 
-        if (imageWrapper) {
-          const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);
-          this.replaceImage(imageInfo, {
-            alt: name,
-            src: nSrc
-          });
+          const imageWrapper = this.muya.container.querySelector("span[data-id=".concat(id, "]"));
+
+          if (imageWrapper) {
+            const imageInfo = (0, _getImageInfo.getImageInfo)(imageWrapper);
+            this.replaceImage(imageInfo, {
+              alt: name,
+              src: nSrc
+            });
+          }
         }
       }
 

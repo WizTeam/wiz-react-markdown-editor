@@ -88,7 +88,8 @@ function Editor(props) {
     readOnly,
     wordList,
     editorFocus,
-    bottomHeight
+    bottomHeight,
+    onInsertImageFromData
   } = props; //
 
   const editorRef = (0, _react.useRef)();
@@ -97,11 +98,12 @@ function Editor(props) {
   const MuyaOptions = (0, _react.useMemo)(() => ({
     focusMode: focus,
     theme,
-    imagePathPicker: onSelectImages // markdown,
+    imagePathPicker: onSelectImages,
+    onInsertImageFromData // markdown,
     // transformImageUrl
 
   }), // eslint-disable-next-line react-hooks/exhaustive-deps
-  [focus, onSelectImages, theme, resourceUrl]);
+  [focus, onSelectImages, theme, resourceUrl, onInsertImageFromData]);
   const editor = (0, _useMuya.useMuya)(editorRef, MuyaOptions);
   (0, _react.useEffect)(() => {
     function scrollToCursor(duration = 300) {
