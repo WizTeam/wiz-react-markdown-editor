@@ -214,7 +214,7 @@ class StateRender {
   }
 
   render(blocks, activeBlocks, matches) {
-    const selector = "div#".concat(_config.CLASS_OR_ID.AG_EDITOR_ID);
+    const selector = "div#".concat(this.muya.CLASS_OR_ID.AG_EDITOR_ID);
     const children = blocks.map(block => {
       return this.renderBlock(null, block, activeBlocks, matches, true);
     });
@@ -235,7 +235,7 @@ class StateRender {
     const newVnode = (0, _snabbdom.h)('section', blocks.map(block => this.renderBlock(null, block, activeBlocks, matches)));
     const html = (0, _snabbdom.toHTML)(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1');
     const needToRemoved = [];
-    const firstOldDom = startKey ? document.querySelector("#".concat(startKey)) : document.querySelector("div#".concat(_config.CLASS_OR_ID.AG_EDITOR_ID)).firstElementChild;
+    const firstOldDom = startKey ? document.querySelector("#".concat(startKey)) : document.querySelector("div#".concat(this.muya.CLASS_OR_ID.AG_EDITOR_ID)).firstElementChild;
 
     if (!firstOldDom) {
       // TODO@Jocs Just for fix #541, Because I'll rewrite block and render method, it will nolonger have this issue.

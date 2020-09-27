@@ -101,6 +101,7 @@ class Muya {
     this.dragdrop = new _dragDrop.default(this);
     this.resize = new _resize.default(this);
     this.mouseEvent = new _mouseEvent.default(this);
+    this.CLASS_OR_ID = (0, _config.getClassOrId)();
     this.init();
   }
 
@@ -159,7 +160,7 @@ class Muya {
             }
           }
 
-          if (target.getAttribute('id') === _config.CLASS_OR_ID.AG_EDITOR_ID && target.childElementCount === 0) {
+          if (target.getAttribute('id') === this.CLASS_OR_ID.AG_EDITOR_ID && target.childElementCount === 0) {
             // TODO: the editor can not be input any more. report bugs and recovery...
             eventCenter.dispatch('crashed');
             console.warn('editor crashed, and can not be input any more.');

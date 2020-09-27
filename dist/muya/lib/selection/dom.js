@@ -111,7 +111,8 @@ const isBlockContainer = element => {
 exports.isBlockContainer = isBlockContainer;
 
 const isMuyaEditorElement = element => {
-  return element && element.id === _config.CLASS_OR_ID.AG_EDITOR_ID;
+  // return element && element.id === CLASS_OR_ID.AG_EDITOR_ID
+  return element && element.id.startsWith('ag-editor-id');
 };
 
 exports.isMuyaEditorElement = isMuyaEditorElement;
