@@ -124,7 +124,7 @@ kbd {
 
 @media not print {
 
-  #ag-editor-id {
+  div[id^='ag-editor-id'] {
     max-width: var(--editorAreaWidth);
     min-width: 400px;
     min-height: 100%;
@@ -133,7 +133,7 @@ kbd {
     box-sizing: border-box;
   }
 
-  #ag-editor-id, [contenteditable] {
+  div[id^='ag-editor-id'], [contenteditable] {
     outline: none;
   }
 
@@ -598,13 +598,13 @@ kbd {
     border-bottom-color: var(--floatBgColor);
   }
 
-  #ag-editor-id pre.ag-html-block {
+  div[id^='ag-editor-id'] pre.ag-html-block {
     background: transparent;
     padding: 0 .5rem;
     margin-top: 0;
   }
 
-  #ag-editor-id pre.ag-active.ag-html-block {
+  div[id^='ag-editor-id'] pre.ag-active.ag-html-block {
     background: var(--codeBlockBgColor);
   }
 
@@ -697,7 +697,7 @@ figure[data-role] svg use[fill="#000000"] {
 }
 
 @media screen and (max-width: 450px) {
-  #ag-editor-id {
+  div[id^='ag-editor-id'] {
     padding: 20px 36px 100px;
   }
 }

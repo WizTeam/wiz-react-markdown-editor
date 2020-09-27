@@ -149,32 +149,20 @@ function Editor(props) {
   useEffect(() => {
     function handleSelectionChange(changes) {
       const { y } = changes.cursorCoords;
-      // const y = editorTop + document.scrollingElement.scrollTop;
       const container = editor.container;
+      //
+      let scrollingElement = document.scrollingElement;
+      if (props.scrollingElement) {
+        scrollingElement = props.scrollingElement;
+      }
       //
       if (typewriter) {
         animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, 100);
       }
 
-      // 快到底部时，向下滚动
-      // if (container.clientHeight - y < 100) {
-      //   const editableHeight = container.clientHeight - 100;
-      //   animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
-      // }
-      // const containerTop = container.getBoundingClientRect().top;
-      // if (window.innerHeight - 250 - containerTop - y < 100) {
-      //   const editableHeight =
-      //     containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight + 250;
-      //   animatedScrollTo(document.scrollingElement, editableHeight, 0);
-      // }
-
       if (window.outerHeight - bottomHeight < y + 30) {
         const editableHeight = y + 30 - window.outerHeight + bottomHeight;
-        animatedScrollTo(
-          document.scrollingElement,
-          document.scrollingElement.scrollTop + editableHeight,
-          0
-        );
+        animatedScrollTo(scrollingElement, scrollingElement.scrollTop + editableHeight, 0);
       }
     }
     function handleSystemThemeChange(e) {
