@@ -563,7 +563,7 @@ class Selection {
       focusNode = anchorNode;
       focusOffset = anchorOffset;
     } else if (!isAnchorValid && !isFocusValid) {
-      const editor = document.querySelector('#ag-editor-id').parentNode;
+      const editor = document.querySelector("#".concat(_config.CLASS_OR_ID.AG_EDITOR_ID)).parentNode;
       editor.blur();
       return new _cursor.default({
         start: null,
