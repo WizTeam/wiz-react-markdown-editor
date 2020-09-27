@@ -6,7 +6,7 @@ import Keyboard from './eventHandler/keyboard';
 import DragDrop from './eventHandler/dragDrop';
 import Resize from './eventHandler/resize';
 import ClickEvent from './eventHandler/clickEvent';
-import { CLASS_OR_ID, MUYA_DEFAULT_OPTION } from './config';
+import { CLASS_OR_ID, MUYA_DEFAULT_OPTION, getClassOrId } from './config';
 import { wordCount } from './utils';
 import ExportMarkdown from './utils/exportMarkdown';
 import ExportHtml from './utils/exportHtml';
@@ -44,6 +44,7 @@ class Muya {
     this.dragdrop = new DragDrop(this);
     this.resize = new Resize(this);
     this.mouseEvent = new MouseEvent(this);
+    this.CLASS_OR_ID = getClassOrId();
     this.init();
   }
 
@@ -88,7 +89,7 @@ class Muya {
             }
           }
 
-          if (target.getAttribute('id') === CLASS_OR_ID.AG_EDITOR_ID && target.childElementCount === 0) {
+          if (target.getAttribute('id') === this.CLASS_OR_ID.AG_EDITOR_ID && target.childElementCount === 0) {
             // TODO: the editor can not be input any more. report bugs and recovery...
             eventCenter.dispatch('crashed');
             console.warn('editor crashed, and can not be input any more.');

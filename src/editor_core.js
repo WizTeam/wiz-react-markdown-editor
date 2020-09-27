@@ -50,8 +50,6 @@ const useStyles = makeStyles({
 
 const STANDAR_Y = 320;
 
-let oldMd = '';
-
 function Editor(props) {
   const classes = useStyles();
 
@@ -72,6 +70,8 @@ function Editor(props) {
   } = props;
   //
   const editorRef = useRef();
+
+  const oldMd = useRef('');
 
   const [theme, setTheme] = useState(isDarkMode() ? 'dark' : 'light');
 
@@ -124,12 +124,12 @@ function Editor(props) {
   }, [MuyaOptions]);
 
   useEffect(() => {
-    if (oldMd !== markdown && editor) {
+    if (oldMd.current !== markdown && editor) {
       editor.setOptions({
         transformImageUrl
       });
       editor.setMarkdown(markdown, 0);
-      oldMd = markdown;
+      oldMd.current = markdown;
     } else {
       editor?.setOptions(
         {

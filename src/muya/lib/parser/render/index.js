@@ -166,7 +166,7 @@ class StateRender {
   }
 
   render (blocks, activeBlocks, matches) {
-    const selector = `div#${CLASS_OR_ID.AG_EDITOR_ID}`
+    const selector = `div#${this.muya.CLASS_OR_ID.AG_EDITOR_ID}`
     const children = blocks.map(block => {
       return this.renderBlock(null, block, activeBlocks, matches, true)
     })
@@ -192,7 +192,7 @@ class StateRender {
     const needToRemoved = []
     const firstOldDom = startKey
       ? document.querySelector(`#${startKey}`)
-      : document.querySelector(`div#${CLASS_OR_ID.AG_EDITOR_ID}`).firstElementChild
+      : document.querySelector(`div#${this.muya.CLASS_OR_ID.AG_EDITOR_ID}`).firstElementChild
     if (!firstOldDom) {
       // TODO@Jocs Just for fix #541, Because I'll rewrite block and render method, it will nolonger have this issue.
       return

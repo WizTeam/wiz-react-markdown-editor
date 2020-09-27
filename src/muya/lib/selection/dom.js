@@ -88,7 +88,8 @@ export const isBlockContainer = element => {
 }
 
 export const isMuyaEditorElement = element => {
-  return element && element.id === CLASS_OR_ID.AG_EDITOR_ID
+  // return element && element.id === CLASS_OR_ID.AG_EDITOR_ID
+  return element && element.id.startsWith('ag-editor-id')
 }
 
 export const traverseUp = (current, testElementFunction) => {
