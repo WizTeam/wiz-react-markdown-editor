@@ -71,8 +71,6 @@ function Editor(props) {
   //
   const editorRef = useRef();
 
-  const oldMd = useRef('');
-
   const [theme, setTheme] = useState(isDarkMode() ? 'dark' : 'light');
 
   const transformImageUrl = useCallback(
@@ -124,19 +122,11 @@ function Editor(props) {
   }, [MuyaOptions]);
 
   useEffect(() => {
-    if (oldMd.current !== markdown && editor) {
+    if (editor) {
       editor.setOptions({
         transformImageUrl
       });
       editor.setMarkdown(markdown, 0);
-      oldMd.current = markdown;
-    } else {
-      editor?.setOptions(
-        {
-          transformImageUrl
-        },
-        true
-      );
     }
   }, [transformImageUrl, markdown, editor]);
 
