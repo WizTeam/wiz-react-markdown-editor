@@ -225,6 +225,44 @@ class Keyboard {
   inputBinding() {
     const { container, eventCenter, contentState } = this.muya;
     const inputHandler = (event) => {
+      // var temp = document.createElement('div')
+      // temp.setAttribute('style', 'background:white;opacity: .7; position:fixed; top: 0; right: 0; width:50%');
+      // document.body.appendChild(temp);
+      // console.log(event)
+      if (event.inputType === 'insertParagraph') {
+        // patch IOS 13 中文输入后，Enter 事件无法被阻止，会导致浏览器生成新的 span，所以必须进行修正
+        const sel = document.getSelection();
+        let range = sel.getRangeAt(0);
+        let target = range.startContainer;
+        while(target && !target.id) {
+          target = target.parentNode;
+        }
+        // temp.appendChild(document.createTextNode(target.id + ', ' + target.className))
+        // temp.appendChild(document.createElement('br'));
+        // console.log(target);
+        if (/^span$/i.test(target.tagName)) {
+          const id = target.id;
+          const prev = target.previousElementSibling;
+          if (prev.id === id) {
+            while(prev.firstChild) {
+              prev.removeChild(prev.firstChild);
+            }
+            prev.appendChild(document.createTextNode(''));
+            sel.modify('move', 'backward', 'character');
+            if (!/^br$/i.test(target.firstChild.tagName)) {
+              while(target.firstChild) {
+                prev.appendChild(target.firstChild);
+              }
+              target.parentNode.removeChild(target);
+            }
+            // temp.appendChild(document.createTextNode('fixed'))
+            // temp.appendChild(document.createElement('br'));
+            // console.log(target);
+            // console.log(range)
+            return;
+          }
+        }
+      }
       if (!this.isComposed) {
         contentState.inputHandler(event);
         this.muya.dispatchChange();

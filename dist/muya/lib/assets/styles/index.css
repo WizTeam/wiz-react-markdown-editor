@@ -54,7 +54,7 @@ mark::after {
   content: " [highlight end] ";
 }
 
-#ag-editor-id summary {
+div[id^='ag-editor-id'] summary {
   outline: none;
 }
 
@@ -72,7 +72,7 @@ div.ag-show-quick-insert-hint p.ag-paragraph.ag-active > span.ag-paragraph-conte
 .ag-paragraph {
   position: relative;
 }
-#ag-editor-id > .ag-paragraph {
+div[id^='ag-editor-id'] > .ag-paragraph {
   margin-bottom: 20px;
 }
 

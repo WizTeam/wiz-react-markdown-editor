@@ -88,7 +88,7 @@ class Muya {
             }
           }
 
-          if (target.getAttribute('id') === 'ag-editor-id' && target.childElementCount === 0) {
+          if (target.getAttribute('id') === CLASS_OR_ID.AG_EDITOR_ID && target.childElementCount === 0) {
             // TODO: the editor can not be input any more. report bugs and recovery...
             eventCenter.dispatch('crashed');
             console.warn('editor crashed, and can not be input any more.');
@@ -460,7 +460,7 @@ function getContainer(originContainer, options) {
   // container.setAttribute('autocomplete', 'off');
   // NOTE: The browser is not able to correct misspelled words words without
   // a custom implementation like in Mark Text.
-  // container.setAttribute('spellcheck', !!spellcheckEnabled);
+  container.setAttribute('spellcheck', !!spellcheckEnabled);
   container.appendChild(rootDom);
   originContainer.replaceWith(container);
   return container;

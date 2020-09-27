@@ -341,7 +341,10 @@ export const wordCount = markdown => {
  */
 export const genUpper2LowerKeyHash = keys => {
   return keys.reduce((acc, key) => {
-    const value = key.toLowerCase().replace(/_/g, '-')
+    let value = key.toLowerCase().replace(/_/g, '-')
+    if (key === 'AG_EDITOR_ID') {
+      value += `-${new Date().getTime()}`;
+    }
     return Object.assign(acc, { [key]: value })
   }, {})
 }

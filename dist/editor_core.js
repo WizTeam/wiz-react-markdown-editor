@@ -149,28 +149,23 @@ function Editor(props) {
     function handleSelectionChange(changes) {
       const {
         y
-      } = changes.cursorCoords; // const y = editorTop + document.scrollingElement.scrollTop;
-
+      } = changes.cursorCoords;
       const container = editor.container; //
+
+      let scrollingElement = document.scrollingElement;
+
+      if (props.scrollingElement) {
+        scrollingElement = props.scrollingElement;
+      } //
+
 
       if (typewriter) {
         (0, _utils.animatedScrollTo)(container, container.scrollTop + y - STANDAR_Y, 100);
-      } // 快到底部时，向下滚动
-      // if (container.clientHeight - y < 100) {
-      //   const editableHeight = container.clientHeight - 100;
-      //   animatedScrollTo(container, container.scrollTop + (y - editableHeight), 0);
-      // }
-      // const containerTop = container.getBoundingClientRect().top;
-      // if (window.innerHeight - 250 - containerTop - y < 100) {
-      //   const editableHeight =
-      //     containerTop + document.scrollingElement.scrollTop + y + 100 - window.innerHeight + 250;
-      //   animatedScrollTo(document.scrollingElement, editableHeight, 0);
-      // }
-
+      }
 
       if (window.outerHeight - bottomHeight < y + 30) {
         const editableHeight = y + 30 - window.outerHeight + bottomHeight;
-        (0, _utils.animatedScrollTo)(document.scrollingElement, document.scrollingElement.scrollTop + editableHeight, 0);
+        (0, _utils.animatedScrollTo)(scrollingElement, scrollingElement.scrollTop + editableHeight, 0);
       }
     }
 
