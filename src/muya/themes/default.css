@@ -126,7 +126,7 @@ kbd {
 
   div[id^='ag-editor-id'] {
     max-width: var(--editorAreaWidth);
-    min-width: 400px;
+    min-width: 300px;
     min-height: 100%;
     margin: 0 auto;
     padding: 20px 85px 100px;
