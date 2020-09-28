@@ -563,7 +563,7 @@ class Selection {
       focusNode = anchorNode;
       focusOffset = anchorOffset;
     } else if (!isAnchorValid && !isFocusValid) {
-      const editor = document.querySelector("#".concat(this.muya.CLASS_OR_ID.AG_EDITOR_ID)).parentNode;
+      const editor = document.querySelector("div[id^='ag-editor-id']").parentNode;
       editor.blur();
       return new _cursor.default({
         start: null,
