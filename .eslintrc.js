@@ -54,6 +54,12 @@ module.exports = {
         ExportDeclaration: { multiline: true, minProperties: 6 }
       }
     ],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     quotes: ['error', 'single', { allowTemplateLiterals: true }],
     semi: ['error', 'always'],
     'react-hooks/rules-of-hooks': 'error',
