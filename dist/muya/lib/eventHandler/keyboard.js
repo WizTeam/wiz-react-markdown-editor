@@ -17,17 +17,63 @@ var _emojis = require("../ui/emojis");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// function iosLog(str) {
-//   var temp = document.querySelector('#temp-log');
-//   if (!temp) {
-//     temp = document.createElement('div')
-//     temp.id = 'temp-log'
-//     temp.setAttribute('style', 'background:white;opacity: .95; font-size: 10px; line-height: 1.2; position:fixed; top: 0; right: 0; width:70%;height: 80%;overflow:auto;');
-//     document.body.appendChild(temp);
-//   }
-//   temp.appendChild(document.createTextNode(str));
-//   temp.appendChild(document.createElement('br'));
-// }
+//------------- Debug Start ------------------------
+function iosLog(str) {
+  var temp = document.querySelector('#temp-log');
+
+  if (!temp) {
+    temp = document.createElement('div');
+    temp.id = 'temp-log';
+    temp.setAttribute('style', 'background:white;opacity: .95; paddingLeft: 4px; font-size: 10px; line-height: 1.2; position:fixed; top: 0; right: 0; width:70%;height: 80%;overflow:auto;');
+    document.body.appendChild(temp);
+  }
+
+  temp.appendChild(document.createTextNode(str));
+  temp.appendChild(document.createElement('br'));
+}
+
+function iosLogRange(head) {
+  function strInfo(str) {
+    if (str.length === 0) {
+      return '[]:=0';
+    }
+
+    if (str.length === 1) {
+      return "[](".concat(str.charCodeAt(0), "):=1");
+    }
+
+    return "[".concat(str, "](").concat(str.charCodeAt(0), ",").concat(str.charCodeAt(str.length - 1), "):=").concat(str.length);
+  }
+
+  const sel = document.getSelection();
+  const range = sel.getRangeAt(0);
+  let start = range.startContainer;
+  iosLog("");
+  iosLog("range ---------- ".concat(head, " ----------"));
+
+  if (start.nodeType === 3) {
+    iosLog("".concat(range.startOffset, ",").concat(range.endOffset, " ").concat(strInfo(start.nodeValue)));
+  } else {
+    iosLog("".concat(start, ", ").concat(range.startOffset));
+  }
+
+  if (start.nodeType === 3) {
+    start = start.parentNode;
+  }
+
+  iosLog("Parent:===".concat(start.outerHTML));
+  let children = [];
+  start.childNodes.forEach(child => {
+    if (child.nodeType === 3) {
+      children.push(strInfo(child.nodeValue));
+    } else {
+      children.push(child);
+    }
+  });
+  iosLog("Children:====".concat(children.join(', ')));
+} //------------- Debug End ------------------------
+
+
 class Keyboard {
   constructor(muya) {
     this.muya = muya;
@@ -48,12 +94,12 @@ class Keyboard {
       status ? this.shownFloat.add(tool) : this.shownFloat.delete(tool);
 
       if (tool.name === 'ag-front-menu' && !status) {
-        const seletedParagraph = this.muya.container.querySelector('.ag-selected');
+        const selectedParagraph = this.muya.container.querySelector('.ag-selected');
 
-        if (seletedParagraph) {
+        if (selectedParagraph) {
           this.muya.contentState.selectedBlock = null; // prevent rerender, so change the class manually.
 
-          seletedParagraph.classList.toggle('ag-selected');
+          selectedParagraph.classList.toggle('ag-selected');
         }
       }
     });
@@ -83,16 +129,9 @@ class Keyboard {
         this.tempTextNode = textNode;
         this.tempSpan = span;
         this.inputDom.appendChild(textNode);
-        this.inputDom.insertBefore(span, this.inputDom.firstChild); // const sel = document.getSelection();
-        // const range = sel.getRangeAt(0);
-        // const start = range.startContainer;
-        // iosLog('start -------------------');
-        // if (start.nodeType === 3) {
-        //   iosLog(`${range.startOffset},${range.endOffset} + ' [${start.nodeValue}](${start.nodeValue.charCodeAt(0)}) - ${start.nodeValue.length}`);  
-        // } else {
-        //   iosLog(`${start}, ${range.startOffset}`);
-        // }
-        // iosLog(range.startOffset + ', ' + (start.nodeType === 3 ? start.nodeValue + '[' + start.nodeValue.length : '---'));
+        this.inputDom.insertBefore(span, this.inputDom.firstChild); //------------- Debug Start ------------------------
+
+        iosLogRange('compositionstart'); //------------- Debug End ------------------------
       } else if (event.type === 'compositionend') {
         if (this.tempSpan) {
           if (this.tempSpan.parentNode) {
@@ -121,11 +160,14 @@ class Keyboard {
                 startOffset = temp.nodeValue.length;
               }
 
-              sel.collapse(startContainer, startOffset); // iosLog('end fixed range')
+              sel.collapse(startContainer, startOffset); //------------- Debug Start ------------------------
+              // iosLog('end fixed range')
+              //------------- Debug End ------------------------
             }
-          } // iosLog(`end ---- [${this.tempTextNode.nodeValue}]${this.tempTextNode.nodeValue.length}`)
-          // iosLog(this.inputDom.parentNode.outerHTML);
+          } //------------- Debug Start ------------------------
 
+
+          iosLogRange("compositionend"); //------------- Debug End ------------------------
 
           this.tempTextNode = null;
         }
@@ -317,26 +359,8 @@ class Keyboard {
     } = this.muya;
 
     const inputHandler = event => {
-      const sel = document.getSelection(); // let range = sel.getRangeAt(0);
-      // const start = range.startContainer;
-      // iosLog(`input -----------------${event.data}`);
-      // iosLog(start);
-      // if (start.nodeType === 3) {
-      //   iosLog(`${range.startOffset},${range.endOffset} + ' [${start.nodeValue}](${start.nodeValue.charCodeAt(0)}) - ${start.nodeValue.length}`);  
-      // } else {
-      //   iosLog(`${start}, ${range.startOffset}`);
-      // }
-      // const prev = start.previousSibling;
-      // if (prev) {
-      //   if (prev.nodeType === 3) {
-      //     iosLog(`[${prev.nodeValue}](${prev.nodeValue.charCodeAt(0)}) - ${prev.nodeValue.length}`);
-      //   } else {
-      //     iosLog(prev.outerHTML);
-      //   }
-      // } else {
-      //   iosLog(' ---- no prev');
-      // }
-      // iosLog(start.parentNode.outerHTML)
+      //------------- Debug Start ------------------------
+      iosLogRange("input [".concat(event.data, "]")); //------------- Debug End ------------------------
 
       if (event.inputType === 'insertParagraph') {
         // patch IOS 13 中文输入后，Enter 事件无法被阻止，会导致浏览器生成新的 span，所以必须进行修正

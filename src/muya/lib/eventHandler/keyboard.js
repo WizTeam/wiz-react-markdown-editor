@@ -299,7 +299,6 @@ class Keyboard {
     const inputHandler = (event) => {
       
       //------------- Debug Start ------------------------
-      console.log('input');
       iosLogRange(`input [${event.data}]`);
       //------------- Debug End ------------------------
 
