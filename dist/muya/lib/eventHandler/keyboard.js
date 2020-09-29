@@ -167,11 +167,11 @@ class Keyboard {
             value = value.replace(/\u200B/g, '');
 
             if (value.length === 0 && temp.parentNode) {
-              temp.parentNode.removeChild(temp);
-
-              if (temp.parentNode.childNodes.length === 0) {
+              if (temp.parentNode.childNodes.length === 1) {
                 temp.parentNode.appendChild(document.createTextNode(''));
               }
+
+              temp.parentNode.removeChild(temp);
             } else if (startContainer === temp) {
               temp.nodeValue = value;
 
