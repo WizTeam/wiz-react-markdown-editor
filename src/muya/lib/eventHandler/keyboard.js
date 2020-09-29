@@ -49,7 +49,7 @@ function iosLogRange(head) {
     }
   });
   iosLog(`Children:====${children.join(', ')}`);
-  
+
 }
 //------------- Debug End ------------------------
 
@@ -311,7 +311,7 @@ class Keyboard {
   inputBinding() {
     const { container, eventCenter, contentState } = this.muya;
     const inputHandler = (event) => {
-      
+
       //------------- Debug Start ------------------------
       iosLogRange(`input [${event.data}]`);
       //------------- Debug End ------------------------

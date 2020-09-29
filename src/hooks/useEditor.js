@@ -10,10 +10,8 @@ export default function useEditor(editorRef) {
         changes.start.offset === changes.end.offset &&
         changes.start.block.functionType === 'cellContent'
       ) {
-        if (!isCursorInTable) {
-          setIsCursorInTable(true);
-        }
-      } else if (isCursorInTable) {
+        setIsCursorInTable(true);
+      } else {
         setIsCursorInTable(false);
       }
       if (!isFocus) {

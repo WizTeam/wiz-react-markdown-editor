@@ -13,10 +13,8 @@ function useEditor(editorRef) {
   (0, _react.useEffect)(() => {
     function handleSelectionChange(changes) {
       if (changes.start.key === changes.end.key && changes.start.offset === changes.end.offset && changes.start.block.functionType === 'cellContent') {
-        if (!isCursorInTable) {
-          setIsCursorInTable(true);
-        }
-      } else if (isCursorInTable) {
+        setIsCursorInTable(true);
+      } else {
         setIsCursorInTable(false);
       }
 
