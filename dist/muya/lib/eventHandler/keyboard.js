@@ -18,62 +18,52 @@ var _emojis = require("../ui/emojis");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //------------- Debug Start ------------------------
-function iosLog(str) {
-  var temp = document.querySelector('#temp-log');
-
-  if (!temp) {
-    temp = document.createElement('div');
-    temp.id = 'temp-log';
-    temp.setAttribute('style', 'background:white;opacity: .95; paddingLeft: 4px; font-size: 10px; line-height: 1.2; position:fixed; top: 0; right: 0; width:70%;height: 80%;overflow:auto;');
-    document.body.appendChild(temp);
-  }
-
-  temp.appendChild(document.createTextNode(str));
-  temp.appendChild(document.createElement('br'));
-}
-
-function iosLogRange(head) {
-  function strInfo(str) {
-    if (str.length === 0) {
-      return '[]:=0';
-    }
-
-    if (str.length === 1) {
-      return "[".concat(str, "](").concat(str.charCodeAt(0), "):=1");
-    }
-
-    return "[".concat(str, "](").concat(str.charCodeAt(0), ",").concat(str.charCodeAt(str.length - 1), "):=").concat(str.length);
-  }
-
-  const sel = document.getSelection();
-  const range = sel.getRangeAt(0);
-  let start = range.startContainer;
-  iosLog("");
-  iosLog("range ---------- ".concat(head, " ----------"));
-
-  if (start.nodeType === 3) {
-    iosLog("".concat(range.startOffset, ",").concat(range.endOffset, " ").concat(strInfo(start.nodeValue)));
-  } else {
-    iosLog("".concat(start, ", ").concat(range.startOffset));
-  }
-
-  if (start.nodeType === 3) {
-    start = start.parentNode;
-  }
-
-  iosLog("Parent:===".concat(start.outerHTML));
-  let children = [];
-  start.childNodes.forEach(child => {
-    if (child.nodeType === 3) {
-      children.push(strInfo(child.nodeValue));
-    } else {
-      children.push(child);
-    }
-  });
-  iosLog("Children:====".concat(children.join(', ')));
-} //------------- Debug End ------------------------
-
-
+// function iosLog(str) {
+//   var temp = document.querySelector('#temp-log');
+//   if (!temp) {
+//     temp = document.createElement('div')
+//     temp.id = 'temp-log'
+//     temp.setAttribute('style', 'background:white;opacity: .95; paddingLeft: 4px; font-size: 10px; line-height: 1.2; position:fixed; top: 0; right: 0; width:70%;height: 80%;overflow:auto;');
+//     document.body.appendChild(temp);
+//   }
+//   temp.appendChild(document.createTextNode(str));
+//   temp.appendChild(document.createElement('br'));
+// }
+// function iosLogRange(head) {
+//   function strInfo(str) {
+//     if (str.length === 0) {
+//       return '[]:=0';
+//     }
+//     if (str.length === 1) {
+//       return `[${str}](${str.charCodeAt(0)}):=1`;
+//     }
+//     return `[${str}](${str.charCodeAt(0)},${str.charCodeAt(str.length - 1)}):=${str.length}`;
+//   }
+//   const sel = document.getSelection();
+//   const range = sel.getRangeAt(0);
+//   let start = range.startContainer;
+//   iosLog(``);
+//   iosLog(`range ---------- ${head} ----------`);
+//   if (start.nodeType === 3) {
+//     iosLog(`${range.startOffset},${range.endOffset} ${strInfo(start.nodeValue)}`);
+//   } else {
+//     iosLog(`${start}, ${range.startOffset}`);
+//   }
+//   if (start.nodeType === 3) {
+//     start = start.parentNode;
+//   }
+//   iosLog(`Parent:===${start.outerHTML}`);
+//   let children = [];
+//   start.childNodes.forEach((child) => {
+//     if (child.nodeType === 3) {
+//       children.push(strInfo(child.nodeValue));
+//     } else {
+//       children.push(child);
+//     }
+//   });
+//   iosLog(`Children:====${children.join(', ')}`);
+// }
+//------------- Debug End ------------------------
 class Keyboard {
   constructor(muya) {
     this.muya = muya;
@@ -142,9 +132,9 @@ class Keyboard {
         if (value.length === 0) {
           sel.collapse(this.inputDom, 0);
         } //------------- Debug Start ------------------------
+        // iosLogRange('compositionstart');
+        //------------- Debug End ------------------------
 
-
-        iosLogRange('compositionstart'); //------------- Debug End ------------------------
       } else if (event.type === 'compositionend') {
         if (this.tempSpan) {
           if (this.tempSpan.parentNode) {
@@ -184,9 +174,9 @@ class Keyboard {
               //------------- Debug End ------------------------
             }
           } //------------- Debug Start ------------------------
+          // iosLogRange(`compositionend`);
+          //------------- Debug End ------------------------
 
-
-          iosLogRange("compositionend"); //------------- Debug End ------------------------
 
           this.tempTextNode = null;
         }
@@ -379,8 +369,8 @@ class Keyboard {
 
     const inputHandler = event => {
       //------------- Debug Start ------------------------
-      iosLogRange("input [".concat(event.data, "]")); //------------- Debug End ------------------------
-
+      // iosLogRange(`input [${event.data}]`);
+      //------------- Debug End ------------------------
       if (event.inputType === 'insertParagraph') {
         // patch IOS 13 中文输入后，Enter 事件无法被阻止，会导致浏览器生成新的 span，所以必须进行修正
         const sel = document.getSelection();

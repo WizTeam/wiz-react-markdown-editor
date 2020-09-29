@@ -313,7 +313,7 @@ class Keyboard {
     const inputHandler = (event) => {
 
       //------------- Debug Start ------------------------
-      iosLogRange(`input [${event.data}]`);
+      // iosLogRange(`input [${event.data}]`);
       //------------- Debug End ------------------------
 
       if (event.inputType === 'insertParagraph') {
