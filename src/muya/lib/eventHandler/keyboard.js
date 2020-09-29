@@ -4,7 +4,7 @@ import { findNearestParagraph } from '../selection/dom';
 import { getParagraphReference, getImageInfo } from '../utils';
 import { checkEditEmoji } from '../ui/emojis';
 
-// //------------- Debug Start ------------------------
+//------------- Debug Start ------------------------
 // function iosLog(str) {
 //   var temp = document.querySelector('#temp-log');
 //   if (!temp) {
@@ -51,7 +51,7 @@ import { checkEditEmoji } from '../ui/emojis';
 //   iosLog(`Children:====${children.join(', ')}`);
   
 // }
-// //------------- Debug End ------------------------
+//------------- Debug End ------------------------
 
 class Keyboard {
   constructor(muya) {
@@ -311,9 +311,9 @@ class Keyboard {
   inputBinding() {
     const { container, eventCenter, contentState } = this.muya;
     const inputHandler = (event) => {
-      
+
       //------------- Debug Start ------------------------
-      // iosLogRange(`input [${event.data}]`);
+      iosLogRange(`input [${event.data}]`);
       //------------- Debug End ------------------------
 
       if (event.inputType === 'insertParagraph') {
