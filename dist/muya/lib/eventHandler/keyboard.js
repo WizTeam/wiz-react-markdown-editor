@@ -39,7 +39,7 @@ function iosLogRange(head) {
     }
 
     if (str.length === 1) {
-      return "[](".concat(str.charCodeAt(0), "):=1");
+      return "[".concat(str, "](").concat(str.charCodeAt(0), "):=1");
     }
 
     return "[".concat(str, "](").concat(str.charCodeAt(0), ",").concat(str.charCodeAt(str.length - 1), "):=").concat(str.length);
@@ -123,21 +123,35 @@ class Keyboard {
       if (event.type === 'compositionstart') {
         this.isComposed = true;
         this.inputDom = _selection.default.getSelectionStart();
-        const span = document.createElement('span');
-        span.setAttribute('contenteditable', 'false');
-        const textNode = document.createTextNode('\u200B');
-        this.tempTextNode = textNode;
-        this.tempSpan = span;
-        this.inputDom.appendChild(textNode);
-        this.inputDom.insertBefore(span, this.inputDom.firstChild); //------------- Debug Start ------------------------
+        const sel = document.getSelection();
+        const range = sel.getRangeAt(0);
+        const start = range.startContainer;
+
+        if (!this.tempSpan || !this.tempSpan.parentNode) {
+          const span = document.createElement('span');
+          span.setAttribute('contenteditable', 'false');
+          const textNode = document.createTextNode('\u200B');
+          this.tempTextNode = textNode;
+          this.tempSpan = span;
+          this.inputDom.appendChild(textNode);
+          this.inputDom.insertBefore(span, this.inputDom.firstChild);
+        }
+
+        const value = this.inputDom.innerText.replace(/\u200B/g, '');
+
+        if (value.length === 0) {
+          sel.collapse(this.inputDom, 0);
+        } //------------- Debug Start ------------------------
+
 
         iosLogRange('compositionstart'); //------------- Debug End ------------------------
       } else if (event.type === 'compositionend') {
         if (this.tempSpan) {
           if (this.tempSpan.parentNode) {
             this.tempSpan.parentNode.removeChild(this.tempSpan);
-            this.tempSpan = null;
           }
+
+          this.tempSpan = null;
         }
 
         if (this.tempTextNode) {
@@ -148,11 +162,16 @@ class Keyboard {
           const temp = this.tempTextNode;
           let value = temp.nodeValue;
 
-          if (this.inputDom.innerText !== '\u200B' && value.indexOf('\u200B') > -1) {
+          if (value.indexOf('\u200B') > -1) {
+            // if (this.inputDom.innerText !== '\u200B' && value.indexOf('\u200B') > -1 ) {
             value = value.replace(/\u200B/g, '');
 
             if (value.length === 0 && temp.parentNode) {
               temp.parentNode.removeChild(temp);
+
+              if (temp.parentNode.childNodes.length === 0) {
+                temp.parentNode.appendChild(document.createTextNode(''));
+              }
             } else if (startContainer === temp) {
               temp.nodeValue = value;
 
