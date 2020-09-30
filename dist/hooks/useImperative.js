@@ -55,8 +55,18 @@ function useImperative(ref, editor) {
       editor.contentState.updateParagraph('ul-task', true);
     }
 
-    function insertTable() {
-      editor.contentState.updateParagraph('table', true);
+    function insertTable({
+      rows,
+      columns
+    }) {
+      if (rows && columns) {
+        editor.contentState.createTable({
+          rows,
+          columns
+        });
+      } else {
+        editor.contentState.updateParagraph('table', true);
+      }
     }
 
     function insertImage(imageInfo) {

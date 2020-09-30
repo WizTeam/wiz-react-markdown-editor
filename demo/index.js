@@ -99,7 +99,7 @@ const App = () => {
         break;
       case 'table':
         stopClickRef.current = true;
-        editorRef.current.insertTable();
+        editorRef.current.insertTable({ rows: 5, columns: 5 });
         break;
       case 'image':
         stopClickRef.current = true;

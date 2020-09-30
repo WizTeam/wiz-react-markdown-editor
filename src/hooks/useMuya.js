@@ -37,13 +37,13 @@ if (os.isPc) {
   Muya.use(FootnoteTool);
   Muya.use(FrontMenu);
   Muya.use(TagInsert);
+  Muya.use(TablePicker);
+  Muya.use(TableBarTools);
+  Muya.use(ImageSelector, {
+    unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
+  });
+  Muya.use(ImagePathPicker);
 }
-Muya.use(TablePicker);
-Muya.use(TableBarTools);
-Muya.use(ImageSelector, {
-  unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
-});
-Muya.use(ImagePathPicker);
 
 function formatOptions(options) {
   Object.assign(

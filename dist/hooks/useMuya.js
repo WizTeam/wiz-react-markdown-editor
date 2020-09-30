@@ -71,17 +71,17 @@ if (_utils.os.isPc) {
   _lib.default.use(_frontMenu.default);
 
   _lib.default.use(_tagInsert.default);
+
+  _lib.default.use(_tablePicker.default);
+
+  _lib.default.use(_tableTools.default);
+
+  _lib.default.use(_imageSelector.default, {
+    unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
+  });
+
+  _lib.default.use(_imagePicker.default);
 }
-
-_lib.default.use(_tablePicker.default);
-
-_lib.default.use(_tableTools.default);
-
-_lib.default.use(_imageSelector.default, {
-  unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY
-});
-
-_lib.default.use(_imagePicker.default);
 
 function formatOptions(options) {
   Object.assign(options, /dark/i.test(options.theme) ? {

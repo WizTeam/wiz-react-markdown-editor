@@ -1313,5 +1313,11 @@ i.ag-footnote-backlink {
   div.ag-show-quick-insert-hint p.ag-paragraph.ag-active > span.ag-paragraph-content:first-of-type:empty::after {
     content: ' ';
   }
+  figure.ag-active .ag-tool-table.ag-tool-bar,
+  table.ag-active tr .ag-drag-handler.left,
+  table.ag-active tr .ag-drag-handler.bottom {
+    display: none;
+  }
+
 }
 
