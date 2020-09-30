@@ -77,6 +77,10 @@ function useImperative(ref, editor) {
       }
     }
 
+    function replaceImage(oldImageInfo, imageInfo) {
+      this.muya.contentState.replaceImage(oldImageInfo, imageInfo);
+    }
+
     function insertHorizontalLine() {
       editor.contentState.updateParagraph('hr', true);
     }
@@ -210,6 +214,7 @@ function useImperative(ref, editor) {
       removeTable,
       saveCursor,
       resetCursor,
+      replaceImage,
       focus: () => editor === null || editor === void 0 ? void 0 : editor.focus()
     };
   }, [editor]);

@@ -64,6 +64,10 @@ export default function useImperative(ref, editor) {
         }
       }
 
+      function replaceImage(oldImageInfo, imageInfo) {
+        this.muya.contentState.replaceImage(oldImageInfo, imageInfo);
+      }
+
       function insertHorizontalLine() {
         editor.contentState.updateParagraph('hr', true);
       }
@@ -188,6 +192,7 @@ export default function useImperative(ref, editor) {
         removeTable,
         saveCursor,
         resetCursor,
+        replaceImage,
         focus: () => editor?.focus()
       };
     },
