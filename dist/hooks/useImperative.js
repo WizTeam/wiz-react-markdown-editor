@@ -78,7 +78,7 @@ function useImperative(ref, editor) {
     }
 
     function replaceImage(oldImageInfo, imageInfo) {
-      this.muya.contentState.replaceImage(oldImageInfo, imageInfo);
+      editor.contentState.replaceImage(oldImageInfo, imageInfo);
     }
 
     function insertHorizontalLine() {
