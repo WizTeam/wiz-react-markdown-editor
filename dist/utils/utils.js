@@ -89,7 +89,7 @@ const os = function () {
   const isAndroid = /(?:Android)/.test(ua);
   const isFireFox = /(?:Firefox)/.test(ua);
   const isChrome = /(?:Chrome|CriOS)/.test(ua);
-  const isTablet = /(?:iPad|PlayBook)/.test(ua) || isAndroid && !/(?:Mobile)/.test(ua) || isFireFox && /(?:Tablet)/.test(ua);
+  const isTablet = /(?:iPad|PlayBook)/.test(ua) || isAndroid && !/(?:Mobile)/.test(ua) || isFireFox && /(?:Tablet)/.test(ua) || 'ontouchend' in document;
   const isPhone = /(?:iPhone)/.test(ua) && !isTablet;
   const isPc = !isPhone && !isAndroid && !isSymbian;
   return {

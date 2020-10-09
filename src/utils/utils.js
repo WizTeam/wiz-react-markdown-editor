@@ -73,7 +73,8 @@ export const os = (function () {
   const isTablet =
     /(?:iPad|PlayBook)/.test(ua) ||
     (isAndroid && !/(?:Mobile)/.test(ua)) ||
-    (isFireFox && /(?:Tablet)/.test(ua));
+    (isFireFox && /(?:Tablet)/.test(ua)) ||
+    'ontouchend' in document;
   const isPhone = /(?:iPhone)/.test(ua) && !isTablet;
   const isPc = !isPhone && !isAndroid && !isSymbian;
   return {
