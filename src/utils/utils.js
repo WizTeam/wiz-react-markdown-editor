@@ -76,7 +76,7 @@ export const os = (function () {
     (isFireFox && /(?:Tablet)/.test(ua)) ||
     'ontouchend' in document;
   const isPhone = /(?:iPhone)/.test(ua) && !isTablet;
-  const isPc = !isPhone && !isAndroid && !isSymbian;
+  const isPc = !isPhone && !isAndroid && !isSymbian && !isTablet;
   return {
     isTablet,
     isPhone,
