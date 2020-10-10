@@ -257,7 +257,7 @@ function renderLeafBlock(parent, block, activeBlocks, matches, useCache = false)
     } = this.muya.options;
     Object.assign(data.attrs, {
       type: 'checkbox',
-      style: "top: ".concat((fontSize * lineHeight / 2 - 8).toFixed(2), "px")
+      style: "top: ".concat((fontSize * lineHeight / 2 - 11).toFixed(2), "px")
     });
     selector = "".concat(type, "#").concat(key, ".").concat(_config.CLASS_OR_ID.AG_TASK_LIST_ITEM_CHECKBOX);
 

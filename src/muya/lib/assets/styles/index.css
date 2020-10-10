@@ -522,15 +522,15 @@ li.ag-task-list-item > input.ag-checkbox-checked ~ * {
 
 li.ag-task-list-item > input[type=checkbox]::before {
   content: '';
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   display: inline-block;
-  border: 2px solid var(--editorColor50);
-  border-radius: 50%;
+  border: 1px solid var(--editorColor50);
+  border-radius: 2px;
   background-color: var(--editorBgColor);
   position: absolute;
-  top: -2px;
-  left: -2px;
+  /* top: -2px;
+  left: -2px; */
   box-sizing: border-box;
   transition: all .2s ease;
 }
@@ -538,15 +538,15 @@ li.ag-task-list-item > input[type=checkbox]::before {
 li.ag-task-list-item > input::after {
   content: '';
   transform: rotate(-45deg) scale(0);
-  width: 8px;
-  height: 4px;
+  width: 6px;
+  height: 3px;
   border: 2px solid var(--editorBgColor);
   border-top: none;
   border-right: none;
   position: absolute;
   display: inline-block;
-  top: 1px;
-  left: 4px;
+  top: 2.7px;
+  left: 5px;
   transform-origin: bottom;
   transition: all .2s ease;
 }
@@ -556,8 +556,8 @@ li.ag-task-list-item > input.ag-checkbox-checked::after {
 }
 
 li.ag-task-list-item > input.ag-checkbox-checked::before {
-  background: var(--themeColor);
-  border-color: var(--themeColor);
+  background: var(--editorColor80);
+  border-color: var(--editorColor80);
   box-shadow: 0 3px 12px 0 var(--selectionColor);
 }
 
