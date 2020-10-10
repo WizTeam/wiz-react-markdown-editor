@@ -366,9 +366,12 @@ const formatCtrl = (ContentState) => {
           `#${content}#`
         );
         offset = content.length + 2;
-      } else {
+      } else if (content) {
         block.text = `#${content}#`;
         offset = 1 + content.length;
+      } else {
+        block.text = `#`;
+        offset = 1;
       }
       this.cursor = {
         start: { key, offset },
