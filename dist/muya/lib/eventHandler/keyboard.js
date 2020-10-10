@@ -19,6 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //------------- Debug Start ------------------------
 // function iosLog(str) {
+//   // console.log(str);
 //   var temp = document.querySelector('#temp-log');
 //   if (!temp) {
 //     temp = document.createElement('div')
@@ -62,8 +63,36 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //     }
 //   });
 //   iosLog(`Children:====${children.join(', ')}`);
+//   const cell = getParentByTag(start, ['th', 'td', 'tr', 'table'], true);
+//   if (cell && cell !== start) {
+//     iosLog(`Cell:====${cell.outerHTML}`);
+//   }
 // }
 //------------- Debug End ------------------------
+function getParentByTag(target, tagList, includeSelf) {
+  let parent = includeSelf ? target : target.parentNode;
+
+  if (parent.nodeType === 3) {
+    parent = target.parentNode;
+  }
+
+  while (parent && parent !== document.body) {
+    const pTag = parent.tagName.toLowerCase();
+
+    for (let i = 0; i < tagList.length; i++) {
+      const tag = tagList[i].toLowerCase();
+
+      if (tag === pTag) {
+        return parent;
+      }
+    }
+
+    parent = parent.parentNode;
+  }
+
+  return null;
+}
+
 class Keyboard {
   constructor(muya) {
     this.muya = muya;
@@ -113,18 +142,23 @@ class Keyboard {
       if (event.type === 'compositionstart') {
         this.isComposed = true;
         this.inputDom = _selection.default.getSelectionStart();
+        const includeSelf = true;
+        const cell = getParentByTag(this.inputDom, ['td', 'th'], includeSelf);
         const sel = document.getSelection();
-        const range = sel.getRangeAt(0);
-        const start = range.startContainer;
 
         if (!this.tempSpan || !this.tempSpan.parentNode) {
           const span = document.createElement('span');
           span.setAttribute('contenteditable', 'false');
           const textNode = document.createTextNode('\u200B');
           this.tempTextNode = textNode;
-          this.tempSpan = span;
           this.inputDom.appendChild(textNode);
-          this.inputDom.insertBefore(span, this.inputDom.firstChild);
+
+          if (!cell) {
+            this.tempSpan = span; // table 内不需要添加 span
+
+            this.inputDom.insertBefore(span, this.inputDom.firstChild);
+            return;
+          }
         }
 
         const value = this.inputDom.innerText.replace(/\u200B/g, '');
