@@ -151,14 +151,16 @@ class Keyboard {
           span.setAttribute('contenteditable', 'false');
           const textNode = document.createTextNode('\u200B');
           this.tempTextNode = textNode;
-          this.inputDom.appendChild(textNode);
 
-          if (!cell) {
-            this.tempSpan = span; // table 内不需要添加 span
-
+          if (cell) {
+            // table 内不需要添加 span
+            this.inputDom.appendChild(span);
+          } else {
+            this.inputDom.appendChild(textNode);
             this.inputDom.insertBefore(span, this.inputDom.firstChild);
-            return;
           }
+
+          this.tempSpan = span;
         }
 
         const value = this.inputDom.innerText.replace(/\u200B/g, '');

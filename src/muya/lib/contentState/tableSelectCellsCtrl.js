@@ -10,6 +10,9 @@ const tableSelectCellsCtrl = ContentState => {
     const { target } = event
     const cell = target.closest('th') || target.closest('td')
     const tableId = target.closest('table').id
+    if (!cell || !tableId) {
+      return;
+    }
     const row = getIndex('left', cell)
     const column = getIndex('bottom', cell)
     this.cellSelectInfo = {
@@ -25,9 +28,11 @@ const tableSelectCellsCtrl = ContentState => {
       selectedCells: []
     }
 
-    const mouseMoveId = eventCenter.attachDOMEvent(document.body, 'mousemove', this.handleCellMouseMove.bind(this))
-    const mouseUpId = eventCenter.attachDOMEvent(document.body, 'mouseup', this.handleCellMouseUp.bind(this))
-    this.cellSelectEventIds.push(mouseMoveId, mouseUpId)
+    if (event.type !== 'touch') {
+      const mouseMoveId = eventCenter.attachDOMEvent(document.body, 'mousemove', this.handleCellMouseMove.bind(this))
+      const mouseUpId = eventCenter.attachDOMEvent(document.body, 'mouseup', this.handleCellMouseUp.bind(this))
+      this.cellSelectEventIds.push(mouseMoveId, mouseUpId)
+    }
   }
 
   ContentState.prototype.handleCellMouseMove = function (event) {
@@ -37,7 +42,9 @@ const tableSelectCellsCtrl = ContentState => {
     const isOverSameTableCell = cell && table && table.id === this.cellSelectInfo.tableId
     if (isOverSameTableCell && cell.id !== this.cellSelectInfo.anchor.key) {
       this.cellSelectInfo.isStartSelect = true
-      this.muya.blur(true)
+      if (event.type !== 'touch') {
+        this.muya.blur(true)
+      }
     }
     if (isOverSameTableCell && this.cellSelectInfo.isStartSelect) {
       const row = getIndex('left', cell)
@@ -63,6 +70,20 @@ const tableSelectCellsCtrl = ContentState => {
     this.cellSelectEventIds = []
     if (this.cellSelectInfo && this.cellSelectInfo.isStartSelect) {
       event.preventDefault()
+      if (event.type === 'touch') {
+        const sel = document.getSelection();
+        if (this.cellSelectInfo.selectedCells.length > 0) {
+          const first = this.cellSelectInfo.selectedCells[0];
+          const target = document.querySelector(`#${first.key}`);
+          if (target) {
+            iosLog(target);
+            sel.collapse(target, 0);
+          }
+          sel.removeAllRanges();
+        }
+        this.muya.blur(true)
+      }
+
       const { tableId, selectedCells, anchor, focus } = this.cellSelectInfo
       // Mouse up outside table, the focus is null
       if (!focus) {

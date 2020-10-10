@@ -1,6 +1,7 @@
 import ContentState from './contentState';
 import EventCenter from './eventHandler/event';
 import MouseEvent from './eventHandler/mouseEvent';
+import TouchEvent from './eventHandler/touchEvent';
 import Clipboard from './eventHandler/clipboard';
 import Keyboard from './eventHandler/keyboard';
 import DragDrop from './eventHandler/dragDrop';
@@ -44,6 +45,7 @@ class Muya {
     this.dragdrop = new DragDrop(this);
     this.resize = new Resize(this);
     this.mouseEvent = new MouseEvent(this);
+    this.touchEvent = new TouchEvent(this);
     this.CLASS_OR_ID = getClassOrId();
     this.init();
   }
