@@ -72,6 +72,9 @@ div.ag-show-quick-insert-hint p.ag-paragraph.ag-active > span.ag-paragraph-conte
 .ag-paragraph {
   position: relative;
 }
+.ag-paragraph[data-role='TABLE'] {
+  overflow-x: auto;
+}
 div[id^='ag-editor-id'] > .ag-paragraph {
   margin-bottom: 20px;
 }
