@@ -22,6 +22,11 @@ const tableSelectCellsCtrl = ContentState => {
     } = event;
     const cell = target.closest('th') || target.closest('td');
     const tableId = target.closest('table').id;
+
+    if (!cell || !tableId) {
+      return;
+    }
+
     const row = (0, _tableDragBarCtrl.getIndex)('left', cell);
     const column = (0, _tableDragBarCtrl.getIndex)('bottom', cell);
     this.cellSelectInfo = {
@@ -36,9 +41,12 @@ const tableSelectCellsCtrl = ContentState => {
       cells: (0, _tableDragBarCtrl.getAllTableCells)(tableId),
       selectedCells: []
     };
-    const mouseMoveId = eventCenter.attachDOMEvent(document.body, 'mousemove', this.handleCellMouseMove.bind(this));
-    const mouseUpId = eventCenter.attachDOMEvent(document.body, 'mouseup', this.handleCellMouseUp.bind(this));
-    this.cellSelectEventIds.push(mouseMoveId, mouseUpId);
+
+    if (event.type !== 'touch') {
+      const mouseMoveId = eventCenter.attachDOMEvent(document.body, 'mousemove', this.handleCellMouseMove.bind(this));
+      const mouseUpId = eventCenter.attachDOMEvent(document.body, 'mouseup', this.handleCellMouseUp.bind(this));
+      this.cellSelectEventIds.push(mouseMoveId, mouseUpId);
+    }
   };
 
   ContentState.prototype.handleCellMouseMove = function (event) {
@@ -51,7 +59,10 @@ const tableSelectCellsCtrl = ContentState => {
 
     if (isOverSameTableCell && cell.id !== this.cellSelectInfo.anchor.key) {
       this.cellSelectInfo.isStartSelect = true;
-      this.muya.blur(true);
+
+      if (event.type !== 'touch') {
+        this.muya.blur(true);
+      }
     }
 
     if (isOverSameTableCell && this.cellSelectInfo.isStartSelect) {
@@ -83,6 +94,24 @@ const tableSelectCellsCtrl = ContentState => {
 
     if (this.cellSelectInfo && this.cellSelectInfo.isStartSelect) {
       event.preventDefault();
+
+      if (event.type === 'touch') {
+        const sel = document.getSelection();
+
+        if (this.cellSelectInfo.selectedCells.length > 0) {
+          const first = this.cellSelectInfo.selectedCells[0];
+          const target = document.querySelector("#".concat(first.key));
+
+          if (target) {
+            sel.collapse(target, 0);
+          }
+
+          sel.removeAllRanges();
+        }
+
+        this.muya.blur(true);
+      }
+
       const {
         tableId,
         selectedCells,

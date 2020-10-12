@@ -11,6 +11,8 @@ var _event = _interopRequireDefault(require("./eventHandler/event"));
 
 var _mouseEvent = _interopRequireDefault(require("./eventHandler/mouseEvent"));
 
+var _touchEvent = _interopRequireDefault(require("./eventHandler/touchEvent"));
+
 var _clipboard = _interopRequireDefault(require("./eventHandler/clipboard"));
 
 var _keyboard = _interopRequireDefault(require("./eventHandler/keyboard"));
@@ -101,6 +103,7 @@ class Muya {
     this.dragdrop = new _dragDrop.default(this);
     this.resize = new _resize.default(this);
     this.mouseEvent = new _mouseEvent.default(this);
+    this.touchEvent = new _touchEvent.default(this);
     this.CLASS_OR_ID = (0, _config.getClassOrId)();
     this.init();
   }

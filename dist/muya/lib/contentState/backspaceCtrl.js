@@ -188,7 +188,7 @@ const backspaceCtrl = ContentState => {
       start,
       end
     }); // Just for fix delete the last `#` or all the atx heading cause error @fixme
-    // safari 删除整行默认会把sapn删掉
+    // safari 删除整行默认会把span删掉
 
     if (start.key === end.key && startBlock.type === 'span' && startBlock.functionType === 'atxLine' || isSelectLine) {
       if (start.offset === 0 && end.offset === startBlock.text.length || start.offset === end.offset && start.offset === 1 && startBlock.text === '#') {

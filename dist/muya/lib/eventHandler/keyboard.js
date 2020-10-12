@@ -68,6 +68,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //     iosLog(`Cell:====${cell.outerHTML}`);
 //   }
 // }
+// window.iosLog = iosLog;
+// window.iosLogRange = iosLogRange;
 //------------- Debug End ------------------------
 function getParentByTag(target, tagList, includeSelf) {
   let parent = includeSelf ? target : target.parentNode;
@@ -150,10 +152,10 @@ class Keyboard {
           const span = document.createElement('span');
           span.setAttribute('contenteditable', 'false');
           const textNode = document.createTextNode('\u200B');
-          this.tempTextNode = textNode;
+          this.tempTextNode = textNode; // if (cell && sel.isCollapsed) {
 
           if (cell) {
-            // table 内不需要添加 span
+            // table 内 span 插入到最前面，会导致中文输入失败
             this.inputDom.appendChild(span);
           } else {
             this.inputDom.appendChild(textNode);
