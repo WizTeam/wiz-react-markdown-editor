@@ -47,13 +47,26 @@ export default function renderContainerBlock (parent, block, activeBlocks, match
     attrs: {},
     dataset: {}
   }
-
+  
   if (editable === false) {
     Object.assign(data.attrs, {
       contenteditable: 'false',
       spellcheck: 'false'
     })
   }
+
+  // table 特殊处理暂时关闭，ipad 快速输入内容（英文输入法），由于重新渲染会导致键盘丢失
+  // 避免 表格被部分选中，所以给 表格的 figure 设置 contenteditable = false;
+  // if (editable === false || (type === 'figure' && functionType ==='table')) {
+  //   Object.assign(data.attrs, {
+  //     contenteditable: 'false',
+  //     spellcheck: 'false'
+  //   })
+  // } else if (type === 'table') {
+  //   Object.assign(data.attrs, {
+  //     contenteditable: 'true'
+  //   })
+  // }
 
   if (/code|pre/.test(type)) {
     if (typeof lang === 'string' && !!lang) {

@@ -76,7 +76,6 @@ const tableSelectCellsCtrl = ContentState => {
           const first = this.cellSelectInfo.selectedCells[0];
           const target = document.querySelector(`#${first.key}`);
           if (target) {
-            iosLog(target);
             sel.collapse(target, 0);
           }
           sel.removeAllRanges();

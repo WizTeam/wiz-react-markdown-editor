@@ -150,7 +150,7 @@ const backspaceCtrl = (ContentState) => {
     const endOutmostBlock = this.findOutMostBlock(endBlock);
     const isSelectLine = this.isSelectLine({ start, end });
     // Just for fix delete the last `#` or all the atx heading cause error @fixme
-    // safari 删除整行默认会把sapn删掉
+    // safari 删除整行默认会把span删掉
     if (
       (start.key === end.key &&
         startBlock.type === 'span' &&
