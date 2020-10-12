@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import selection from './muya/lib/selection';
 import { useMuya } from './hooks/useMuya';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth } from './theme';
@@ -136,9 +137,8 @@ function Editor(props) {
     }
   }, [editor, readOnly]);
 
-  useEffect(() => {
-    function handleSelectionChange(changes) {
-      const { y } = changes.cursorCoords;
+  const scrollToSaferView = useCallback(
+    (y) => {
       const container = editor.container;
       //
       let scrollingElement = document.scrollingElement;
@@ -154,6 +154,21 @@ function Editor(props) {
         const editableHeight = y + 30 - window.outerHeight + bottomHeight;
         animatedScrollTo(scrollingElement, scrollingElement.scrollTop + editableHeight, 0);
       }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [bottomHeight, editor.container, typewriter]
+  );
+
+  useEffect(() => {
+    if (bottomHeight) {
+      scrollToSaferView(selection.getCursorCoords().y);
+    }
+  }, [bottomHeight, scrollToSaferView]);
+
+  useEffect(() => {
+    function handleSelectionChange(changes) {
+      const { y } = changes.cursorCoords;
+      scrollToSaferView(y);
     }
     function handleSystemThemeChange(e) {
       if (e.matches && theme !== 'dark') {
@@ -185,8 +200,7 @@ function Editor(props) {
         editor.off('selectionChange', handleSelectionChange);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor, props.onChange, theme, typewriter]);
+  }, [editor, props.onChange, scrollToSaferView, theme, typewriter]);
 
   useEffect(() => {
     editor?.tagInsert?.setWordList(wordList);

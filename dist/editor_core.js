@@ -13,6 +13,8 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _selection = _interopRequireDefault(require("./muya/lib/selection"));
+
 var _useMuya = require("./hooks/useMuya");
 
 var _theme = require("./theme");
@@ -145,28 +147,37 @@ function Editor(props) {
       editor.container.setAttribute('contenteditable', !readOnly);
     }
   }, [editor, readOnly]);
+  const scrollToSaferView = (0, _react.useCallback)(y => {
+    const container = editor.container; //
+
+    let scrollingElement = document.scrollingElement;
+
+    if (props.scrollingElement) {
+      scrollingElement = props.scrollingElement;
+    } //
+
+
+    if (typewriter) {
+      (0, _utils.animatedScrollTo)(container, container.scrollTop + y - STANDAR_Y, 100);
+    }
+
+    if (window.outerHeight - bottomHeight < y + 30) {
+      const editableHeight = y + 30 - window.outerHeight + bottomHeight;
+      (0, _utils.animatedScrollTo)(scrollingElement, scrollingElement.scrollTop + editableHeight, 0);
+    }
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  [bottomHeight, editor.container, typewriter]);
+  (0, _react.useEffect)(() => {
+    if (bottomHeight) {
+      scrollToSaferView(_selection.default.getCursorCoords().y);
+    }
+  }, [bottomHeight, scrollToSaferView]);
   (0, _react.useEffect)(() => {
     function handleSelectionChange(changes) {
       const {
         y
       } = changes.cursorCoords;
-      const container = editor.container; //
-
-      let scrollingElement = document.scrollingElement;
-
-      if (props.scrollingElement) {
-        scrollingElement = props.scrollingElement;
-      } //
-
-
-      if (typewriter) {
-        (0, _utils.animatedScrollTo)(container, container.scrollTop + y - STANDAR_Y, 100);
-      }
-
-      if (window.outerHeight - bottomHeight < y + 30) {
-        const editableHeight = y + 30 - window.outerHeight + bottomHeight;
-        (0, _utils.animatedScrollTo)(scrollingElement, scrollingElement.scrollTop + editableHeight, 0);
-      }
+      scrollToSaferView(y);
     }
 
     function handleSystemThemeChange(e) {
@@ -201,8 +212,8 @@ function Editor(props) {
         editor.off('change', props.onChange);
         editor.off('selectionChange', handleSelectionChange);
       }
-    }; // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor, props.onChange, theme, typewriter]);
+    };
+  }, [editor, props.onChange, scrollToSaferView, theme, typewriter]);
   (0, _react.useEffect)(() => {
     var _editor$tagInsert;
 
