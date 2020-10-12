@@ -166,11 +166,12 @@ function Editor(props) {
       (0, _utils.animatedScrollTo)(scrollingElement, scrollingElement.scrollTop + editableHeight, 0);
     }
   }, // eslint-disable-next-line react-hooks/exhaustive-deps
-  [bottomHeight, editor.container, typewriter]);
+  [bottomHeight, editor, typewriter]);
   (0, _react.useEffect)(() => {
-    if (bottomHeight) {
+    if (bottomHeight && editor) {
       scrollToSaferView(_selection.default.getCursorCoords().y);
-    }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [bottomHeight, scrollToSaferView]);
   (0, _react.useEffect)(() => {
     function handleSelectionChange(changes) {

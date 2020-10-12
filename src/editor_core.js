@@ -156,13 +156,14 @@ function Editor(props) {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [bottomHeight, editor.container, typewriter]
+    [bottomHeight, editor, typewriter]
   );
 
   useEffect(() => {
-    if (bottomHeight) {
+    if (bottomHeight && editor) {
       scrollToSaferView(selection.getCursorCoords().y);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bottomHeight, scrollToSaferView]);
 
   useEffect(() => {
