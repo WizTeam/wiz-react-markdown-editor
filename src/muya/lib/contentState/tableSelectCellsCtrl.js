@@ -73,21 +73,33 @@ const tableSelectCellsCtrl = ContentState => {
       if (event.type === 'touch') {
         const sel = document.getSelection();
         if (this.cellSelectInfo.selectedCells.length > 0) {
-          const first = this.cellSelectInfo.selectedCells[0];
-          const target = document.querySelector(`#${first.key}`);
-          if (target) {
-            sel.collapse(target, 0);
+          const last = this.cellSelectInfo.selectedCells[this.cellSelectInfo.selectedCells.length - 1];
+          const lastCell = document.querySelector(`#${last.key}`);
+          if (lastCell) {
+            const children = lastCell.querySelectorAll('span.ag-cell-content');
+            const lastChild = children[children.length - 1];
+            if (lastChild) {
+              sel.collapse(lastChild, lastChild.childNodes.length);
+            }
+          } else {
+            sel.removeAllRanges();
+            this.muya.blur(true);
           }
-          sel.removeAllRanges();
-        }
-        this.muya.blur(true)
+          // const first = this.cellSelectInfo.selectedCells[0];
+          // const target = document.querySelector(`#${first.key}`);
+          // if (target) {
+          //   sel.collapse(target, 0);
+          // }
+          // sel.removeAllRanges();
+        }          
       }
 
       const { tableId, selectedCells, anchor, focus } = this.cellSelectInfo
       // Mouse up outside table, the focus is null
-      if (!focus) {
+      if (!focus || event.type === 'touch') {
         return
       }
+
       // We need to handle this after click event, because click event is emited after mouseup(mouseup will be followed by a click envent), but we set
       // the `selectedTableCells` to null when click event emited.
       setTimeout(() => {

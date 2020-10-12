@@ -99,17 +99,27 @@ const tableSelectCellsCtrl = ContentState => {
         const sel = document.getSelection();
 
         if (this.cellSelectInfo.selectedCells.length > 0) {
-          const first = this.cellSelectInfo.selectedCells[0];
-          const target = document.querySelector("#".concat(first.key));
+          const last = this.cellSelectInfo.selectedCells[this.cellSelectInfo.selectedCells.length - 1];
+          const lastCell = document.querySelector("#".concat(last.key));
 
-          if (target) {
-            sel.collapse(target, 0);
-          }
+          if (lastCell) {
+            const children = lastCell.querySelectorAll('span.ag-cell-content');
+            const lastChild = children[children.length - 1];
 
-          sel.removeAllRanges();
+            if (lastChild) {
+              sel.collapse(lastChild, lastChild.childNodes.length);
+            }
+          } else {
+            sel.removeAllRanges();
+            this.muya.blur(true);
+          } // const first = this.cellSelectInfo.selectedCells[0];
+          // const target = document.querySelector(`#${first.key}`);
+          // if (target) {
+          //   sel.collapse(target, 0);
+          // }
+          // sel.removeAllRanges();
+
         }
-
-        this.muya.blur(true);
       }
 
       const {
@@ -119,7 +129,7 @@ const tableSelectCellsCtrl = ContentState => {
         focus
       } = this.cellSelectInfo; // Mouse up outside table, the focus is null
 
-      if (!focus) {
+      if (!focus || event.type === 'touch') {
         return;
       } // We need to handle this after click event, because click event is emited after mouseup(mouseup will be followed by a click envent), but we set
       // the `selectedTableCells` to null when click event emited.
