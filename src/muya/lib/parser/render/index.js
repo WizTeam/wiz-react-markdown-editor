@@ -186,8 +186,8 @@ class StateRender {
     const cursorOutMostBlock = activeBlocks[activeBlocks.length - 1]
     // If cursor is not in render blocks, need to render cursor block independently
     const needRenderCursorBlock = blocks.indexOf(cursorOutMostBlock) === -1
-    const newVnode = h('section', blocks.map(block => this.renderBlock(null, block, activeBlocks, matches)))
-    const html = toHTML(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1')
+    // const newVnode = h('section', blocks.map(block => this.renderBlock(null, block, activeBlocks, matches)))
+    // const html = toHTML(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1')
 
     const needToRemoved = []
     const firstOldDom = startKey
@@ -204,10 +204,10 @@ class StateRender {
       nextSibling = nextSibling.nextElementSibling
     }
     nextSibling && needToRemoved.push(nextSibling)
+    Array.from(needToRemoved).forEach((dom, index) => patch(toVNode(dom), this.renderBlock(null, blocks[index], activeBlocks, matches)))
+    // firstOldDom.insertAdjacentHTML('beforebegin', html)
 
-    firstOldDom.insertAdjacentHTML('beforebegin', html)
-
-    Array.from(needToRemoved).forEach(dom => dom.remove())
+    // Array.from(needToRemoved).forEach(dom => dom.remove())
 
     // Render cursor block independently
     if (needRenderCursorBlock) {

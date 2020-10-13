@@ -4,6 +4,9 @@ const TABLE_BLOCK_REG = /^\|.*?(\\*)\|.*?(\\*)\|/
 
 const tableBlockCtrl = ContentState => {
   ContentState.prototype.createTableInFigure = function ({ rows, columns }, tableContents = []) {
+    const tableContainer = this.createBlock('div', {
+      className: ['ag-table-scroll']
+    });
     const table = this.createBlock('table', {
       row: rows - 1, // zero base
       column: columns - 1
@@ -36,8 +39,9 @@ const tableBlockCtrl = ContentState => {
     if (tBody.children.length) {
       this.appendChild(table, tBody)
     }
+    this.appendChild(tableContainer, table)
 
-    return table
+    return tableContainer
   }
 
   ContentState.prototype.createFigure = function ({ rows, columns }) {

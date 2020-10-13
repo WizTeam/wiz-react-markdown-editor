@@ -14,6 +14,9 @@ const tableBlockCtrl = ContentState => {
     rows,
     columns
   }, tableContents = []) {
+    const tableContainer = this.createBlock('div', {
+      className: ['ag-table-scroll']
+    });
     const table = this.createBlock('table', {
       row: rows - 1,
       // zero base
@@ -49,7 +52,8 @@ const tableBlockCtrl = ContentState => {
       this.appendChild(table, tBody);
     }
 
-    return table;
+    this.appendChild(tableContainer, table);
+    return tableContainer;
   };
 
   ContentState.prototype.createFigure = function ({

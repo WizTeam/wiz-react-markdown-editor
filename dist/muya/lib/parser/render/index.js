@@ -231,9 +231,9 @@ class StateRender {
   partialRender(blocks, activeBlocks, matches, startKey, endKey) {
     const cursorOutMostBlock = activeBlocks[activeBlocks.length - 1]; // If cursor is not in render blocks, need to render cursor block independently
 
-    const needRenderCursorBlock = blocks.indexOf(cursorOutMostBlock) === -1;
-    const newVnode = (0, _snabbdom.h)('section', blocks.map(block => this.renderBlock(null, block, activeBlocks, matches)));
-    const html = (0, _snabbdom.toHTML)(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1');
+    const needRenderCursorBlock = blocks.indexOf(cursorOutMostBlock) === -1; // const newVnode = h('section', blocks.map(block => this.renderBlock(null, block, activeBlocks, matches)))
+    // const html = toHTML(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1')
+
     const needToRemoved = [];
     const firstOldDom = startKey ? document.querySelector("#".concat(startKey)) : document.querySelector("div#".concat(this.muya.CLASS_OR_ID.AG_EDITOR_ID)).firstElementChild;
 
@@ -251,8 +251,9 @@ class StateRender {
     }
 
     nextSibling && needToRemoved.push(nextSibling);
-    firstOldDom.insertAdjacentHTML('beforebegin', html);
-    Array.from(needToRemoved).forEach(dom => dom.remove()); // Render cursor block independently
+    Array.from(needToRemoved).forEach((dom, index) => (0, _snabbdom.patch)((0, _snabbdom.toVNode)(dom), this.renderBlock(null, blocks[index], activeBlocks, matches))); // firstOldDom.insertAdjacentHTML('beforebegin', html)
+    // Array.from(needToRemoved).forEach(dom => dom.remove())
+    // Render cursor block independently
 
     if (needRenderCursorBlock) {
       const {

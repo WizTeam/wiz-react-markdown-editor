@@ -296,6 +296,7 @@ class ContentState {
         index
       }
     } = this;
+    this.setNextRenderRange();
     const activeBlocks = this.getActiveBlocks();
     const [startKey, endKey] = this.renderRange;
     matches.forEach((m, i) => {
@@ -303,8 +304,9 @@ class ContentState {
     });
     const startIndex = startKey ? blocks.findIndex(block => block.key === startKey) : 0;
     const endIndex = endKey ? blocks.findIndex(block => block.key === endKey) + 1 : blocks.length;
-    const needRenderBlocks = blocks.slice(startIndex, endIndex);
-    this.setNextRenderRange();
+    const needRenderBlocks = blocks.slice(startIndex, endIndex); // 提到获取[startKey, endKey]前
+    // this.setNextRenderRange()
+
     this.stateRender.collectLabels(blocks);
     this.stateRender.partialRender(needRenderBlocks, activeBlocks, matches, startKey, endKey);
 

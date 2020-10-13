@@ -48,8 +48,13 @@ function renderContainerBlock(parent, block, activeBlocks, matches, useCache = f
     bulletMarkerOrDelimiter,
     isLooseListItem,
     lang,
-    column
+    column,
+    className
   } = block;
+
+  if (className) {
+    selector = className.reduce((prev, curr) => prev + ".".concat(curr), selector);
+  }
 
   if (type === 'table') {
     this.renderingTable = block;

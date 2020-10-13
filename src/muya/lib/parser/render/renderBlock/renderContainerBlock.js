@@ -33,8 +33,13 @@ export default function renderContainerBlock (parent, block, activeBlocks, match
     bulletMarkerOrDelimiter,
     isLooseListItem,
     lang,
-    column
+    column,
+    className
   } = block
+
+  if (className) {
+    selector = className.reduce((prev, curr) => prev + `.${curr}`, selector)
+  }
 
   if (type === 'table') {
     this.renderingTable = block
@@ -47,7 +52,7 @@ export default function renderContainerBlock (parent, block, activeBlocks, match
     attrs: {},
     dataset: {}
   }
-  
+
   if (editable === false) {
     Object.assign(data.attrs, {
       contenteditable: 'false',
