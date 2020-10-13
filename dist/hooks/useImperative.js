@@ -185,6 +185,14 @@ function useImperative(ref, editor) {
       }
     }
 
+    function indent() {
+      editor.contentState.indent();
+    }
+
+    function unindent() {
+      editor.contentState.unindent();
+    }
+
     return {
       insertTag,
       insertBold,
@@ -215,6 +223,8 @@ function useImperative(ref, editor) {
       saveCursor,
       resetCursor,
       replaceImage,
+      indent,
+      unindent,
       focus: () => editor === null || editor === void 0 ? void 0 : editor.focus()
     };
   }, [editor]);

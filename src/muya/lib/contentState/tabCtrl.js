@@ -274,25 +274,13 @@ const tabCtrl = ContentState => {
     return result
   }
 
-  ContentState.prototype.tabHandler = function (event) {
-    // disable tab focus
-    event.preventDefault()
-
+  ContentState.prototype.indent = function () {
     const { start, end } = selection.getCursorRange()
     if (!start || !end) {
       return
     }
     const startBlock = this.getBlock(start.key)
     const endBlock = this.getBlock(end.key)
-
-    if (event.shiftKey) {
-      const unindentType = this.isUnindentableListItem(startBlock)
-      if (unindentType) {
-        this.unindentListItem(startBlock, unindentType)
-      }
-      return
-    }
-
     // Handle `tab` to jump to the end of format when the cursor is at the end of format content.
     if (
       start.key === end.key &&
@@ -397,6 +385,28 @@ const tabCtrl = ContentState => {
       return this.indentListItem()
     }
     return this.insertTab()
+  }
+
+  ContentState.prototype.unindent = function () {
+    const { start } = selection.getCursorRange()
+    if (start) {
+      const startBlock = this.getBlock(start.key)
+      const unindentType = this.isUnindentableListItem(startBlock)
+      if (unindentType) {
+        this.unindentListItem(startBlock, unindentType)
+      }
+    }
+  }
+
+  ContentState.prototype.tabHandler = function (event) {
+    // disable tab focus
+    event.preventDefault()
+
+    if (event.shiftKey) {
+      this.unindent()
+    } else {
+      return this.indent()
+    }
   }
 }
 

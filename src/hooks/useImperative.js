@@ -163,6 +163,14 @@ export default function useImperative(ref, editor) {
           editor.contentState.setCursor();
         }
       }
+
+      function indent() {
+        editor.contentState.indent();
+      }
+
+      function unindent() {
+        editor.contentState.unindent();
+      }
       return {
         insertTag,
         insertBold,
@@ -193,6 +201,8 @@ export default function useImperative(ref, editor) {
         saveCursor,
         resetCursor,
         replaceImage,
+        indent,
+        unindent,
         focus: () => editor?.focus()
       };
     },

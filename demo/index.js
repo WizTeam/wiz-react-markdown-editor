@@ -159,6 +159,12 @@ const App = () => {
       case 'resetCursor':
         editorRef.current.resetCursor();
         break;
+      case 'indent':
+        editorRef.current.indent();
+        break;
+      case 'unindent':
+        editorRef.current.unindent();
+        break;
       default:
         break;
     }
@@ -241,6 +247,12 @@ const App = () => {
         </button>
         <button type="button" onMouseDown={(e) => handleInsert('checkedBox', e)}>
           checkedBox
+        </button>
+        <button type="button" onMouseDown={(e) => handleInsert('indent', e)}>
+          indent
+        </button>
+        <button type="button" onMouseDown={(e) => handleInsert('unindent', e)}>
+          unindent
         </button>
         {isCursorInTable ? (
           <>
