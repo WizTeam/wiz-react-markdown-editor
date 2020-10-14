@@ -268,7 +268,11 @@ const importRegister = ContentState => {
           block = this.createBlock('figure')
           block.functionType = 'table'
           this.appendChild(thead, theadRow)
-          this.appendChild(block, table)
+          const tableContainer = this.createBlock('div', {
+            className: ['ag-table-scroll']
+          });
+          this.appendChild(tableContainer, table)
+          this.appendChild(block, tableContainer)
           this.appendChild(table, thead)
           if (tbody.children.length) {
             this.appendChild(table, tbody)
