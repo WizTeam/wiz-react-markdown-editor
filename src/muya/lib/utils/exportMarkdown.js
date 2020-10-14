@@ -67,7 +67,7 @@ class ExportMarkdown {
           this.insertLineBreak(result, indent);
           switch (block.functionType) {
             case 'table': {
-              const table = block.children[0];
+              const table = block.children[0].children[0];
               result.push(this.normalizeTable(table, indent));
               break;
             }
