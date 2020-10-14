@@ -236,6 +236,7 @@ class StateRender {
 
     const needToRemoved = [];
     const firstOldDom = startKey ? document.querySelector("#".concat(startKey)) : document.querySelector("div#".concat(this.muya.CLASS_OR_ID.AG_EDITOR_ID)).firstElementChild;
+    const parentDom = firstOldDom.parentElement;
 
     if (!firstOldDom) {
       // TODO@Jocs Just for fix #541, Because I'll rewrite block and render method, it will nolonger have this issue.
@@ -244,6 +245,7 @@ class StateRender {
 
     needToRemoved.push(firstOldDom);
     let nextSibling = firstOldDom.nextElementSibling;
+    let prevDom = firstOldDom.previousElementSibling;
 
     while (nextSibling && nextSibling.id !== endKey) {
       needToRemoved.push(nextSibling);
@@ -251,7 +253,25 @@ class StateRender {
     }
 
     nextSibling && needToRemoved.push(nextSibling);
-    Array.from(needToRemoved).forEach((dom, index) => (0, _snabbdom.patch)((0, _snabbdom.toVNode)(dom), this.renderBlock(null, blocks[index], activeBlocks, matches))); // firstOldDom.insertAdjacentHTML('beforebegin', html)
+    let i = 0;
+    blocks.forEach(block => {
+      const renderBlock = this.renderBlock(null, block, activeBlocks, matches);
+
+      if (block.key === needToRemoved[i].id) {
+        (0, _snabbdom.patch)((0, _snabbdom.toVNode)(needToRemoved[i++]), renderBlock);
+        prevDom = prevDom ? prevDom.nextElementSibling : parentDom.children[0];
+      } else {
+        const newVnode = (0, _snabbdom.h)('section', [renderBlock]);
+        const newDom = (0, _snabbdom.toHTML)(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1');
+
+        if (prevDom) {
+          prevDom.insertAdjacentHTML('afterend', newDom);
+          prevDom = prevDom.nextElementSibling;
+        } else {
+          firstOldDom.insertAdjacentHTML('beforebegin', newDom);
+        }
+      }
+    }); // firstOldDom.insertAdjacentHTML('beforebegin', html)
     // Array.from(needToRemoved).forEach(dom => dom.remove())
     // Render cursor block independently
 
