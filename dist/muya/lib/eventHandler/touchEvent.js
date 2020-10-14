@@ -12,6 +12,7 @@ var _utils = require("../utils");
 class TouchEvent {
   constructor(muya) {
     this.muya = muya;
+    this.eventIds = [];
     this.TouchBinding();
   }
 
