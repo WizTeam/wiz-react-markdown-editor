@@ -4,6 +4,7 @@ import { collectFootnotes } from '../utils';
 class TouchEvent {
   constructor(muya) {
     this.muya = muya;
+    this.eventIds = [];
     this.TouchBinding();
   }
 
