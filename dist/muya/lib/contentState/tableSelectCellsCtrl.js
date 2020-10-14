@@ -41,12 +41,9 @@ const tableSelectCellsCtrl = ContentState => {
       cells: (0, _tableDragBarCtrl.getAllTableCells)(tableId),
       selectedCells: []
     };
-
-    if (event.type !== 'touch') {
-      const mouseMoveId = eventCenter.attachDOMEvent(document.body, 'mousemove', this.handleCellMouseMove.bind(this));
-      const mouseUpId = eventCenter.attachDOMEvent(document.body, 'mouseup', this.handleCellMouseUp.bind(this));
-      this.cellSelectEventIds.push(mouseMoveId, mouseUpId);
-    }
+    const mouseMoveId = eventCenter.attachDOMEvent(document.body, 'mousemove', this.handleCellMouseMove.bind(this));
+    const mouseUpId = eventCenter.attachDOMEvent(document.body, 'mouseup', this.handleCellMouseUp.bind(this));
+    this.cellSelectEventIds.push(mouseMoveId, mouseUpId);
   };
 
   ContentState.prototype.handleCellMouseMove = function (event) {
@@ -59,10 +56,7 @@ const tableSelectCellsCtrl = ContentState => {
 
     if (isOverSameTableCell && cell.id !== this.cellSelectInfo.anchor.key) {
       this.cellSelectInfo.isStartSelect = true;
-
-      if (event.type !== 'touch') {
-        this.muya.blur(true);
-      }
+      this.muya.blur(true);
     }
 
     if (isOverSameTableCell && this.cellSelectInfo.isStartSelect) {
@@ -94,34 +88,6 @@ const tableSelectCellsCtrl = ContentState => {
 
     if (this.cellSelectInfo && this.cellSelectInfo.isStartSelect) {
       event.preventDefault();
-
-      if (event.type === 'touch') {
-        const sel = document.getSelection();
-
-        if (this.cellSelectInfo.selectedCells.length > 0) {
-          const last = this.cellSelectInfo.selectedCells[this.cellSelectInfo.selectedCells.length - 1];
-          const lastCell = document.querySelector("#".concat(last.key));
-
-          if (lastCell) {
-            const children = lastCell.querySelectorAll('span.ag-cell-content');
-            const lastChild = children[children.length - 1];
-
-            if (lastChild) {
-              sel.collapse(lastChild, lastChild.childNodes.length);
-            }
-          } else {
-            sel.removeAllRanges();
-            this.muya.blur(true);
-          } // const first = this.cellSelectInfo.selectedCells[0];
-          // const target = document.querySelector(`#${first.key}`);
-          // if (target) {
-          //   sel.collapse(target, 0);
-          // }
-          // sel.removeAllRanges();
-
-        }
-      }
-
       const {
         tableId,
         selectedCells,
@@ -129,7 +95,7 @@ const tableSelectCellsCtrl = ContentState => {
         focus
       } = this.cellSelectInfo; // Mouse up outside table, the focus is null
 
-      if (!focus || event.type === 'touch') {
+      if (!focus) {
         return;
       } // We need to handle this after click event, because click event is emited after mouseup(mouseup will be followed by a click envent), but we set
       // the `selectedTableCells` to null when click event emited.
