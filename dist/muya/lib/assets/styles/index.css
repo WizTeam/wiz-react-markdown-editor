@@ -94,7 +94,8 @@ div[id^='ag-editor-id'] > .ag-paragraph {
 .ag-cell-content {
   display: inline-block;
   min-width: 4em;
-  width: 100%;
+  max-width: 200px;
+  width: max-content;
   min-height: 10px;
 }
 
