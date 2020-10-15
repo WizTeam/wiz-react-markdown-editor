@@ -135,18 +135,19 @@ const tableBlockCtrl = ContentState => {
 
     const columns = rowHeader.length;
     const rows = 2;
-    const table = this.createTableInFigure({
+    const tableContainer = this.createTableInFigure({
       rows,
       columns
     }, [rowHeader.map(text => ({
       text,
       align: ''
     }))]);
+    const table = tableContainer.children[0];
     block.type = 'figure';
     block.text = '';
     block.children = [];
     block.functionType = 'table';
-    this.appendChild(block, table);
+    this.appendChild(block, tableContainer);
     return this.firstInDescendant(table.children[1]); // first cell content in tbody
   };
 
