@@ -5,6 +5,7 @@ import { patch, toVNode, toHTML, h } from './snabbdom'
 import { beginRules } from '../rules'
 import renderInlines from './renderInlines'
 import renderBlock from './renderBlock'
+import { block } from '../marked/blockRules'
 
 class StateRender {
   constructor (muya) {
@@ -189,7 +190,7 @@ class StateRender {
     // const newVnode = h('section', blocks.map(block => this.renderBlock(null, block, activeBlocks, matches)))
     // const html = toHTML(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1')
 
-    const needToRemoved = []
+    const needChangeDom = []
     const firstOldDom = startKey
       ? document.querySelector(`#${startKey}`)
       : document.querySelector(`div#${this.muya.CLASS_OR_ID.AG_EDITOR_ID}`).firstElementChild
@@ -199,19 +200,27 @@ class StateRender {
       // TODO@Jocs Just for fix #541, Because I'll rewrite block and render method, it will nolonger have this issue.
       return
     }
-    needToRemoved.push(firstOldDom)
+    function addNeedChangeDom (dom) {
+      if (blocks.findIndex(({key}) => key === dom.id) === -1) {
+        dom.remove()
+      } else {
+        needChangeDom.push(dom);
+      }
+    }
+    addNeedChangeDom(firstOldDom)
     let nextSibling = firstOldDom.nextElementSibling
     let prevDom = firstOldDom.previousElementSibling
     while (nextSibling && nextSibling.id !== endKey) {
-      needToRemoved.push(nextSibling)
+      addNeedChangeDom(nextSibling)
       nextSibling = nextSibling.nextElementSibling
     }
-    nextSibling && needToRemoved.push(nextSibling)
+    nextSibling && addNeedChangeDom(nextSibling)
+    // 节点插入
     let i = 0;
     blocks.forEach((block) => {
       const renderBlock = this.renderBlock(null, block, activeBlocks, matches)
-      if (block.key === needToRemoved[i].id) {
-        patch(toVNode(needToRemoved[i++]), renderBlock)
+      if (i < needChangeDom.length && block.key === needChangeDom[i].id) {
+        patch(toVNode(needChangeDom[i++]), renderBlock)
         prevDom = prevDom ? prevDom.nextElementSibling : parentDom.children[0];
       } else {
         const newVnode = h('section', [renderBlock]);

@@ -19,6 +19,8 @@ var _renderInlines = _interopRequireDefault(require("./renderInlines"));
 
 var _renderBlock = _interopRequireDefault(require("./renderBlock"));
 
+var _blockRules = require("../marked/blockRules");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class StateRender {
@@ -234,7 +236,7 @@ class StateRender {
     const needRenderCursorBlock = blocks.indexOf(cursorOutMostBlock) === -1; // const newVnode = h('section', blocks.map(block => this.renderBlock(null, block, activeBlocks, matches)))
     // const html = toHTML(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1')
 
-    const needToRemoved = [];
+    const needChangeDom = [];
     const firstOldDom = startKey ? document.querySelector("#".concat(startKey)) : document.querySelector("div#".concat(this.muya.CLASS_OR_ID.AG_EDITOR_ID)).firstElementChild;
     const parentDom = firstOldDom.parentElement;
 
@@ -243,22 +245,33 @@ class StateRender {
       return;
     }
 
-    needToRemoved.push(firstOldDom);
+    function addNeedChangeDom(dom) {
+      if (blocks.findIndex(({
+        key
+      }) => key === dom.id) === -1) {
+        dom.remove();
+      } else {
+        needChangeDom.push(dom);
+      }
+    }
+
+    addNeedChangeDom(firstOldDom);
     let nextSibling = firstOldDom.nextElementSibling;
     let prevDom = firstOldDom.previousElementSibling;
 
     while (nextSibling && nextSibling.id !== endKey) {
-      needToRemoved.push(nextSibling);
+      addNeedChangeDom(nextSibling);
       nextSibling = nextSibling.nextElementSibling;
     }
 
-    nextSibling && needToRemoved.push(nextSibling);
+    nextSibling && addNeedChangeDom(nextSibling); // 节点插入
+
     let i = 0;
     blocks.forEach(block => {
       const renderBlock = this.renderBlock(null, block, activeBlocks, matches);
 
-      if (block.key === needToRemoved[i].id) {
-        (0, _snabbdom.patch)((0, _snabbdom.toVNode)(needToRemoved[i++]), renderBlock);
+      if (i < needChangeDom.length && block.key === needChangeDom[i].id) {
+        (0, _snabbdom.patch)((0, _snabbdom.toVNode)(needChangeDom[i++]), renderBlock);
         prevDom = prevDom ? prevDom.nextElementSibling : parentDom.children[0];
       } else {
         const newVnode = (0, _snabbdom.h)('section', [renderBlock]);
