@@ -139,8 +139,21 @@ const inputCtrl = ContentState => {
     } = this.cursor;
     const key = start.key;
     const block = this.getBlock(key);
-    const paragraph = document.querySelector("#".concat(key)); // Fix issue 1447
+    const paragraph = document.querySelector("#".concat(key));
+    const startBlock = this.getBlock(oldStart.key);
+    const endBlock = this.getBlock(oldEnd.key);
+
+    if (oldStart.key !== oldEnd.key || oldStart.offset !== oldEnd.offset) {
+      if (oldStart.key === oldEnd.key) {
+        startBlock.text = startBlock.text.slice(0, oldStart.offset) + startBlock.text.slice(oldEnd.offset);
+      } else {
+        startBlock.text = startBlock.text.slice(0, oldStart.offset);
+        endBlock.text = endBlock.text.slice(oldEnd.offset);
+        console.log('startBlock', startBlock.text);
+      }
+    } // Fix issue 1447
     // Fixme: any better solution?
+
 
     if (oldStart.key === oldEnd.key && oldStart.offset === oldEnd.offset && block.text.endsWith('\n') && oldStart.offset === block.text.length && event.inputType === 'insertText') {
       event.preventDefault();
@@ -165,9 +178,7 @@ const inputCtrl = ContentState => {
     let needRenderAll = false;
 
     if (oldStart.key !== oldEnd.key) {
-      const startBlock = this.getBlock(oldStart.key);
       const startOutmostBlock = this.findOutMostBlock(startBlock);
-      const endBlock = this.getBlock(oldEnd.key);
       const endOutmostBlock = this.findOutMostBlock(endBlock);
 
       if ( // fix #918.
@@ -187,7 +198,7 @@ const inputCtrl = ContentState => {
           this.removeBlocks(startBlock, endBlock);
         }
       } else {
-        this.removeBlocks(startBlock, endBlock);
+        this.removeBlocks(startBlock, endBlock, false);
       }
 
       if (this.blocks.length === 1) {

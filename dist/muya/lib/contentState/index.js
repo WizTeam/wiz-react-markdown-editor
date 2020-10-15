@@ -296,7 +296,6 @@ class ContentState {
         index
       }
     } = this;
-    this.setNextRenderRange();
     const activeBlocks = this.getActiveBlocks();
     const [startKey, endKey] = this.renderRange;
     matches.forEach((m, i) => {
@@ -304,9 +303,8 @@ class ContentState {
     });
     const startIndex = startKey ? blocks.findIndex(block => block.key === startKey) : 0;
     const endIndex = endKey ? blocks.findIndex(block => block.key === endKey) + 1 : blocks.length;
-    const needRenderBlocks = blocks.slice(startIndex, endIndex); // 提到获取[startKey, endKey]前
-    // this.setNextRenderRange()
-
+    const needRenderBlocks = blocks.slice(startIndex, endIndex);
+    this.setNextRenderRange();
     this.stateRender.collectLabels(blocks);
     this.stateRender.partialRender(needRenderBlocks, activeBlocks, matches, startKey, endKey);
 
@@ -554,13 +552,15 @@ class ContentState {
 
 
   removeBlocks(before, after, isRemoveAfter = true, isRecursion = false) {
+    const isCells = block => block ? /td|th/.test(block.type) || block.parent && isCells(this.getBlock(block.parent)) : false;
+
     if (!isRecursion) {
-      if (/td|th/.test(before.type)) {
-        this.exemption.add(this.closest(before, 'figure'));
+      if (isCells(before)) {
+        this.exemption.add(this.closest(before, 'figure').key);
       }
 
-      if (/td|th/.test(after.type)) {
-        this.exemption.add(this.closest(after, 'figure'));
+      if (isCells(after)) {
+        this.exemption.add(this.closest(after, 'figure').key);
       }
     }
 

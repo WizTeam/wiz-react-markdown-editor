@@ -283,15 +283,13 @@ class ClickEvent {
     };
 
     const handleTouchEnd = event => {
-      const now = new Date().getTime();
-
-      if (this.touchstartTime && now - this.touchstartTime >= 300) {
-        this.touchstartTime = null;
-        return;
-      }
-
-      this.touchstartTime = null; //
-
+      // const now = new Date().getTime();
+      // if (this.touchstartTime && now - this.touchstartTime >= 300) {
+      //   this.touchstartTime = null;
+      //   return;
+      // }
+      // this.touchstartTime = null;
+      //
       const {
         target
       } = event; // Handle table drag bar click
@@ -315,6 +313,8 @@ class ClickEvent {
           }
         });
       }
+
+      contentState.clickHandler(event);
     };
 
     eventCenter.attachDOMEvent(container, 'click', handler);

@@ -152,6 +152,28 @@ const backspaceCtrl = ContentState => {
     }
   };
 
+  ContentState.prototype.deleteContext = function (event) {
+    const {
+      start: oldStart,
+      end: oldEnd
+    } = this.cursor;
+    const startBlock = this.getBlock(oldStart.key);
+    const endBlock = this.getBlock(oldEnd.key);
+
+    if (oldStart.key !== oldEnd.key || oldStart.offset !== oldEnd.offset) {
+      if (oldStart.key === oldEnd.key) {
+        startBlock.text = startBlock.text.slice(0, oldStart.offset) + startBlock.text.slice(oldEnd.offset);
+      } else {
+        startBlock.text = startBlock.text.slice(0, oldStart.offset);
+        endBlock.text = endBlock.text.slice(oldEnd.offset);
+        this.removeBlocks(startBlock, endBlock, false);
+      }
+
+      event.preventDefault();
+      this.partialRender();
+    }
+  };
+
   ContentState.prototype.backspaceHandler = function (event) {
     const {
       start,
@@ -308,6 +330,7 @@ const backspaceCtrl = ContentState => {
 
 
     if (start.key !== end.key || start.offset !== end.offset) {
+      this.deleteContext(event);
       return;
     }
 
