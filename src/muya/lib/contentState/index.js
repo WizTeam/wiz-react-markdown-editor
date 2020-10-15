@@ -230,7 +230,6 @@ class ContentState {
 
   partialRender (isRenderCursor = true) {
     const { blocks, searchMatches: { matches, index } } = this
-    this.setNextRenderRange()
     const activeBlocks = this.getActiveBlocks()
     const [startKey, endKey] = this.renderRange
     matches.forEach((m, i) => {
@@ -240,8 +239,7 @@ class ContentState {
     const endIndex = endKey ? blocks.findIndex(block => block.key === endKey) + 1 : blocks.length
     const needRenderBlocks = blocks.slice(startIndex, endIndex)
 
-    // 提到获取[startKey, endKey]前
-    // this.setNextRenderRange()
+    this.setNextRenderRange()
     this.stateRender.collectLabels(blocks)
     this.stateRender.partialRender(needRenderBlocks, activeBlocks, matches, startKey, endKey)
     if (isRenderCursor) {
