@@ -85,7 +85,7 @@ class QuickInsert extends _baseScrollFloat.default {
             label
           },
           on: {
-            mousedown: () => {
+            click: () => {
               this.selectItem(item);
             }
           }
