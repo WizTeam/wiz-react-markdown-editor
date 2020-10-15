@@ -1329,6 +1329,9 @@ i.ag-footnote-backlink {
   table.ag-active tr .ag-drag-handler.bottom {
     display: none;
   }
-
+  .ag-table-scroll {
+    padding-left: 0;
+    padding-bottom: 0;
+  }
 }
 
