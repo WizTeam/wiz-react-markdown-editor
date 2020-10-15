@@ -169,7 +169,7 @@ const tableBlockCtrl = ContentState => {
       align
     } = parentBlock;
     const table = this.closest(block, 'table');
-    const figure = this.getBlock(table.parent);
+    const figure = this.getBlock(this.getBlock(table.parent).parent);
 
     switch (type) {
       case 'left':
