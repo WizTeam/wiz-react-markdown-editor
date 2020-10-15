@@ -452,12 +452,13 @@ class ContentState {
    * remove blocks between before and after, and includes after block.
    */
   removeBlocks (before, after, isRemoveAfter = true, isRecursion = false) {
+    const isCells = (block) => block ? /td|th/.test(block.type) || (block.parent && isCells(this.getBlock(block.parent))) : false;
     if (!isRecursion) {
-      if (/td|th/.test(before.type)) {
-        this.exemption.add(this.closest(before, 'figure'))
+      if (isCells(before)) {
+        this.exemption.add(this.closest(before, 'figure').key)
       }
-      if (/td|th/.test(after.type)) {
-        this.exemption.add(this.closest(after, 'figure'))
+      if (isCells(after)) {
+        this.exemption.add(this.closest(after, 'figure').key)
       }
     }
     let nextSibling = this.getBlock(before.nextSibling)
