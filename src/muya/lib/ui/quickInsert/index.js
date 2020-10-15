@@ -76,7 +76,7 @@ class QuickInsert extends BaseScrollFloat {
               {
                 dataset: { label },
                 on: {
-                  mousedown: () => {
+                  click: () => {
                     this.selectItem(item);
                   }
                 }
