@@ -263,7 +263,9 @@ const clickCtrl = ContentState => {
         };
       }
 
-      return this.partialRender();
+      requestAnimationFrame(() => {
+        this.partialRender();
+      }); // return
     } else if (needMarkedUpdate) {
       // Fix: whole select can not be canceled #613
       requestAnimationFrame(() => {
