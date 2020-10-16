@@ -187,7 +187,7 @@ export default function useImperative(ref, editor) {
       }
 
       function getTableMarkdown() {
-        editor.contentState.getTableMarkdown();
+        return editor.contentState.getTableMarkdown();
       }
 
       function resetCursor() {
