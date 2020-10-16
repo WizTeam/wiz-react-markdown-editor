@@ -186,6 +186,10 @@ export default function useImperative(ref, editor) {
         cursorRef.current = editor.contentState.cursor;
       }
 
+      function updateCursor(cursor = {}) {
+        Object.assign(editor.contentState.cursor, cursor);
+      }
+
       function getTableMarkdown() {
         return editor.contentState.getTableMarkdown();
       }
@@ -235,6 +239,7 @@ export default function useImperative(ref, editor) {
         removeTable,
         saveCursor,
         resetCursor,
+        updateCursor,
         replaceImage,
         indent,
         unindent,
