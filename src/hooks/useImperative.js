@@ -19,6 +19,36 @@ export default function useImperative(ref, editor) {
   useImperativeHandle(
     ref,
     () => {
+      function insertHeader() {
+        const { start: oldStart } = editor.contentState.cursor;
+        if (oldStart) {
+          const block = editor.contentState.getBlock(oldStart.key);
+          const outBlock = editor.contentState.findOutMostBlock(block);
+          switch (outBlock.type) {
+            case 'h1':
+              editor.contentState.updateParagraph('heading 2', true);
+              break;
+            case 'h2':
+              editor.contentState.updateParagraph('heading 3', true);
+              break;
+            case 'h3':
+              editor.contentState.updateParagraph('heading 4', true);
+              break;
+            case 'h4':
+              editor.contentState.updateParagraph('heading 5', true);
+              break;
+            case 'h5':
+              editor.contentState.updateParagraph('heading 6', true);
+              break;
+            case 'h6':
+            case 'p':
+              editor.contentState.updateParagraph('heading 1', true);
+              break;
+            default:
+              break;
+          }
+        }
+      }
       function insertTag() {
         editor.contentState.formatTag();
       }
@@ -156,6 +186,10 @@ export default function useImperative(ref, editor) {
         cursorRef.current = editor.contentState.cursor;
       }
 
+      function getTableMarkdown() {
+        editor.contentState.getTableMarkdown();
+      }
+
       function resetCursor() {
         if (cursorRef.current) {
           // eslint-disable-next-line no-param-reassign
@@ -172,6 +206,7 @@ export default function useImperative(ref, editor) {
         editor.contentState.unindent();
       }
       return {
+        insertHeader,
         insertTag,
         insertBold,
         insertItalic,
@@ -204,7 +239,8 @@ export default function useImperative(ref, editor) {
         indent,
         unindent,
         focus: () => editor?.focus(),
-        editor: editor?.container
+        editor: editor?.container,
+        getTableMarkdown
       };
     },
     [editor]

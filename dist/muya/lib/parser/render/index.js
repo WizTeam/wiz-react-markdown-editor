@@ -281,7 +281,8 @@ class StateRender {
           prevDom.insertAdjacentHTML('afterend', newDom);
           prevDom = prevDom.nextElementSibling;
         } else {
-          firstOldDom.insertAdjacentHTML('beforebegin', newDom);
+          parentDom.insertAdjacentHTML('afterbegin', newDom);
+          prevDom = parentDom.children[0];
         }
       }
     }); // firstOldDom.insertAdjacentHTML('beforebegin', html)

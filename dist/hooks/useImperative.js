@@ -23,6 +23,47 @@ function useImperative(ref, editor) {
     };
   }, [editor]);
   (0, _react.useImperativeHandle)(ref, () => {
+    function insertHeader() {
+      const {
+        start: oldStart
+      } = editor.contentState.cursor;
+
+      if (oldStart) {
+        const block = editor.contentState.getBlock(oldStart.key);
+        const outBlock = editor.contentState.findOutMostBlock(block);
+
+        switch (outBlock.type) {
+          case 'h1':
+            editor.contentState.updateParagraph('heading 2', true);
+            break;
+
+          case 'h2':
+            editor.contentState.updateParagraph('heading 3', true);
+            break;
+
+          case 'h3':
+            editor.contentState.updateParagraph('heading 4', true);
+            break;
+
+          case 'h4':
+            editor.contentState.updateParagraph('heading 5', true);
+            break;
+
+          case 'h5':
+            editor.contentState.updateParagraph('heading 6', true);
+            break;
+
+          case 'h6':
+          case 'p':
+            editor.contentState.updateParagraph('heading 1', true);
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+
     function insertTag() {
       editor.contentState.formatTag();
     }
@@ -177,6 +218,10 @@ function useImperative(ref, editor) {
       cursorRef.current = editor.contentState.cursor;
     }
 
+    function getTableMarkdown() {
+      editor.contentState.getTableMarkdown();
+    }
+
     function resetCursor() {
       if (cursorRef.current) {
         // eslint-disable-next-line no-param-reassign
@@ -194,6 +239,7 @@ function useImperative(ref, editor) {
     }
 
     return {
+      insertHeader,
       insertTag,
       insertBold,
       insertItalic,
@@ -226,7 +272,8 @@ function useImperative(ref, editor) {
       indent,
       unindent,
       focus: () => editor === null || editor === void 0 ? void 0 : editor.focus(),
-      editor: editor === null || editor === void 0 ? void 0 : editor.container
+      editor: editor === null || editor === void 0 ? void 0 : editor.container,
+      getTableMarkdown
     };
   }, [editor]);
 }

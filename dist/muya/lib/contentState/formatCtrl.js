@@ -483,12 +483,9 @@ const formatCtrl = ContentState => {
       if (block.text) {
         block.text = block.text.replace(/(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/, "#".concat(content, "#"));
         offset = content.length + 2;
-      } else if (content) {
+      } else {
         block.text = "#".concat(content, "#");
         offset = 1 + content.length;
-      } else {
-        block.text = "#";
-        offset = 1;
       }
 
       this.cursor = {

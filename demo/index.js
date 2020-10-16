@@ -165,6 +165,9 @@ const App = () => {
       case 'unindent':
         editorRef.current.unindent();
         break;
+      case 'header':
+        editorRef.current.insertHeader();
+        break;
       default:
         break;
     }
@@ -224,6 +227,9 @@ const App = () => {
         </button>
       </div>
       <div>
+        <button type="button" onMouseDown={(e) => handleInsert('header', e)}>
+          header
+        </button>
         <button type="button" onMouseDown={(e) => handleInsert('tag', e)}>
           tag
         </button>
