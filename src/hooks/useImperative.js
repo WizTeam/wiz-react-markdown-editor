@@ -190,8 +190,8 @@ export default function useImperative(ref, editor) {
         Object.assign(editor.contentState.cursor, cursor);
       }
 
-      function getTableMarkdown() {
-        return editor.contentState.getTableMarkdown();
+      function htmlToMarkdown(html, keeps = []) {
+        return editor.contentState.htmlToMarkdown(html, keeps);
       }
 
       function resetCursor() {
@@ -245,7 +245,7 @@ export default function useImperative(ref, editor) {
         unindent,
         focus: () => editor?.focus(),
         editor: editor?.container,
-        getTableMarkdown
+        htmlToMarkdown
       };
     },
     [editor]
