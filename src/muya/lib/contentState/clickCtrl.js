@@ -177,8 +177,25 @@ const clickCtrl = ContentState => {
 
     const needMarkedUpdate = this.checkNeedRender(this.cursor) || this.checkNeedRender({ start, end })
 
+
     if (needRender) {
-      this.cursor = { start, end }
+      if (start.key !== end.key && block.functionType === 'cellContent' && start.offset === block.text.length) {
+        // 去除table多选区空内容格
+        const targetBlock = this.getParentBlock(block, (block) => /td|th/.test(block.type));
+        let nextSibling = this.getBlock(targetBlock.nextSibling)
+        while (nextSibling) {
+          if (nextSibling.text || nextSibling.key === end.key || this.isInclude(nextSibling, end)) {
+            this.cursor = {
+              start: {key: nextSibling.key, offset: 0 },
+              end: end
+            }
+            break
+          }
+          nextSibling = this.getBlock(nextSibling.nextSibling)
+        }
+      } else {
+        this.cursor = { start, end }
+      }
       return this.partialRender()
     } else if (needMarkedUpdate) {
       // Fix: whole select can not be canceled #613

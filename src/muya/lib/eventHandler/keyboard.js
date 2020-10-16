@@ -308,7 +308,6 @@ class Keyboard {
         // event.stopPropagation()
         return;
       }
-      console.log('keydown', event)
       switch (event.key) {
         case EVENT_KEYS.Backspace:
           contentState.backspaceHandler(event);
@@ -348,7 +347,6 @@ class Keyboard {
       const keyCode = event.keyCode||event.which||event.charCode
       if (![8, 9, 13, 27, 32, 37, 38, 39, 40, 46].includes(keyCode)) {
         contentState.deleteContext()
-        console.log('keypress', event);
       }
     }
     eventCenter.attachDOMEvent(container, 'keypress', handler);
