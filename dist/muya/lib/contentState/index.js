@@ -897,6 +897,20 @@ class ContentState {
     }
   }
 
+  getParentBlock(block, fn, isSelf = true) {
+    const target = isSelf ? block : this.getParent(block);
+
+    if (!target || !fn) {
+      return null;
+    }
+
+    if (fn(block)) {
+      return target;
+    }
+
+    return this.getParentBlock(target, fn, false);
+  }
+
   getAnchor(block) {
     const {
       type,
