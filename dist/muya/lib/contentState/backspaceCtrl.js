@@ -169,7 +169,17 @@ const backspaceCtrl = ContentState => {
         this.removeBlocks(startBlock, endBlock, false);
       }
 
-      event.preventDefault();
+      this.cursor = {
+        start: {
+          key: oldStart.key,
+          offset: oldStart.offset
+        },
+        end: {
+          key: oldStart.key,
+          offset: oldStart.offset
+        }
+      };
+      event === null || event === void 0 ? void 0 : event.preventDefault();
       this.partialRender();
     }
   };

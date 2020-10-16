@@ -106,6 +106,7 @@ class Keyboard {
     this.keydownBinding();
     this.keyupBinding();
     this.inputBinding();
+    this.keypressBinding();
     this.listen();
   }
 
@@ -249,21 +250,21 @@ class Keyboard {
 
       if (event.target.closest('[contenteditable=false]')) {
         return;
-      } // We need check cursor is null, because we may copy the html preview content,
-      // and no need to dispatch change.
-
-
-      const {
-        start,
-        end
-      } = _selection.default.getCursorRange();
-
-      if (!start || !end) {
-        return;
       }
 
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
+        // We need check cursor is null, because we may copy the html preview content,
+        // and no need to dispatch change.
+        const {
+          start,
+          end
+        } = _selection.default.getCursorRange();
+
+        if (!start || !end) {
+          return;
+        }
+
         this.muya.dispatchSelectionChange();
         this.muya.dispatchSelectionFormats();
 
@@ -396,6 +397,24 @@ class Keyboard {
 
     eventCenter.attachDOMEvent(container, 'keydown', handler);
     eventCenter.attachDOMEvent(document, 'keydown', docHandler);
+  }
+
+  keypressBinding() {
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
+
+    const handler = event => {
+      const keyCode = event.keyCode || event.which || event.charCode;
+
+      if (![8, 9, 13, 27, 32, 37, 38, 39, 40, 46].includes(keyCode)) {
+        contentState.deleteContext();
+      }
+    };
+
+    eventCenter.attachDOMEvent(container, 'keypress', handler);
   }
 
   inputBinding() {

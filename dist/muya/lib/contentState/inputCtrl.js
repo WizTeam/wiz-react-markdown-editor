@@ -149,7 +149,6 @@ const inputCtrl = ContentState => {
       } else {
         startBlock.text = startBlock.text.slice(0, oldStart.offset);
         endBlock.text = endBlock.text.slice(oldEnd.offset);
-        console.log('startBlock', startBlock.text);
       }
     } // Fix issue 1447
     // Fixme: any better solution?

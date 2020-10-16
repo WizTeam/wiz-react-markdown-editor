@@ -128,7 +128,11 @@ const backspaceCtrl = (ContentState) => {
         endBlock.text = endBlock.text.slice(oldEnd.offset);
         this.removeBlocks(startBlock, endBlock, false);
       }
-      event.preventDefault();
+      this.cursor = {
+        start: { key: oldStart.key, offset: oldStart.offset },
+        end: { key: oldStart.key, offset: oldStart.offset }
+      };
+      event?.preventDefault();
       this.partialRender();
     }
   }

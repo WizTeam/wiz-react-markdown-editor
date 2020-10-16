@@ -123,7 +123,6 @@ const inputCtrl = (ContentState) => {
       } else {
         startBlock.text = startBlock.text.slice(0, oldStart.offset);
         endBlock.text = endBlock.text.slice(oldEnd.offset);
-        console.log('startBlock', startBlock.text);
       }
     }
 
