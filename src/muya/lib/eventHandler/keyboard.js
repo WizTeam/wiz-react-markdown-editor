@@ -50,7 +50,7 @@ import { checkEditEmoji } from '../ui/emojis';
 //     }
 //   });
 //   iosLog(`Children:====${children.join(', ')}`);
-  
+
 //   const cell = getParentByTag(start, ['th', 'td', 'tr', 'table'], true);
 //   if (cell && cell !== start) {
 //     iosLog(`Cell:====${cell.outerHTML}`);
@@ -89,6 +89,7 @@ class Keyboard {
     this.keydownBinding();
     this.keyupBinding();
     this.inputBinding();
+    this.keypressBinding();
     this.listen();
   }
 
@@ -128,12 +129,12 @@ class Keyboard {
           span.setAttribute('contenteditable', 'false');
           const textNode = document.createTextNode('\u200B');
           this.tempTextNode = textNode;
-          
+
           // if (cell && sel.isCollapsed) {
           if (cell) {
             // table 内 span 插入到最前面，会导致中文输入失败
             this.inputDom.appendChild(span);
-          } else {            
+          } else {
             this.inputDom.appendChild(textNode);
             this.inputDom.insertBefore(span, this.inputDom.firstChild);
           }
@@ -307,6 +308,7 @@ class Keyboard {
         // event.stopPropagation()
         return;
       }
+      console.log('keydown', event)
       switch (event.key) {
         case EVENT_KEYS.Backspace:
           contentState.backspaceHandler(event);
@@ -338,6 +340,18 @@ class Keyboard {
 
     eventCenter.attachDOMEvent(container, 'keydown', handler);
     eventCenter.attachDOMEvent(document, 'keydown', docHandler);
+  }
+
+  keypressBinding() {
+    const { container, eventCenter, contentState } = this.muya;
+    const handler = (event) => {
+      const keyCode = event.keyCode||event.which||event.charCode
+      if (![8, 9, 13, 27, 32, 37, 38, 39, 40, 46].includes(keyCode)) {
+        contentState.deleteContext()
+        console.log('keypress', event);
+      }
+    }
+    eventCenter.attachDOMEvent(container, 'keypress', handler);
   }
 
   inputBinding() {

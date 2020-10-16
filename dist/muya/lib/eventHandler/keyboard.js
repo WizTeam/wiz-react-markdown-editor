@@ -106,6 +106,7 @@ class Keyboard {
     this.keydownBinding();
     this.keyupBinding();
     this.inputBinding();
+    this.keypressBinding();
     this.listen();
   }
 
@@ -354,6 +355,8 @@ class Keyboard {
         return;
       }
 
+      console.log('keydown', event);
+
       switch (event.key) {
         case _config.EVENT_KEYS.Backspace:
           contentState.backspaceHandler(event);
@@ -396,6 +399,25 @@ class Keyboard {
 
     eventCenter.attachDOMEvent(container, 'keydown', handler);
     eventCenter.attachDOMEvent(document, 'keydown', docHandler);
+  }
+
+  keypressBinding() {
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
+
+    const handler = event => {
+      const keyCode = event.keyCode || event.which || event.charCode;
+
+      if (![8, 9, 13, 27, 32, 37, 38, 39, 40, 46].includes(keyCode)) {
+        contentState.deleteContext();
+        console.log('keypress', event);
+      }
+    };
+
+    eventCenter.attachDOMEvent(container, 'keypress', handler);
   }
 
   inputBinding() {
