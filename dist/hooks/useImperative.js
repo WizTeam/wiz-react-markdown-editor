@@ -177,6 +177,10 @@ function useImperative(ref, editor) {
       cursorRef.current = editor.contentState.cursor;
     }
 
+    function getTableMarkdown() {
+      editor.contentState.getTableMarkdown();
+    }
+
     function resetCursor() {
       if (cursorRef.current) {
         // eslint-disable-next-line no-param-reassign
@@ -226,7 +230,8 @@ function useImperative(ref, editor) {
       indent,
       unindent,
       focus: () => editor === null || editor === void 0 ? void 0 : editor.focus(),
-      editor: editor === null || editor === void 0 ? void 0 : editor.container
+      editor: editor === null || editor === void 0 ? void 0 : editor.container,
+      getTableMarkdown
     };
   }, [editor]);
 }
