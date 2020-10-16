@@ -250,21 +250,21 @@ class Keyboard {
 
       if (event.target.closest('[contenteditable=false]')) {
         return;
-      } // We need check cursor is null, because we may copy the html preview content,
-      // and no need to dispatch change.
-
-
-      const {
-        start,
-        end
-      } = _selection.default.getCursorRange();
-
-      if (!start || !end) {
-        return;
       }
 
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
+        // We need check cursor is null, because we may copy the html preview content,
+        // and no need to dispatch change.
+        const {
+          start,
+          end
+        } = _selection.default.getCursorRange();
+
+        if (!start || !end) {
+          return;
+        }
+
         this.muya.dispatchSelectionChange();
         this.muya.dispatchSelectionFormats();
 
@@ -355,8 +355,6 @@ class Keyboard {
         return;
       }
 
-      console.log('keydown', event);
-
       switch (event.key) {
         case _config.EVENT_KEYS.Backspace:
           contentState.backspaceHandler(event);
@@ -413,7 +411,6 @@ class Keyboard {
 
       if (![8, 9, 13, 27, 32, 37, 38, 39, 40, 46].includes(keyCode)) {
         contentState.deleteContext();
-        console.log('keypress', event);
       }
     };
 
