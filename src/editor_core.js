@@ -153,7 +153,9 @@ function Editor(props) {
 
       if (window.outerHeight - bottomHeight < y + 30) {
         const editableHeight = y + 30 - window.outerHeight + bottomHeight;
+        console.log('before scrollingElement.scrollTop');
         animatedScrollTo(_scrollingElement, scrollingElement.scrollTop + editableHeight, 100);
+        console.log('after scrollingElement.scrollTop');
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
