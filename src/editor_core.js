@@ -67,6 +67,7 @@ function Editor(props) {
     wordList,
     editorFocus,
     bottomHeight,
+    scrollingElement,
     onInsertImageFromData
   } = props;
   //
@@ -141,9 +142,9 @@ function Editor(props) {
     (y) => {
       const container = editor.container;
       //
-      let scrollingElement = document.scrollingElement;
-      if (props.scrollingElement) {
-        scrollingElement = props.scrollingElement;
+      let _scrollingElement = document.scrollingElement;
+      if (scrollingElement) {
+        _scrollingElement = scrollingElement;
       }
       //
       if (typewriter) {
@@ -152,11 +153,11 @@ function Editor(props) {
 
       if (window.outerHeight - bottomHeight < y + 30) {
         const editableHeight = y + 30 - window.outerHeight + bottomHeight;
-        animatedScrollTo(scrollingElement, scrollingElement.scrollTop + editableHeight, 0);
+        animatedScrollTo(_scrollingElement, scrollingElement.scrollTop + editableHeight, 100);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [bottomHeight, editor, typewriter]
+    [bottomHeight, editor, typewriter, scrollingElement]
   );
 
   useEffect(() => {

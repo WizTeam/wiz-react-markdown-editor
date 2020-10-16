@@ -90,6 +90,7 @@ function Editor(props) {
     wordList,
     editorFocus,
     bottomHeight,
+    scrollingElement,
     onInsertImageFromData
   } = props; //
 
@@ -150,10 +151,10 @@ function Editor(props) {
   const scrollToSaferView = (0, _react.useCallback)(y => {
     const container = editor.container; //
 
-    let scrollingElement = document.scrollingElement;
+    let _scrollingElement = document.scrollingElement;
 
-    if (props.scrollingElement) {
-      scrollingElement = props.scrollingElement;
+    if (scrollingElement) {
+      _scrollingElement = scrollingElement;
     } //
 
 
@@ -163,10 +164,10 @@ function Editor(props) {
 
     if (window.outerHeight - bottomHeight < y + 30) {
       const editableHeight = y + 30 - window.outerHeight + bottomHeight;
-      (0, _utils.animatedScrollTo)(scrollingElement, scrollingElement.scrollTop + editableHeight, 0);
+      (0, _utils.animatedScrollTo)(_scrollingElement, scrollingElement.scrollTop + editableHeight, 100);
     }
   }, // eslint-disable-next-line react-hooks/exhaustive-deps
-  [bottomHeight, editor, typewriter]);
+  [bottomHeight, editor, typewriter, scrollingElement]);
   (0, _react.useEffect)(() => {
     if (bottomHeight && editor) {
       scrollToSaferView(_selection.default.getCursorCoords().y);
