@@ -203,7 +203,8 @@ export default function useImperative(ref, editor) {
         replaceImage,
         indent,
         unindent,
-        focus: () => editor?.focus()
+        focus: () => editor?.focus(),
+        editor: editor?.container
       };
     },
     [editor]

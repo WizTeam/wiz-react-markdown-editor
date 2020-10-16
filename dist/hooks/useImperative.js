@@ -225,7 +225,8 @@ function useImperative(ref, editor) {
       replaceImage,
       indent,
       unindent,
-      focus: () => editor === null || editor === void 0 ? void 0 : editor.focus()
+      focus: () => editor === null || editor === void 0 ? void 0 : editor.focus(),
+      editor: editor === null || editor === void 0 ? void 0 : editor.container
     };
   }, [editor]);
 }
