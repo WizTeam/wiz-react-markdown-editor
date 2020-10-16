@@ -7,6 +7,10 @@ exports.default = void 0;
 
 var _utils = require("../utils");
 
+var _exportMarkdown = _interopRequireDefault(require("../utils/exportMarkdown"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 const TABLE_BLOCK_REG = /^\|.*?(\\*)\|.*?(\\*)\|/;
 
 const tableBlockCtrl = ContentState => {
@@ -149,6 +153,28 @@ const tableBlockCtrl = ContentState => {
     block.functionType = 'table';
     this.appendChild(block, tableContainer);
     return this.firstInDescendant(table.children[1]); // first cell content in tbody
+  };
+
+  ContentState.prototype.getTableMarkdown = function () {
+    const {
+      start: {
+        key
+      }
+    } = this.cursor;
+    const block = this.getBlock(key); //
+
+    if (block.functionType !== 'cellContent') {
+      throw new Error('table is not active');
+    } //
+
+
+    const table = this.closest(block, 'table');
+    const figure = this.getBlock(this.getBlock(table.parent).parent); //
+
+    const listIndentation = this.listIndentation;
+    const markdown = new _exportMarkdown.default([figure], listIndentation).generate(); //
+
+    return markdown;
   };
 
   ContentState.prototype.tableToolBarClick = function (type) {

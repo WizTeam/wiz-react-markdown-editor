@@ -1,4 +1,5 @@
 import { isLengthEven, getParagraphReference } from '../utils'
+import ExportMarkdown from '../utils/exportMarkdown'
 
 const TABLE_BLOCK_REG = /^\|.*?(\\*)\|.*?(\\*)\|/
 
@@ -109,6 +110,23 @@ const tableBlockCtrl = ContentState => {
     this.appendChild(block, tableContainer)
 
     return this.firstInDescendant(table.children[1]) // first cell content in tbody
+  }
+
+  ContentState.prototype.getTableMarkdown = function () {
+    const { start: { key } } = this.cursor
+    const block = this.getBlock(key)
+    //
+    if (block.functionType !== 'cellContent') {
+      throw new Error('table is not active')
+    }
+    //
+    const table = this.closest(block, 'table')
+    const figure = this.getBlock(this.getBlock(table.parent).parent)
+    //
+    const listIndentation = this.listIndentation
+    const markdown = new ExportMarkdown([figure], listIndentation).generate()
+    //
+    return markdown;
   }
 
   ContentState.prototype.tableToolBarClick = function (type) {
