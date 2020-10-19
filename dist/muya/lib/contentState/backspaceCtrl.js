@@ -218,7 +218,7 @@ const backspaceCtrl = ContentState => {
     const endOutmostBlock = this.findOutMostBlock(endBlock); // Just for fix delete the last `#` or all the atx heading cause error @fixme
     // safari 删除整行默认会把span删掉
 
-    if (start.key === end.key && startBlock.type === 'span' && (startBlock.functionType === 'atxLine' || startBlock.functionType === 'paragraphContent')) {
+    if (start.key === end.key && startBlock.type === 'span' && startBlock.functionType === 'atxLine') {
       if (start.offset === 0 && end.offset === startBlock.text.length || start.offset === end.offset && start.offset === 1 && startBlock.text === '#') {
         event.preventDefault();
         startBlock.text = '';

@@ -172,7 +172,7 @@ const backspaceCtrl = (ContentState) => {
     if (
       start.key === end.key &&
       startBlock.type === 'span' &&
-      (startBlock.functionType === 'atxLine' || startBlock.functionType === 'paragraphContent')
+      startBlock.functionType === 'atxLine'
     ) {
       if (
         (start.offset === 0 && end.offset === startBlock.text.length) ||
