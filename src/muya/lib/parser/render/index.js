@@ -211,9 +211,11 @@ class StateRender {
     let nextSibling = firstOldDom.nextElementSibling
     let prevDom = firstOldDom.previousElementSibling
     while (nextSibling && nextSibling.id !== endKey) {
+      const nextElement = nextSibling.nextElementSibling
       addNeedChangeDom(nextSibling)
-      nextSibling = nextSibling.nextElementSibling
+      nextSibling = nextElement
     }
+
     nextSibling && addNeedChangeDom(nextSibling)
     // 节点插入
     let i = 0;
