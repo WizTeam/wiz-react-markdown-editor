@@ -426,7 +426,8 @@ figure {
 
 .ag-container-icon {
   position: absolute;
-  top: 0px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 10px;
   width: 20px;
   height: 20px;
@@ -464,8 +465,8 @@ figure {
 
 .ag-container-icon i.icon {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 2px;
+  left: 2px;
 }
 
 .ag-tool-bar ul li.active i.icon {
