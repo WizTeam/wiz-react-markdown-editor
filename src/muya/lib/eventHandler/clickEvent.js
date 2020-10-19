@@ -281,8 +281,18 @@ class ClickEvent {
   touchBinding() {
     const { container, eventCenter, contentState } = this.muya;
     const handler = (event) => {
+      const { target } = event;
       this.touchstartTime = new Date().getTime();
+      if (
+        target.tagName === 'INPUT' &&
+        target.classList.contains(CLASS_OR_ID.AG_TASK_LIST_ITEM_CHECKBOX)
+      ) {
+        target.click();
+        contentState.listItemCheckBoxClick(target);
+        event.preventDefault();
+      }
     };
+
     eventCenter.attachDOMEvent(container, 'touchstart', handler);
   }
 }
