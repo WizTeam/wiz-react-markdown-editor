@@ -13,6 +13,7 @@ import './style/printService.css';
 import './muya/themes/default.css';
 import './style/index.css';
 import useImperative from './hooks/useImperative';
+import formatKeydownOption from './muya/lib/ui/formatPicker/config';
 // import './style/one-dark.css';
 
 const useStyles = makeStyles({
@@ -235,8 +236,15 @@ function Editor(props) {
     } else if (matchHotKey('⌘-6', e)) {
       editor?.updateParagraph('heading 6');
     } else {
-      res = false;
+      res = formatKeydownOption.some((item) => {
+        if (matchHotKey(item.shortcut, e, '+')) {
+          editor?.contentState.format(item.type);
+          return true;
+        }
+        return false;
+      });
     }
+    //
     if (res) {
       e.preventDefault();
     }

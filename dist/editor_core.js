@@ -31,6 +31,8 @@ require("./style/index.css");
 
 var _useImperative = _interopRequireDefault(require("./hooks/useImperative"));
 
+var _config = _interopRequireDefault(require("./muya/lib/ui/formatPicker/config"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
@@ -250,8 +252,16 @@ function Editor(props) {
     } else if ((0, _eventUtils.matchHotKey)('⌘-6', e)) {
       editor === null || editor === void 0 ? void 0 : editor.updateParagraph('heading 6');
     } else {
-      res = false;
-    }
+      res = _config.default.some(item => {
+        if ((0, _eventUtils.matchHotKey)(item.shortcut, e, '+')) {
+          editor === null || editor === void 0 ? void 0 : editor.contentState.format(item.type);
+          return true;
+        }
+
+        return false;
+      });
+    } //
+
 
     if (res) {
       e.preventDefault();
