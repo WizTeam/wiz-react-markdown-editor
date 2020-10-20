@@ -255,9 +255,9 @@ class StateRender {
       }
     }
 
-    addNeedChangeDom(firstOldDom);
     let nextSibling = firstOldDom.nextElementSibling;
     let prevDom = firstOldDom.previousElementSibling;
+    addNeedChangeDom(firstOldDom);
 
     while (nextSibling && nextSibling.id !== endKey) {
       const nextElement = nextSibling.nextElementSibling;

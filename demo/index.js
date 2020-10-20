@@ -225,6 +225,9 @@ const App = () => {
         <button type="button" onClick={() => editorRef.current.focus()}>
           editor focus
         </button>
+        <button type="button" onClick={() => editorRef.current.selectFirstTitle()}>
+          select title
+        </button>
       </div>
       <div>
         <button type="button" onMouseDown={(e) => handleInsert('header', e)}>

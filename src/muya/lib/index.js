@@ -266,7 +266,14 @@ class Muya {
     return document.activeElement === this.container;
   }
 
-  focus() {
+  focus(isFirst = false) {
+    if (isFirst) {
+      const { key } = this.contentState.getFirstBlock();
+      this.contentState.cursor = {
+        start: { key, offset: 0 },
+        end: { key, offset: 0 }
+      }
+    }
     this.contentState.setCursor();
     this.container.focus();
   }
