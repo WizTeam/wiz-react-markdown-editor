@@ -252,18 +252,16 @@ function Editor(props) {
     } else if ((0, _eventUtils.matchHotKey)('⌘-6', e)) {
       editor === null || editor === void 0 ? void 0 : editor.updateParagraph('heading 6');
     } else {
-      res = false;
+      res = _config.default.some(item => {
+        if ((0, _eventUtils.matchHotKey)(item.shortcut, e, '+')) {
+          editor === null || editor === void 0 ? void 0 : editor.contentState.format(item.type);
+          return true;
+        }
+
+        return false;
+      });
     } //
 
-
-    res = _config.default.some(item => {
-      if ((0, _eventUtils.matchHotKey)(item.shortcut, e, '+')) {
-        editor === null || editor === void 0 ? void 0 : editor.contentState.format(item.type);
-        return true;
-      }
-
-      return false;
-    }); //
 
     if (res) {
       e.preventDefault();
