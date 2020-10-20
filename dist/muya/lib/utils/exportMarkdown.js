@@ -365,11 +365,8 @@ class ExportMarkdown {
   }
 
   normalizeTable(table, indent) {
-    const result = [];
-    const {
-      row,
-      column
-    } = table;
+    const result = []; // const { row, column } = table;
+
     const tableData = [];
     const tHeader = table.children[0];
     const tBody = table.children[1];
@@ -389,20 +386,19 @@ class ExportMarkdown {
     const columnWidth = tHeader.children[0].children.map(th => ({
       width: 5,
       align: th.align
-    }));
-    let i;
-    let j;
-
-    for (i = 0; i <= row; i++) {
-      for (j = 0; j <= column; j++) {
-        columnWidth[j].width = Math.max(columnWidth[j].width, tableData[i][j].length + 2); // add 2, because have two space around text
-      }
-    }
+    })); // let i;
+    // let j;
+    // for (i = 0; i <= row; i++) {
+    //   for (j = 0; j <= column; j++) {
+    //     columnWidth[j].width = Math.max(columnWidth[j].width, tableData[i][j].length + 2); // add 2, because have two space around text
+    //   }
+    // }
 
     tableData.forEach((r, i) => {
       const rs = indent + '|' + r.map((cell, j) => {
-        const raw = " ".concat(cell + ' '.repeat(columnWidth[j].width));
-        return raw.substring(0, columnWidth[j].width);
+        // const raw = ` ${cell + ' '.repeat(columnWidth[j].width)}`;
+        // return raw.substring(0, columnWidth[j].width);
+        return " ".concat(cell, " ");
       }).join('|') + '|';
       result.push(rs);
 
@@ -411,7 +407,8 @@ class ExportMarkdown {
           width,
           align
         }) => {
-          let raw = '-'.repeat(width - 2);
+          // let raw = '-'.repeat(width - 2);
+          let raw = '-'.repeat(5);
 
           switch (align) {
             case 'left':
