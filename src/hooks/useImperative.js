@@ -209,6 +209,17 @@ export default function useImperative(ref, editor) {
       function unindent() {
         editor.contentState.unindent();
       }
+      function selectFirstTitle() {
+        const firstBlock = editor.contentState.getFirstBlock();
+        if (editor && firstBlock && firstBlock.text.startsWith('# ')) {
+          // eslint-disable-next-line no-param-reassign
+          editor.contentState.cursor = {
+            start: { key: firstBlock.key, offset: 2 },
+            end: { key: firstBlock.key, offset: firstBlock.text.length }
+          };
+          editor.contentState.setCursor();
+        }
+      }
       return {
         insertHeader,
         insertTag,
@@ -245,7 +256,8 @@ export default function useImperative(ref, editor) {
         unindent,
         focus: () => editor?.focus(),
         editor: editor?.container,
-        htmlToMarkdown
+        htmlToMarkdown,
+        selectFirstTitle
       };
     },
     [editor]

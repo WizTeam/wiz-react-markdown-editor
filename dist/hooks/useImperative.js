@@ -242,6 +242,25 @@ function useImperative(ref, editor) {
       editor.contentState.unindent();
     }
 
+    function selectFirstTitle() {
+      const firstBlock = editor.contentState.getFirstBlock();
+
+      if (editor && firstBlock && firstBlock.text.startsWith('# ')) {
+        // eslint-disable-next-line no-param-reassign
+        editor.contentState.cursor = {
+          start: {
+            key: firstBlock.key,
+            offset: 2
+          },
+          end: {
+            key: firstBlock.key,
+            offset: firstBlock.text.length
+          }
+        };
+        editor.contentState.setCursor();
+      }
+    }
+
     return {
       insertHeader,
       insertTag,
@@ -278,7 +297,8 @@ function useImperative(ref, editor) {
       unindent,
       focus: () => editor === null || editor === void 0 ? void 0 : editor.focus(),
       editor: editor === null || editor === void 0 ? void 0 : editor.container,
-      htmlToMarkdown
+      htmlToMarkdown,
+      selectFirstTitle
     };
   }, [editor]);
 }
