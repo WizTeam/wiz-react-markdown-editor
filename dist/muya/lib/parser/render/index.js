@@ -268,7 +268,9 @@ class StateRender {
       nextSibling = nextElement;
     }
 
-    nextSibling && addNeedChangeDom(nextSibling); // 节点插入
+    nextSibling && addNeedChangeDom(nextSibling);
+    console.log('needChangeDom', needChangeDom);
+    console.log('blocks', blocks); // 节点插入
 
     let i = 0;
     blocks.forEach(block => {
