@@ -287,20 +287,6 @@ const enterCtrl = (ContentState) => {
       return this.partialRender();
     }
 
-    // Insert `<br/>` in table cell if you want to open a new line.
-    // Why not use `soft line break` or `hard line break` ?
-    // Becasuse table cell only have one line.
-    if (event.shiftKey && block.functionType === 'cellContent') {
-      const { text, key } = block;
-      const brTag = '<br/>';
-      block.text = text.substring(0, start.offset) + brTag + text.substring(start.offset);
-      const offset = start.offset + brTag.length;
-      this.cursor = {
-        start: { key, offset },
-        end: { key, offset }
-      };
-      return this.partialRender([block]);
-    }
 
     const getFirstBlockInNextRow = (row) => {
       let nextSibling = this.getBlock(row.nextSibling);
@@ -322,39 +308,56 @@ const enterCtrl = (ContentState) => {
       return this.firstInDescendant(nextSibling);
     };
 
-    // handle enter in table
-    if (block.functionType === 'cellContent') {
-      const row = this.closest(block, 'tr');
-      const rowContainer = this.getBlock(row.parent);
-      const table = this.closest(rowContainer, 'table');
 
-      if ((isOsx && event.metaKey) || (!isOsx && event.ctrlKey)) {
-        const nextRow = this.createRow(row, false);
-        if (rowContainer.type === 'thead') {
-          let tBody = this.getBlock(rowContainer.nextSibling);
-          if (!tBody) {
-            tBody = this.createBlock('tbody');
-            this.appendChild(table, tBody);
-          }
-          if (tBody.children.length) {
-            this.insertBefore(nextRow, tBody.children[0]);
+    if (block.functionType === 'cellContent') {
+      if (!event.shiftKey && block.text && (start.offset === 0 || start.offset === block.text.length)) {
+        // handle enter in table
+        const row = this.closest(block, 'tr');
+        const rowContainer = this.getBlock(row.parent);
+        const table = this.closest(rowContainer, 'table');
+
+        if ((isOsx && event.metaKey) || (!isOsx && event.ctrlKey)) {
+          const nextRow = this.createRow(row, false);
+          if (rowContainer.type === 'thead') {
+            let tBody = this.getBlock(rowContainer.nextSibling);
+            if (!tBody) {
+              tBody = this.createBlock('tbody');
+              this.appendChild(table, tBody);
+            }
+            if (tBody.children.length) {
+              this.insertBefore(nextRow, tBody.children[0]);
+            } else {
+              this.appendChild(tBody, nextRow);
+            }
           } else {
-            this.appendChild(tBody, nextRow);
+            this.insertAfter(nextRow, row);
           }
-        } else {
-          this.insertAfter(nextRow, row);
+          table.row++;
         }
-        table.row++;
+
+        const { key } = getFirstBlockInNextRow(row);
+        const offset = 0;
+
+        this.cursor = {
+          start: { key, offset },
+          end: { key, offset }
+        };
+        return this.partialRender();
+      } else {
+        // Insert `<br/>` in table cell if you want to open a new line.
+        // Why not use `soft line break` or `hard line break` ?
+        // Becasuse table cell only have one line.
+        const { text, key } = block;
+        const brTag = '<br/>';
+        block.text = text.substring(0, start.offset) + brTag + text.substring(start.offset);
+        const offset = start.offset + brTag.length;
+        this.cursor = {
+          start: { key, offset },
+          end: { key, offset }
+        };
+        return this.partialRender([block]);
       }
 
-      const { key } = getFirstBlockInNextRow(row);
-      const offset = 0;
-
-      this.cursor = {
-        start: { key, offset },
-        end: { key, offset }
-      };
-      return this.partialRender();
     }
 
     if (block.type === 'span') {
