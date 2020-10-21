@@ -35,7 +35,7 @@ class ImageSelector extends BaseFloat {
     }
     this.photoList = []
     this.loading = false
-    this.tab = 'link' // select or link
+    this.tab = 'select' // select or link
     this.isFullMode = false // is show title and alt input
     this.state = {
       alt: '',
