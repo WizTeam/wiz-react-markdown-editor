@@ -257,7 +257,7 @@ function useImperative(ref, editor) {
             offset: firstBlock.text.length
           }
         };
-        editor.contentState.setCursor();
+        editor.contentState.render();
       }
     }
 

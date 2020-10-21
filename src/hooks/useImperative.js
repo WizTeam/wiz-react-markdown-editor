@@ -217,7 +217,7 @@ export default function useImperative(ref, editor) {
             start: { key: firstBlock.key, offset: 2 },
             end: { key: firstBlock.key, offset: firstBlock.text.length }
           };
-          editor.contentState.setCursor();
+          editor.contentState.render();
         }
       }
       return {
