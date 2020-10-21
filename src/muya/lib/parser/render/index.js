@@ -100,7 +100,10 @@ class StateRender {
     if (this.mermaidCache.size) {
       const mermaid = await loadRenderer('mermaid')
       mermaid.initialize({
-        theme: this.muya.options.mermaidTheme
+        theme: this.muya.options.mermaidTheme,
+        themeVariables: {
+          taskTextDarkColor: '#333',
+        },
       })
       for (const [key, value] of this.mermaidCache.entries()) {
         const { code } = value

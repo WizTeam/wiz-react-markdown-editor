@@ -45,10 +45,16 @@ if (os.isPc) {
   Muya.use(ImagePathPicker);
 }
 
+let theme = null;
+
 function formatOptions(options) {
+  if (options.theme) {
+    theme = options.theme;
+  }
+  //
   Object.assign(
     options,
-    /dark/i.test(options.theme)
+    /dark/i.test(theme)
       ? {
           mermaidTheme: 'dark',
           vegaTheme: 'dark'

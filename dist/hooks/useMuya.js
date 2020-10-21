@@ -83,8 +83,15 @@ if (_utils.os.isPc) {
   _lib.default.use(_imagePicker.default);
 }
 
+let theme = null;
+
 function formatOptions(options) {
-  Object.assign(options, /dark/i.test(options.theme) ? {
+  if (options.theme) {
+    theme = options.theme;
+  } //
+
+
+  Object.assign(options, /dark/i.test(theme) ? {
     mermaidTheme: 'dark',
     vegaTheme: 'dark'
   } : {
