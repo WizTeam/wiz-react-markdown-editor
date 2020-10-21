@@ -181,7 +181,9 @@ function Editor(props) {
 
     const media = window.matchMedia('(prefers-color-scheme: dark)');
 
-    if (typeof media.addEventListener === 'function') {
+    if (props.onThemeChange) {
+      props.onThemeChange((e) => handleSystemThemeChange(e));
+    } else if (typeof media.addEventListener === 'function') {
       media.addEventListener('change', handleSystemThemeChange);
     } else if (typeof media.addListener === 'function') {
       media.addListener(handleSystemThemeChange);
@@ -201,7 +203,7 @@ function Editor(props) {
         editor.off('selectionChange', handleSelectionChange);
       }
     };
-  }, [editor, props.onChange, scrollToSaferView, theme, typewriter]);
+  }, [editor, props, scrollToSaferView, theme]);
 
   useEffect(() => {
     editor?.tagInsert?.setWordList(wordList);
@@ -273,6 +275,7 @@ Editor.propTypes = {
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onSelectImages: PropTypes.func,
   onChange: PropTypes.func,
+  onThemeChange: PropTypes.func,
   sourceCode: PropTypes.bool,
   typewriter: PropTypes.bool,
   focus: PropTypes.bool,
@@ -288,6 +291,7 @@ Editor.defaultProps = {
   width: '100%',
   onSelectImages: null,
   onChange: () => {},
+  onThemeChange: null,
   sourceCode: false,
   typewriter: false,
   focus: false,

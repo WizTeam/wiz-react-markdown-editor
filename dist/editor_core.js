@@ -191,7 +191,9 @@ function Editor(props) {
 
     const media = window.matchMedia('(prefers-color-scheme: dark)');
 
-    if (typeof media.addEventListener === 'function') {
+    if (props.onThemeChange) {
+      props.onThemeChange(e => handleSystemThemeChange(e));
+    } else if (typeof media.addEventListener === 'function') {
       media.addEventListener('change', handleSystemThemeChange);
     } else if (typeof media.addListener === 'function') {
       media.addListener(handleSystemThemeChange);
@@ -214,7 +216,7 @@ function Editor(props) {
         editor.off('selectionChange', handleSelectionChange);
       }
     };
-  }, [editor, props.onChange, scrollToSaferView, theme, typewriter]);
+  }, [editor, props, scrollToSaferView, theme]);
   (0, _react.useEffect)(() => {
     var _editor$tagInsert;
 
@@ -279,6 +281,7 @@ Editor.propTypes = {
   width: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]),
   onSelectImages: _propTypes.default.func,
   onChange: _propTypes.default.func,
+  onThemeChange: _propTypes.default.func,
   sourceCode: _propTypes.default.bool,
   typewriter: _propTypes.default.bool,
   focus: _propTypes.default.bool,
@@ -293,6 +296,7 @@ Editor.defaultProps = {
   width: '100%',
   onSelectImages: null,
   onChange: () => {},
+  onThemeChange: null,
   sourceCode: false,
   typewriter: false,
   focus: false,
