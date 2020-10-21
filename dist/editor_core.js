@@ -23,8 +23,6 @@ var _utils = require("./utils/utils");
 
 var _eventUtils = require("./utils/eventUtils");
 
-require("./style/printService.css");
-
 require("./muya/themes/default.css");
 
 require("./style/index.css");
@@ -41,7 +39,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 // import isOsx from './muya/lib/config';
-// import './style/one-dark.css';
 const useStyles = (0, _styles.makeStyles)({
   editorWrapper: {
     height: '100%',

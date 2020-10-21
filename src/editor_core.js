@@ -9,12 +9,10 @@ import { useMuya } from './hooks/useMuya';
 import { setEditorWidth } from './theme';
 import { animatedScrollTo, formatUrl, isDarkMode } from './utils/utils';
 import { matchHotKey } from './utils/eventUtils';
-import './style/printService.css';
 import './muya/themes/default.css';
 import './style/index.css';
 import useImperative from './hooks/useImperative';
 import formatKeydownOption from './muya/lib/ui/formatPicker/config';
-// import './style/one-dark.css';
 
 const useStyles = makeStyles({
   editorWrapper: {
