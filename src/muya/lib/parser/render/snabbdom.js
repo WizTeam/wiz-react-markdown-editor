@@ -8,7 +8,7 @@ export const patch = snabbdom.init([ // Init patch function with chosen modules
   require('snabbdom/modules/props').default, // for setting properties on DOM elements
   require('snabbdom/modules/dataset').default,
   require('snabbdom/modules/hero').default,
-  require('snabbdom/modules/module').default,
+  // require('snabbdom/modules/module').default,
   require('snabbdom/modules/eventlisteners').default // attaches event listeners
 ])
 export const h = require('snabbdom/h').default // helper function for creating vnodes
