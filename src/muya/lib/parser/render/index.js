@@ -5,7 +5,6 @@ import { patch, toVNode, toHTML, h } from './snabbdom'
 import { beginRules } from '../rules'
 import renderInlines from './renderInlines'
 import renderBlock from './renderBlock'
-import { block } from '../marked/blockRules'
 
 class StateRender {
   constructor (muya) {
@@ -229,7 +228,15 @@ class StateRender {
     blocks.forEach((block) => {
       const renderBlock = this.renderBlock(null, block, activeBlocks, matches)
       if (i < needChangeDom.length && block.key === needChangeDom[i].id) {
-        patch(toVNode(needChangeDom[i++]), renderBlock)
+        const oldBlock = toVNode(needChangeDom[i++])
+        // if (renderBlock.sel.startsWith('figure')) {
+        //   const oldTableBlock = oldBlock.children[renderBlock.children.length - 1].children[0]
+        //   const newTableBlock = renderBlock.children[renderBlock.children.length - 1].children[0]
+        //   console.log('newTableBlock', newTableBlock)
+        //   console.log('oldTableBlock', oldTableBlock)
+        //   patch(oldTableBlock, newTableBlock)
+        // }
+        patch(oldBlock, renderBlock)
         prevDom = prevDom ? prevDom.nextElementSibling : parentDom.children[0];
       } else {
         const newVnode = h('section', [renderBlock]);

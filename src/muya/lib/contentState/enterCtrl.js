@@ -293,7 +293,8 @@ const enterCtrl = (ContentState) => {
       if (!nextSibling) {
         const rowContainer = this.getBlock(row.parent);
         const table = this.getBlock(rowContainer.parent);
-        const figure = this.getBlock(table.parent);
+        const scroll = this.getBlock(table.parent)
+        const figure = this.getBlock(scroll.parent);
 
         if (rowContainer.type === 'thead' && table.children[1]) {
           nextSibling = table.children[1];
@@ -310,7 +311,7 @@ const enterCtrl = (ContentState) => {
 
 
     if (block.functionType === 'cellContent') {
-      if (!event.shiftKey && block.text && (start.offset === 0 || start.offset === block.text.length)) {
+      if (!event.shiftKey && (start.offset === 0 || start.offset === block.text.length)) {
         // handle enter in table
         const row = this.closest(block, 'tr');
         const rowContainer = this.getBlock(row.parent);

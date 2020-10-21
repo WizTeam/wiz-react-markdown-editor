@@ -44,7 +44,12 @@ function htmlTag(h, cursor, block, token, outerClass) {
 
     case 'br':
       {
-        return [h("span.".concat(_config.CLASS_OR_ID.AG_HTML_TAG), [...openContent, h(tag)])];
+        // return [h(`span.${CLASS_OR_ID.AG_HTML_TAG}`,[...openContent, h(tag)])]
+        return [h("span.".concat(_config.CLASS_OR_ID.AG_HTML_TAG), {
+          attrs: {
+            contenteditable: 'false'
+          }
+        }, [h("span.".concat(_config.CLASS_OR_ID.AG_HIDE, ".").concat(_config.CLASS_OR_ID.AG_OUTPUT_REMOVE), [...openContent]), h(tag)])];
       }
 
     default:

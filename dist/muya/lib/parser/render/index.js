@@ -19,8 +19,6 @@ var _renderInlines = _interopRequireDefault(require("./renderInlines"));
 
 var _renderBlock = _interopRequireDefault(require("./renderBlock"));
 
-var _blockRules = require("../marked/blockRules");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class StateRender {
@@ -277,7 +275,15 @@ class StateRender {
       const renderBlock = this.renderBlock(null, block, activeBlocks, matches);
 
       if (i < needChangeDom.length && block.key === needChangeDom[i].id) {
-        (0, _snabbdom.patch)((0, _snabbdom.toVNode)(needChangeDom[i++]), renderBlock);
+        const oldBlock = (0, _snabbdom.toVNode)(needChangeDom[i++]); // if (renderBlock.sel.startsWith('figure')) {
+        //   const oldTableBlock = oldBlock.children[renderBlock.children.length - 1].children[0]
+        //   const newTableBlock = renderBlock.children[renderBlock.children.length - 1].children[0]
+        //   console.log('newTableBlock', newTableBlock)
+        //   console.log('oldTableBlock', oldTableBlock)
+        //   patch(oldTableBlock, newTableBlock)
+        // }
+
+        (0, _snabbdom.patch)(oldBlock, renderBlock);
         prevDom = prevDom ? prevDom.nextElementSibling : parentDom.children[0];
       } else {
         const newVnode = (0, _snabbdom.h)('section', [renderBlock]);

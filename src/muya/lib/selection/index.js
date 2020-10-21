@@ -460,7 +460,7 @@ class Selection {
 
         // Fix #1460 - put the cursor at the next text node or element if it can be put at the last of /^\n$/ or the next text node/element.
         if (
-          /^\n$/.test(textContent) && i !== len - 1
+          (/^\n$/.test(textContent) || child.contentEditable === 'false') && i !== len - 1
             ? count + textLength > offset
             : count + textLength >= offset
         ) {

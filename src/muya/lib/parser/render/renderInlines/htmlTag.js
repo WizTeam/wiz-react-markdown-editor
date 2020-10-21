@@ -25,7 +25,12 @@ export default function htmlTag (h, cursor, block, token, outerClass) {
       return this.image(h, cursor, block, token, outerClass)
     }
     case 'br': {
-      return [h(`span.${CLASS_OR_ID.AG_HTML_TAG}`, [...openContent, h(tag)])]
+      // return [h(`span.${CLASS_OR_ID.AG_HTML_TAG}`,[...openContent, h(tag)])]
+      return [h(`span.${CLASS_OR_ID.AG_HTML_TAG}`, {
+        attrs: {
+          contenteditable: 'false'
+        }
+      }, [h(`span.${CLASS_OR_ID.AG_HIDE}.${CLASS_OR_ID.AG_OUTPUT_REMOVE}`, [...openContent]), h(tag)])]
     }
     default:
       // handle void html tag
