@@ -1,27 +1,21 @@
-import { init } from 'snabbdom/build/package/init'
-import { classModule } from 'snabbdom/build/package/modules/class'
-import { propsModule } from 'snabbdom/build/package/modules/props'
-import { styleModule } from 'snabbdom/build/package/modules/style'
-import { attributesModule } from 'snabbdom/build/package/modules/attributes';
-import { eventListenersModule } from 'snabbdom/build/package/modules/eventlisteners';
-import { datasetModule } from 'snabbdom/build/package/modules/dataset'
-import { heroModule } from 'snabbdom/build/package/modules/hero'
-export { h } from 'snabbdom/build/package/h' // helper function for creating vnodes
-export { toVNode } from 'snabbdom/build/package/tovnode'
+// import virtualize from 'snabbdom-virtualize/strings'
+const snabbdom = require('snabbdom')
 
-export const patch = init([ // Init patch function with chosen modules
-  classModule, // makes it easy to toggle classes
-  propsModule, // for setting properties on DOM elements
-  styleModule, // handles styling on elements with support for animations
-  eventListenersModule, // attaches event listeners
-  attributesModule,
-  datasetModule,
-  heroModule
+export const patch = snabbdom.init([ // Init patch function with chosen modules
+  require('snabbdom/modules/class').default, // makes it easy to toggle classes
+  require('snabbdom/modules/attributes').default,
+  require('snabbdom/modules/style').default, // handles styling on elements with support for animations
+  require('snabbdom/modules/props').default, // for setting properties on DOM elements
+  require('snabbdom/modules/dataset').default,
+  require('snabbdom/modules/hero').default,
+  // require('snabbdom/modules/module').default,
+  require('snabbdom/modules/eventlisteners').default // attaches event listeners
 ])
+export const h = require('snabbdom/h').default // helper function for creating vnodes
+export const toHTML = require('snabbdom-to-html') // helper function for convert vnode to HTML string
+export const toVNode = require('snabbdom/tovnode').default // helper function for convert DOM to vnode
 export const htmlToVNode = html => { // helper function for convert html to vnode
   const wrapper = document.createElement('div')
   wrapper.innerHTML = html
   return toVNode(wrapper).children
 }
-
-export const toHTML = require('snabbdom-to-html')

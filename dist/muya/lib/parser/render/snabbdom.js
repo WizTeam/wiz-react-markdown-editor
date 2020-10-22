@@ -3,48 +3,34 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "h", {
-  enumerable: true,
-  get: function () {
-    return _h.h;
-  }
-});
-Object.defineProperty(exports, "toVNode", {
-  enumerable: true,
-  get: function () {
-    return _tovnode.toVNode;
-  }
-});
-exports.toHTML = exports.htmlToVNode = exports.patch = void 0;
+exports.htmlToVNode = exports.toVNode = exports.toHTML = exports.h = exports.patch = void 0;
 
-var _init = require("snabbdom/build/package/init");
+// import virtualize from 'snabbdom-virtualize/strings'
+const snabbdom = require('snabbdom');
 
-var _class = require("snabbdom/build/package/modules/class");
-
-var _props = require("snabbdom/build/package/modules/props");
-
-var _style = require("snabbdom/build/package/modules/style");
-
-var _attributes = require("snabbdom/build/package/modules/attributes");
-
-var _eventlisteners = require("snabbdom/build/package/modules/eventlisteners");
-
-var _dataset = require("snabbdom/build/package/modules/dataset");
-
-var _hero = require("snabbdom/build/package/modules/hero");
-
-var _h = require("snabbdom/build/package/h");
-
-var _tovnode = require("snabbdom/build/package/tovnode");
-
-// helper function for creating vnodes
-const patch = (0, _init.init)([// Init patch function with chosen modules
-_class.classModule, // makes it easy to toggle classes
-_props.propsModule, // for setting properties on DOM elements
-_style.styleModule, // handles styling on elements with support for animations
-_eventlisteners.eventListenersModule, // attaches event listeners
-_attributes.attributesModule, _dataset.datasetModule, _hero.heroModule]);
+const patch = snabbdom.init([// Init patch function with chosen modules
+require('snabbdom/modules/class').default, // makes it easy to toggle classes
+require('snabbdom/modules/attributes').default, require('snabbdom/modules/style').default, // handles styling on elements with support for animations
+require('snabbdom/modules/props').default, // for setting properties on DOM elements
+require('snabbdom/modules/dataset').default, require('snabbdom/modules/hero').default, // require('snabbdom/modules/module').default,
+require('snabbdom/modules/eventlisteners').default // attaches event listeners
+]);
 exports.patch = patch;
+
+const h = require('snabbdom/h').default; // helper function for creating vnodes
+
+
+exports.h = h;
+
+const toHTML = require('snabbdom-to-html'); // helper function for convert vnode to HTML string
+
+
+exports.toHTML = toHTML;
+
+const toVNode = require('snabbdom/tovnode').default; // helper function for convert DOM to vnode
+
+
+exports.toVNode = toVNode;
 
 const htmlToVNode = html => {
   // helper function for convert html to vnode
@@ -54,7 +40,3 @@ const htmlToVNode = html => {
 };
 
 exports.htmlToVNode = htmlToVNode;
-
-const toHTML = require('snabbdom-to-html');
-
-exports.toHTML = toHTML;
