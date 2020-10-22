@@ -168,7 +168,33 @@ class StateRender {
     }
   }
 
+  fixPatchRenderTable (oldDom, newBlock, activeBlocks, matches, useCache) {
+    function updatedClassList(dom, newVNode) {
+      const strArr = newVNode.sel.split('.');
+      dom.setAttribute('class', strArr.length > 1 ? strArr.slice(1).join(' ') : '');
+    }
+    // 表格滚动条元素特殊处理
+    if (newBlock.functionType === 'table' && oldDom.getAttribute('data-role') === 'TABLE') {
+      const oldVNode = toVNode(oldDom);
+      const newVNode = this.renderBlock(null, newBlock, activeBlocks, matches, useCache)
+      // 处理父项
+      updatedClassList(oldDom, newVNode);
+      // 处理子项
+      oldVNode.children.forEach((item, index) => {
+        if (item.sel.indexOf('.ag-table-scroll')) {
+          updatedClassList(oldDom.children[index], newVNode.children[index]);
+          patch(item.children[0], newVNode.children[index].children[0])
+        } else {
+          patch(item, newVNode.children[index])
+        }
+      })
+      return true;
+    }
+    return false;
+  }
+
   render (blocks, activeBlocks, matches) {
+    console.log('render');
     const selector = `div#${this.muya.CLASS_OR_ID.AG_EDITOR_ID}`
     const children = blocks.map(block => {
       return this.renderBlock(null, block, activeBlocks, matches, true)
@@ -176,6 +202,14 @@ class StateRender {
 
     const newVdom = h(selector, children)
     const rootDom = document.querySelector(selector) || this.container
+    if (rootDom.children) {
+      blocks.forEach((block) => {
+        const targetIndex = Array.prototype.findIndex.call(rootDom.children, (item) => block.key === item.id)
+        if (targetIndex !== -1) {
+          this.fixPatchRenderTable(rootDom.children[targetIndex], block, activeBlocks, matches, true)
+        }
+      })
+    }
     const oldVdom = toVNode(rootDom)
 
     patch(oldVdom, newVdom)
@@ -183,6 +217,8 @@ class StateRender {
     this.renderDiagram()
     this.codeCache.clear()
   }
+
+
 
   // Only render the blocks which you updated
   partialRender (blocks, activeBlocks, matches, startKey, endKey) {
@@ -220,23 +256,30 @@ class StateRender {
     }
 
     nextSibling && addNeedChangeDom(nextSibling)
-
-    console.log('needChangeDom', needChangeDom)
-    console.log('blocks', blocks)
     // 节点插入
     let i = 0;
     blocks.forEach((block) => {
       const renderBlock = this.renderBlock(null, block, activeBlocks, matches)
       if (i < needChangeDom.length && block.key === needChangeDom[i].id) {
-        const oldBlock = toVNode(needChangeDom[i++])
-        // if (renderBlock.sel.startsWith('figure')) {
-        //   const oldTableBlock = oldBlock.children[renderBlock.children.length - 1].children[0]
-        //   const newTableBlock = renderBlock.children[renderBlock.children.length - 1].children[0]
-        //   console.log('newTableBlock', newTableBlock)
-        //   console.log('oldTableBlock', oldTableBlock)
-        //   patch(oldTableBlock, newTableBlock)
+        // 表格滚动条元素特殊处理
+        // if (block.functionType === 'table' && needChangeDom[i].getAttribute('data-role') === 'TABLE') {
+        //   // 处理子项
+        //   oldBlock.children.forEach((item, index) => {
+        //     if (item.sel.indexOf('.ag-table-scroll')) {
+        //       patch(item.children[0], renderBlock.children[index].children[0])
+        //     } else {
+        //       patch(item, renderBlock.children[index])
+        //     }
+        //   })
+        //   // 处理父项
+        //   const strArr = renderBlock.sel.split('.');
+        //   needChangeDom[i].setAttribute('class', strArr.length > 1 ? strArr.slice(1).join(' ') : '');
+        // } else {
+        //   patch(oldBlock, renderBlock)
         // }
-        patch(oldBlock, renderBlock)
+        if (!this.fixPatchRenderTable(needChangeDom[i], block, activeBlocks, matches)) {
+          patch(toVNode(needChangeDom[i++]), renderBlock)
+        }
         prevDom = prevDom ? prevDom.nextElementSibling : parentDom.children[0];
       } else {
         const newVnode = h('section', [renderBlock]);
@@ -278,6 +321,7 @@ class StateRender {
    * @param {array} matches
    */
   singleRender (block, activeBlocks, matches) {
+    console.log('singleRender')
     const selector = `#${block.key}`
     const newVdom = this.renderBlock(null, block, activeBlocks, matches, true)
     const rootDom = document.querySelector(selector)
