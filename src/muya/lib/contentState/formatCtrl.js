@@ -357,23 +357,23 @@ const formatCtrl = (ContentState) => {
   ContentState.prototype.formatTag = function (content = '') {
     const { start, end } = selection.getCursorRange();
     if (start.key === end.key) {
-      const { key } = start;
+      const { key, offset: startOffset } = start;
+      const { offset: endOffset } = end;
       const block = this.getBlock(start.key);
-      let offset;
-      if (block.text) {
-        block.text = block.text.replace(
-          /(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/,
-          `#${content}#`
-        );
-        offset = content.length + 2;
+      if (content === '') {
+        block.text = `${block.text.substring(0, startOffset)}#${block.text.substring(startOffset, endOffset)}#${block.text.substring(endOffset)}`;
+        this.cursor = {
+          start: { key, offset: startOffset + 1 },
+          end: { key, offset: endOffset + 1 }
+        };
       } else {
-        block.text = `#${content}#`;
-        offset = 1 + content.length;
+        block.text = `${block.text.substring(0, startOffset)}#${content}#${block.text.substring(endOffset)}`;
+        this.cursor = {
+          start: { key, offset: startOffset + 1 },
+          end: { key, offset: startOffset + content.length + 1 }
+        };
       }
-      this.cursor = {
-        start: { key, offset },
-        end: { key, offset }
-      };
+
       this.partialRender();
     }
   };

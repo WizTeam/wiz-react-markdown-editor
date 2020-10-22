@@ -475,29 +475,40 @@ const formatCtrl = ContentState => {
 
     if (start.key === end.key) {
       const {
-        key
+        key,
+        offset: startOffset
       } = start;
+      const {
+        offset: endOffset
+      } = end;
       const block = this.getBlock(start.key);
-      let offset;
 
-      if (block.text) {
-        block.text = block.text.replace(/(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/, "#".concat(content, "#"));
-        offset = content.length + 2;
+      if (content === '') {
+        block.text = "".concat(block.text.substring(0, startOffset), "#").concat(block.text.substring(startOffset, endOffset), "#").concat(block.text.substring(endOffset));
+        this.cursor = {
+          start: {
+            key,
+            offset: startOffset + 1
+          },
+          end: {
+            key,
+            offset: endOffset + 1
+          }
+        };
       } else {
-        block.text = "#".concat(content, "#");
-        offset = 1 + content.length;
+        block.text = "".concat(block.text.substring(0, startOffset), "#").concat(content, "#").concat(block.text.substring(endOffset));
+        this.cursor = {
+          start: {
+            key,
+            offset: startOffset + 1
+          },
+          end: {
+            key,
+            offset: startOffset + content.length + 1
+          }
+        };
       }
 
-      this.cursor = {
-        start: {
-          key,
-          offset
-        },
-        end: {
-          key,
-          offset
-        }
-      };
       this.partialRender();
     }
   };
