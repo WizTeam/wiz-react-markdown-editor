@@ -2422,7 +2422,7 @@ i.ag-footnote-backlink {
   transition: transform .2s ease-in;
   transform-origin: center;
 }
- 
+
 .ag-image-picker-wrapper {
   z-index: 100000;
 }
@@ -3436,7 +3436,7 @@ pre.ag-paragraph {
 .style .token.string {
   color: #9a6e3a;
 }
-  
+
 .token.atrule,
 .token.attr-value,
 .token.keyword {
@@ -3815,7 +3815,7 @@ kbd {
 
   ul,
   ol {
-    padding-left: 30px;
+    padding-left: 20px;
   }
 
   ul:first-child,

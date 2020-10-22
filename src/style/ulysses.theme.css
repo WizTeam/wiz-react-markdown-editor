@@ -126,7 +126,7 @@ li.ag-task-list-item > input[type=checkbox] {
   top: .1em;
   transform: rotate(-90deg);
   margin: 0;
-  left: -24px;
+  left: -22px;
   transform-origin: center;
   transition: all .2s ease;
 }
