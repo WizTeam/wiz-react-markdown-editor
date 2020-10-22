@@ -258,25 +258,10 @@ class StateRender {
     blocks.forEach((block) => {
       const renderBlock = this.renderBlock(null, block, activeBlocks, matches)
       if (i < needChangeDom.length && block.key === needChangeDom[i].id) {
-        // 表格滚动条元素特殊处理
-        // if (block.functionType === 'table' && needChangeDom[i].getAttribute('data-role') === 'TABLE') {
-        //   // 处理子项
-        //   oldBlock.children.forEach((item, index) => {
-        //     if (item.sel.indexOf('.ag-table-scroll')) {
-        //       patch(item.children[0], renderBlock.children[index].children[0])
-        //     } else {
-        //       patch(item, renderBlock.children[index])
-        //     }
-        //   })
-        //   // 处理父项
-        //   const strArr = renderBlock.sel.split('.');
-        //   needChangeDom[i].setAttribute('class', strArr.length > 1 ? strArr.slice(1).join(' ') : '');
-        // } else {
-        //   patch(oldBlock, renderBlock)
-        // }
         if (!this.fixPatchRenderTable(needChangeDom[i], block, activeBlocks, matches)) {
-          patch(toVNode(needChangeDom[i++]), renderBlock)
+          patch(toVNode(needChangeDom[i]), renderBlock)
         }
+        i++
         prevDom = prevDom ? prevDom.nextElementSibling : parentDom.children[0];
       } else {
         const newVnode = h('section', [renderBlock]);
