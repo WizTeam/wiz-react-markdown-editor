@@ -194,7 +194,6 @@ class StateRender {
   }
 
   render (blocks, activeBlocks, matches) {
-    console.log('render');
     const selector = `div#${this.muya.CLASS_OR_ID.AG_EDITOR_ID}`
     const children = blocks.map(block => {
       return this.renderBlock(null, block, activeBlocks, matches, true)
@@ -217,8 +216,6 @@ class StateRender {
     this.renderDiagram()
     this.codeCache.clear()
   }
-
-
 
   // Only render the blocks which you updated
   partialRender (blocks, activeBlocks, matches, startKey, endKey) {
@@ -321,7 +318,6 @@ class StateRender {
    * @param {array} matches
    */
   singleRender (block, activeBlocks, matches) {
-    console.log('singleRender')
     const selector = `#${block.key}`
     const newVdom = this.renderBlock(null, block, activeBlocks, matches, true)
     const rootDom = document.querySelector(selector)
