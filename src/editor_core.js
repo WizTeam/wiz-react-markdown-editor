@@ -7,7 +7,7 @@ import selection from './muya/lib/selection';
 import { useMuya } from './hooks/useMuya';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth } from './theme';
-import { animatedScrollTo, formatUrl, isDarkMode } from './utils/utils';
+import { animatedScrollTo, formatUrl, isDarkMode, os } from './utils/utils';
 import { matchHotKey } from './utils/eventUtils';
 import './muya/themes/default.css';
 import './style/index.css';
@@ -149,8 +149,11 @@ function Editor(props) {
       if (typewriter) {
         animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, 100);
       }
-
-      if (window.outerHeight - bottomHeight < y + 30) {
+      if (os.isAndroid) {
+        if (window.outerHeight < y + 30) {
+          _scrollingElement.scrollTop += y + 30 - window.outerHeight;
+        }
+      } else if (window.outerHeight - bottomHeight < y + 30) {
         const editableHeight = y + 30 - window.outerHeight + bottomHeight;
         animatedScrollTo(_scrollingElement, _scrollingElement.scrollTop + editableHeight, 100);
       }

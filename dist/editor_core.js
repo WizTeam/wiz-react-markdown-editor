@@ -161,7 +161,11 @@ function Editor(props) {
       (0, _utils.animatedScrollTo)(container, container.scrollTop + y - STANDAR_Y, 100);
     }
 
-    if (window.outerHeight - bottomHeight < y + 30) {
+    if (_utils.os.isAndroid) {
+      if (window.outerHeight < y + 30) {
+        _scrollingElement.scrollTop += y + 30 - window.outerHeight;
+      }
+    } else if (window.outerHeight - bottomHeight < y + 30) {
       const editableHeight = y + 30 - window.outerHeight + bottomHeight;
       (0, _utils.animatedScrollTo)(_scrollingElement, _scrollingElement.scrollTop + editableHeight, 100);
     }
