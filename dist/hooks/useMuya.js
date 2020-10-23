@@ -81,8 +81,19 @@ if (_utils.os.isPc) {
   });
 
   _lib.default.use(_imagePicker.default);
+} // patch ipad 手写笔在 文末的 空行无法输入
+
+
+const IpadPatchID = 'patch-ipad-pen-input';
+let ipadPatch = document.querySelector("#".concat(IpadPatchID));
+
+if (!ipadPatch) {
+  ipadPatch = document.createElement('div');
+  ipadPatch.id = IpadPatchID;
+  ipadPatch.setAttribute('style', 'opacity:0;position:absolute;top:-100px;left:-100px;width:0;height:0;overflow:hidden;');
 }
 
+document.body.appendChild(ipadPatch);
 let theme = null;
 
 function formatOptions(options) {
