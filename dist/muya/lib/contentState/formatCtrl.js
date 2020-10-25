@@ -468,48 +468,50 @@ const formatCtrl = ContentState => {
   };
 
   ContentState.prototype.formatTag = function (content = '') {
-    const {
-      start,
-      end
-    } = _selection.default.getCursorRange();
-
-    if (start.key === end.key) {
+    if (!this.muya.keyboard.isComposed) {
       const {
-        key,
-        offset: startOffset
-      } = start;
-      const {
-        offset: endOffset
-      } = end;
-      const block = this.getBlock(start.key);
+        start,
+        end
+      } = _selection.default.getCursorRange();
 
-      if (content === '') {
-        block.text = "".concat(block.text.substring(0, startOffset), "#").concat(block.text.substring(startOffset, endOffset), "#").concat(block.text.substring(endOffset));
-        this.cursor = {
-          start: {
-            key,
-            offset: startOffset + 1
-          },
-          end: {
-            key,
-            offset: endOffset + 1
-          }
-        };
-      } else {
-        block.text = "".concat(block.text.substring(0, startOffset), "#").concat(content, "#").concat(block.text.substring(endOffset));
-        this.cursor = {
-          start: {
-            key,
-            offset: startOffset + 1
-          },
-          end: {
-            key,
-            offset: startOffset + content.length + 1
-          }
-        };
+      if (start.key === end.key) {
+        const {
+          key,
+          offset: startOffset
+        } = start;
+        const {
+          offset: endOffset
+        } = end;
+        const block = this.getBlock(start.key);
+
+        if (content === '') {
+          block.text = "".concat(block.text.substring(0, startOffset), "#").concat(block.text.substring(startOffset, endOffset), "#").concat(block.text.substring(endOffset));
+          this.cursor = {
+            start: {
+              key,
+              offset: startOffset + 1
+            },
+            end: {
+              key,
+              offset: endOffset + 1
+            }
+          };
+        } else {
+          block.text = "".concat(block.text.substring(0, startOffset), "#").concat(content, "#").concat(block.text.substring(endOffset));
+          this.cursor = {
+            start: {
+              key,
+              offset: startOffset + 1
+            },
+            end: {
+              key,
+              offset: startOffset + content.length + 1
+            }
+          };
+        }
+
+        this.partialRender();
       }
-
-      this.partialRender();
     }
   };
 };
