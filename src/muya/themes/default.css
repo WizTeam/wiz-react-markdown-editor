@@ -608,6 +608,24 @@ kbd {
     background: var(--codeBlockBgColor);
   }
 
+  span:not(.ag-active) a[target='_blank'] {
+    padding-right: 25px;
+    position: relative;
+  }
+
+  span:not(.ag-active) a[target='_blank']::after {
+    display: block;
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: url(../lib/assets/icons/link.svg) no-repeat center center;
+    background-size: 20px 20px;
+    position: absolute;
+    right: 3px;
+    bottom: 0;
+    cursor: pointer;
+  }
+
   .ag-image-marked-text::before {
     background: url(../lib/assets/icons/image_light.png);
     background-size: cover;

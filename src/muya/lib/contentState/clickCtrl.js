@@ -84,7 +84,13 @@ const clickCtrl = ContentState => {
     // link-format-click
     let parentNode = inlineNode
     while (parentNode !== null && parentNode.classList.contains(CLASS_OR_ID.AG_INLINE_RULE)) {
-      if (parentNode.tagName === 'A') {
+      const clicktTarget = event.target;
+      //
+      if (clicktTarget.tagName === 'A' && parentNode.tagName === 'A') {
+        const link = parentNode.getAttribute('href');
+        window.open(link);
+        return;
+      } else if (parentNode.tagName === 'A') {
         const formatType = 'link' // auto link or []() link
         const data = {
           text: inlineNode.textContent,
