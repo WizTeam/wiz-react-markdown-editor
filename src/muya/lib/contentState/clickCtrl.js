@@ -81,6 +81,12 @@ const clickCtrl = ContentState => {
     const node = selection.getSelectionStart()
     const inlineNode = node ? node.closest('.ag-inline-rule') : null
 
+    // fix: ios
+    if (inlineNode === null && event.target.tagName === 'A' && event.target.classList.contains(CLASS_OR_ID.AG_INLINE_RULE)) {
+      const link = event.target.getAttribute('href');
+      eventCenter.dispatch('link-open', { url: link });
+    }
+
     // link-format-click
     let parentNode = inlineNode
     while (parentNode !== null && parentNode.classList.contains(CLASS_OR_ID.AG_INLINE_RULE)) {
@@ -89,6 +95,7 @@ const clickCtrl = ContentState => {
       if (clicktTarget.tagName === 'A' && parentNode.tagName === 'A') {
         const link = parentNode.getAttribute('href');
         window.open(link);
+        eventCenter.dispatch('link-open', { url: link });
         return;
       } else if (parentNode.tagName === 'A') {
         const formatType = 'link' // auto link or []() link

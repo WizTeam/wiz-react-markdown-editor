@@ -193,6 +193,7 @@ function Editor(props) {
     }
     if (editor) {
       editor.on('change', props.onChange);
+      editor.on('link-open', props.onLinkOpen);
       editor.on('selectionChange', handleSelectionChange);
     }
     return () => {
@@ -203,6 +204,7 @@ function Editor(props) {
       }
       if (editor) {
         editor.off('change', props.onChange);
+        editor.off('link-open', props.onLinkOpen);
         editor.off('selectionChange', handleSelectionChange);
       }
     };
