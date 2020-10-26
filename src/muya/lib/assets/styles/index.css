@@ -1332,7 +1332,7 @@ i.ag-footnote-backlink {
   }
   .ag-table-scroll {
     padding-left: 0;
-    /* padding-bottom: 0; */
+    padding-bottom: 6px;
   }
 }
 

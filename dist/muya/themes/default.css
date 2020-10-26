@@ -626,6 +626,14 @@ kbd {
     cursor: pointer;
   }
 
+  a[target='_blank'].ag-notext-link {
+    padding-right: 0 !important;
+  }
+
+  a[target='_blank'].ag-notext-link::after {
+    display: none !important;
+  }
+
   .ag-image-marked-text::before {
     background: url(../lib/assets/icons/image_light.png);
     background-size: cover;

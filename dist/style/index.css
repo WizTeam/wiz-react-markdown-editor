@@ -92,6 +92,14 @@
   --notificationErrorBg: #ff6969;
 }
 
+.ag-table-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.ag-table-scroll::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+}
+
 ::-webkit-scrollbar,
 ::-webkit-scrollbar-corner {
   background: var(--floatHoverColor);
