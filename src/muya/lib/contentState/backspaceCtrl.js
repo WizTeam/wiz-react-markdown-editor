@@ -185,7 +185,9 @@ const backspaceCtrl = (ContentState) => {
           end: { key: end.key, offset: 0 }
         };
         this.updateToParagraph(this.getParent(startBlock), startBlock);
-        return this.partialRender();
+        this.partialRender();
+
+        return this.muya.dispatchChange();
       }
     }
     // fix: #897
@@ -563,6 +565,7 @@ const backspaceCtrl = (ContentState) => {
       }
 
       needRenderAll ? this.render() : this.partialRender();
+      this.muya.dispatchChange();
     }
   };
 };
