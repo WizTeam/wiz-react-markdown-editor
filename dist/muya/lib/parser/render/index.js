@@ -339,7 +339,7 @@ class StateRender {
       } = cursorOutMostBlock;
       const cursorDom = document.querySelector("#".concat(key));
 
-      if (cursorDom) {
+      if (cursorDom && !this.fixPatchRenderTable(cursorDom, cursorOutMostBlock, activeBlocks, matches)) {
         const oldCursorVnode = (0, _snabbdom.toVNode)(cursorDom);
         const newCursorVnode = this.renderBlock(null, cursorOutMostBlock, activeBlocks, matches);
         (0, _snabbdom.patch)(oldCursorVnode, newCursorVnode);
