@@ -76,7 +76,7 @@ function isTouchCtrlKey(event) {
 function matchHotKey(hotkey, event, separator = '-') {
   const hotkeys = hotkey.split(separator);
   const key = parseKey(hotkeys[hotkeys.length - 1]);
-  const hasCtrl = hotkeys.some(value => value.toLocaleLowerCase() === 'ctrl' || value === '⌘');
+  const hasCtrl = hotkeys.some(value => value.toLocaleLowerCase() === 'ctrl' || value === '⌘' || value === '⌃');
   const hasAlt = hotkeys.some(value => value.toLocaleLowerCase() === 'alt' || value === '⌥');
   const hasShift = hotkeys.some(value => value.toLocaleLowerCase() === 'shift' || value === '⇧');
   return key.toLocaleLowerCase() === transformKey(event.key.toLocaleLowerCase()) && (hasCtrl && isTouchCtrlKey(event) || !hasCtrl && !isTouchCtrlKey(event)) && (hasAlt && event.altKey || !hasAlt && !event.altKey) && (hasShift && event.shiftKey || !hasShift && !event.shiftKey);
