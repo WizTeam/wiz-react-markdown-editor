@@ -10,14 +10,14 @@ const wholeSubMenu = Object.keys(quickInsertObj).reduce((acc, key) => {
   return [...acc, ...items]
 }, [])
 
-const COMMAND_KEY = isOsx ? '⌘' : '⌃'
+const COMMAND_KEY = isOsx ? '⌘' : 'Ctrl'
+const SHIFT_KEY = isOsx ? '⇧' : 'Shift'
 
 export const menu = [{
   icon: copyIcon,
   label: 'duplicate',
   text: 'Duplicate',
-  shortCut: `⇧${COMMAND_KEY}P`,
-  _shortCut: `⇧-${COMMAND_KEY}-P`,
+  shortCut: `${SHIFT_KEY}${COMMAND_KEY}P`,
 }, {
   icon: turnIcon,
   label: 'turnInto',
@@ -26,14 +26,12 @@ export const menu = [{
   icon: newIcon,
   label: 'new',
   text: 'New Paragraph',
-  shortCut: `⇧${COMMAND_KEY}N`,
-  _shortCut: `⇧-${COMMAND_KEY}-N`
+  shortCut: `${SHIFT_KEY}${COMMAND_KEY}N`,
 }, {
   icon: deleteIcon,
   label: 'delete',
   text: 'Delete',
-  shortCut: `⇧${COMMAND_KEY}D`,
-  _shortCut: `⇧-${COMMAND_KEY}-D`
+  shortCut: `${SHIFT_KEY}${COMMAND_KEY}D`,
 }]
 
 export const getLabel = block => {

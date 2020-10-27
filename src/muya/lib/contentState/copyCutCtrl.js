@@ -1,6 +1,6 @@
 import selection from '../selection'
 import { CLASS_OR_ID } from '../config'
-import { escapeHtml } from '../utils'
+import { escapeHtml, unescapeHtml } from '../utils'
 import { getSanitizeHtml } from '../utils/exportHtml'
 import ExportMarkdown from '../utils/exportMarkdown'
 import marked from '../parser/marked'
@@ -212,7 +212,8 @@ const copyCutCtrl = ContentState => {
     }
 
     let htmlData = wrapper.innerHTML
-    const textData = escapeHtml(this.htmlToMarkdown(htmlData))
+    // const textData = escapeHtml(this.htmlToMarkdown(htmlData))
+    const textData = this.htmlToMarkdown(htmlData)
     htmlData = marked(textData)
 
     return { html: htmlData, text: textData }

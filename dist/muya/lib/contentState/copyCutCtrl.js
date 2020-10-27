@@ -257,8 +257,9 @@ const copyCutCtrl = ContentState => {
       }
     }
 
-    let htmlData = wrapper.innerHTML;
-    const textData = (0, _utils.escapeHtml)(this.htmlToMarkdown(htmlData));
+    let htmlData = wrapper.innerHTML; // const textData = escapeHtml(this.htmlToMarkdown(htmlData))
+
+    const textData = this.htmlToMarkdown(htmlData);
     htmlData = (0, _marked.default)(textData);
     return {
       html: htmlData,

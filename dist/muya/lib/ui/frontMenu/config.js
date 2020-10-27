@@ -23,13 +23,13 @@ const wholeSubMenu = Object.keys(_config2.quickInsertObj).reduce((acc, key) => {
   const items = _config2.quickInsertObj[key];
   return [...acc, ...items];
 }, []);
-const COMMAND_KEY = _config.isOsx ? '⌘' : '⌃';
+const COMMAND_KEY = _config.isOsx ? '⌘' : 'Ctrl';
+const SHIFT_KEY = _config.isOsx ? '⇧' : 'Shift';
 const menu = [{
   icon: _.default,
   label: 'duplicate',
   text: 'Duplicate',
-  shortCut: "\u21E7".concat(COMMAND_KEY, "P"),
-  _shortCut: "\u21E7-".concat(COMMAND_KEY, "-P")
+  shortCut: "".concat(SHIFT_KEY).concat(COMMAND_KEY, "P")
 }, {
   icon: _4.default,
   label: 'turnInto',
@@ -38,14 +38,12 @@ const menu = [{
   icon: _2.default,
   label: 'new',
   text: 'New Paragraph',
-  shortCut: "\u21E7".concat(COMMAND_KEY, "N"),
-  _shortCut: "\u21E7-".concat(COMMAND_KEY, "-N")
+  shortCut: "".concat(SHIFT_KEY).concat(COMMAND_KEY, "N")
 }, {
   icon: _3.default,
   label: 'delete',
   text: 'Delete',
-  shortCut: "\u21E7".concat(COMMAND_KEY, "D"),
-  _shortCut: "\u21E7-".concat(COMMAND_KEY, "-D")
+  shortCut: "".concat(SHIFT_KEY).concat(COMMAND_KEY, "D")
 }];
 exports.menu = menu;
 

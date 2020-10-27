@@ -17,6 +17,8 @@ var _selection = _interopRequireDefault(require("./muya/lib/selection"));
 
 var _useMuya = require("./hooks/useMuya");
 
+var _useShortcut = _interopRequireDefault(require("./hooks/useShortcut"));
+
 var _theme = require("./theme");
 
 var _utils = require("./utils/utils");
@@ -98,6 +100,7 @@ function Editor(props) {
   } = props; //
 
   const editorRef = (0, _react.useRef)();
+  const containerRef = (0, _react.useRef)();
   const [theme, setTheme] = (0, _react.useState)((0, _utils.isDarkMode)() ? 'dark' : 'light');
   const transformImageUrl = (0, _react.useCallback)(src => resourceUrl && src.startsWith('index_files/') ? (0, _utils.formatUrl)(resourceUrl) + src : src, [resourceUrl]);
   const MuyaOptions = (0, _react.useMemo)(() => ({
@@ -110,6 +113,7 @@ function Editor(props) {
   }), // eslint-disable-next-line react-hooks/exhaustive-deps
   [focus, onSelectImages, theme, resourceUrl, onInsertImageFromData]);
   const editor = (0, _useMuya.useMuya)(editorRef, MuyaOptions);
+  (0, _useShortcut.default)(containerRef.current, editor);
   (0, _react.useEffect)(() => {
     function scrollToCursor(duration = 300) {
       if (!editor) return;
@@ -240,77 +244,10 @@ function Editor(props) {
 
     editorFocus(_editorFocus);
   }, [editor, editorFocus]);
-
-  function handleKeyDown(e) {
-    let res = true;
-
-    if ((0, _eventUtils.matchHotKey)('⌘-z', e)) {
-      editor === null || editor === void 0 ? void 0 : editor.undo();
-    } else if ((0, _eventUtils.matchHotKey)('⇧-⌘-z', e)) {
-      editor === null || editor === void 0 ? void 0 : editor.redo();
-    } else {
-      res = _config.default.some(item => {
-        if ((0, _eventUtils.matchHotKey)(item.shortcut, e, '+')) {
-          editor === null || editor === void 0 ? void 0 : editor.contentState.format(item.type);
-          return true;
-        }
-
-        return false;
-      });
-    } //
-
-
-    const frontMenu = _config2.menu.some(item => {
-      if (item._shortCut && (0, _eventUtils.matchHotKey)(item._shortCut, e)) {
-        if (item.label === 'duplicate') {
-          editor === null || editor === void 0 ? void 0 : editor.contentState.duplicate();
-        } else if (item.label === 'delete') {
-          editor === null || editor === void 0 ? void 0 : editor.contentState.deleteParagraph();
-        } else if (item.label === 'new') {
-          editor === null || editor === void 0 ? void 0 : editor.contentState.insertParagraph('after', '', true);
-        }
-
-        return true;
-      }
-
-      return false;
-    }); //
-
-
-    let quickInsert = false;
-    Object.keys(_config3.quickInsertObj).forEach(key => {
-      const data = _config3.quickInsertObj[key];
-      data.forEach(item => {
-        if (item.shortCut && (0, _eventUtils.matchHotKey)(item.shortCut, e, '+')) {
-          if (/link|image/.test(item.label)) {
-            editor === null || editor === void 0 ? void 0 : editor.contentState.setCursor();
-            editor === null || editor === void 0 ? void 0 : editor.contentState.format(item.label);
-          } else {
-            switch (item.label) {
-              case 'paragraph':
-                editor === null || editor === void 0 ? void 0 : editor.contentState.partialRender();
-                break;
-
-              default:
-                editor === null || editor === void 0 ? void 0 : editor.contentState.updateParagraph(item.label, true);
-                break;
-            }
-          }
-
-          quickInsert = true;
-        }
-      });
-    }); //
-
-    if (res || frontMenu || quickInsert) {
-      e.preventDefault();
-    }
-  }
-
   (0, _useImperative.default)(props.editorRef, editor);
   return /*#__PURE__*/_react.default.createElement("div", {
     className: (0, _classnames.default)(classes.editorWrapper, typewriter && classes.typewriter, focus && classes.focus, sourceCode && classes.source, props.editorWrapperClassName),
-    onKeyDown: handleKeyDown
+    ref: containerRef
   }, /*#__PURE__*/_react.default.createElement("div", {
     ref: editorRef,
     className: (0, _classnames.default)(classes.editorComponent, props.editorComponentClassName)

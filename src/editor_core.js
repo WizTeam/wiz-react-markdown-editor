@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import selection from './muya/lib/selection';
 import { useMuya } from './hooks/useMuya';
+import useShortcut from './hooks/useShortcut';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth } from './theme';
 import { animatedScrollTo, formatUrl, isDarkMode, os } from './utils/utils';
@@ -73,6 +74,7 @@ function Editor(props) {
   } = props;
   //
   const editorRef = useRef();
+  const containerRef = useRef();
 
   const [theme, setTheme] = useState(isDarkMode() ? 'dark' : 'light');
 
@@ -95,6 +97,8 @@ function Editor(props) {
   );
 
   const editor = useMuya(editorRef, MuyaOptions);
+
+  useShortcut(containerRef.current, editor);
 
   useEffect(() => {
     function scrollToCursor(duration = 300) {
@@ -224,64 +228,6 @@ function Editor(props) {
     editorFocus(_editorFocus);
   }, [editor, editorFocus]);
 
-  function handleKeyDown(e) {
-    let res = true;
-    if (matchHotKey('⌘-z', e)) {
-      editor?.undo();
-    } else if (matchHotKey('⇧-⌘-z', e)) {
-      editor?.redo();
-    } else {
-      res = formatKeydownOption.some((item) => {
-        if (matchHotKey(item.shortcut, e, '+')) {
-          editor?.contentState.format(item.type);
-          return true;
-        }
-        return false;
-      });
-    }
-    //
-    const frontMenu = frontMenuShortcut.some((item) => {
-      if (item._shortCut && matchHotKey(item._shortCut, e)) {
-        if (item.label === 'duplicate') {
-          editor?.contentState.duplicate();
-        } else if (item.label === 'delete') {
-          editor?.contentState.deleteParagraph();
-        } else if (item.label === 'new') {
-          editor?.contentState.insertParagraph('after', '', true);
-        }
-        return true;
-      }
-      return false;
-    });
-    //
-    let quickInsert = false;
-    Object.keys(quickInsertShortcut).forEach((key) => {
-      const data = quickInsertShortcut[key];
-      data.forEach((item) => {
-        if (item.shortCut && matchHotKey(item.shortCut, e, '+')) {
-          if (/link|image/.test(item.label)) {
-            editor?.contentState.setCursor();
-            editor?.contentState.format(item.label);
-          } else {
-            switch (item.label) {
-              case 'paragraph':
-                editor?.contentState.partialRender();
-                break;
-              default:
-                editor?.contentState.updateParagraph(item.label, true);
-                break;
-            }
-          }
-          quickInsert = true;
-        }
-      });
-    });
-    //
-    if (res || frontMenu || quickInsert) {
-      e.preventDefault();
-    }
-  }
-
   useImperative(props.editorRef, editor);
 
   return (
@@ -293,7 +239,7 @@ function Editor(props) {
         sourceCode && classes.source,
         props.editorWrapperClassName
       )}
-      onKeyDown={handleKeyDown}
+      ref={containerRef}
     >
       <div
         ref={editorRef}
