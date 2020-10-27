@@ -283,7 +283,7 @@ class StateRender {
     if (needRenderCursorBlock) {
       const { key } = cursorOutMostBlock
       const cursorDom = document.querySelector(`#${key}`)
-      if (cursorDom) {
+      if (cursorDom && !this.fixPatchRenderTable(cursorDom, cursorOutMostBlock, activeBlocks, matches)) {
         const oldCursorVnode = toVNode(cursorDom)
         const newCursorVnode = this.renderBlock(null, cursorOutMostBlock, activeBlocks, matches)
         patch(oldCursorVnode, newCursorVnode)
