@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.parseKey = parseKey;
+exports.transformKey = transformKey;
 exports.isTouchCtrlKey = isTouchCtrlKey;
 exports.matchHotKey = matchHotKey;
 
@@ -37,6 +38,37 @@ function parseKey(key) {
   return val;
 }
 
+function transformKey(key) {
+  switch (key) {
+    case 'µ':
+      return 'm';
+
+    case '–':
+      return '-';
+
+    case '∆':
+      return 'j';
+
+    case 'ç':
+      return 'c';
+
+    case 'ø':
+      return 'o';
+
+    case '¨':
+      return 'u';
+
+    case '≈':
+      return 'x';
+
+    case 'œ':
+      return 'q';
+
+    default:
+      return key;
+  }
+}
+
 function isTouchCtrlKey(event) {
   return (0, _domUtils.isMacSystem)() ? event.metaKey && !event.ctrlKey : !event.metaKey && event.ctrlKey;
 }
@@ -47,5 +79,5 @@ function matchHotKey(hotkey, event, separator = '-') {
   const hasCtrl = hotkeys.some(value => value.toLocaleLowerCase() === 'ctrl' || value === '⌘');
   const hasAlt = hotkeys.some(value => value.toLocaleLowerCase() === 'alt' || value === '⌥');
   const hasShift = hotkeys.some(value => value.toLocaleLowerCase() === 'shift' || value === '⇧');
-  return key.toLocaleLowerCase() === event.key.toLocaleLowerCase() && (hasCtrl && isTouchCtrlKey(event) || !hasCtrl && !isTouchCtrlKey(event)) && (hasAlt && event.altKey || !hasAlt && !event.altKey) && (hasShift && event.shiftKey || !hasShift && !event.shiftKey);
+  return key.toLocaleLowerCase() === transformKey(event.key.toLocaleLowerCase()) && (hasCtrl && isTouchCtrlKey(event) || !hasCtrl && !isTouchCtrlKey(event)) && (hasAlt && event.altKey || !hasAlt && !event.altKey) && (hasShift && event.shiftKey || !hasShift && !event.shiftKey);
 }

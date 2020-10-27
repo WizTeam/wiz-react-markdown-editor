@@ -22,6 +22,29 @@ export function parseKey(key) {
   return val;
 }
 
+export function transformKey(key) {
+  switch (key) {
+    case 'µ':
+      return 'm';
+    case '–':
+      return '-';
+    case '∆':
+      return 'j';
+    case 'ç':
+      return 'c';
+    case 'ø':
+      return 'o';
+    case '¨':
+      return 'u';
+    case '≈':
+      return 'x';
+    case 'œ':
+      return 'q';
+    default:
+      return key;
+  }
+}
+
 export function isTouchCtrlKey(event) {
   return isMacSystem() ? event.metaKey && !event.ctrlKey : !event.metaKey && event.ctrlKey;
 }
@@ -33,7 +56,7 @@ export function matchHotKey(hotkey, event, separator = '-') {
   const hasAlt = hotkeys.some((value) => value.toLocaleLowerCase() === 'alt' || value === '⌥');
   const hasShift = hotkeys.some((value) => value.toLocaleLowerCase() === 'shift' || value === '⇧');
   return (
-    key.toLocaleLowerCase() === event.key.toLocaleLowerCase() &&
+    key.toLocaleLowerCase() === transformKey(event.key.toLocaleLowerCase()) &&
     ((hasCtrl && isTouchCtrlKey(event)) || (!hasCtrl && !isTouchCtrlKey(event))) &&
     ((hasAlt && event.altKey) || (!hasAlt && !event.altKey)) &&
     ((hasShift && event.shiftKey) || (!hasShift && !event.shiftKey))

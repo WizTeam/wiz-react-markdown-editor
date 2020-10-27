@@ -13,6 +13,8 @@ import './muya/themes/default.css';
 import './style/index.css';
 import useImperative from './hooks/useImperative';
 import formatKeydownOption from './muya/lib/ui/formatPicker/config';
+import { menu as frontMenuShortcut } from './muya/lib/ui/frontMenu/config';
+import { quickInsertObj as quickInsertShortcut } from './muya/lib/ui/quickInsert/config';
 
 const useStyles = makeStyles({
   editorWrapper: {
@@ -228,18 +230,6 @@ function Editor(props) {
       editor?.undo();
     } else if (matchHotKey('⇧-⌘-z', e)) {
       editor?.redo();
-    } else if (matchHotKey('⌘-1', e)) {
-      editor?.updateParagraph('heading 1');
-    } else if (matchHotKey('⌘-2', e)) {
-      editor?.updateParagraph('heading 2');
-    } else if (matchHotKey('⌘-3', e)) {
-      editor?.updateParagraph('heading 3');
-    } else if (matchHotKey('⌘-4', e)) {
-      editor?.updateParagraph('heading 4');
-    } else if (matchHotKey('⌘-5', e)) {
-      editor?.updateParagraph('heading 5');
-    } else if (matchHotKey('⌘-6', e)) {
-      editor?.updateParagraph('heading 6');
     } else {
       res = formatKeydownOption.some((item) => {
         if (matchHotKey(item.shortcut, e, '+')) {
@@ -250,7 +240,44 @@ function Editor(props) {
       });
     }
     //
-    if (res) {
+    const frontMenu = frontMenuShortcut.some((item) => {
+      if (item._shortCut && matchHotKey(item._shortCut, e)) {
+        if (item.label === 'duplicate') {
+          editor?.contentState.duplicate();
+        } else if (item.label === 'delete') {
+          editor?.contentState.deleteParagraph();
+        } else if (item.label === 'new') {
+          editor?.contentState.insertParagraph('after', '', true);
+        }
+        return true;
+      }
+      return false;
+    });
+    //
+    let quickInsert = false;
+    Object.keys(quickInsertShortcut).forEach((key) => {
+      const data = quickInsertShortcut[key];
+      data.forEach((item) => {
+        if (item.shortCut && matchHotKey(item.shortCut, e, '+')) {
+          if (/link|image/.test(item.label)) {
+            editor?.contentState.setCursor();
+            editor?.contentState.format(item.label);
+          } else {
+            switch (item.label) {
+              case 'paragraph':
+                editor?.contentState.partialRender();
+                break;
+              default:
+                editor?.contentState.updateParagraph(item.label, true);
+                break;
+            }
+          }
+          quickInsert = true;
+        }
+      });
+    });
+    //
+    if (res || frontMenu || quickInsert) {
       e.preventDefault();
     }
   }

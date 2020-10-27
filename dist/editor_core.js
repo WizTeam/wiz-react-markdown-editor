@@ -31,6 +31,10 @@ var _useImperative = _interopRequireDefault(require("./hooks/useImperative"));
 
 var _config = _interopRequireDefault(require("./muya/lib/ui/formatPicker/config"));
 
+var _config2 = require("./muya/lib/ui/frontMenu/config");
+
+var _config3 = require("./muya/lib/ui/quickInsert/config");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
@@ -244,18 +248,6 @@ function Editor(props) {
       editor === null || editor === void 0 ? void 0 : editor.undo();
     } else if ((0, _eventUtils.matchHotKey)('⇧-⌘-z', e)) {
       editor === null || editor === void 0 ? void 0 : editor.redo();
-    } else if ((0, _eventUtils.matchHotKey)('⌘-1', e)) {
-      editor === null || editor === void 0 ? void 0 : editor.updateParagraph('heading 1');
-    } else if ((0, _eventUtils.matchHotKey)('⌘-2', e)) {
-      editor === null || editor === void 0 ? void 0 : editor.updateParagraph('heading 2');
-    } else if ((0, _eventUtils.matchHotKey)('⌘-3', e)) {
-      editor === null || editor === void 0 ? void 0 : editor.updateParagraph('heading 3');
-    } else if ((0, _eventUtils.matchHotKey)('⌘-4', e)) {
-      editor === null || editor === void 0 ? void 0 : editor.updateParagraph('heading 4');
-    } else if ((0, _eventUtils.matchHotKey)('⌘-5', e)) {
-      editor === null || editor === void 0 ? void 0 : editor.updateParagraph('heading 5');
-    } else if ((0, _eventUtils.matchHotKey)('⌘-6', e)) {
-      editor === null || editor === void 0 ? void 0 : editor.updateParagraph('heading 6');
     } else {
       res = _config.default.some(item => {
         if ((0, _eventUtils.matchHotKey)(item.shortcut, e, '+')) {
@@ -268,7 +260,49 @@ function Editor(props) {
     } //
 
 
-    if (res) {
+    const frontMenu = _config2.menu.some(item => {
+      if (item._shortCut && (0, _eventUtils.matchHotKey)(item._shortCut, e)) {
+        if (item.label === 'duplicate') {
+          editor === null || editor === void 0 ? void 0 : editor.contentState.duplicate();
+        } else if (item.label === 'delete') {
+          editor === null || editor === void 0 ? void 0 : editor.contentState.deleteParagraph();
+        } else if (item.label === 'new') {
+          editor === null || editor === void 0 ? void 0 : editor.contentState.insertParagraph('after', '', true);
+        }
+
+        return true;
+      }
+
+      return false;
+    }); //
+
+
+    let quickInsert = false;
+    Object.keys(_config3.quickInsertObj).forEach(key => {
+      const data = _config3.quickInsertObj[key];
+      data.forEach(item => {
+        if (item.shortCut && (0, _eventUtils.matchHotKey)(item.shortCut, e, '+')) {
+          if (/link|image/.test(item.label)) {
+            editor === null || editor === void 0 ? void 0 : editor.contentState.setCursor();
+            editor === null || editor === void 0 ? void 0 : editor.contentState.format(item.label);
+          } else {
+            switch (item.label) {
+              case 'paragraph':
+                editor === null || editor === void 0 ? void 0 : editor.contentState.partialRender();
+                break;
+
+              default:
+                editor === null || editor === void 0 ? void 0 : editor.contentState.updateParagraph(item.label, true);
+                break;
+            }
+          }
+
+          quickInsert = true;
+        }
+      });
+    }); //
+
+    if (res || frontMenu || quickInsert) {
       e.preventDefault();
     }
   }

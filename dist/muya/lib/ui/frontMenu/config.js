@@ -28,7 +28,8 @@ const menu = [{
   icon: _.default,
   label: 'duplicate',
   text: 'Duplicate',
-  shortCut: "\u21E7".concat(COMMAND_KEY, "P")
+  shortCut: "\u21E7".concat(COMMAND_KEY, "P"),
+  _shortCut: "\u21E7-".concat(COMMAND_KEY, "-P")
 }, {
   icon: _4.default,
   label: 'turnInto',
@@ -37,12 +38,14 @@ const menu = [{
   icon: _2.default,
   label: 'new',
   text: 'New Paragraph',
-  shortCut: "\u21E7".concat(COMMAND_KEY, "N")
+  shortCut: "\u21E7".concat(COMMAND_KEY, "N"),
+  _shortCut: "\u21E7-".concat(COMMAND_KEY, "-N")
 }, {
   icon: _3.default,
   label: 'delete',
   text: 'Delete',
-  shortCut: "\u21E7".concat(COMMAND_KEY, "D")
+  shortCut: "\u21E7".concat(COMMAND_KEY, "D"),
+  _shortCut: "\u21E7-".concat(COMMAND_KEY, "-D")
 }];
 exports.menu = menu;
 
