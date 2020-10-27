@@ -170,8 +170,8 @@ function Editor(props) {
     }
 
     if (_utils.os.isAndroid) {
-      if (window.outerHeight < y + 30) {
-        _scrollingElement.scrollTop += y + 30 - window.outerHeight;
+      if (window.outerHeight - bottomHeight < y + 30) {
+        _scrollingElement.scrollTop += y + 30 - window.outerHeight + bottomHeight;
       }
     } else if (window.outerHeight - bottomHeight < y + 30) {
       const editableHeight = y + 30 - window.outerHeight + bottomHeight;
