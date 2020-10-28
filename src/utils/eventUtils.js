@@ -24,6 +24,8 @@ export function parseKey(key) {
 
 export function transformKey(key) {
   switch (key) {
+    case 'å':
+      return 'a';
     case 'µ':
       return 'm';
     case '–':

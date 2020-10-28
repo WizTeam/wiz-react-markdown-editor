@@ -40,6 +40,9 @@ function parseKey(key) {
 
 function transformKey(key) {
   switch (key) {
+    case 'å':
+      return 'a';
+
     case 'µ':
       return 'm';
 
