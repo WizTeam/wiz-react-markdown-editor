@@ -23,19 +23,11 @@ var _theme = require("./theme");
 
 var _utils = require("./utils/utils");
 
-var _eventUtils = require("./utils/eventUtils");
-
 require("./muya/themes/default.css");
 
 require("./style/index.css");
 
 var _useImperative = _interopRequireDefault(require("./hooks/useImperative"));
-
-var _config = _interopRequireDefault(require("./muya/lib/ui/formatPicker/config"));
-
-var _config2 = require("./muya/lib/ui/frontMenu/config");
-
-var _config3 = require("./muya/lib/ui/quickInsert/config");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -95,7 +87,7 @@ function Editor(props) {
     editorFocus,
     bottomHeight,
     scrollingElement,
-    onInsertImageFromData
+    onImageAction
   } = props; //
 
   const editorRef = (0, _react.useRef)();
@@ -106,11 +98,11 @@ function Editor(props) {
     focusMode: focus,
     theme,
     imagePathPicker: onSelectImages,
-    onInsertImageFromData // markdown,
+    imageAction: onImageAction // markdown,
     // transformImageUrl
 
   }), // eslint-disable-next-line react-hooks/exhaustive-deps
-  [focus, onSelectImages, theme, resourceUrl, onInsertImageFromData]);
+  [focus, onSelectImages, theme, resourceUrl, onImageAction]);
   const editor = (0, _useMuya.useMuya)(editorRef, MuyaOptions);
   (0, _useShortcut.default)(containerRef.current, editor, {
     onScreenCaptureManual: props.onScreenCaptureManual
