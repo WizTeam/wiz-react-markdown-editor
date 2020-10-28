@@ -98,9 +98,9 @@ class ExportMarkdown {
 
           // helper variable to correct the first tight item in a nested list
           this.isLooseParentList = insertNewLine;
-          if (insertNewLine) {
-            this.insertLineBreak(result, indent);
-          }
+          // if (insertNewLine) {
+          //   this.insertLineBreak(result, indent);
+          // }
           result.push(this.normalizeListItem(block, indent + listIndent));
           this.isLooseParentList = true;
           break;
@@ -111,9 +111,9 @@ class ExportMarkdown {
 
           // Start a new list without separation due changing the bullet or ordered list delimiter starts a new list.
           const { bulletMarkerOrDelimiter } = block.children[0];
-          if (lastListBullet && lastListBullet !== bulletMarkerOrDelimiter) {
-            insertNewLine = false;
-          }
+          // if (lastListBullet && lastListBullet !== bulletMarkerOrDelimiter) {
+          //   insertNewLine = false;
+          // }
           lastListBullet = bulletMarkerOrDelimiter;
           if (insertNewLine) {
             this.insertLineBreak(result, indent);
@@ -130,9 +130,9 @@ class ExportMarkdown {
 
           // Start a new list without separation due changing the bullet or ordered list delimiter starts a new list.
           const { bulletMarkerOrDelimiter } = block.children[0];
-          if (lastListBullet && lastListBullet !== bulletMarkerOrDelimiter) {
-            insertNewLine = false;
-          }
+          // if (lastListBullet && lastListBullet !== bulletMarkerOrDelimiter) {
+          //   insertNewLine = false;
+          // }
           lastListBullet = bulletMarkerOrDelimiter;
           if (insertNewLine) {
             this.insertLineBreak(result, indent);
