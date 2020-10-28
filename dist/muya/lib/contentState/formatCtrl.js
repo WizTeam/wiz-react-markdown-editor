@@ -169,7 +169,7 @@ const addFormat = (type, block, {
       {
         const oldText = block.text;
         const anchorTextLen = end.offset - start.offset;
-        block.text = oldText.substring(0, start.offset) + (type === 'link' ? '[' : '![') + oldText.substring(start.offset, end.offset) + ']()' + oldText.substring(end.offset); // put cursor between `()`
+        block.text = oldText.substring(0, start.offset) + (type === 'link' ? '[' : '![') + oldText.substring(start.offset, end.offset) + '](http://)' + oldText.substring(end.offset); // put cursor between `()`
 
         if (anchorTextLen) {
           start.offset += type === 'link' ? 3 + anchorTextLen : 4 + anchorTextLen;
