@@ -98,7 +98,9 @@ function Editor(props) {
 
   const editor = useMuya(editorRef, MuyaOptions);
 
-  useShortcut(containerRef.current, editor);
+  useShortcut(containerRef.current, editor, {
+    onScreenCaptureManual: props.onScreenCaptureManual
+  });
 
   useEffect(() => {
     function scrollToCursor(duration = 300) {
@@ -262,6 +264,7 @@ Editor.propTypes = {
   readOnly: PropTypes.bool,
   wordList: PropTypes.array,
   editorFocus: PropTypes.func,
+  onScreenCaptureManual: PropTypes.func,
   bottomHeight: PropTypes.number
 };
 
@@ -278,6 +281,7 @@ Editor.defaultProps = {
   readOnly: false,
   wordList: [],
   editorFocus: () => {},
+  onScreenCaptureManual: null,
   bottomHeight: 100
 };
 

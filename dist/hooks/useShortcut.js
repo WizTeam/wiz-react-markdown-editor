@@ -10,12 +10,13 @@ var _react = require("react");
 var _eventUtils = require("../utils/eventUtils");
 
 // eslint-disable-next-line prettier/prettier
-const keys = [['edit.undo', 'CmdOrCtrl+Z'], ['edit.redo', 'CmdOrCtrl+Shift+Z'], ['edit.copy-as-markdown', 'CmdOrCtrl+Shift+C'], ['edit.duplicate', 'CmdOrCtrl+Shift+P'], ['edit.create-paragraph', 'Shift+CmdOrCtrl+N'], ['edit.delete-paragraph', 'Shift+CmdOrCtrl+D'], //
+const keys = [['edit.undo', 'CmdOrCtrl+Z'], ['edit.redo', 'CmdOrCtrl+Shift+Z'], ['edit.copy-as-markdown', 'CmdOrCtrl+Shift+C'], ['edit.duplicate', 'CmdOrCtrl+Shift+P'], ['edit.create-paragraph', 'Shift+CmdOrCtrl+N'], ['edit.delete-paragraph', 'Shift+CmdOrCtrl+D'], ['edit.screenshot', 'CmdOrCtrl+Alt+A'], // macOS only
+//
 ['paragraph.upgrade-heading', 'CmdOrCtrl+='], ['paragraph.degrade-heading', 'CmdOrCtrl+-'], ['paragraph.paragraph', 'CmdOrCtrl+0'], ['paragraph.heading-1', 'CmdOrCtrl+1'], ['paragraph.heading-2', 'CmdOrCtrl+2'], ['paragraph.heading-3', 'CmdOrCtrl+3'], ['paragraph.heading-4', 'CmdOrCtrl+4'], ['paragraph.heading-5', 'CmdOrCtrl+5'], ['paragraph.heading-6', 'CmdOrCtrl+6'], ['paragraph.horizontal-line', 'CmdOrCtrl+Alt+-'], ['paragraph.table', 'CmdOrCtrl+Shift+T'], ['paragraph.math-formula', 'CmdOrCtrl+Alt+M'], // ['paragraph.html-block', isOsx ? 'CmdOrCtrl+Alt+J' : 'CmdOrCtrl+Alt+H'],
 ['paragraph.html-block', 'CmdOrCtrl+Alt+J'], ['paragraph.code-fence', 'CmdOrCtrl+Alt+C'], ['paragraph.quote-block', 'CmdOrCtrl+Alt+Q'], ['paragraph.order-list', 'CmdOrCtrl+Alt+O'], ['paragraph.bullet-list', 'CmdOrCtrl+Alt+U'], ['paragraph.task-list', 'CmdOrCtrl+Alt+X'], // Format menu
 ['format.strong', 'CmdOrCtrl+B'], ['format.emphasis', 'CmdOrCtrl+I'], ['format.underline', 'CmdOrCtrl+U'], ['format.highlight', 'Shift+CmdOrCtrl+H'], ['format.inline-code', 'CmdOrCtrl+`'], ['format.inline-math', 'Shift+CmdOrCtrl+M'], ['format.strike', 'CmdOrCtrl+D'], ['format.hyperlink', 'CmdOrCtrl+L'], ['format.image', 'CmdOrCtrl+Shift+I'], ['format.clear-format', 'Shift+CmdOrCtrl+R']];
 
-function useShortcut(container, editor) {
+function useShortcut(container, editor, listener) {
   //
   const dispatch = (0, _react.useCallback)(id => {
     switch (id) {
@@ -41,6 +42,13 @@ function useShortcut(container, editor) {
 
       case 'edit.delete-paragraph':
         editor === null || editor === void 0 ? void 0 : editor.contentState.deleteParagraph();
+        break;
+
+      case 'edit.screenshot':
+        if (listener.onScreenCaptureManual) {
+          listener.onScreenCaptureManual();
+        }
+
         break;
 
       case 'paragraph.upgrade-heading':
@@ -143,7 +151,7 @@ function useShortcut(container, editor) {
       default:
         break;
     }
-  }, [editor]); //
+  }, [editor, listener]); //
 
   (0, _react.useEffect)(() => {
     function handler(event) {

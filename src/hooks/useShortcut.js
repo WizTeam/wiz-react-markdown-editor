@@ -9,6 +9,7 @@ const keys = [
   ['edit.duplicate', 'CmdOrCtrl+Shift+P'],
   ['edit.create-paragraph', 'Shift+CmdOrCtrl+N'],
   ['edit.delete-paragraph', 'Shift+CmdOrCtrl+D'],
+  ['edit.screenshot', 'CmdOrCtrl+Alt+A'], // macOS only
   //
   ['paragraph.upgrade-heading', 'CmdOrCtrl+='],
   ['paragraph.degrade-heading', 'CmdOrCtrl+-'],
@@ -42,7 +43,7 @@ const keys = [
   ['format.clear-format', 'Shift+CmdOrCtrl+R']
 ];
 
-export default function useShortcut(container, editor) {
+export default function useShortcut(container, editor, listener) {
   //
   const dispatch = useCallback(
     (id) => {
@@ -64,6 +65,11 @@ export default function useShortcut(container, editor) {
           break;
         case 'edit.delete-paragraph':
           editor?.contentState.deleteParagraph();
+          break;
+        case 'edit.screenshot':
+          if (listener.onScreenCaptureManual) {
+            listener.onScreenCaptureManual();
+          }
           break;
         case 'paragraph.upgrade-heading':
           editor?.contentState.updateParagraph('upgrade heading');
@@ -143,7 +149,7 @@ export default function useShortcut(container, editor) {
           break;
       }
     },
-    [editor]
+    [editor, listener]
   );
   //
   useEffect(() => {

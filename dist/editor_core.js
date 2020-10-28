@@ -113,7 +113,9 @@ function Editor(props) {
   }), // eslint-disable-next-line react-hooks/exhaustive-deps
   [focus, onSelectImages, theme, resourceUrl, onInsertImageFromData]);
   const editor = (0, _useMuya.useMuya)(editorRef, MuyaOptions);
-  (0, _useShortcut.default)(containerRef.current, editor);
+  (0, _useShortcut.default)(containerRef.current, editor, {
+    onScreenCaptureManual: props.onScreenCaptureManual
+  });
   (0, _react.useEffect)(() => {
     function scrollToCursor(duration = 300) {
       if (!editor) return;
@@ -267,6 +269,7 @@ Editor.propTypes = {
   readOnly: _propTypes.default.bool,
   wordList: _propTypes.default.array,
   editorFocus: _propTypes.default.func,
+  onScreenCaptureManual: _propTypes.default.func,
   bottomHeight: _propTypes.default.number
 };
 Editor.defaultProps = {
@@ -282,6 +285,7 @@ Editor.defaultProps = {
   readOnly: false,
   wordList: [],
   editorFocus: () => {},
+  onScreenCaptureManual: null,
   bottomHeight: 100
 };
 var _default = Editor;
