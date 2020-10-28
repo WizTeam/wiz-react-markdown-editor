@@ -87,6 +87,8 @@ class ImageSelector extends BaseFloat {
           input.focus()
           input.select()
         }
+      } if (imageInfo) {
+        this.imageInfo = imageInfo
       } else {
         this.hide()
       }

@@ -368,6 +368,10 @@ class ImageSelector extends _baseFloat.default {
           input.focus();
           input.select();
         }
+      }
+
+      if (imageInfo) {
+        this.imageInfo = imageInfo;
       } else {
         this.hide();
       }

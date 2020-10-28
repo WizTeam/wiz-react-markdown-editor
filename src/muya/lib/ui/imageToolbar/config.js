@@ -8,29 +8,30 @@ import deleteIcon from '../../assets/pngicon/image_delete/2.png'
 const icons = [
   {
     type: 'edit',
-    tooltip: 'Edit Image',
+    // tooltip: 'Edit Image',
+    tooltip: 'Select Image',
     icon: editIcon
   },
-  {
-    type: 'inline',
-    tooltip: 'Inline Image',
-    icon: inlineIcon
-  },
-  {
-    type: 'left',
-    tooltip: 'Align Left',
-    icon: leftIcon
-  },
-  {
-    type: 'center',
-    tooltip: 'Align Middle',
-    icon: middleIcon
-  },
-  {
-    type: 'right',
-    tooltip: 'Align Right',
-    icon: rightIcon
-  },
+  // {
+  //   type: 'inline',
+  //   tooltip: 'Inline Image',
+  //   icon: inlineIcon
+  // },
+  // {
+  //   type: 'left',
+  //   tooltip: 'Align Left',
+  //   icon: leftIcon
+  // },
+  // {
+  //   type: 'center',
+  //   tooltip: 'Align Middle',
+  //   icon: middleIcon
+  // },
+  // {
+  //   type: 'right',
+  //   tooltip: 'Align Right',
+  //   icon: rightIcon
+  // },
   {
     type: 'delete',
     tooltip: 'Remove Image',

@@ -21,25 +21,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const icons = [{
   type: 'edit',
-  tooltip: 'Edit Image',
+  // tooltip: 'Edit Image',
+  tooltip: 'Select Image',
   icon: _.default
-}, {
-  type: 'inline',
-  tooltip: 'Inline Image',
-  icon: _2.default
-}, {
-  type: 'left',
-  tooltip: 'Align Left',
-  icon: _3.default
-}, {
-  type: 'center',
-  tooltip: 'Align Middle',
-  icon: _4.default
-}, {
-  type: 'right',
-  tooltip: 'Align Right',
-  icon: _5.default
-}, {
+}, // {
+//   type: 'inline',
+//   tooltip: 'Inline Image',
+//   icon: inlineIcon
+// },
+// {
+//   type: 'left',
+//   tooltip: 'Align Left',
+//   icon: leftIcon
+// },
+// {
+//   type: 'center',
+//   tooltip: 'Align Middle',
+//   icon: middleIcon
+// },
+// {
+//   type: 'right',
+//   tooltip: 'Align Right',
+//   icon: rightIcon
+// },
+{
   type: 'delete',
   tooltip: 'Remove Image',
   icon: _6.default
