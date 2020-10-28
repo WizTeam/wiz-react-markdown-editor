@@ -133,7 +133,7 @@ const backspaceCtrl = (ContentState) => {
         end: { key: oldStart.key, offset: oldStart.offset }
       };
       event?.preventDefault();
-      this.partialRender();
+      this.render();
     }
   }
   ContentState.prototype.backspaceHandler = function (event) {

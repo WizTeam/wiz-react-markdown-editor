@@ -29,6 +29,7 @@ import imageCtrl from './imageCtrl'
 import linkCtrl from './linkCtrl'
 import dragDropCtrl from './dragDropCtrl'
 import footnoteCtrl from './footnoteCtrl'
+import mouseCtrl from './mouseCtrl';
 import importMarkdown from '../utils/importMarkdown'
 import Cursor from '../selection/cursor'
 import escapeCharactersMap, { escapeCharacters } from '../parser/escapeCharacter'
@@ -60,7 +61,8 @@ const prototypes = [
   linkCtrl,
   dragDropCtrl,
   footnoteCtrl,
-  importMarkdown
+  importMarkdown,
+  mouseCtrl
 ]
 
 class ContentState {
