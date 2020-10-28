@@ -110,23 +110,23 @@ class ImageToolbar extends BaseFloat {
         return this.hide()
       // Edit image, for example: editor alt and title, replace image.
       case 'edit': {
-        const rect = this.reference.getBoundingClientRect()
-        const reference = {
-          getBoundingClientRect () {
-            rect.height = 0
-            return rect
-          }
-        }
-        // Hide image transformer
-        this.muya.eventCenter.dispatch('muya-transformer', {
-          reference: null
-        })
+        // const rect = this.reference.getBoundingClientRect()
+        // const reference = {
+        //   getBoundingClientRect () {
+        //     rect.height = 0
+        //     return rect
+        //   }
+        // }
+        // // Hide image transformer
+        // this.muya.eventCenter.dispatch('muya-transformer', {
+        //   reference: null
+        // })
         this.muya.eventCenter.dispatch('muya-image-selector', {
-          reference,
+          // reference,
           imageInfo,
-          cb: () => {}
+          // cb: () => {}
         })
-        return this.hide()
+        return this.muya.imageSelector.handleSelectButtonClick();
       }
       case 'inline':
       case 'left':
