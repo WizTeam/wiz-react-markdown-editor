@@ -199,6 +199,8 @@ const pasteCtrl = ContentState => {
 
 
     if (file) {
+      var _file;
+
       const id = "loading-".concat((0, _utils.getUniqueId)());
 
       if (this.selectedImage) {
@@ -231,7 +233,12 @@ const pasteCtrl = ContentState => {
       };
 
       reader.readAsDataURL(file);
-      const nSrc = await this.muya.options.imageAction(file, id);
+
+      if (this.muya.options.onInsertImageFromData) {
+        file = await this.muya.options.onInsertImageFromData(file);
+      }
+
+      const nSrc = await this.muya.options.imageAction((_file = file) === null || _file === void 0 ? void 0 : _file.path, id);
       const base64 = this.stateRender.urlMap.get(id);
 
       if (base64) {

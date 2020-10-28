@@ -200,7 +200,10 @@ const pasteCtrl = ContentState => {
       }
       reader.readAsDataURL(file)
 
-      const nSrc = await this.muya.options.imageAction(file, id)
+      if (this.muya.options.onInsertImageFromData) {
+        file = await this.muya.options.onInsertImageFromData(file);
+      }
+      const nSrc = await this.muya.options.imageAction(file?.path, id)
       const base64 = this.stateRender.urlMap.get(id)
       if (base64) {
         this.stateRender.urlMap.set(nSrc, base64)
