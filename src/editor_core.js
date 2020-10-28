@@ -33,7 +33,6 @@ const useStyles = makeStyles({
   },
   editorComponent: {
     height: '100%',
-    overflow: 'auto',
     boxSizing: 'border-box'
   },
   source: {

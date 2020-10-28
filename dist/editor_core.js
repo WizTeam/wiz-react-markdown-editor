@@ -61,7 +61,6 @@ const useStyles = (0, _styles.makeStyles)({
   },
   editorComponent: {
     height: '100%',
-    overflow: 'auto',
     boxSizing: 'border-box'
   },
   source: {
