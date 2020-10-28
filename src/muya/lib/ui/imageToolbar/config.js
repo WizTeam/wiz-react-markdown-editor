@@ -8,7 +8,8 @@ import deleteIcon from '../../assets/pngicon/image_delete/2.png'
 const icons = [
   {
     type: 'edit',
-    tooltip: 'Edit Image',
+    // tooltip: 'Edit Image',
+    tooltip: 'Select Image',
     icon: editIcon
   },
   // {

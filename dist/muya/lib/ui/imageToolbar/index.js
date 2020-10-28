@@ -157,7 +157,8 @@ class ImageToolbar extends _baseFloat.default {
             imageInfo // cb: () => {}
 
           });
-          return this.muya.imageSelector.handleSelectButtonClick();
+          this.muya.imageSelector.handleSelectButtonClick();
+          return this.hide();
         }
 
       case 'inline':

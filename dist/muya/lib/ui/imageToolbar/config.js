@@ -21,7 +21,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const icons = [{
   type: 'edit',
-  tooltip: 'Edit Image',
+  // tooltip: 'Edit Image',
+  tooltip: 'Select Image',
   icon: _.default
 }, // {
 //   type: 'inline',

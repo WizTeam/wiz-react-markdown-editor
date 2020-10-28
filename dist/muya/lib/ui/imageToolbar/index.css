@@ -28,6 +28,7 @@
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
+  padding: 0 10px;
 }
 
 .ag-image-toolbar li.item div.tooltip {
@@ -67,8 +68,9 @@
 }
 
 .ag-image-toolbar li.item.edit {
-  margin-right: 21px;
-  margin-left: 10px;
+  /* margin-right: 21px; */
+  /* margin-left: 10px; */
+  margin-right: 11px;
 }
 
 .ag-image-toolbar li.item.inline {
@@ -81,13 +83,14 @@
   position: absolute;
   height: 16px;
   background: var(--editorColor10);
-  right: -21px;
+  right: -11px;
   top: 7px;
 }
 
 .ag-image-toolbar li.item.delete {
-  margin-right: 10px;
-  margin-left: 21px;
+  /* margin-right: 10px; */
+  /* margin-left: 21px; */
+  margin-left: 11px;
 }
 
 /* .ag-image-toolbar li.item:last-of-type:before {
@@ -106,7 +109,8 @@
 }
 
 .ag-image-toolbar li.item .icon-wrapper i.icon {
-  display: inline-block;
+  /* display: inline-block; */
+  display: block;
   position: relative;
   height: 100%;
   width: 100%;
