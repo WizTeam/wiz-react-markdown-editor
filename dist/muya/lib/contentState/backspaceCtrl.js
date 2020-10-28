@@ -180,7 +180,7 @@ const backspaceCtrl = ContentState => {
         }
       };
       event === null || event === void 0 ? void 0 : event.preventDefault();
-      this.partialRender();
+      this.render();
     }
   };
 

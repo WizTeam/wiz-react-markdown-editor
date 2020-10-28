@@ -12,8 +12,11 @@ var _utils = require("../utils");
 class MouseEvent {
   constructor(muya) {
     this.muya = muya;
+    this.isMouseDown = false;
     this.mouseBinding();
     this.mouseDown();
+    this.mouseUp();
+    this.mouseLeave();
   }
 
   mouseBinding() {
@@ -90,6 +93,7 @@ class MouseEvent {
 
     const handler = event => {
       const target = event.target;
+      this.isMouseDown = true;
 
       if (target.classList && target.classList.contains('ag-drag-handler')) {
         contentState.handleMouseDown(event);
@@ -100,6 +104,32 @@ class MouseEvent {
 
     eventCenter.attachDOMEvent(container, 'mousedown', handler);
     eventCenter.attachDOMEvent(container, 'touchstart', handler);
+  }
+
+  mouseUp() {
+    const handler = () => {
+      this.isMouseDown = false;
+    };
+
+    this.muya.eventCenter.attachDOMEvent(this.muya.container, 'mouseup', handler);
+  } // 移出编辑器外
+
+
+  mouseLeave() {
+    const {
+      container,
+      eventCenter,
+      contentState
+    } = this.muya;
+
+    const handler = () => {
+      if (this.isMouseDown) {
+        contentState.mouseLeaveHandler();
+        this.isMouseDown = false;
+      }
+    };
+
+    eventCenter.attachDOMEvent(container, 'mouseleave', handler);
   }
 
 }

@@ -67,6 +67,8 @@ var _dragDropCtrl = _interopRequireDefault(require("./dragDropCtrl"));
 
 var _footnoteCtrl = _interopRequireDefault(require("./footnoteCtrl"));
 
+var _mouseCtrl = _interopRequireDefault(require("./mouseCtrl"));
+
 var _importMarkdown = _interopRequireDefault(require("../utils/importMarkdown"));
 
 var _cursor = _interopRequireDefault(require("../selection/cursor"));
@@ -79,7 +81,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const prototypes = [_core.default, _tabCtrl.default, _enterCtrl.default, _updateCtrl.default, _backspaceCtrl.default, _deleteCtrl.default, _codeBlockCtrl.default, _arrowCtrl.default, _pasteCtrl.default, _copyCutCtrl.default, _tableBlockCtrl.default, _tableDragBarCtrl.default, _tableSelectCellsCtrl.default, _paragraphCtrl.default, _formatCtrl.default, _searchCtrl.default, _containerCtrl.default, _htmlBlock.default, _clickCtrl.default, _inputCtrl.default, _tocCtrl.default, _emojiCtrl.default, _imageCtrl.default, _linkCtrl.default, _dragDropCtrl.default, _footnoteCtrl.default, _importMarkdown.default];
+const prototypes = [_core.default, _tabCtrl.default, _enterCtrl.default, _updateCtrl.default, _backspaceCtrl.default, _deleteCtrl.default, _codeBlockCtrl.default, _arrowCtrl.default, _pasteCtrl.default, _copyCutCtrl.default, _tableBlockCtrl.default, _tableDragBarCtrl.default, _tableSelectCellsCtrl.default, _paragraphCtrl.default, _formatCtrl.default, _searchCtrl.default, _containerCtrl.default, _htmlBlock.default, _clickCtrl.default, _inputCtrl.default, _tocCtrl.default, _emojiCtrl.default, _imageCtrl.default, _linkCtrl.default, _dragDropCtrl.default, _footnoteCtrl.default, _importMarkdown.default, _mouseCtrl.default];
 
 class ContentState {
   constructor(muya, options) {
