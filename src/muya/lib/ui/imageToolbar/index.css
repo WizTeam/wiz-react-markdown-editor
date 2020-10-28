@@ -4,7 +4,8 @@
 }
 .ag-image-toolbar {
   height: 30px;
-  width: 240px;
+  /* width: 240px; */
+  width: auto;
 }
 
 .ag-image-toolbar ul,
@@ -80,7 +81,7 @@
   position: absolute;
   height: 16px;
   background: var(--editorColor10);
-  right: -10px;
+  right: -21px;
   top: 7px;
 }
 
@@ -89,7 +90,7 @@
   margin-left: 21px;
 }
 
-.ag-image-toolbar li.item:last-of-type:before {
+/* .ag-image-toolbar li.item:last-of-type:before {
   content: '';
   width: 1px;
   position: absolute;
@@ -97,7 +98,7 @@
   background: var(--editorColor10);
   left: -10px;
   top: 7px;
-}
+} */
 
 .ag-image-toolbar li.item .icon-wrapper {
   width: 16px;

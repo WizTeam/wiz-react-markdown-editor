@@ -23,8 +23,6 @@ var _imageSelector = _interopRequireDefault(require("../muya/lib/ui/imageSelecto
 
 var _imageToolbar = _interopRequireDefault(require("../muya/lib/ui/imageToolbar"));
 
-var _transformer = _interopRequireDefault(require("../muya/lib/ui/transformer"));
-
 var _formatPicker = _interopRequireDefault(require("../muya/lib/ui/formatPicker"));
 
 var _linkTools = _interopRequireDefault(require("../muya/lib/ui/linkTools"));
@@ -41,6 +39,7 @@ var _utils = require("../utils/utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import Transformer from '../muya/lib/ui/transformer';
 if (_utils.os.isPc) {
   _lib.default.use(_quickInsert.default);
 
@@ -48,9 +47,8 @@ if (_utils.os.isPc) {
 
   _lib.default.use(_emojiPicker.default);
 
-  _lib.default.use(_imageToolbar.default);
+  _lib.default.use(_imageToolbar.default); // Muya.use(Transformer);
 
-  _lib.default.use(_transformer.default);
 
   _lib.default.use(_formatPicker.default);
 
