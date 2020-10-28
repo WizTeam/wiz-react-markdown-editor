@@ -137,7 +137,7 @@ const addFormat = (type, block, { start, end }) => {
         oldText.substring(0, start.offset) +
         (type === 'link' ? '[' : '![') +
         oldText.substring(start.offset, end.offset) +
-        ']()' +
+        '](http://)' +
         oldText.substring(end.offset);
       // put cursor between `()`
       if (anchorTextLen) {
