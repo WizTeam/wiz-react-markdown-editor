@@ -9,13 +9,9 @@ import useShortcut from './hooks/useShortcut';
 // import isOsx from './muya/lib/config';
 import { setEditorWidth } from './theme';
 import { animatedScrollTo, formatUrl, isDarkMode, os } from './utils/utils';
-import { matchHotKey } from './utils/eventUtils';
 import './muya/themes/default.css';
 import './style/index.css';
 import useImperative from './hooks/useImperative';
-import formatKeydownOption from './muya/lib/ui/formatPicker/config';
-import { menu as frontMenuShortcut } from './muya/lib/ui/frontMenu/config';
-import { quickInsertObj as quickInsertShortcut } from './muya/lib/ui/quickInsert/config';
 
 const useStyles = makeStyles({
   editorWrapper: {
@@ -69,7 +65,7 @@ function Editor(props) {
     editorFocus,
     bottomHeight,
     scrollingElement,
-    onInsertImageFromData
+    onImageAction
   } = props;
   //
   const editorRef = useRef();
@@ -87,12 +83,12 @@ function Editor(props) {
       focusMode: focus,
       theme,
       imagePathPicker: onSelectImages,
-      onInsertImageFromData
+      imageAction: onImageAction
       // markdown,
       // transformImageUrl
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [focus, onSelectImages, theme, resourceUrl, onInsertImageFromData]
+    [focus, onSelectImages, theme, resourceUrl, onImageAction]
   );
 
   const editor = useMuya(editorRef, MuyaOptions);

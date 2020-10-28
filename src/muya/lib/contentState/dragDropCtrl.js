@@ -138,9 +138,7 @@ const dragDropCtrl = ContentState => {
         fileList.push(file)
       }
       let image = fileList.find(file => /image/.test(file.type))
-      if (this.muya.options.onInsertImageFromData) {
-        image = await this.muya.options.onInsertImageFromData(image);
-      }
+
       if (image && dropAnchor) {
         const { name, path } = image
         const id = `loading-${getUniqueId()}`
@@ -161,7 +159,7 @@ const dragDropCtrl = ContentState => {
         }
         this.render()
 
-        const nSrc = await this.muya.options.imageAction(path, id, name);
+        const nSrc = await this.muya.options.imageAction(image, id, name);
         const { src } = getImageSrc(path)
         if (src) {
           this.stateRender.urlMap.set(nSrc, src)
