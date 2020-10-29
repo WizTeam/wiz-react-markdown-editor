@@ -187,7 +187,9 @@ export default function useImperative(ref, editor) {
       }
 
       function updateCursor(cursor = {}) {
-        Object.assign(editor.contentState.cursor, cursor);
+        // eslint-disable-next-line no-param-reassign
+        editor.contentState.cursor = cursor;
+        // Object.assign(, cursor);
       }
 
       function htmlToMarkdown(html, keeps = []) {
