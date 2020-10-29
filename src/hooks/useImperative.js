@@ -189,6 +189,7 @@ export default function useImperative(ref, editor) {
       function updateCursor(cursor = {}) {
         // eslint-disable-next-line no-param-reassign
         editor.contentState.cursor = cursor;
+        editor.contentState.setCursor();
         // Object.assign(, cursor);
       }
 

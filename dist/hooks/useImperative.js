@@ -220,7 +220,8 @@ function useImperative(ref, editor) {
 
     function updateCursor(cursor = {}) {
       // eslint-disable-next-line no-param-reassign
-      editor.contentState.cursor = cursor; // Object.assign(, cursor);
+      editor.contentState.cursor = cursor;
+      editor.contentState.setCursor(); // Object.assign(, cursor);
     }
 
     function htmlToMarkdown(html, keeps = []) {
