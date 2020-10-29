@@ -152,13 +152,22 @@ function Editor(props) {
       if (typewriter) {
         animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, 100);
       }
-      if (os.isAndroid) {
-        if (window.outerHeight - bottomHeight < y + 30) {
-          _scrollingElement.scrollTop += y + 30 - window.outerHeight + bottomHeight;
-        }
-      } else if (window.outerHeight - bottomHeight < y + 30) {
+      if (window.outerHeight - bottomHeight < y + 30) {
         const editableHeight = y + 30 - window.outerHeight + bottomHeight;
-        animatedScrollTo(_scrollingElement, _scrollingElement.scrollTop + editableHeight, 100);
+        //
+        if (os.isAndroid) {
+          _scrollingElement.scrollTop += editableHeight;
+        } else {
+          animatedScrollTo(_scrollingElement, _scrollingElement.scrollTop + editableHeight, 100);
+        }
+      } else if (y - 30 < 0) {
+        const editableHeight = 30 - y;
+        //
+        if (os.isAndroid) {
+          _scrollingElement.scrollTop -= editableHeight;
+        } else {
+          animatedScrollTo(_scrollingElement, _scrollingElement.scrollTop - editableHeight, 100);
+        }
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
