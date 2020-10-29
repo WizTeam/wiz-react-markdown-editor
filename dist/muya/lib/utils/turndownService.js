@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = exports.usePluginAddRules = void 0;
 
-var _turndown = _interopRequireDefault(require("turndown"));
+var _turndown = _interopRequireDefault(require("./turndown"));
 
 var _index = require("./index");
 

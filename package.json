@@ -76,7 +76,6 @@
     "react-intl": "^5.4.5",
     "snabbdom": "0.7.4",
     "snabbdom-to-html": "^6.0.0",
-    "turndown": "^6.0.0",
     "underscore": "^1.10.2",
     "unsplash-js": "^6.0.0",
     "vega": "^5.13.0",

@@ -58,6 +58,7 @@ const App = () => {
     window.setWordList = setWordList;
     window.saveCursor = () => editorRef.current.saveCursor();
     window.resetCursor = () => editorRef.current.resetCursor();
+    window.htmlToMarkdown = (...param) => editorRef.current.htmlToMarkdown(...param);
     document.addEventListener(
       'click',
       (e) => {

@@ -1,4 +1,4 @@
-import TurndownService from 'turndown'
+import TurndownService from './turndown'
 import { identity } from './index'
 
 const turndownPluginGfm = require('joplin-turndown-plugin-gfm')
