@@ -1,6 +1,7 @@
 import { EVENT_KEYS, CLASS_OR_ID } from '../config'
 import { findNearestParagraph } from '../selection/dom'
 import selection from '../selection'
+import { inlineRules } from '../parser/rules'
 
 // If the next block is header, put cursor after the `#{1,6} *`
 const adjustOffset = (offset, block, event) => {
@@ -123,7 +124,10 @@ const arrowCtrl = ContentState => {
       (event.key === EVENT_KEYS.ArrowDown && bottomOffset > 0)
     ) {
       if (!/pre/.test(block.type) || block.functionType !== 'cellContent') {
-        return
+        // 排除image
+        if (!(block.functionType === 'paragraphContent' && block.type === 'span' && inlineRules.image.test(block.text))) {
+          return
+        }
       }
     }
 

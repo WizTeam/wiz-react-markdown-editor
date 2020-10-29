@@ -11,6 +11,8 @@ var _dom = require("../selection/dom");
 
 var _selection = _interopRequireDefault(require("../selection"));
 
+var _rules = require("../parser/rules");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // If the next block is header, put cursor after the `#{1,6} *`
@@ -180,7 +182,10 @@ const arrowCtrl = ContentState => {
 
     if (event.key === _config.EVENT_KEYS.ArrowUp && topOffset > 0 || event.key === _config.EVENT_KEYS.ArrowDown && bottomOffset > 0) {
       if (!/pre/.test(block.type) || block.functionType !== 'cellContent') {
-        return;
+        // 排除image
+        if (!(block.functionType === 'paragraphContent' && block.type === 'span' && _rules.inlineRules.image.test(block.text))) {
+          return;
+        }
       }
     }
 
