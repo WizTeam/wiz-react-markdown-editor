@@ -441,6 +441,10 @@ class Selection {
     const anchorParagraph = document.querySelector("#".concat(anchor.key));
     const focusParagraph = document.querySelector("#".concat(focus.key));
 
+    if (!anchorParagraph || !anchorParagraph) {
+      return;
+    }
+
     const getNodeAndOffset = (node, offset) => {
       if (node.nodeType === 3) {
         return {
