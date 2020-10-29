@@ -90,7 +90,9 @@ class MouseEvent {
     const { container, eventCenter, contentState } = this.muya;
     const handler = (event) => {
       const target = event.target;
-      this.isMouseDown = true;
+      if (event.button === 0) {
+        this.isMouseDown = true;
+      }
       if (target.classList && target.classList.contains('ag-drag-handler')) {
         contentState.handleMouseDown(event);
       } else if (target && target.closest('tr')) {
