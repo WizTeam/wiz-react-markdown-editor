@@ -1,5 +1,7 @@
 'use strict';
 
+const domino = require('domino');
+
 function extend(destination) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
@@ -492,8 +494,6 @@ function createHTMLParser() {
   var Parser = function () {};
 
   {
-    var domino = require('domino');
-
     Parser.prototype.parseFromString = function (string) {
       return domino.createDocument(string);
     };
