@@ -174,7 +174,7 @@ class StateRender {
       dom.setAttribute('class', strArr.length > 1 ? strArr.slice(1).join(' ') : '');
     }
     // 表格滚动条元素特殊处理
-    if (newBlock.functionType === 'table' && oldDom.getAttribute('data-role') === 'TABLE') {
+    if (newBlock.functionType === 'table' && newBlock.type === 'figure' && oldDom.getAttribute('data-role') === 'TABLE') {
       const oldVNode = toVNode(oldDom);
       const newVNode = this.renderBlock(null, newBlock, activeBlocks, matches, useCache)
       // 处理父项
