@@ -22,9 +22,9 @@
   border: 1px solid var(--editorColor10);
   cursor: pointer;
 }
-.ag-table-picker-header span {
+/* .ag-table-picker-header span {
   background: var(--editorColor10);
-}
+} */
 .ag-table-picker-cell.current {
   background: var(--editorColor30);
 }
