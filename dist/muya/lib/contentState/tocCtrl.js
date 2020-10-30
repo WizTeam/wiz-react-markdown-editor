@@ -23,7 +23,7 @@ const tocCtrl = ContentState => {
           text
         } = block.children[0];
         const content = headingStyle === 'setext' ? text.trim() : text.replace(/^ *#{1,6} {1,}/, '').trim();
-        const plainContent = text.replace(/^ *#{1,6} {1,}/, '').trim();
+        const plainContent = text.replace(/^ *#{1,6}( | ){1,}/, '').trim();
         const lvl = +type.substring(1);
         const slug = key;
         toc.push({
