@@ -501,6 +501,15 @@ class Muya {
     }
   }
 
+  changeLang(lang) {
+    if (this.options.lang !== lang) {
+      this.container.classList.remove("lang-".concat(this.options.lang));
+      this.options.lang = lang;
+      this.container.classList.remove("lang-".concat(lang));
+      this.eventCenter.dispatch('changeLang', lang);
+    }
+  }
+
   hideAllFloatTools() {
     return this.keyboard.hideAllFloatTools();
   }
@@ -556,6 +565,7 @@ function getContainer(originContainer, options) {
     container.classList.add('ag-show-quick-insert-hint');
   }
 
+  container.classList.add("lang-".concat(options.lang));
   container.setAttribute('contenteditable', true); // container.setAttribute('autocorrect', false);
   // container.setAttribute('autocomplete', 'off');
   // NOTE: The browser is not able to correct misspelled words words without

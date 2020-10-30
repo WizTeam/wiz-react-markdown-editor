@@ -125,7 +125,8 @@ MarkdownEditor.propTypes = {
   resourceUrl: PropTypes.string,
   readOnly: PropTypes.bool,
   wordList: PropTypes.array,
-  bottomHeight: PropTypes.number
+  bottomHeight: PropTypes.number,
+  lang: PropTypes.oneOf(['en', 'zh-cn', 'zh-tw'])
 };
 
 MarkdownEditor.defaultProps = {
@@ -140,7 +141,8 @@ MarkdownEditor.defaultProps = {
   resourceUrl: '',
   readOnly: false,
   wordList: [],
-  bottomHeight: undefined
+  bottomHeight: undefined,
+  lang: 'en'
 };
 
 export default MarkdownEditor;

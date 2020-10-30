@@ -416,6 +416,14 @@ class Muya {
     }
   }
 
+  changeLang(lang) {
+    if (this.options.lang !== lang) {
+      this.container.classList.remove(`lang-${this.options.lang}`)
+      this.options.lang = lang
+      this.container.classList.remove(`lang-${lang}`)
+      this.eventCenter.dispatch('changeLang', lang);
+    }
+  }
   hideAllFloatTools() {
     return this.keyboard.hideAllFloatTools();
   }
@@ -462,7 +470,7 @@ function getContainer(originContainer, options) {
   if (!hideQuickInsertHint) {
     container.classList.add('ag-show-quick-insert-hint');
   }
-
+  container.classList.add(`lang-${options.lang}`);
   container.setAttribute('contenteditable', true);
   // container.setAttribute('autocorrect', false);
   // container.setAttribute('autocomplete', 'off');

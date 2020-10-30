@@ -87,7 +87,8 @@ function Editor(props) {
     editorFocus,
     bottomHeight,
     scrollingElement,
-    onImageAction
+    onImageAction,
+    lang
   } = props; //
 
   const editorRef = (0, _react.useRef)();
@@ -98,7 +99,8 @@ function Editor(props) {
     focusMode: focus,
     theme,
     imagePathPicker: onSelectImages,
-    imageAction: onImageAction // markdown,
+    imageAction: onImageAction,
+    lang // markdown,
     // transformImageUrl
 
   }), // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,7 +129,10 @@ function Editor(props) {
   }, [editor, typewriter]);
   (0, _react.useEffect)(() => {
     editor === null || editor === void 0 ? void 0 : editor.setFocusMode(focus);
-  }, [editor, focus]); // 后生成的属性，具有更高的优先级
+  }, [editor, focus]);
+  (0, _react.useEffect)(() => {
+    editor === null || editor === void 0 ? void 0 : editor.changeLang(lang); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]); // 后生成的属性，具有更高的优先级
 
   (0, _react.useEffect)(() => {
     (0, _theme.setEditorWidth)(width);
@@ -270,7 +275,8 @@ Editor.propTypes = {
   wordList: _propTypes.default.array,
   editorFocus: _propTypes.default.func,
   onScreenCaptureManual: _propTypes.default.func,
-  bottomHeight: _propTypes.default.number
+  bottomHeight: _propTypes.default.number,
+  lang: _propTypes.default.oneOf(['en', 'zh-cn', 'zh-tw'])
 };
 Editor.defaultProps = {
   width: '100%',
@@ -286,7 +292,8 @@ Editor.defaultProps = {
   wordList: [],
   editorFocus: () => {},
   onScreenCaptureManual: null,
-  bottomHeight: 100
+  bottomHeight: 100,
+  lang: 'en'
 };
 var _default = Editor;
 exports.default = _default;

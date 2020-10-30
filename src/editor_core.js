@@ -65,7 +65,8 @@ function Editor(props) {
     editorFocus,
     bottomHeight,
     scrollingElement,
-    onImageAction
+    onImageAction,
+    lang
   } = props;
   //
   const editorRef = useRef();
@@ -83,7 +84,8 @@ function Editor(props) {
       focusMode: focus,
       theme,
       imagePathPicker: onSelectImages,
-      imageAction: onImageAction
+      imageAction: onImageAction,
+      lang
       // markdown,
       // transformImageUrl
     }),
@@ -114,6 +116,11 @@ function Editor(props) {
   useEffect(() => {
     editor?.setFocusMode(focus);
   }, [editor, focus]);
+
+  useEffect(() => {
+    editor?.changeLang(lang);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
 
   // 后生成的属性，具有更高的优先级
   useEffect(() => {
@@ -269,7 +276,8 @@ Editor.propTypes = {
   wordList: PropTypes.array,
   editorFocus: PropTypes.func,
   onScreenCaptureManual: PropTypes.func,
-  bottomHeight: PropTypes.number
+  bottomHeight: PropTypes.number,
+  lang: PropTypes.oneOf(['en', 'zh-cn', 'zh-tw'])
 };
 
 Editor.defaultProps = {
@@ -286,7 +294,8 @@ Editor.defaultProps = {
   wordList: [],
   editorFocus: () => {},
   onScreenCaptureManual: null,
-  bottomHeight: 100
+  bottomHeight: 100,
+  lang: 'en'
 };
 
 export default Editor;

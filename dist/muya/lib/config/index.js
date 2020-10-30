@@ -188,7 +188,8 @@ const MUYA_DEFAULT_OPTION = {
   imagePathAutoComplete: () => [],
   // Markdown extensions
   superSubScript: false,
-  footnote: false
+  footnote: false,
+  lang: 'en'
 }; // export const DIAGRAM_TEMPLATE = {
 //   'mermaid': `graph LR;\nYou-->|Mark Text|Me;`
 // }

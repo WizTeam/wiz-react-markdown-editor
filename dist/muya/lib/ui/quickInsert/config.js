@@ -67,139 +67,140 @@ const SHIFT_KEY = _config.isOsx ? '⇧' : 'Shift'; // Command (or Cmd) ⌘
 const quickInsertObj = {
   'basic block': [{
     title: 'Paragraph',
-    subTitle: 'Lorem Ipsum is simply dummy text',
+    subTitle: 'ParagraphInfo',
     label: 'paragraph',
     shortCut: "".concat(COMMAND_KEY, "+0"),
     icon: _.default
   }, {
     title: 'Horizontal Line',
-    subTitle: '---',
+    subTitle: 'HorizontalLineInfo',
     label: 'hr',
     shortCut: "".concat(OPTION_KEY, "+").concat(COMMAND_KEY, "+-"),
     icon: _3.default
-  }, {
-    title: 'Front Matter',
-    subTitle: '--- Lorem Ipsum ---',
-    label: 'front-matter',
-    shortCut: "".concat(OPTION_KEY, "+").concat(COMMAND_KEY, "+Y"),
-    icon: _4.default
-  }],
+  } // {
+  //   title: 'Front Matter',
+  //   subTitle: '--- Lorem Ipsum ---',
+  //   label: 'front-matter',
+  //   shortCut: `${OPTION_KEY}+${COMMAND_KEY}+Y`,
+  //   icon: frontMatterIcon
+  // }
+  ],
   header: [{
     title: 'Header 1',
-    subTitle: '# Lorem Ipsum is simply ...',
+    subTitle: 'Header1Info',
     label: 'heading 1',
     shortCut: "".concat(COMMAND_KEY, "+1"),
     icon: _5.default
   }, {
     title: 'Header 2',
-    subTitle: '## Lorem Ipsum is simply ...',
+    subTitle: 'Header2Info',
     label: 'heading 2',
     shortCut: "".concat(COMMAND_KEY, "+2"),
     icon: _6.default
   }, {
     title: 'Header 3',
-    subTitle: '### Lorem Ipsum is simply ...',
+    subTitle: 'Header3Info',
     label: 'heading 3',
     shortCut: "".concat(COMMAND_KEY, "+3"),
     icon: _7.default
   }, {
     title: 'Header 4',
-    subTitle: '#### Lorem Ipsum is simply ...',
+    subTitle: 'Header4Info',
     label: 'heading 4',
     shortCut: "".concat(COMMAND_KEY, "+4"),
     icon: _8.default
   }, {
     title: 'Header 5',
-    subTitle: '##### Lorem Ipsum is simply ...',
+    subTitle: 'Header5Info',
     label: 'heading 5',
     shortCut: "".concat(COMMAND_KEY, "+5"),
     icon: _9.default
   }, {
     title: 'Header 6',
-    subTitle: '###### Lorem Ipsum is simply ...',
+    subTitle: 'Header6Info',
     label: 'heading 6',
     shortCut: "".concat(COMMAND_KEY, "+6"),
     icon: _10.default
   }],
   'advanced block': [{
     title: 'Table Block',
-    subTitle: '|Lorem | Ipsum is simply |',
+    subTitle: 'TableInfo',
     label: 'table',
     shortCut: "".concat(SHIFT_KEY, "+").concat(COMMAND_KEY, "+T"),
     icon: _11.default
   }, {
     title: 'Display Math',
-    subTitle: '$$ Lorem Ipsum is simply $$',
+    subTitle: 'MathInfo',
     label: 'mathblock',
     shortCut: "".concat(OPTION_KEY, "+").concat(COMMAND_KEY, "+M"),
     icon: _16.default
   }, {
     title: 'HTML Block',
-    subTitle: '<div> Lorem Ipsum is simply </div>',
+    subTitle: 'HtmlInfo',
     label: 'html',
     shortCut: "".concat(OPTION_KEY, "+").concat(COMMAND_KEY, "+J"),
     icon: _2.default
   }, {
     title: 'Code Block',
-    subTitle: '```java Lorem Ipsum is simply ```',
+    subTitle: 'CodeBlockInfo',
     label: 'pre',
     shortCut: "".concat(OPTION_KEY, "+").concat(COMMAND_KEY, "+C"),
     icon: _13.default
   }, {
     title: 'Quote Block',
-    subTitle: '>Lorem Ipsum is simply ...',
+    subTitle: 'QuoteInfo',
     label: 'blockquote',
     shortCut: "".concat(OPTION_KEY, "+").concat(COMMAND_KEY, "+Q"),
     icon: _14.default
   }],
   'advanced inline': [{
     title: 'Link',
-    subTitle: '[link](https://...)',
+    subTitle: 'LinkInfo',
     label: 'link',
     icon: _23.default
   }, {
     title: 'Image',
-    subTitle: '![image](https://...)',
+    subTitle: 'ImageInfo',
     label: 'image',
     icon: _22.default
   }],
   'list block': [{
     title: 'Order List',
-    subTitle: '1. Lorem Ipsum is simply ...',
+    subTitle: 'OrderInfo',
     label: 'ol-order',
     shortCut: "".concat(OPTION_KEY, "+").concat(COMMAND_KEY, "+O"),
     icon: _17.default
   }, {
     title: 'Bullet List',
-    subTitle: '- Lorem Ipsum is simply ...',
+    subTitle: 'BulletInfo',
     label: 'ul-bullet',
     shortCut: "".concat(OPTION_KEY, "+").concat(COMMAND_KEY, "+U"),
     icon: _12.default
   }, {
     title: 'To-do List',
-    subTitle: '- [x] Lorem Ipsum is simply ...',
+    subTitle: 'ToDoInfo',
     label: 'ul-task',
     shortCut: "".concat(OPTION_KEY, "+").concat(COMMAND_KEY, "+X"),
     icon: _15.default
   }],
   diagram: [{
     title: 'Vega Chart',
-    subTitle: 'Render flow chart by vega-lite.js.',
+    subTitle: 'VegaInfo',
     label: 'vega-lite',
     icon: _21.default
   }, {
     title: 'Flow Chart',
-    subTitle: 'Render flow chart by flowchart.js.',
+    subTitle: 'FlowInfo',
     label: 'flowchart',
     icon: _18.default
   }, {
     title: 'Sequence Diagram',
-    subTitle: 'Render sequence diagram by js-sequence.',
+    subTitle: 'SequenceInfo',
     label: 'sequence',
     icon: _19.default
   }, {
     title: 'Mermaid',
-    subTitle: 'Render Diagram by mermaid.',
+    subTitle: 'MermaidInfo',
     label: 'mermaid',
     icon: _20.default
   }]

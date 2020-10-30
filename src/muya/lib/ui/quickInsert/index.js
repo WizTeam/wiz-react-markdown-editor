@@ -3,6 +3,7 @@ import { patch, h } from '../../parser/render/snabbdom';
 import { deepCopy } from '../../utils';
 import BaseScrollFloat from '../baseScrollFloat';
 import { quickInsertObj } from './config';
+import { content } from './lang';
 import './index.css';
 
 class QuickInsert extends BaseScrollFloat {
@@ -18,6 +19,7 @@ class QuickInsert extends BaseScrollFloat {
     this.activeItem = null;
     this.block = null;
     this.renderObj = quickInsertObj;
+    this.lang = this.muya.options.lang;
     this.render();
     this.listen();
   }
@@ -43,7 +45,7 @@ class QuickInsert extends BaseScrollFloat {
         return _renderObj[key].length !== 0;
       })
       .map((key) => {
-        const titleVnode = h('div.title', key.toUpperCase());
+        const titleVnode = h('div.title', content[this.lang][key].toUpperCase());
         const items = [];
         for (const item of _renderObj[key]) {
           const { title, subTitle, label, icon, shortCut } = item;
@@ -65,8 +67,8 @@ class QuickInsert extends BaseScrollFloat {
           );
 
           const description = h('div.description', [
-            h('div.big-title', title),
-            h('div.sub-title', subTitle)
+            h('div.big-title', content[this.lang][title]),
+            h('div.sub-title', content[this.lang][subTitle])
           ]);
           const shortCutVnode = h('div.short-cut', [h('span', shortCut)]);
           const selector = activeItem.label === label ? 'div.item.active' : 'div.item';
@@ -114,15 +116,19 @@ class QuickInsert extends BaseScrollFloat {
         this.hide();
       }
     });
+    eventCenter.subscribe('changeLang', lang => {
+      this.lang = lang;
+      this.render();
+    })
   }
 
   search(text) {
     const { contentState } = this.muya;
-    const canInserFrontMatter = contentState.canInserFrontMatter(this.block);
+    // const canInserFrontMatter = contentState.canInserFrontMatter(this.block);
     const obj = deepCopy(quickInsertObj);
-    if (!canInserFrontMatter) {
-      obj['basic block'].splice(2, 1);
-    }
+    // if (!canInserFrontMatter) {
+    //   obj['basic block'].splice(2, 1);
+    // }
     let result = obj;
     if (text !== '') {
       result = {};

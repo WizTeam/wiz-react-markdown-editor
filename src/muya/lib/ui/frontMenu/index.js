@@ -1,6 +1,8 @@
 import BaseFloat from '../baseFloat'
 import { patch, h } from '../../parser/render/snabbdom'
 import { menu, getSubMenu, getLabel } from './config'
+import { content } from './lang';
+import {content as quickInsertContent} from '../quickInsert/lang'
 
 import './index.css'
 
@@ -31,6 +33,7 @@ class FrontMenu extends BaseFloat {
     this.endBlock = null
     this.options = opts
     this.reference = null
+    this.lang = this.muya.options.lang;
     const frontMenuContainer = this.frontMenuContainer = document.createElement('div')
     Object.assign(this.container.parentNode.style, {
       overflow: 'visible'
@@ -57,6 +60,10 @@ class FrontMenu extends BaseFloat {
         this.reference = null
       }
     })
+    eventCenter.subscribe('changeLang', lang => {
+      this.lang = lang;
+      this.render();
+    })
   }
 
   renderSubMenu (subMenu) {
@@ -73,7 +80,7 @@ class FrontMenu extends BaseFloat {
         }
       }, '')))
 
-      const textWrapper = h('span', title)
+      const textWrapper = h('span', quickInsertContent[this.lang][title])
       const shortCutWrapper = h('div.short-cut', [
         h('span', shortCut)
       ])
@@ -108,7 +115,7 @@ class FrontMenu extends BaseFloat {
           'background-size': '100%'
         }
       }, '')))
-      const textWrapper = h('span', text)
+      const textWrapper = h('span', content[this.lang][text])
       const shortCutWrapper = h('div.short-cut', [
         h('span', shortCut)
       ])

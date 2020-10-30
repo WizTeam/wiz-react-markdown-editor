@@ -11,6 +11,10 @@ var _snabbdom = require("../../parser/render/snabbdom");
 
 var _config = require("./config");
 
+var _lang = require("./lang");
+
+var _lang2 = require("../quickInsert/lang");
+
 require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -41,6 +45,7 @@ class FrontMenu extends _baseFloat.default {
     this.endBlock = null;
     this.options = opts;
     this.reference = null;
+    this.lang = this.muya.options.lang;
     const frontMenuContainer = this.frontMenuContainer = document.createElement('div');
     Object.assign(this.container.parentNode.style, {
       overflow: 'visible'
@@ -74,6 +79,10 @@ class FrontMenu extends _baseFloat.default {
         this.reference = null;
       }
     });
+    eventCenter.subscribe('changeLang', lang => {
+      this.lang = lang;
+      this.render();
+    });
   }
 
   renderSubMenu(subMenu) {
@@ -96,7 +105,7 @@ class FrontMenu extends _baseFloat.default {
           'background-size': '100%'
         }
       }, '')));
-      const textWrapper = (0, _snabbdom.h)('span', title);
+      const textWrapper = (0, _snabbdom.h)('span', _lang2.content[this.lang][title]);
       const shortCutWrapper = (0, _snabbdom.h)('div.short-cut', [(0, _snabbdom.h)('span', shortCut)]);
       let itemSelector = "li.item.".concat(label);
 
@@ -150,7 +159,7 @@ class FrontMenu extends _baseFloat.default {
           'background-size': '100%'
         }
       }, '')));
-      const textWrapper = (0, _snabbdom.h)('span', text);
+      const textWrapper = (0, _snabbdom.h)('span', _lang.content[this.lang][text]);
       const shortCutWrapper = (0, _snabbdom.h)('div.short-cut', [(0, _snabbdom.h)('span', shortCut)]);
       let itemSelector = "li.item.".concat(label);
       const itemChildren = [iconWrapper, textWrapper, shortCutWrapper];

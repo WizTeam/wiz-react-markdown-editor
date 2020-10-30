@@ -40,6 +40,7 @@ const App = () => {
   const [readOnly, setReadOnly] = React.useState(false);
   const [wordList, setWordList] = React.useState([]);
   const [markdown, setMarkdown] = React.useState('');
+  const [lang, setLang] = React.useState('zh-cn');
   const editorFocus = React.useRef(null);
   const stopClickRef = React.useRef(false);
   const editorRef = React.useRef(null);
@@ -229,6 +230,15 @@ const App = () => {
         <button type="button" onClick={() => editorRef.current.selectFirstTitle()}>
           select title
         </button>
+        <button type="button" onClick={() => setLang('en')}>
+          en
+        </button>
+        <button type="button" onClick={() => setLang('zh-cn')}>
+          zh-cn
+        </button>
+        <button type="button" onClick={() => setLang('zh-tw')}>
+          zh-tw
+        </button>
       </div>
       <div>
         <button type="button" onMouseDown={(e) => handleInsert('header', e)}>
@@ -349,6 +359,7 @@ const App = () => {
             }
           }}
           ref={editorRef}
+          lang={lang}
         />
       </div>
     </div>

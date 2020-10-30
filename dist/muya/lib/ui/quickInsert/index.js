@@ -15,6 +15,8 @@ var _baseScrollFloat = _interopRequireDefault(require("../baseScrollFloat"));
 
 var _config = require("./config");
 
+var _lang = require("./lang");
+
 require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -32,6 +34,7 @@ class QuickInsert extends _baseScrollFloat.default {
     this.activeItem = null;
     this.block = null;
     this.renderObj = _config.quickInsertObj;
+    this.lang = this.muya.options.lang;
     this.render();
     this.listen();
   }
@@ -60,7 +63,7 @@ class QuickInsert extends _baseScrollFloat.default {
     let children = Object.keys(_renderObj).filter(key => {
       return _renderObj[key].length !== 0;
     }).map(key => {
-      const titleVnode = (0, _snabbdom.h)('div.title', key.toUpperCase());
+      const titleVnode = (0, _snabbdom.h)('div.title', _lang.content[this.lang][key].toUpperCase());
       const items = [];
 
       for (const item of _renderObj[key]) {
@@ -77,7 +80,7 @@ class QuickInsert extends _baseScrollFloat.default {
             'background-size': '100%'
           }
         }, '')));
-        const description = (0, _snabbdom.h)('div.description', [(0, _snabbdom.h)('div.big-title', title), (0, _snabbdom.h)('div.sub-title', subTitle)]);
+        const description = (0, _snabbdom.h)('div.description', [(0, _snabbdom.h)('div.big-title', _lang.content[this.lang][title]), (0, _snabbdom.h)('div.sub-title', _lang.content[this.lang][subTitle])]);
         const shortCutVnode = (0, _snabbdom.h)('div.short-cut', [(0, _snabbdom.h)('span', shortCut)]);
         const selector = activeItem.label === label ? 'div.item.active' : 'div.item';
         items.push((0, _snabbdom.h)(selector, {
@@ -124,18 +127,20 @@ class QuickInsert extends _baseScrollFloat.default {
         this.hide();
       }
     });
+    eventCenter.subscribe('changeLang', lang => {
+      this.lang = lang;
+      this.render();
+    });
   }
 
   search(text) {
     const {
       contentState
-    } = this.muya;
-    const canInserFrontMatter = contentState.canInserFrontMatter(this.block);
-    const obj = (0, _utils.deepCopy)(_config.quickInsertObj);
+    } = this.muya; // const canInserFrontMatter = contentState.canInserFrontMatter(this.block);
 
-    if (!canInserFrontMatter) {
-      obj['basic block'].splice(2, 1);
-    }
+    const obj = (0, _utils.deepCopy)(_config.quickInsertObj); // if (!canInserFrontMatter) {
+    //   obj['basic block'].splice(2, 1);
+    // }
 
     let result = obj;
 

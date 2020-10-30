@@ -152,7 +152,8 @@ MarkdownEditor.propTypes = {
   resourceUrl: _propTypes.default.string,
   readOnly: _propTypes.default.bool,
   wordList: _propTypes.default.array,
-  bottomHeight: _propTypes.default.number
+  bottomHeight: _propTypes.default.number,
+  lang: _propTypes.default.oneOf(['en', 'zh-cn', 'zh-tw'])
 };
 MarkdownEditor.defaultProps = {
   width: '100%',
@@ -166,7 +167,8 @@ MarkdownEditor.defaultProps = {
   resourceUrl: '',
   readOnly: false,
   wordList: [],
-  bottomHeight: undefined
+  bottomHeight: undefined,
+  lang: 'en'
 };
 var _default = MarkdownEditor;
 exports.default = _default;

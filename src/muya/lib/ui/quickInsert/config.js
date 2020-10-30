@@ -38,65 +38,65 @@ export const quickInsertObj = {
   'basic block': [
     {
       title: 'Paragraph',
-      subTitle: 'Lorem Ipsum is simply dummy text',
+      subTitle: 'ParagraphInfo',
       label: 'paragraph',
       shortCut: `${COMMAND_KEY}+0`,
       icon: paragraphIcon
     },
     {
       title: 'Horizontal Line',
-      subTitle: '---',
+      subTitle: 'HorizontalLineInfo',
       label: 'hr',
       shortCut: `${OPTION_KEY}+${COMMAND_KEY}+-`,
       icon: hrIcon
     },
-    {
-      title: 'Front Matter',
-      subTitle: '--- Lorem Ipsum ---',
-      label: 'front-matter',
-      shortCut: `${OPTION_KEY}+${COMMAND_KEY}+Y`,
-      icon: frontMatterIcon
-    }
+    // {
+    //   title: 'Front Matter',
+    //   subTitle: '--- Lorem Ipsum ---',
+    //   label: 'front-matter',
+    //   shortCut: `${OPTION_KEY}+${COMMAND_KEY}+Y`,
+    //   icon: frontMatterIcon
+    // }
   ],
   header: [
     {
       title: 'Header 1',
-      subTitle: '# Lorem Ipsum is simply ...',
+      subTitle: 'Header1Info',
       label: 'heading 1',
       shortCut: `${COMMAND_KEY}+1`,
       icon: header1Icon
     },
     {
       title: 'Header 2',
-      subTitle: '## Lorem Ipsum is simply ...',
+      subTitle: 'Header2Info',
       label: 'heading 2',
       shortCut: `${COMMAND_KEY}+2`,
       icon: header2Icon
     },
     {
       title: 'Header 3',
-      subTitle: '### Lorem Ipsum is simply ...',
+      subTitle: 'Header3Info',
       label: 'heading 3',
       shortCut: `${COMMAND_KEY}+3`,
       icon: header3Icon
     },
     {
       title: 'Header 4',
-      subTitle: '#### Lorem Ipsum is simply ...',
+      subTitle: 'Header4Info',
       label: 'heading 4',
       shortCut: `${COMMAND_KEY}+4`,
       icon: header4Icon
     },
     {
       title: 'Header 5',
-      subTitle: '##### Lorem Ipsum is simply ...',
+      subTitle: 'Header5Info',
       label: 'heading 5',
       shortCut: `${COMMAND_KEY}+5`,
       icon: header5Icon
     },
     {
       title: 'Header 6',
-      subTitle: '###### Lorem Ipsum is simply ...',
+      subTitle: 'Header6Info',
       label: 'heading 6',
       shortCut: `${COMMAND_KEY}+6`,
       icon: header6Icon
@@ -105,35 +105,35 @@ export const quickInsertObj = {
   'advanced block': [
     {
       title: 'Table Block',
-      subTitle: '|Lorem | Ipsum is simply |',
+      subTitle: 'TableInfo',
       label: 'table',
       shortCut: `${SHIFT_KEY}+${COMMAND_KEY}+T`,
       icon: newTableIcon
     },
     {
       title: 'Display Math',
-      subTitle: '$$ Lorem Ipsum is simply $$',
+      subTitle: 'MathInfo',
       label: 'mathblock',
       shortCut: `${OPTION_KEY}+${COMMAND_KEY}+M`,
       icon: mathblockIcon
     },
     {
       title: 'HTML Block',
-      subTitle: '<div> Lorem Ipsum is simply </div>',
+      subTitle: 'HtmlInfo',
       label: 'html',
       shortCut: `${OPTION_KEY}+${COMMAND_KEY}+J`,
       icon: htmlIcon
     },
     {
       title: 'Code Block',
-      subTitle: '```java Lorem Ipsum is simply ```',
+      subTitle: 'CodeBlockInfo',
       label: 'pre',
       shortCut: `${OPTION_KEY}+${COMMAND_KEY}+C`,
       icon: codeIcon
     },
     {
       title: 'Quote Block',
-      subTitle: '>Lorem Ipsum is simply ...',
+      subTitle: 'QuoteInfo',
       label: 'blockquote',
       shortCut: `${OPTION_KEY}+${COMMAND_KEY}+Q`,
       icon: quoteIcon
@@ -142,13 +142,13 @@ export const quickInsertObj = {
   'advanced inline': [
     {
       title: 'Link',
-      subTitle: '[link](https://...)',
+      subTitle: 'LinkInfo',
       label: 'link',
       icon: linkIcon
     },
     {
       title: 'Image',
-      subTitle: '![image](https://...)',
+      subTitle: 'ImageInfo',
       label: 'image',
       icon: imageIcon
     }
@@ -156,21 +156,21 @@ export const quickInsertObj = {
   'list block': [
     {
       title: 'Order List',
-      subTitle: '1. Lorem Ipsum is simply ...',
+      subTitle: 'OrderInfo',
       label: 'ol-order',
       shortCut: `${OPTION_KEY}+${COMMAND_KEY}+O`,
       icon: orderListIcon
     },
     {
       title: 'Bullet List',
-      subTitle: '- Lorem Ipsum is simply ...',
+      subTitle: 'BulletInfo',
       label: 'ul-bullet',
       shortCut: `${OPTION_KEY}+${COMMAND_KEY}+U`,
       icon: bulletListIcon
     },
     {
       title: 'To-do List',
-      subTitle: '- [x] Lorem Ipsum is simply ...',
+      subTitle: 'ToDoInfo',
       label: 'ul-task',
       shortCut: `${OPTION_KEY}+${COMMAND_KEY}+X`,
       icon: todoListIcon
@@ -179,25 +179,25 @@ export const quickInsertObj = {
   diagram: [
     {
       title: 'Vega Chart',
-      subTitle: 'Render flow chart by vega-lite.js.',
+      subTitle: 'VegaInfo',
       label: 'vega-lite',
       icon: vegaIcon
     },
     {
       title: 'Flow Chart',
-      subTitle: 'Render flow chart by flowchart.js.',
+      subTitle: 'FlowInfo',
       label: 'flowchart',
       icon: flowchartIcon
     },
     {
       title: 'Sequence Diagram',
-      subTitle: 'Render sequence diagram by js-sequence.',
+      subTitle: 'SequenceInfo',
       label: 'sequence',
       icon: sequenceIcon
     },
     {
       title: 'Mermaid',
-      subTitle: 'Render Diagram by mermaid.',
+      subTitle: 'MermaidInfo',
       label: 'mermaid',
       icon: mermaidIcon
     }
