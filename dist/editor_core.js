@@ -154,8 +154,7 @@ function Editor(props) {
     }
   }, [editor, readOnly]);
   const scrollToSaferView = (0, _react.useCallback)(y => {
-    const container = editor.container; //
-
+    //
     let _scrollingElement = document.scrollingElement;
 
     if (scrollingElement) {
@@ -164,16 +163,18 @@ function Editor(props) {
 
 
     if (typewriterMode) {
-      (0, _utils.animatedScrollTo)(container, container.scrollTop + y - STANDAR_Y, 100);
+      (0, _utils.animatedScrollTo)(_scrollingElement, _scrollingElement.scrollTop + y - STANDAR_Y, 100);
     }
 
     if (window.outerHeight - bottomHeight < y + 30) {
       const editableHeight = y + 30 - window.outerHeight + bottomHeight; //
 
-      if (_utils.os.isAndroid) {
-        _scrollingElement.scrollTop += editableHeight;
-      } else {
-        (0, _utils.animatedScrollTo)(_scrollingElement, _scrollingElement.scrollTop + editableHeight, 100);
+      if (editableHeight > 1) {
+        if (_utils.os.isAndroid) {
+          _scrollingElement.scrollTop += editableHeight;
+        } else {
+          (0, _utils.animatedScrollTo)(_scrollingElement, _scrollingElement.scrollTop + editableHeight, 100);
+        }
       }
     } else if (y - 30 < 0) {
       const editableHeight = 30 - y; //
