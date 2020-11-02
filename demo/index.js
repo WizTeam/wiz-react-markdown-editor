@@ -342,8 +342,8 @@ const App = () => {
       <div style={{ minHeight: '110vh' }}>
         <MarkdownEditor
           theme={data?.theme || theme}
-          focus={focusMode}
-          typewriter={typewriterMode}
+          focusMode={focusMode}
+          typewriterMode={typewriterMode}
           onSelectImages={chooseImage}
           markdown="# Note Title"
           resourceUrl={data?.resourceUrl}

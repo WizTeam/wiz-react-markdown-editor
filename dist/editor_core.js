@@ -62,7 +62,7 @@ const useStyles = (0, _styles.makeStyles)({
     left: 0,
     overflow: 'hidden'
   },
-  typewriter: {
+  typewriterMode: {
     '& $editorComponent': {
       paddingTop: 'calc(50vh - 136px)',
       paddingBottom: 'calc(50vh - 54px)'
@@ -75,8 +75,8 @@ function Editor(props) {
   const classes = useStyles(); //
 
   const {
-    typewriter,
-    focus,
+    typewriterMode,
+    focusMode,
     sourceCode,
     onSelectImages,
     markdown,
@@ -96,7 +96,7 @@ function Editor(props) {
   const [theme, setTheme] = (0, _react.useState)((0, _utils.isDarkMode)() ? 'dark' : 'light');
   const transformImageUrl = (0, _react.useCallback)(src => resourceUrl && src.startsWith('index_files/') ? (0, _utils.formatUrl)(resourceUrl) + src : src, [resourceUrl]);
   const MuyaOptions = (0, _react.useMemo)(() => ({
-    focusMode: focus,
+    focusMode,
     theme,
     imagePathPicker: onSelectImages,
     imageAction: onImageAction,
@@ -104,7 +104,7 @@ function Editor(props) {
     // transformImageUrl
 
   }), // eslint-disable-next-line react-hooks/exhaustive-deps
-  [focus, onSelectImages, theme, resourceUrl, onImageAction]);
+  [focusMode, onSelectImages, theme, resourceUrl, onImageAction]);
   const editor = (0, _useMuya.useMuya)(editorRef, MuyaOptions);
   (0, _useShortcut.default)(containerRef.current, editor, {
     onScreenCaptureManual: props.onScreenCaptureManual
@@ -123,13 +123,13 @@ function Editor(props) {
       }, 0);
     }
 
-    if (typewriter) {
+    if (typewriterMode) {
       scrollToCursor();
     }
-  }, [editor, typewriter]);
+  }, [editor, typewriterMode]);
   (0, _react.useEffect)(() => {
-    editor === null || editor === void 0 ? void 0 : editor.setFocusMode(focus);
-  }, [editor, focus]);
+    editor === null || editor === void 0 ? void 0 : editor.setFocusMode(focusMode);
+  }, [editor, focusMode]);
   (0, _react.useEffect)(() => {
     editor === null || editor === void 0 ? void 0 : editor.changeLang(lang); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]); // 后生成的属性，具有更高的优先级
@@ -163,7 +163,7 @@ function Editor(props) {
     } //
 
 
-    if (typewriter) {
+    if (typewriterMode) {
       (0, _utils.animatedScrollTo)(container, container.scrollTop + y - STANDAR_Y, 100);
     }
 
@@ -185,7 +185,7 @@ function Editor(props) {
       }
     }
   }, // eslint-disable-next-line react-hooks/exhaustive-deps
-  [bottomHeight, editor, typewriter, scrollingElement]);
+  [bottomHeight, editor, typewriterMode, scrollingElement]);
   (0, _react.useEffect)(() => {
     if (bottomHeight && editor) {
       scrollToSaferView(_selection.default.getCursorCoords().y);
@@ -253,7 +253,7 @@ function Editor(props) {
   }, [editor, editorFocus]);
   (0, _useImperative.default)(props.editorRef, editor);
   return /*#__PURE__*/_react.default.createElement("div", {
-    className: (0, _classnames.default)(classes.editorWrapper, typewriter && classes.typewriter, focus && classes.focus, sourceCode && classes.source, props.editorWrapperClassName),
+    className: (0, _classnames.default)(classes.editorWrapper, typewriterMode && classes.typewriterMode, focusMode && classes.focus, sourceCode && classes.source, props.editorWrapperClassName),
     ref: containerRef
   }, /*#__PURE__*/_react.default.createElement("div", {
     ref: editorRef,
@@ -267,8 +267,8 @@ Editor.propTypes = {
   onChange: _propTypes.default.func,
   onThemeChange: _propTypes.default.func,
   sourceCode: _propTypes.default.bool,
-  typewriter: _propTypes.default.bool,
-  focus: _propTypes.default.bool,
+  typewriterMode: _propTypes.default.bool,
+  focusMode: _propTypes.default.bool,
   markdown: _propTypes.default.string,
   resourceUrl: _propTypes.default.string,
   readOnly: _propTypes.default.bool,
@@ -284,8 +284,8 @@ Editor.defaultProps = {
   onChange: () => {},
   onThemeChange: null,
   sourceCode: false,
-  typewriter: false,
-  focus: false,
+  typewriterMode: false,
+  focusMode: false,
   markdown: '',
   resourceUrl: '',
   readOnly: false,

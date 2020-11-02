@@ -38,7 +38,7 @@ const useStyles = makeStyles({
     left: 0,
     overflow: 'hidden'
   },
-  typewriter: {
+  typewriterMode: {
     '& $editorComponent': {
       paddingTop: 'calc(50vh - 136px)',
       paddingBottom: 'calc(50vh - 54px)'
@@ -53,8 +53,8 @@ function Editor(props) {
 
   //
   const {
-    typewriter,
-    focus,
+    typewriterMode,
+    focusMode,
     sourceCode,
     onSelectImages,
     markdown,
@@ -81,7 +81,7 @@ function Editor(props) {
 
   const MuyaOptions = useMemo(
     () => ({
-      focusMode: focus,
+      focusMode,
       theme,
       imagePathPicker: onSelectImages,
       imageAction: onImageAction,
@@ -90,7 +90,7 @@ function Editor(props) {
       // transformImageUrl
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [focus, onSelectImages, theme, resourceUrl, onImageAction]
+    [focusMode, onSelectImages, theme, resourceUrl, onImageAction]
   );
 
   const editor = useMuya(editorRef, MuyaOptions);
@@ -108,14 +108,14 @@ function Editor(props) {
         animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, duration);
       }, 0);
     }
-    if (typewriter) {
+    if (typewriterMode) {
       scrollToCursor();
     }
-  }, [editor, typewriter]);
+  }, [editor, typewriterMode]);
 
   useEffect(() => {
-    editor?.setFocusMode(focus);
-  }, [editor, focus]);
+    editor?.setFocusMode(focusMode);
+  }, [editor, focusMode]);
 
   useEffect(() => {
     editor?.changeLang(lang);
@@ -156,7 +156,7 @@ function Editor(props) {
         _scrollingElement = scrollingElement;
       }
       //
-      if (typewriter) {
+      if (typewriterMode) {
         animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, 100);
       }
       if (window.outerHeight - bottomHeight < y + 30) {
@@ -178,7 +178,7 @@ function Editor(props) {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [bottomHeight, editor, typewriter, scrollingElement]
+    [bottomHeight, editor, typewriterMode, scrollingElement]
   );
 
   useEffect(() => {
@@ -247,8 +247,8 @@ function Editor(props) {
     <div
       className={classNames(
         classes.editorWrapper,
-        typewriter && classes.typewriter,
-        focus && classes.focus,
+        typewriterMode && classes.typewriterMode,
+        focusMode && classes.focus,
         sourceCode && classes.source,
         props.editorWrapperClassName
       )}
@@ -268,8 +268,8 @@ Editor.propTypes = {
   onChange: PropTypes.func,
   onThemeChange: PropTypes.func,
   sourceCode: PropTypes.bool,
-  typewriter: PropTypes.bool,
-  focus: PropTypes.bool,
+  typewriterMode: PropTypes.bool,
+  focusMode: PropTypes.bool,
   markdown: PropTypes.string,
   resourceUrl: PropTypes.string,
   readOnly: PropTypes.bool,
@@ -286,8 +286,8 @@ Editor.defaultProps = {
   onChange: () => {},
   onThemeChange: null,
   sourceCode: false,
-  typewriter: false,
-  focus: false,
+  typewriterMode: false,
+  focusMode: false,
   markdown: '',
   resourceUrl: '',
   readOnly: false,
