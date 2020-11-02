@@ -42,6 +42,7 @@ export const animatedScrollTo = (element, to, duration, callback) => {
         lastpos = val;
         _element.scrollTop = val;
       } else {
+        _element.scrollTop = to;
         animating = false;
       }
     } else {
