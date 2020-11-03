@@ -73,6 +73,28 @@ class ClickEvent {
           start,
           end
         };
+      } // handle table contextmenu
+
+
+      const target = event.target;
+      const table = target.closest('table');
+
+      if (table) {
+        const startBlock = contentState.getBlock(target.id);
+        const rect = target.getBoundingClientRect();
+        const reference = {
+          getBoundingClientRect() {
+            return rect;
+          },
+
+          width: rect.offsetWidth,
+          height: rect.offsetHeight
+        };
+        eventCenter.dispatch('muya-table-menu', {
+          reference,
+          tableElement: table,
+          startBlock
+        });
       }
 
       const sectionChanges = contentState.selectionChange(contentState.cursor);
