@@ -77,8 +77,8 @@
   width: 190px;
   max-height: 300px;
   position: absolute;
-  left: calc(100% + 3px);
-  top: -39px;
+  left: calc(100% + 13px);
+  top: -38px;
   border-radius: 2px;
   box-shadow: var(--floatShadow);
   background-color: var(--floatBgColor);
@@ -113,5 +113,5 @@
 .ag-table-menu li.item.insertColRight,
 .ag-table-menu li.item.align, 
 .ag-table-menu li.item.removeTable {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--tableMenuBorderColor);
 }

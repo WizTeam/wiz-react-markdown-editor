@@ -64,6 +64,7 @@
   --tableBorderColor: #e5e5e5;
   --tableBackgroundColor: transparent;
   --tableTextColor: rgba(0, 0, 0, .7);
+  --tableMenuBorderColor: #e5e5e5;
 
   /*marktext*/
   --sideBarColor: rgba(0, 0, 0, .6);
@@ -452,6 +453,7 @@ button.button-primary:not(.custom):focus,
     --tableBorderColor: #404040;
     --tableBackgroundColor: #2a2a2a;
     --tableTextColor: #969696;
+    --tableMenuBorderColor: #545454;
 
     /*marktext*/
     --sideBarColor: rgba(255, 255, 255, .6);
