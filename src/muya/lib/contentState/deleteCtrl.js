@@ -4,7 +4,6 @@ const deleteCtrl = ContentState => {
   // Handle `delete` keydown event on document.
   ContentState.prototype.docDeleteHandler = function (event) {
     if (this.selectedTableCells) {
-      console.log('selectedTableCells')
       event.preventDefault()
       return this.deleteSelectedTableCells()
     }
@@ -37,6 +36,7 @@ const deleteCtrl = ContentState => {
       return this.singleRender(startBlock)
     }
     if (
+      functionType !== 'cellContent' &&
       /h\d|span/.test(type) &&
       start.offset === text.length
     ) {

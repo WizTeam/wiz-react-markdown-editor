@@ -13,7 +13,6 @@ const deleteCtrl = ContentState => {
   // Handle `delete` keydown event on document.
   ContentState.prototype.docDeleteHandler = function (event) {
     if (this.selectedTableCells) {
-      console.log('selectedTableCells');
       event.preventDefault();
       return this.deleteSelectedTableCells();
     }
@@ -63,7 +62,7 @@ const deleteCtrl = ContentState => {
       return this.singleRender(startBlock);
     }
 
-    if (/h\d|span/.test(type) && start.offset === text.length) {
+    if (functionType !== 'cellContent' && /h\d|span/.test(type) && start.offset === text.length) {
       event.preventDefault();
 
       if (nextBlock && /h\d|span/.test(nextBlock.type)) {
