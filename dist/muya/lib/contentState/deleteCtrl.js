@@ -13,6 +13,7 @@ const deleteCtrl = ContentState => {
   // Handle `delete` keydown event on document.
   ContentState.prototype.docDeleteHandler = function (event) {
     if (this.selectedTableCells) {
+      console.log('selectedTableCells');
       event.preventDefault();
       return this.deleteSelectedTableCells();
     }
@@ -42,7 +43,8 @@ const deleteCtrl = ContentState => {
     const {
       type,
       text,
-      key
+      key,
+      functionType
     } = startBlock;
 
     if (/span/.test(type) && start.offset === 0 && text[1] === '\n') {
@@ -95,6 +97,23 @@ const deleteCtrl = ContentState => {
         };
         this.render();
       }
+    } // 修复table bug
+
+
+    if (functionType === 'cellContent' && start.offset === 0 && text.length === 1) {
+      event.preventDefault();
+      startBlock.text = '';
+      this.cursor = {
+        start: {
+          key,
+          offset: 0
+        },
+        end: {
+          key,
+          offset: 0
+        }
+      };
+      return this.singleRender(startBlock);
     }
   };
 };

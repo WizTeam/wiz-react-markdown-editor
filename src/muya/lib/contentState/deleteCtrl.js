@@ -4,6 +4,7 @@ const deleteCtrl = ContentState => {
   // Handle `delete` keydown event on document.
   ContentState.prototype.docDeleteHandler = function (event) {
     if (this.selectedTableCells) {
+      console.log('selectedTableCells')
       event.preventDefault()
       return this.deleteSelectedTableCells()
     }
@@ -25,7 +26,7 @@ const deleteCtrl = ContentState => {
       return
     }
     // Only handle h1~h6 span block
-    const { type, text, key } = startBlock
+    const { type, text, key, functionType } = startBlock
     if (/span/.test(type) && start.offset === 0 && text[1] === '\n') {
       event.preventDefault()
       startBlock.text = text.substring(2)
@@ -68,6 +69,16 @@ const deleteCtrl = ContentState => {
         }
         this.render()
       }
+    }
+    // 修复table bug
+    if (functionType === 'cellContent' && start.offset === 0 && text.length === 1) {
+      event.preventDefault()
+      startBlock.text = ''
+      this.cursor = {
+        start: { key, offset: 0 },
+        end: { key, offset: 0 }
+      }
+      return this.singleRender(startBlock)
     }
   }
 }
