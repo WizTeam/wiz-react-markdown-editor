@@ -262,9 +262,16 @@ const arrowCtrl = ContentState => {
         key = newBlock.children[0].key;
       }
 
-      const _offset = adjustOffset(0, nextBlock || newBlock, event);
+      let offset;
 
-      const offset = event.key === _config.EVENT_KEYS.ArrowDown && (nextBlock === null || nextBlock === void 0 ? void 0 : nextBlock.text) && start.offset <= nextBlock.text.length ? start.offset : _offset;
+      if (event.key === _config.EVENT_KEYS.ArrowDown) {
+        var _nextBlock$text$lengt;
+
+        offset = (nextBlock === null || nextBlock === void 0 ? void 0 : nextBlock.text) && start.offset <= nextBlock.text.length ? start.offset : (_nextBlock$text$lengt = nextBlock === null || nextBlock === void 0 ? void 0 : nextBlock.text.length) !== null && _nextBlock$text$lengt !== void 0 ? _nextBlock$text$lengt : 0;
+      } else {
+        offset = adjustOffset(0, nextBlock || newBlock, event);
+      }
+
       this.cursor = {
         start: {
           key,

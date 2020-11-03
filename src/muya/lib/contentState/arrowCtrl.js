@@ -213,8 +213,12 @@ const arrowCtrl = ContentState => {
         this.insertAfter(newBlock, lastBlock)
         key = newBlock.children[0].key
       }
-      const _offset = adjustOffset(0, nextBlock || newBlock, event)
-      const offset = event.key === EVENT_KEYS.ArrowDown && nextBlock?.text && start.offset <= nextBlock.text.length? start.offset : _offset
+      let offset;
+      if (event.key === EVENT_KEYS.ArrowDown) {
+        offset = nextBlock?.text && start.offset <= nextBlock.text.length? start.offset : (nextBlock?.text.length ?? 0);
+      } else {
+        offset = adjustOffset(0, nextBlock || newBlock, event)
+      }
       this.cursor = {
         start: { key, offset },
         end: { key, offset }
