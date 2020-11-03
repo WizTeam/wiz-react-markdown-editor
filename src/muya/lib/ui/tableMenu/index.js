@@ -9,10 +9,14 @@ import './index.css';
 const MAX_SUBMENU_HEIGHT = 400
 const ITEM_HEIGHT = 28
 const PADDING = 10
+const MENU_WIDTH = 190
 
 const defaultOptions = {
   placement: 'bottom-start',
   modifiers: {
+    preventOverflow: {
+      padding: 15,
+    },
     offset: {
       offset: '0, 10'
     }
@@ -70,6 +74,7 @@ class TableMenu extends BaseFloat {
     const { reference } = this
     const rect = reference.getBoundingClientRect()
     const windowHeight = document.documentElement.clientHeight
+    const windowWidth = document.documentElement.clientWidth
     //
     const children = alignMenu.map(({label, shortCut}) => {
       const shortCutWrapper = h('div.short-cut', [
@@ -93,6 +98,9 @@ class TableMenu extends BaseFloat {
     let subMenuSelector = 'div.submenu';
     if (windowHeight - rect.bottom < MAX_SUBMENU_HEIGHT - (ITEM_HEIGHT + PADDING)) {
       subMenuSelector += '.align-bottom'
+    }
+    if (windowWidth <= rect.left + MENU_WIDTH * 2) {
+      subMenuSelector += '.align-left';
     }
     return h(subMenuSelector, h('ul', children))
   }

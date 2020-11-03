@@ -96,6 +96,10 @@
   bottom: -66px;
 }
 
+.ag-table-menu .submenu.align-left {
+  left: calc(-100% - 3px);
+}
+
 .ag-table-menu li.align:hover .submenu {
   opacity: 1;
   transform: scale(1);
