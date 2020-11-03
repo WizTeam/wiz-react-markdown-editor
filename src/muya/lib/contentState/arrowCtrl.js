@@ -190,7 +190,7 @@ const arrowCtrl = ContentState => {
       event.stopPropagation()
       if (!preBlock) return
       const key = preBlock.key
-      const offset = event.key === EVENT_KEYS.ArrowUp && preBlock.text && start.offset <= preBlock.text.length ? start.offset : preBlock.text.length;
+      const offset = event.key === EVENT_KEYS.ArrowUp && preBlock?.text && start.offset <= preBlock.text.length ? start.offset : preBlock.text.length;
       this.cursor = {
         start: { key, offset },
         end: { key, offset }
@@ -214,7 +214,7 @@ const arrowCtrl = ContentState => {
         key = newBlock.children[0].key
       }
       const _offset = adjustOffset(0, nextBlock || newBlock, event)
-      const offset = event.key === EVENT_KEYS.ArrowDown && nextBlock.text && start.offset <= nextBlock.text.length? start.offset : _offset
+      const offset = event.key === EVENT_KEYS.ArrowDown && nextBlock?.text && start.offset <= nextBlock.text.length? start.offset : _offset
       this.cursor = {
         start: { key, offset },
         end: { key, offset }
