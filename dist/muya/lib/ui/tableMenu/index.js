@@ -133,6 +133,11 @@ class TableMenu extends _baseFloat.default {
       label,
       shortCut
     }) => {
+      if (label === 'border') {
+        return (0, _snabbdom.h)('div.border');
+      } //
+
+
       const shortCutWrapper = (0, _snabbdom.h)('div.short-cut', [(0, _snabbdom.h)('span', shortCut)]);
       let textWrapper = (0, _snabbdom.h)('span', _lang.content[this.lang][label]); //
 

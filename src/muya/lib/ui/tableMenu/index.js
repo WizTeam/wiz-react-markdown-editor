@@ -101,6 +101,10 @@ class TableMenu extends BaseFloat {
     const { oldVnode, tableMenuContainer } = this
 
     const children = menu.map(({label, shortCut}) => {
+      if (label === 'border') {
+        return h('div.border');
+      }
+      //
       const shortCutWrapper = h('div.short-cut', [
         h('span', shortCut)
       ])

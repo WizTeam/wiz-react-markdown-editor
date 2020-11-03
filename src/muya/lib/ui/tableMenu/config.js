@@ -6,14 +6,20 @@ export const menu = [{
   label: 'insertRowAfter',
   text: 'Add a line below'
 }, {
+  label: 'border',
+}, {
   label: 'insertColLeft',
   text: 'Add a column to the left',
 }, {
   label: 'insertColRight',
   text: 'Add a column to the right',
 }, {
+  label: 'border',
+}, {
   label: 'align',
   text: 'Align type',
+}, {
+  label: 'border',
 }, {
   label: 'removeRow',
   text: 'Remove this line',
@@ -23,6 +29,8 @@ export const menu = [{
 }, {
   label: 'removeTable',
   text: 'Remove this table',
+}, {
+  label: 'border',
 }, {
   label: 'copyHtml',
   text: 'Copy table html',
