@@ -1,17 +1,19 @@
 .ag-tag-insert {
   width: 250px;
   max-height: 307px;
-  padding: 0 0 10px;
+  padding: 10px 0;
   overflow-y: auto;
 }
 
 .ag-tag-insert .item {
   display: flex;
   flex-direction: row;
-  font-size: 16px;
-  padding: 10px 14px 10px 14px;
+  font-size: 14px;
+  padding: 0 10px;
   cursor: pointer;
   user-select: none;
+  height: 28px;
+  align-items: center;
 }
 
 .ag-tag-insert:hover .active {
@@ -19,11 +21,12 @@
 }
 .ag-tag-insert .active,
 .ag-tag-insert div.item:hover {
- background-color: var(--floatHoverColor);
+  background-color: var(--floatHoverColor);
 }
 
 .ag-tag-insert .no-result {
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding: 0 20px;
   font-size: 14px;
   text-align: center;
