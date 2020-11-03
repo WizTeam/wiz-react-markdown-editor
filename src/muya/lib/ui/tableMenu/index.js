@@ -2,6 +2,7 @@ import BaseFloat from '../baseFloat'
 import { patch, h } from '../../parser/render/snabbdom'
 import { menu, alignMenu } from './config'
 import { content } from './lang';
+import selection from '../../selection';
 
 import './index.css';
 
@@ -30,6 +31,8 @@ class TableMenu extends BaseFloat {
     this.startBlock = null
     this.options = opts
     this.reference = null
+    this.tableElement = null;
+    this.startCursor = null;
     this.lang = this.muya.options.lang;
     const tableMenuContainer = this.tableMenuContainer = document.createElement('div')
     Object.assign(this.container.parentNode.style, {
@@ -42,10 +45,11 @@ class TableMenu extends BaseFloat {
   listen() {
     const { eventCenter } = this.muya
     super.listen()
-    eventCenter.subscribe('muya-table-menu', ({ reference, tableElement, startBlock }) => {
+    eventCenter.subscribe('muya-table-menu', ({ reference, tableElement, startBlock, startCursor }) => {
       if (reference) {
         this.tableElement = tableElement;
         this.startBlock = startBlock;
+        this.startCursor = startCursor;
         this.reference = reference
         setTimeout(() => {
           this.show(reference)
@@ -134,6 +138,12 @@ class TableMenu extends BaseFloat {
 
     const { contentState } = this.muya
     const { tableElement, startBlock } = this;
+    //
+    contentState.cursor = {
+      start: this.startCursor,
+      end: this.startCursor,
+    };
+    selection.setCursorRange(contentState.cursor);
     //
     switch (label) {
       case 'insertRowBefore':

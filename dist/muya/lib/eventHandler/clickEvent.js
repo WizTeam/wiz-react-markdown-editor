@@ -93,7 +93,8 @@ class ClickEvent {
         eventCenter.dispatch('muya-table-menu', {
           reference,
           tableElement: table,
-          startBlock
+          startBlock,
+          startCursor: start
         });
       }
 

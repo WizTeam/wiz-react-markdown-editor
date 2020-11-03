@@ -73,6 +73,7 @@ class ClickEvent {
           reference,
           tableElement: table,
           startBlock,
+          startCursor: start,
         });
       }
 

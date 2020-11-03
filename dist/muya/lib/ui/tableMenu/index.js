@@ -13,6 +13,8 @@ var _config = require("./config");
 
 var _lang = require("./lang");
 
+var _selection = _interopRequireDefault(require("../../selection"));
+
 require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -41,6 +43,8 @@ class TableMenu extends _baseFloat.default {
     this.startBlock = null;
     this.options = opts;
     this.reference = null;
+    this.tableElement = null;
+    this.startCursor = null;
     this.lang = this.muya.options.lang;
     const tableMenuContainer = this.tableMenuContainer = document.createElement('div');
     Object.assign(this.container.parentNode.style, {
@@ -58,11 +62,13 @@ class TableMenu extends _baseFloat.default {
     eventCenter.subscribe('muya-table-menu', ({
       reference,
       tableElement,
-      startBlock
+      startBlock,
+      startCursor
     }) => {
       if (reference) {
         this.tableElement = tableElement;
         this.startBlock = startBlock;
+        this.startCursor = startCursor;
         this.reference = reference;
         setTimeout(() => {
           this.show(reference);
@@ -172,6 +178,14 @@ class TableMenu extends _baseFloat.default {
       tableElement,
       startBlock
     } = this; //
+
+    contentState.cursor = {
+      start: this.startCursor,
+      end: this.startCursor
+    };
+
+    _selection.default.setCursorRange(contentState.cursor); //
+
 
     switch (label) {
       case 'insertRowBefore':

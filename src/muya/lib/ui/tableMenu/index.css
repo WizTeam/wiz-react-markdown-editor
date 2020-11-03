@@ -23,7 +23,7 @@
   cursor: pointer;
   position: relative;
   user-select: none;
-  padding-left: 10px;
+  margin: 0 10px;
 }
 
 .ag-table-menu > ul li:hover {
@@ -39,7 +39,7 @@
 .ag-table-menu > ul li > .short-cut {
   color: var(--editorColor50);
   transform: scale(.8);
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 .ag-table-menu li.align > .short-cut {
@@ -107,4 +107,11 @@
 
 .ag-table-menu .submenu::-webkit-scrollbar:vertical {
   width: 0px;
+}
+
+.ag-table-menu li.item.insertRowAfter,
+.ag-table-menu li.item.insertColRight,
+.ag-table-menu li.item.align, 
+.ag-table-menu li.item.removeTable {
+  border-bottom: 1px solid #eee;
 }
