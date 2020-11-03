@@ -35,6 +35,8 @@ var _frontMenu = _interopRequireDefault(require("../muya/lib/ui/frontMenu"));
 
 var _tagInsert = _interopRequireDefault(require("../muya/lib/ui/tagInsert"));
 
+var _tableMenu = _interopRequireDefault(require("../muya/lib/ui/tableMenu"));
+
 var _utils = require("../utils/utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -79,6 +81,8 @@ if (_utils.os.isPc) {
   });
 
   _lib.default.use(_imagePicker.default);
+
+  _lib.default.use(_tableMenu.default);
 } // patch ipad 手写笔在 文末的 空行无法输入
 
 

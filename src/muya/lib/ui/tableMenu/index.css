@@ -1,0 +1,110 @@
+.ag-table-menu {
+  width: 190px;
+  font-size: 14px;
+}
+.ag-table-menu ul,
+.ag-table-menu li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ag-table-menu > ul {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ag-table-menu > ul li {
+  display: flex;
+  flex-direction: row;
+  height: 28px;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  padding-left: 10px;
+}
+
+.ag-table-menu > ul li:hover {
+  background: var(--floatHoverColor);
+}
+
+.ag-table-menu > ul li > span {
+  display: inline-block;
+  flex: 1;
+  color: var(--editorColor);
+}
+
+.ag-table-menu > ul li > .short-cut {
+  color: var(--editorColor50);
+  transform: scale(.8);
+  margin-right: 10px;
+}
+
+.ag-table-menu li.align > .short-cut {
+  width: 40px;
+  height: 20px;
+  position: relative;
+}
+
+.ag-table-menu > ul li.align > .short-cut::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border: 5px solid var(--editorColor30);
+  border-top-width: 4px;
+  border-bottom-width: 4px;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  position: absolute;
+  top: 5px;
+  right: 0px;
+}
+
+.ag-table-menu li.align > .short-cut > span {
+  display: inline-block;
+  width: 20px;
+  height: 28px;
+  position: absolute;
+  top: 0;
+  left: 50px;
+}
+
+.ag-table-menu .submenu {
+  width: 190px;
+  max-height: 300px;
+  position: absolute;
+  left: calc(100% + 3px);
+  top: -39px;
+  border-radius: 2px;
+  box-shadow: var(--floatShadow);
+  background-color: var(--floatBgColor);
+  transition: all .25s ease-in-out;
+  transform-origin: left;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.ag-table-menu .submenu.align-bottom {
+  top: unset;
+  bottom: -66px;
+}
+
+.ag-table-menu li.align:hover .submenu {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ag-table-menu .submenu ul {
+  padding: 10px 0;
+}
+
+.ag-table-menu .submenu::-webkit-scrollbar:vertical {
+  width: 0px;
+}
