@@ -2,6 +2,8 @@ on:
   push:
     branches:
       - 'beta'
+    paths:
+      - 'package.json'
 
 name: NPM_Publish_dev
 jobs:
