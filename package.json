@@ -1,7 +1,7 @@
 {
   "name": "wiz-react-markdown-editor",
-  "version": "0.1.0",
-  "main": "/dist",
+  "version": "0.2.0",
+  "main": "/lib",
   "description": "React Markdown Editor",
   "repository": "git@github.com:WizTeam/wiz-react-markdown-editor.git",
   "author": "WizTeam",
@@ -9,7 +9,7 @@
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
-    "build:babel": "babel src -d dist --copy-files --ignore 'src/muya/lib/utils/importResource.js'",
+    "build:babel": "babel src -d lib --copy-files --ignore 'src/muya/lib/utils/importResource.js'",
     "pub": "npm run build && npm publish",
     "lint:prettier": "check-prettier lint",
     "lint:js": "eslint --ext .js,.ts .",
@@ -96,6 +96,6 @@
   },
   "files": [
     "src/*",
-    "dist/*"
+    "lib/*"
   ]
 }
