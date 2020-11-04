@@ -1,6 +1,6 @@
 {
   "name": "wiz-react-markdown-editor",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "main": "lib/index.js",
   "description": "React Markdown Editor",
   "repository": "git@github.com:WizTeam/wiz-react-markdown-editor.git",
