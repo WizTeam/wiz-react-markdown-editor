@@ -368,11 +368,13 @@ const formatCtrl = (ContentState) => {
             end: { key, offset: endOffset + 1 }
           };
         } else {
-          block.text = block.text.replace(/(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/, `#${content}#`);
-          // block.text = `${block.text.substring(0, startOffset)}#${content}#${block.text.substring(endOffset)}`;
+          const { startOffset, endOffset } = this.tagCursor;
+          block.text = `${block.text.substring(0, startOffset)}#${content}#${block.text.substring(endOffset)}`;
+          //
+          const offset = startOffset + content.length + 2;
           this.cursor = {
-            start: { key, offset: block.text.length },
-            end: { key, offset: block.text.length }
+            start: { key, offset },
+            end: { key, offset }
           };
         }
 
