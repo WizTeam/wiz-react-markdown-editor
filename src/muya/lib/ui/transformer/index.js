@@ -14,6 +14,7 @@ class Transformer {
     this.movingAnchor = null;
     this.status = false;
     this.width = null;
+    this.height = null;
     this.eventId = [];
     this.lastScrollTop = null;
     this.resizing = false;
@@ -143,6 +144,7 @@ class Transformer {
     width = parseInt(width);
     this.width = width;
     image.setAttribute('width', width);
+    this.height = this.reference.getBoundingClientRect().height;
     this.update();
   };
 
@@ -156,8 +158,9 @@ class Transformer {
     }
     // todo update data
     if (typeof this.width === 'number') {
-      this.muya.contentState.updateImage(this.imageInfo, 'width', this.width);
+      this.muya.contentState.updateImage(this.imageInfo, {width: this.width, height: this.height});
       this.width = null;
+      this.height = null;
       this.hide();
     }
     this.resizing = false;

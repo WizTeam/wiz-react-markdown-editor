@@ -170,6 +170,12 @@ const App = () => {
       case 'header':
         editorRef.current.insertHeader();
         break;
+      case 'undo':
+        editorRef.current.undo();
+        break;
+      case 'redo':
+        editorRef.current.redo();
+        break;
       default:
         break;
     }
@@ -274,6 +280,12 @@ const App = () => {
         <button type="button" onMouseDown={(e) => handleInsert('unindent', e)}>
           unindent
         </button>
+        <button type="button" onMouseDown={(e) => handleInsert('undo', e)}>
+          undo
+        </button>
+        <button type="button" onMouseDown={(e) => handleInsert('redo', e)}>
+          redo
+        </button>
         {isCursorInTable ? (
           <>
             <button type="button" onMouseDown={(e) => handleInsert('alignLeft', e)}>
@@ -345,7 +357,7 @@ const App = () => {
           focusMode={focusMode}
           typewriterMode={typewriterMode}
           onSelectImages={chooseImage}
-          markdown="# Note Title"
+          markdown={markdown}
           resourceUrl={data?.resourceUrl}
           readOnly={readOnly}
           contentId={data?.contentId}
