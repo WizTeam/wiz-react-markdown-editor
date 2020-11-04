@@ -2,6 +2,7 @@ import { EVENT_KEYS, CLASS_OR_ID } from '../config'
 import { findNearestParagraph } from '../selection/dom'
 import selection from '../selection'
 import { inlineRules } from '../parser/rules'
+import { getRecommendedCursorOffset } from './cursorPosition'
 
 // If the next block is header, put cursor after the `#{1,6} *`
 const adjustOffset = (offset, block, event) => {
@@ -190,7 +191,14 @@ const arrowCtrl = ContentState => {
       event.stopPropagation()
       if (!preBlock) return
       const key = preBlock.key
-      const offset = event.key === EVENT_KEYS.ArrowUp && preBlock?.text && start.offset <= preBlock.text.length ? start.offset : preBlock.text.length;
+      let oldOffset;
+      if (event.key === EVENT_KEYS.ArrowUp) {
+        oldOffset = getRecommendedCursorOffset();
+      }
+      if (!oldOffset) {
+        oldOffset = start.offset;
+      }
+      const offset = event.key === EVENT_KEYS.ArrowUp && preBlock?.text && oldOffset <= preBlock.text.length ? oldOffset : preBlock.text.length;
       this.cursor = {
         start: { key, offset },
         end: { key, offset }
@@ -213,9 +221,11 @@ const arrowCtrl = ContentState => {
         this.insertAfter(newBlock, lastBlock)
         key = newBlock.children[0].key
       }
+      //
+      const oldOffset = getRecommendedCursorOffset() || start.offset;
       let offset;
       if (event.key === EVENT_KEYS.ArrowDown) {
-        offset = nextBlock?.text && start.offset <= nextBlock.text.length? start.offset : (nextBlock?.text.length ?? 0);
+        offset = nextBlock?.text && oldOffset <= nextBlock.text.length? oldOffset : (nextBlock?.text.length ?? 0);
       } else {
         offset = adjustOffset(0, nextBlock || newBlock, event)
       }

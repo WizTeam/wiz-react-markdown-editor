@@ -1,5 +1,6 @@
 import { getLinkInfo } from '../utils/getLinkInfo';
 import { collectFootnotes } from '../utils';
+import { rememberCursorOffset } from '../contentState/cursorPosition';
 
 class MouseEvent {
   constructor(muya) {
@@ -89,6 +90,11 @@ class MouseEvent {
   mouseDown() {
     const { container, eventCenter, contentState } = this.muya;
     const handler = (event) => {
+      //
+      setTimeout(() => {
+        rememberCursorOffset();
+      }, 100);
+      //
       const target = event.target;
       if (event.button === 0) {
         this.isMouseDown = true;

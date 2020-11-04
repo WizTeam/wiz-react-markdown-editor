@@ -3,6 +3,7 @@ import selection from '../selection';
 import { findNearestParagraph } from '../selection/dom';
 import { getParagraphReference, getImageInfo } from '../utils';
 import { checkEditEmoji } from '../ui/emojis';
+import { rememberCursorOffset } from '../contentState/cursorPosition'
 
 //------------- Debug Start ------------------------
 // function iosLog(str) {
@@ -272,6 +273,12 @@ class Keyboard {
     };
 
     const handler = (event) => {
+      if (event.code !== EVENT_KEYS.ArrowUp && event.code !== EVENT_KEYS.ArrowDown) {
+        setTimeout(() => {
+          rememberCursorOffset();
+        }, 100);  
+      }
+
       if (event.metaKey || event.ctrlKey) {
         container.classList.add('ag-meta-or-ctrl');
       }
