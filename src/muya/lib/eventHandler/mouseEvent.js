@@ -14,8 +14,10 @@ class MouseEvent {
   }
 
   mouseBinding() {
-    const { container, eventCenter } = this.muya;
+    const { container, eventCenter, options } = this.muya;
     const handler = (event) => {
+      if (options.readOnly) return;
+      //
       const target = event.target;
       const parent = target.parentNode;
       const preSibling = target.previousElementSibling;

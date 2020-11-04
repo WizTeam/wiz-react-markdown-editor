@@ -213,7 +213,6 @@ export default function renderLeafBlock (parent, block, activeBlocks, matches, u
 
     Object.assign(data.attrs, {
       type: 'checkbox',
-      style: `top: ${(fontSize * lineHeight / 2 - 11).toFixed(2)}px`
     })
 
     selector = `${type}#${key}.${CLASS_OR_ID.AG_TASK_LIST_ITEM_CHECKBOX}`

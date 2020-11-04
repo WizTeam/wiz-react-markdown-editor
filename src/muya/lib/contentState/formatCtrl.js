@@ -368,10 +368,13 @@ const formatCtrl = (ContentState) => {
             end: { key, offset: endOffset + 1 }
           };
         } else {
+          const { startOffset, endOffset } = this.tagCursor;
           block.text = `${block.text.substring(0, startOffset)}#${content}#${block.text.substring(endOffset)}`;
+          //
+          const offset = startOffset + content.length + 2;
           this.cursor = {
-            start: { key, offset: startOffset + 1 },
-            end: { key, offset: startOffset + content.length + 1 }
+            start: { key, offset },
+            end: { key, offset }
           };
         }
 

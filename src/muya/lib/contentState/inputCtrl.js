@@ -40,11 +40,29 @@ const inputCtrl = (ContentState) => {
   };
 
   ContentState.prototype.checkTagInsert = function (block) {
+    const { start } = this.cursor;
     const { type, text, functionType } = block;
     if (type !== 'span') return false;
-    return /(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/.test(
-      text
-    );
+    //
+    const text1 = text;
+    const text2 = text.slice(1);
+    //
+    const data1 = text1.match(/(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/);
+    const data2 = text2.match(/(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/);
+    // 判断是否正tag范围内输入
+    const checked1 = data1 && data1.index <= start.offset && start.offset <= data1.index + data1[0].length - 1;
+    const checked2 = data2 && data2.index + 1 <= start.offset && start.offset <= data2.index + 1 + data1[0].length - 1;
+    //
+    if (checked1 || (!checked1 && checked2)) {
+      this.tagCursor = {
+        word: checked1 ? data1[0] : data2[0],
+        startOffset: checked1 ? data1.index : data2.index + 1,
+        endOffset: checked1 ? data1.index + data1[0].length : data2.index + data2[0].length + 1,
+      };
+      return true;
+    }
+    //
+    return false;
   };
 
   ContentState.prototype.checkCursorInTokenType = function (functionType, text, offset, type) {
@@ -323,7 +341,7 @@ const inputCtrl = (ContentState) => {
       );
     };
     this.muya.eventCenter.dispatch('muya-quick-insert', reference, block, !!checkQuickInsert);
-    this.muya.eventCenter.dispatch('muya-tag-insert', reference, block, !!checkTagInsert);
+    this.muya.eventCenter.dispatch('muya-tag-insert', { reference, block, status: checkTagInsert, tagCursor: this.tagCursor});
 
     this.cursor = { start, end };
 
