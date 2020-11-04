@@ -133,10 +133,7 @@ class Muya {
     //
     options.readOnly = status;
     container.setAttribute('contenteditable', !status);
-    const activeElement = document.querySelector(`.${this.CLASS_OR_ID.AG_ACTIVE}`);
-    if (status && activeElement) {
-      activeElement.classList.remove(this.CLASS_OR_ID.AG_ACTIVE);
-    }
+    this.contentState.partialRender();
   }
 
   getMarkdown() {

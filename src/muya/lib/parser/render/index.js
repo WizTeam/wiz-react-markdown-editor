@@ -70,6 +70,8 @@ class StateRender {
   }
 
   getClassName (outerClass, block, token, cursor) {
+    const { options } = this.muya;
+    if (options.readOnly) return CLASS_OR_ID.AG_HIDE;
     return outerClass || (this.checkConflicted(block, token, cursor) ? CLASS_OR_ID.AG_GRAY : CLASS_OR_ID.AG_HIDE)
   }
 
@@ -78,12 +80,13 @@ class StateRender {
   }
 
   getSelector (block, activeBlocks) {
+    const { options } = this.muya;
     const { cursor, selectedBlock } = this.muya.contentState
     const type = block.type === 'hr' ? 'p' : block.type
     const isActive = activeBlocks.some(b => b.key === block.key) || block.key === cursor.start.key
 
     let selector = `${type}#${block.key}.${CLASS_OR_ID.AG_PARAGRAPH}`
-    if (isActive) {
+    if (isActive && !options.readOnly) {
       selector += `.${CLASS_OR_ID.AG_ACTIVE}`
     }
     if (type === 'span') {
