@@ -103,17 +103,30 @@ const imageCtrl = ContentState => {
     const { range } = token
     const { start, end } = range
     const oldText = block.text
-    let imageText = ''
-    const attrs = Object.assign({}, token.attrs)
-    attrs[attrName] = attrValue
+    if (Object.prototype.toString.call(attrName) === '[object Object]' && !attrValue && attrName.width && attrName.height) {
+      const rules = /=(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?)\)$/;
+      if (rules.test(block.text)) {
+        block.text = oldText.replace(rules, `=${attrName.width}x${attrName.height})`)
+      } else {
+        block.text = `${oldText.substring(0, oldText.length - 1)}=${attrName.width}x${attrName.height})`;
+      }
+    } else {
+      let imageText = ''
+      const attrs = Object.assign({}, token.attrs)
+      if (Object.prototype.toString.call(attrName) === '[object Object]' && !attrValue) {
+        Object.assign(attrs, attrName);
+      } else {
+        attrs[attrName] = attrValue
+      }
 
-    imageText = '<img '
-    for (const attr of Object.keys(attrs)) {
-      imageText += `${attr}="${attrs[attr]}" `
+      imageText = '<img '
+      for (const attr of Object.keys(attrs)) {
+        imageText += `${attr}="${attrs[attr]}" `
+      }
+      imageText = imageText.trim()
+      imageText += '>'
+      block.text = oldText.substring(0, start) + imageText + oldText.substring(end)
     }
-    imageText = imageText.trim()
-    imageText += '>'
-    block.text = oldText.substring(0, start) + imageText + oldText.substring(end)
 
     this.singleRender(block, false)
     const image = document.querySelector(`#${imageId} img`)

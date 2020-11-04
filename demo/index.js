@@ -345,7 +345,7 @@ const App = () => {
           focusMode={focusMode}
           typewriterMode={typewriterMode}
           onSelectImages={chooseImage}
-          markdown="# Note Title"
+          markdown={markdown}
           resourceUrl={data?.resourceUrl}
           readOnly={readOnly}
           contentId={data?.contentId}
