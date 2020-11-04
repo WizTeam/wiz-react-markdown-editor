@@ -3,7 +3,7 @@ on:
     branches:
       - 'beta'
 
-name: NPM_Publish
+name: NPM_Publish_dev
 jobs:
 
   publish:
