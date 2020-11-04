@@ -3,6 +3,7 @@ import { findNearestParagraph } from '../selection/dom'
 import selection from '../selection'
 import { inlineRules } from '../parser/rules'
 import { getRecommendedCursorOffset } from './cursorPosition'
+import { beginRules } from '../parser/rules'
 
 // If the next block is header, put cursor after the `#{1,6} *`
 const adjustOffset = (offset, block, event) => {
@@ -99,6 +100,17 @@ const arrowCtrl = ContentState => {
     const nextBlock = this.findNextBlockInLocation(block)
     const { start, end } = selection.getCursorRange()
     const { topOffset, bottomOffset } = selection.getCursorYOffset(paragraph)
+
+
+
+    function getOffset(offset, newBlock) {
+      if (newBlock?.text) {
+        const hContent = beginRules.header.exec(newBlock.text);
+        const newOffset = offset + (hContent?.[0]?.length ?? 0)
+        return Math.min(newOffset, newBlock.text.length)
+      }
+      return 0;
+    }
     if (!start || !end) {
       return
     }
@@ -119,7 +131,6 @@ const arrowCtrl = ContentState => {
     ) {
       return
     }
-
     if (
       (event.key === EVENT_KEYS.ArrowUp && topOffset > 0) ||
       (event.key === EVENT_KEYS.ArrowDown && bottomOffset > 0)
@@ -131,6 +142,8 @@ const arrowCtrl = ContentState => {
         }
       }
     }
+
+
 
     if (block.functionType === 'cellContent') {
       let activeBlock
@@ -187,9 +200,19 @@ const arrowCtrl = ContentState => {
       (event.key === EVENT_KEYS.ArrowUp) ||
       (event.key === EVENT_KEYS.ArrowLeft && start.offset === 0)
     ) {
+      if (preBlock) {
+        const preEle = document.getElementById(preBlock.key);
+        if (preEle) {
+          const { height } = preEle.getBoundingClientRect();
+          const lineHeight = parseFloat(getComputedStyle(preEle).lineHeight);
+          const preLineNum = Math.round(height / lineHeight);
+          if (preLineNum > 1) {
+            return;
+          }
+        }
+      }
       event.preventDefault()
       event.stopPropagation()
-      if (!preBlock) return
       const key = preBlock.key
       let oldOffset;
       if (event.key === EVENT_KEYS.ArrowUp) {
@@ -198,7 +221,7 @@ const arrowCtrl = ContentState => {
       if (!oldOffset) {
         oldOffset = start.offset;
       }
-      const offset = event.key === EVENT_KEYS.ArrowUp && preBlock?.text && oldOffset <= preBlock.text.length ? oldOffset : preBlock.text.length;
+      const offset = event.key === EVENT_KEYS.ArrowUp ? getOffset(oldOffset, preBlock) : preBlock.text.length;
       this.cursor = {
         start: { key, offset },
         end: { key, offset }
@@ -225,7 +248,7 @@ const arrowCtrl = ContentState => {
       const oldOffset = getRecommendedCursorOffset() || start.offset;
       let offset;
       if (event.key === EVENT_KEYS.ArrowDown) {
-        offset = nextBlock?.text && oldOffset <= nextBlock.text.length? oldOffset : (nextBlock?.text.length ?? 0);
+        offset = getOffset(oldOffset, nextBlock);
       } else {
         offset = adjustOffset(0, nextBlock || newBlock, event)
       }
