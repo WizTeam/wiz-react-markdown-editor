@@ -3,6 +3,9 @@
 ### Install:
 ```
 npm install wiz-react-markdown-editor
+
+// install beta version:
+npm install wiz-react-markdown-editor@beta
 ```
 
 ### Config:
