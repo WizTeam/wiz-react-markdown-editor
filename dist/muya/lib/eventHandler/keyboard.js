@@ -15,6 +15,8 @@ var _utils = require("../utils");
 
 var _emojis = require("../ui/emojis");
 
+var _cursorPosition = require("../contentState/cursorPosition");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //------------- Debug Start ------------------------
@@ -333,6 +335,12 @@ class Keyboard {
     };
 
     const handler = event => {
+      if (event.code !== _config.EVENT_KEYS.ArrowUp && event.code !== _config.EVENT_KEYS.ArrowDown) {
+        setTimeout(() => {
+          (0, _cursorPosition.rememberCursorOffset)();
+        }, 100);
+      }
+
       if (event.metaKey || event.ctrlKey) {
         container.classList.add('ag-meta-or-ctrl');
       }

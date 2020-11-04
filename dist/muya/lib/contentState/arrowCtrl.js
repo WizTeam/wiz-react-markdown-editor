@@ -13,6 +13,8 @@ var _selection = _interopRequireDefault(require("../selection"));
 
 var _rules = require("../parser/rules");
 
+var _cursorPosition = require("./cursorPosition");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // If the next block is header, put cursor after the `#{1,6} *`
@@ -235,7 +237,17 @@ const arrowCtrl = ContentState => {
       event.stopPropagation();
       if (!preBlock) return;
       const key = preBlock.key;
-      const offset = event.key === _config.EVENT_KEYS.ArrowUp && (preBlock === null || preBlock === void 0 ? void 0 : preBlock.text) && start.offset <= preBlock.text.length ? start.offset : preBlock.text.length;
+      let oldOffset;
+
+      if (event.key === _config.EVENT_KEYS.ArrowUp) {
+        oldOffset = (0, _cursorPosition.getRecommendedCursorOffset)();
+      }
+
+      if (!oldOffset) {
+        oldOffset = start.offset;
+      }
+
+      const offset = event.key === _config.EVENT_KEYS.ArrowUp && (preBlock === null || preBlock === void 0 ? void 0 : preBlock.text) && oldOffset <= preBlock.text.length ? oldOffset : preBlock.text.length;
       this.cursor = {
         start: {
           key,
@@ -260,14 +272,16 @@ const arrowCtrl = ContentState => {
         const lastBlock = this.blocks[this.blocks.length - 1];
         this.insertAfter(newBlock, lastBlock);
         key = newBlock.children[0].key;
-      }
+      } //
 
+
+      const oldOffset = (0, _cursorPosition.getRecommendedCursorOffset)() || start.offset;
       let offset;
 
       if (event.key === _config.EVENT_KEYS.ArrowDown) {
         var _nextBlock$text$lengt;
 
-        offset = (nextBlock === null || nextBlock === void 0 ? void 0 : nextBlock.text) && start.offset <= nextBlock.text.length ? start.offset : (_nextBlock$text$lengt = nextBlock === null || nextBlock === void 0 ? void 0 : nextBlock.text.length) !== null && _nextBlock$text$lengt !== void 0 ? _nextBlock$text$lengt : 0;
+        offset = (nextBlock === null || nextBlock === void 0 ? void 0 : nextBlock.text) && oldOffset <= nextBlock.text.length ? oldOffset : (_nextBlock$text$lengt = nextBlock === null || nextBlock === void 0 ? void 0 : nextBlock.text.length) !== null && _nextBlock$text$lengt !== void 0 ? _nextBlock$text$lengt : 0;
       } else {
         offset = adjustOffset(0, nextBlock || newBlock, event);
       }

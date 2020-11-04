@@ -9,6 +9,8 @@ var _getLinkInfo = require("../utils/getLinkInfo");
 
 var _utils = require("../utils");
 
+var _cursorPosition = require("../contentState/cursorPosition");
+
 class MouseEvent {
   constructor(muya) {
     this.muya = muya;
@@ -92,6 +94,11 @@ class MouseEvent {
     } = this.muya;
 
     const handler = event => {
+      //
+      setTimeout(() => {
+        (0, _cursorPosition.rememberCursorOffset)();
+      }, 100); //
+
       const target = event.target;
 
       if (event.button === 0) {
