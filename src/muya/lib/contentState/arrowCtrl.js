@@ -143,8 +143,6 @@ const arrowCtrl = ContentState => {
       }
     }
 
-
-
     if (block.functionType === 'cellContent') {
       let activeBlock
       const cellInNextRow = this.findNextRowCell(block)
