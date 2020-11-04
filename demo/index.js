@@ -170,6 +170,12 @@ const App = () => {
       case 'header':
         editorRef.current.insertHeader();
         break;
+      case 'undo':
+        editorRef.current.undo();
+        break;
+      case 'redo':
+        editorRef.current.redo();
+        break;
       default:
         break;
     }
@@ -273,6 +279,12 @@ const App = () => {
         </button>
         <button type="button" onMouseDown={(e) => handleInsert('unindent', e)}>
           unindent
+        </button>
+        <button type="button" onMouseDown={(e) => handleInsert('undo', e)}>
+          undo
+        </button>
+        <button type="button" onMouseDown={(e) => handleInsert('redo', e)}>
+          redo
         </button>
         {isCursorInTable ? (
           <>

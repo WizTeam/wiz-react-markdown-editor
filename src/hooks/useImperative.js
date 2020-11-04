@@ -212,6 +212,12 @@ export default function useImperative(ref, editor) {
       function unindent() {
         editor.contentState.unindent();
       }
+      function undo() {
+        editor.undo();
+      }
+      function redo() {
+        editor.redo();
+      }
       function selectFirstTitle() {
         const firstBlock = editor.contentState.getFirstBlock();
         if (editor && firstBlock && firstBlock.text.startsWith('# ')) {
@@ -260,7 +266,9 @@ export default function useImperative(ref, editor) {
         focus: () => editor?.focus(),
         editor: editor?.container,
         htmlToMarkdown,
-        selectFirstTitle
+        selectFirstTitle,
+        undo,
+        redo
       };
     },
     [editor]
