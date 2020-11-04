@@ -16,7 +16,6 @@ export default class TagInsert extends BaseScrollFloat {
 
   setWordList(list = []) {
     this.wordList = [...new Set(list)];
-    this.setRenderArray();
   }
 
   setRenderArray(list = this.wordList) {
@@ -52,7 +51,7 @@ export default class TagInsert extends BaseScrollFloat {
     const { eventCenter } = this.muya;
     eventCenter.subscribe('muya-tag-insert', ({reference, block, status, tagCursor}) => {
       if (status) {
-        const keyword = tagCursor.word.replace(/#/, '');
+        const keyword = tagCursor.word.trim().replace(/#/, '');
         this.search(keyword);
         this.show(reference);
       } else {

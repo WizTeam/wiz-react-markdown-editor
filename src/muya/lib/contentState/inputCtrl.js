@@ -39,10 +39,14 @@ const inputCtrl = (ContentState) => {
     return /^(@|\+|\/)\S*$/.test(text);
   };
 
-  ContentState.prototype.checkTagInsert = function (block) {
+  ContentState.prototype.checkTagInsert = function (block, inputType) {
     const { start } = this.cursor;
     const { type, text, functionType } = block;
     if (type !== 'span') return false;
+    //
+    if (inputType.includes('delete')) {
+      start.offset -= 2;
+    }
     //
     const text1 = text;
     const text2 = text.slice(1);
@@ -321,7 +325,7 @@ const inputCtrl = (ContentState) => {
     // show quick insert
     const rect = paragraph.getBoundingClientRect();
     const checkQuickInsert = this.checkQuickInsert(block);
-    const checkTagInsert = this.checkTagInsert(block);
+    const checkTagInsert = this.checkTagInsert(block, event.inputType);
     const reference = this.getPositionReference();
     reference.getBoundingClientRect = function () {
       const { x, y, left, top, height, bottom } = rect;
