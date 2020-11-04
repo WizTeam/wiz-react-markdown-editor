@@ -1,5 +1,13 @@
 # Wiz React Markdown Editor
 
+### Install:
+```
+npm install wiz-react-markdown-editor
+
+// install beta version:
+npm install wiz-react-markdown-editor@beta
+```
+
 ### Config:
 
 如果使用[Unsplash](https://unsplash.com/)图库,需要把 Unsplash 的 Access Key 设置进 UNSPLASH_ACCESS_KEY 环境变量中
