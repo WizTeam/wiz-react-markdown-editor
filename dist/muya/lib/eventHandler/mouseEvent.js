@@ -90,11 +90,13 @@ class MouseEvent {
     const {
       container,
       eventCenter,
-      contentState
+      contentState,
+      options
     } = this.muya;
 
     const handler = event => {
-      //
+      if (options.readOnly) return; //
+
       setTimeout(() => {
         (0, _cursorPosition.rememberCursorOffset)();
       }, 100); //

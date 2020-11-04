@@ -28,10 +28,13 @@ class ClickEvent {
     const {
       container,
       eventCenter,
-      contentState
+      contentState,
+      options
     } = this.muya;
 
     const handler = event => {
+      if (options.readOnly) return; //
+
       event.preventDefault();
       event.stopPropagation(); // Hide all float box and image transformer
 
@@ -109,10 +112,13 @@ class ClickEvent {
     const {
       container,
       eventCenter,
-      contentState
+      contentState,
+      options
     } = this.muya;
 
     const handler = event => {
+      if (options.readOnly) return; // 
+
       const now = new Date().getTime();
 
       if (this.touchstartTime && now - this.touchstartTime >= 300) {

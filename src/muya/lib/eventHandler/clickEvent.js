@@ -13,8 +13,10 @@ class ClickEvent {
   }
 
   contextClickBingding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const { container, eventCenter, contentState, options } = this.muya;
     const handler = (event) => {
+      if (options.readOnly) return;
+      //
       event.preventDefault();
       event.stopPropagation();
 
@@ -84,8 +86,10 @@ class ClickEvent {
   }
 
   clickBinding() {
-    const { container, eventCenter, contentState } = this.muya;
+    const { container, eventCenter, contentState, options } = this.muya;
     const handler = (event) => {
+      if (options.readOnly) return;
+      // 
       const now = new Date().getTime();
       if (this.touchstartTime && now - this.touchstartTime >= 300) {
         this.touchstartTime = null;

@@ -88,8 +88,9 @@ class MouseEvent {
   }
 
   mouseDown() {
-    const { container, eventCenter, contentState } = this.muya;
+    const { container, eventCenter, contentState, options } = this.muya;
     const handler = (event) => {
+      if (options.readOnly) return;
       //
       setTimeout(() => {
         rememberCursorOffset();

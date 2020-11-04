@@ -128,6 +128,17 @@ class Muya {
     this.eventCenter.dispatch('selectionFormats', formats);
   };
 
+  readOnly(status = false) {
+    const { container, options } = this;
+    //
+    options.readOnly = status;
+    container.setAttribute('contenteditable', !status);
+    const activeElement = document.querySelector(`.${this.CLASS_OR_ID.AG_ACTIVE}`);
+    if (status && activeElement) {
+      activeElement.classList.remove(this.CLASS_OR_ID.AG_ACTIVE);
+    }
+  }
+
   getMarkdown() {
     const blocks = this.contentState.getBlocks();
     const listIndentation = this.contentState.listIndentation;

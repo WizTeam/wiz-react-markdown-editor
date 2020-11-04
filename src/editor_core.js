@@ -142,8 +142,8 @@ function Editor(props) {
   }, [transformImageUrl, markdown, editor]);
 
   useEffect(() => {
-    if (editor && editor.container) {
-      editor.container.setAttribute('contenteditable', !readOnly);
+    if (editor) {
+      editor.readOnly(readOnly);
     }
   }, [editor, readOnly]);
 

@@ -149,8 +149,8 @@ function Editor(props) {
     }
   }, [transformImageUrl, markdown, editor]);
   (0, _react.useEffect)(() => {
-    if (editor && editor.container) {
-      editor.container.setAttribute('contenteditable', !readOnly);
+    if (editor) {
+      editor.readOnly(readOnly);
     }
   }, [editor, readOnly]);
   const scrollToSaferView = (0, _react.useCallback)(y => {

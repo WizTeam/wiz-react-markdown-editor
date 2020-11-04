@@ -175,6 +175,21 @@ class Muya {
     observer.observe(container, config);
   }
 
+  readOnly(status = false) {
+    const {
+      container,
+      options
+    } = this; //
+
+    options.readOnly = status;
+    container.setAttribute('contenteditable', !status);
+    const activeElement = document.querySelector(".".concat(this.CLASS_OR_ID.AG_ACTIVE));
+
+    if (status && activeElement) {
+      activeElement.classList.remove(this.CLASS_OR_ID.AG_ACTIVE);
+    }
+  }
+
   getMarkdown() {
     const blocks = this.contentState.getBlocks();
     const listIndentation = this.contentState.listIndentation;
