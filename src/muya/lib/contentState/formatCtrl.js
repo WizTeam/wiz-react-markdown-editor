@@ -369,9 +369,11 @@ const formatCtrl = (ContentState) => {
           };
         } else {
           const { startOffset, endOffset } = this.tagCursor;
-          block.text = `${block.text.substring(0, startOffset)}#${content}#${block.text.substring(endOffset)}`;
+          const hasSpace = startOffset !== 0;
           //
-          const offset = startOffset + content.length + 2;
+          block.text = `${block.text.substring(0, startOffset)}${hasSpace ? ' ' : ''}#${content}#${block.text.substring(endOffset)}`;
+          //
+          const offset = startOffset + content.length + 2 + Number(hasSpace);
           this.cursor = {
             start: { key, offset },
             end: { key, offset }

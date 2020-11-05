@@ -221,21 +221,40 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
     // tag
     const tagTo = inlineRules['tag'].exec(src);
     if (tagTo) {
-      pushPending();
-      const range = {
-        start: pos,
-        end: pos + tagTo[0].length
-      };
-      tokens.push({
-        type: 'tag',
-        raw: tagTo[0],
-        range,
-        parent: tokens,
-        content: tagTo[0]
-      });
-      src = src.substring(tagTo[0].length);
-      pos = pos + tagTo[0].length;
-      continue;
+      const hasSpace = tagTo[0].startsWith(' ');
+      if (pos === 0 || hasSpace) {
+        pushPending();
+        //
+        const start = hasSpace ? pos + 1 : pos;
+        const content = hasSpace ? tagTo[0].slice(1) : tagTo[0];
+        //
+        if (hasSpace) {
+          tokens.push({
+            type: 'text',
+            raw: ' ',
+            range: {
+              start: pos,
+              end: pos + 1,
+            },
+            parent: tokens,
+            content: ' ',
+          });
+        }
+        const range = {
+          start,
+          end: pos + tagTo[0].length
+        };
+        tokens.push({
+          type: 'tag',
+          raw: content,
+          range,
+          parent: tokens,
+          content
+        });
+        src = src.substring(tagTo[0].length);
+        pos = pos + tagTo[0].length;
+        continue;
+      }
     }
     // superscript and subscript
     if (superSubScript) {
