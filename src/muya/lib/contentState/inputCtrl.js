@@ -44,7 +44,7 @@ const inputCtrl = (ContentState) => {
     const { type, text, functionType } = block;
     if (type !== 'span') return false;
     //
-    if (inputType.includes('delete')) {
+    if (inputType && inputType.includes('delete')) {
       start.offset -= 2;
     }
     //
