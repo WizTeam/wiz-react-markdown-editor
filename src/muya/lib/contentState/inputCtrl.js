@@ -327,6 +327,7 @@ const inputCtrl = (ContentState) => {
     const checkQuickInsert = this.checkQuickInsert(block);
     const checkTagInsert = this.checkTagInsert(block, event.inputType);
     const reference = this.getPositionReference();
+    const tagInsertReference = this.getPositionReference();
     reference.getBoundingClientRect = function () {
       const { x, y, left, top, height, bottom } = rect;
 
@@ -345,7 +346,7 @@ const inputCtrl = (ContentState) => {
       );
     };
     this.muya.eventCenter.dispatch('muya-quick-insert', reference, block, !!checkQuickInsert);
-    this.muya.eventCenter.dispatch('muya-tag-insert', { reference, block, status: checkTagInsert, tagCursor: this.tagCursor});
+    this.muya.eventCenter.dispatch('muya-tag-insert', { reference: tagInsertReference, block, status: checkTagInsert, tagCursor: this.tagCursor});
 
     this.cursor = { start, end };
 
