@@ -380,6 +380,9 @@ const inputCtrl = (ContentState) => {
         needRenderAll = true;
       }
     }
+    if (event.type === 'compositionend') {
+      setTimeout(() => this.partialRender());
+    }
 
     if (checkMarkedUpdate || inlineUpdatedBlock || needRender) {
       return needRenderAll ? this.render() : this.partialRender();
