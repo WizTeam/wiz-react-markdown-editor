@@ -320,7 +320,7 @@ const pasteCtrl = ContentState => {
       const postPartText = blockText.substring(end.offset)
       startBlock.text = prePartText + text + postPartText
       const { key } = startBlock
-      const offset = start.offset + text.length
+      const offset = start.offset
       this.cursor = {
         start: { key, offset },
         end: { key, offset }
