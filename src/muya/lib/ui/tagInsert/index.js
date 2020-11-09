@@ -51,7 +51,7 @@ export default class TagInsert extends BaseScrollFloat {
     const { eventCenter } = this.muya;
     eventCenter.subscribe('muya-tag-insert', ({reference, block, status, tagCursor}) => {
       if (status) {
-        const keyword = tagCursor.word.trim().replace(/#/, '');
+        const keyword = tagCursor.word.trim().replace(/#/g, '');
         this.search(keyword);
         this.show(reference);
       } else {

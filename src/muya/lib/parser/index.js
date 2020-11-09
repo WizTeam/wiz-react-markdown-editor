@@ -225,8 +225,9 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
       if (pos === 0 || hasSpace) {
         pushPending();
         //
+        const content = tagTo[0].trim();
         const start = hasSpace ? pos + 1 : pos;
-        const content = hasSpace ? tagTo[0].slice(1) : tagTo[0];
+        const end = start + content.length;
         //
         if (hasSpace) {
           tokens.push({
@@ -242,7 +243,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
         }
         const range = {
           start,
-          end: pos + tagTo[0].length
+          end,
         };
         tokens.push({
           type: 'tag',
@@ -251,8 +252,8 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
           parent: tokens,
           content
         });
-        src = src.substring(tagTo[0].length);
-        pos = pos + tagTo[0].length;
+        src = src.substring(end - pos);
+        pos = end;
         continue;
       }
     }

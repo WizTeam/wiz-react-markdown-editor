@@ -381,6 +381,7 @@ const formatCtrl = (ContentState) => {
         }
 
         this.partialRender();
+        this.muya.eventCenter.dispatch('stateChange');
       }
     }
   };

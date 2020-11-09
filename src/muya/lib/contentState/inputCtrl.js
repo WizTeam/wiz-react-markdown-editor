@@ -48,25 +48,24 @@ const inputCtrl = (ContentState) => {
       start.offset -= 2;
     }
     //
-    const text1 = text;
-    const text2 = text.slice(1);
+    const tokens = tokenizer(text, {
+      hasBeginRules: false,
+      options: this.muya.options
+    });
     //
-    const data1 = text1.match(/(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/);
-    const data2 = text2.match(/(^|[\t\f\v ])#(?!#|\s)(([^#\r\n]{1,25}[^#\s]#)|([^#\s]{1,25}$)|(\S{1,25}(\S|$)))/);
-    // 判断是否正tag范围内输入
-    const checked1 = data1 && data1.index <= start.offset && start.offset <= data1.index + data1[0].length - 1;
-    const checked2 = data2 && data2.index + 1 <= start.offset && start.offset <= data2.index + 1 + data1[0].length - 1;
-    //
-    if (checked1 || (!checked1 && checked2)) {
-      this.tagCursor = {
-        word: checked1 ? data1[0] : data2[0],
-        startOffset: checked1 ? data1.index : data2.index + 1,
-        endOffset: checked1 ? data1.index + data1[0].length : data2.index + data2[0].length + 1,
-      };
-      return true;
-    }
-    //
-    return false;
+    return tokens
+      .filter((t) => t.type === 'tag')
+      .some((t) => {
+        if (start.offset >= t.range.start && start.offset < t.range.end) {
+          this.tagCursor = {
+            word: t.content,
+            startOffset: t.range.start,
+            endOffset: t.range.end,
+          };
+          return true;
+        }
+        return false;
+      });
   };
 
   ContentState.prototype.checkCursorInTokenType = function (functionType, text, offset, type) {
