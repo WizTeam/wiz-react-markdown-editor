@@ -108,7 +108,7 @@ class StateRender {
         },
       })
       for (const [key, value] of this.mermaidCache.entries()) {
-        const { code } = value.replaceAll('&gt;', '>')
+        const code = value.code.replace(/\&gt;/g, '>')
         const target = document.querySelector(key)
         if (!target) {
           continue

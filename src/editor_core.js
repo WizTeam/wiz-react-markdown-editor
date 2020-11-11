@@ -100,7 +100,7 @@ function Editor(props) {
     onScreenCaptureManual: props.onScreenCaptureManual
   });
 
-  useState(() => {
+  useEffect(() => {
     editor?.clearHistory();
   }, [contentId]);
 
