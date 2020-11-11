@@ -92,6 +92,7 @@ const MarkdownEditor = forwardRef((props, ref) => {
   return (
     <EditorCore
       markdown={markdown}
+      contentId={contentId}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...editorCoreProp}
       onChange={(content) => {

@@ -66,7 +66,8 @@ function Editor(props) {
     bottomHeight,
     scrollingElement,
     onImageAction,
-    lang
+    lang,
+    contentId
   } = props;
   //
   const editorRef = useRef();
@@ -98,6 +99,10 @@ function Editor(props) {
   useShortcut(containerRef.current, editor, {
     onScreenCaptureManual: props.onScreenCaptureManual
   });
+
+  useState(() => {
+    editor?.clearHistory();
+  }, [contentId]);
 
   useEffect(() => {
     function scrollToCursor(duration = 300) {
