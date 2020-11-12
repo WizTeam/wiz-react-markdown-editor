@@ -159,7 +159,7 @@ class ContentState {
         handler()
       } else {
         if (this.historyTimer) clearTimeout(this.historyTimer)
-        this.historyTimer = setTimeout(handler, 2000)
+        this.historyTimer = setTimeout(handler, 300)
       }
     }
   }
