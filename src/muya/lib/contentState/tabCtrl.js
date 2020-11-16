@@ -113,7 +113,7 @@ const tabCtrl = ContentState => {
         const newList = this.createBlock(list.type)
         let target = this.getNextSibling(listItem)
         while (target) {
-          this.appendChild(newList, target)
+          this.appendChild(newList, JSON.parse(JSON.stringify(target)))
           const temp = target
           target = this.getNextSibling(target)
           this.removeBlock(temp, list)
