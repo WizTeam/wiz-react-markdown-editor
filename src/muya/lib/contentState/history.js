@@ -37,15 +37,21 @@ class History {
     }
   }
 
+  isSameState(state1, state2) {
+    return JSON.stringify(state1) === JSON.stringify(state2)
+  }
+
   push (state) {
     this.stack.splice(this.index + 1)
-    const copyState = deepCopy(state)
-    this.stack.push(copyState)
-    if (this.stack.length > UNDO_DEPTH) {
-      this.stack.shift()
-      this.index = this.index - 1
+    if (!this.isSameState(this.stack[this.stack.length - 1], state)) {
+      const copyState = deepCopy(state)
+      this.stack.push(copyState)
+      if (this.stack.length > UNDO_DEPTH) {
+        this.stack.shift()
+        this.index = this.index - 1
+      }
+      this.index = this.index + 1
     }
-    this.index = this.index + 1
   }
 
   clearHistory () {
