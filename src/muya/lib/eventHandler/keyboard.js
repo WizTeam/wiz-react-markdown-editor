@@ -276,7 +276,7 @@ class Keyboard {
       if (event.code !== EVENT_KEYS.ArrowUp && event.code !== EVENT_KEYS.ArrowDown) {
         setTimeout(() => {
           rememberCursorOffset();
-        }, 100);  
+        }, 100);
       }
 
       if (event.metaKey || event.ctrlKey) {
@@ -397,6 +397,14 @@ class Keyboard {
             return;
           }
         }
+      }
+      if (event.inputType === 'historyUndo') {
+        this.muya.undo()
+        return;
+      }
+      if (event.inputType === 'historyRedo') {
+        this.muya.redo()
+        return;
       }
       if (!this.isComposed) {
         contentState.inputHandler(event);
