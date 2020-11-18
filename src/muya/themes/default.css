@@ -97,7 +97,7 @@
 html, body {
   font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
-  line-height: 24px;
+  line-height: var(--text-line-height);
 }
 
 span code,

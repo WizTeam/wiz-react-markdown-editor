@@ -520,7 +520,7 @@ li.ag-task-list-item > [type=checkbox] {
   width: 12px;
   height: 12px;
   /* top: .3em; */
-  top: 3px;
+  top: calc(var(--text-line-height) / 2 - 9px);
   left: -22px;
   transform-origin: center;
   transition: all .2s ease;

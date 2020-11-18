@@ -2,6 +2,7 @@
 :root {
   --titleBarHeight: 32px;
   --editorAreaWidth: 750px;
+  --text-line-height: 24px;
 
   /*editor*/
   /*Theme color cluster*/
