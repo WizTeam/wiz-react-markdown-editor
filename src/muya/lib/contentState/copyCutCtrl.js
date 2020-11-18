@@ -55,7 +55,8 @@ const copyCutCtrl = ContentState => {
       const { type, text, functionType } = startBlock
       // Fix issue #942
       if (type === 'span' && functionType === 'codeContent') {
-        const selectedText = escapeHtml(text.substring(start.offset, end.offset))
+        // const selectedText = escapeHtml(text.substring(start.offset, end.offset))
+        const selectedText = text.substring(start.offset, end.offset)
         return {
           html: marked(selectedText, this.muya.options),
           text: selectedText
@@ -268,6 +269,9 @@ const copyCutCtrl = ContentState => {
     }
 
     const { html, text } = this.getClipBoradData()
+
+    console.log('copyHandler', { html, text })
+    console.log('type', type);
     switch (type) {
       case 'normal': {
         event.clipboardData.setData('text/html', html)
