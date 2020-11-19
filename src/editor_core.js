@@ -105,20 +105,6 @@ function Editor(props) {
   }, [contentId]);
 
   useEffect(() => {
-    function scrollToCursor(duration = 300) {
-      if (!editor) return;
-      setTimeout(() => {
-        const { container } = editor;
-        const { y } = editor.getSelection().cursorCoords;
-        animatedScrollTo(container, container.scrollTop + y - STANDAR_Y, duration);
-      }, 0);
-    }
-    if (typewriterMode) {
-      scrollToCursor();
-    }
-  }, [editor, typewriterMode]);
-
-  useEffect(() => {
     editor?.setFocusMode(focusMode);
   }, [editor, focusMode]);
 
@@ -162,6 +148,7 @@ function Editor(props) {
       //
       if (typewriterMode) {
         animatedScrollTo(_scrollingElement, _scrollingElement.scrollTop + y - STANDAR_Y, 100);
+        return;
       }
       if (window.outerHeight - bottomHeight < y + 30) {
         const editableHeight = y + 30 - window.outerHeight + bottomHeight;
@@ -188,11 +175,14 @@ function Editor(props) {
   );
 
   useEffect(() => {
-    if (bottomHeight && editor) {
+    if (typewriterMode) {
+      const { y } = editor.getCursorCoords();
+      scrollToSaferView(y);
+    } else if (bottomHeight && editor) {
       scrollToSaferView(selection.getCursorCoords().y);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bottomHeight, scrollToSaferView]);
+  }, [bottomHeight, typewriterMode, scrollToSaferView]);
 
   useEffect(() => {
     function handleSelectionChange(changes) {

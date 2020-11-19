@@ -207,6 +207,18 @@ class Muya {
     return this.contentState.selectionChange();
   }
 
+  getCursorCoords() {
+    const { start } = this.contentState.cursor;
+    const element = document.querySelector(`#${start.key}`);
+    const rect = element.getBoundingClientRect();
+    //
+    return {
+      y: rect.y || rect.top,
+      x: rect.x || rect.left,
+      width: rect.width,
+    };
+  }
+
   setFocusMode(bool, force = false) {
     const { container } = this;
     const { focusMode } = this.options;

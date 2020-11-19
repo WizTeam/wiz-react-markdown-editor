@@ -4,9 +4,14 @@ let currentOffset;
 
 export function rememberCursorOffset() {
   const { start, end } = selection.getCursorRange()
-  if (start.key === end.key && start.offset == end.offset) {
-    currentOffset = start.offset;
-  } else {
+
+  try {
+    if (start.key === end.key && start.offset == end.offset) {
+      currentOffset = start.offset;
+    } else {
+      currentOffset = undefined;
+    }
+  } catch (err) {
     currentOffset = undefined;
   }
 }
