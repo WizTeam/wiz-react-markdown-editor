@@ -317,7 +317,7 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
           title,
           alt: imageTo[2] + encodeURI(imageTo[3]),
           width: imageTo[7] ? parseFloat(imageTo[7]) : undefined,
-          height: imageTo[8] ? parseFloat(imageTo[8]) : undefined
+          // height: imageTo[8] ? parseFloat(imageTo[8]) : undefined
         },
         src: imageSrc,
         title,
