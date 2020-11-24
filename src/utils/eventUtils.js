@@ -42,6 +42,8 @@ export function transformKey(key) {
       return 'x';
     case 'œ':
       return 'q';
+    case 'dead':
+      return 'u';
     default:
       return key;
   }
@@ -60,6 +62,7 @@ export function matchHotKey(hotkey, event, separator = '-') {
   );
   const hasAlt = hotkeys.some((value) => value.toLocaleLowerCase() === 'alt' || value === '⌥');
   const hasShift = hotkeys.some((value) => value.toLocaleLowerCase() === 'shift' || value === '⇧');
+
   return (
     key.toLocaleLowerCase() === transformKey(event.key.toLocaleLowerCase()) &&
     ((hasCtrl && isTouchCtrlKey(event)) || (!hasCtrl && !isTouchCtrlKey(event))) &&
