@@ -15,6 +15,7 @@ import TableBarTools from '../muya/lib/ui/tableTools';
 import FrontMenu from '../muya/lib/ui/frontMenu';
 import TagInsert from '../muya/lib/ui/tagInsert';
 import TableMenu from '../muya/lib/ui/tableMenu';
+import noteLinkInsert from '../muya/lib/ui/noteLinkInsert';
 import { os } from '../utils/utils';
 
 if (os.isPc) {
@@ -45,6 +46,7 @@ if (os.isPc) {
   });
   Muya.use(ImagePathPicker);
   Muya.use(TableMenu);
+  Muya.use(noteLinkInsert);
 }
 
 // patch ipad 手写笔在 文末的 空行无法输入

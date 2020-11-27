@@ -112,8 +112,9 @@ class Muya {
     const cursor = this.getCursor();
     const history = this.getHistory();
     const toc = this.getTOC();
+    const noteLinks = this.getNoteLinks();
 
-    eventCenter.dispatch('change', { markdown, wordCount, cursor, history, toc });
+    eventCenter.dispatch('change', { markdown, wordCount, cursor, history, toc, noteLinks });
   };
 
   dispatchSelectionChange = () => {
@@ -148,6 +149,10 @@ class Muya {
 
   getTOC() {
     return this.contentState.getTOC();
+  }
+
+  getNoteLinks() {
+    return this.contentState.getAllNoteLinks();
   }
 
   setHistory(history) {

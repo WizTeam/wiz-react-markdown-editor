@@ -41,7 +41,6 @@ class ExportMarkdown {
       if (block.type !== 'ul' && block.type !== 'ol') {
         lastListBullet = '';
       }
-
       switch (block.type) {
         case 'p':
         case 'hr': {

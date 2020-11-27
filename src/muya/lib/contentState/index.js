@@ -30,6 +30,8 @@ import linkCtrl from './linkCtrl'
 import dragDropCtrl from './dragDropCtrl'
 import footnoteCtrl from './footnoteCtrl'
 import mouseCtrl from './mouseCtrl';
+import noteLinkCtrl from './noteLinkCtrl'
+import NoteLinkMap from './noteLinkMap'
 import importMarkdown from '../utils/importMarkdown'
 import Cursor from '../selection/cursor'
 import escapeCharactersMap, { escapeCharacters } from '../parser/escapeCharacter'
@@ -62,7 +64,8 @@ const prototypes = [
   dragDropCtrl,
   footnoteCtrl,
   importMarkdown,
-  mouseCtrl
+  mouseCtrl,
+  noteLinkCtrl
 ]
 
 class ContentState {
@@ -94,6 +97,7 @@ class ContentState {
     this.cellSelectInfo = null
     this._selectedTableCells = null
     this.cellSelectEventIds = []
+    this.noteLinkMap = new NoteLinkMap(muya.options.noteLinks);
     this.init()
   }
 

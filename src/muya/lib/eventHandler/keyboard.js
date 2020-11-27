@@ -302,7 +302,8 @@ class Keyboard {
             tool.name === 'ag-front-menu' ||
             tool.name === 'ag-list-picker' ||
             tool.name === 'ag-tag-insert' ||
-            tool.name === 'ag-image-selector'
+            tool.name === 'ag-image-selector' ||
+            tool.name === 'ag-note-link-insert'
           ) {
             needPreventDefault = true;
             break;

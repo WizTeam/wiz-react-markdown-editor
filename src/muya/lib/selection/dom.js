@@ -3,7 +3,7 @@ import {
 } from '../config'
 const CHOP_TEXT_REG = /(\*{1,3})([^*]+)(\1)/g
 
-export const getTextContent = (node, blackList) => {
+export const getTextContent = (node, blackList, ignoreNoteLink = true) => {
   if (node.nodeType === 3) {
     return node.textContent
   } else if (!blackList) {
@@ -33,10 +33,13 @@ export const getTextContent = (node, blackList) => {
     } else {
       text += raw
     }
+  } else if (node.nodeType === 1 && node.classList.contains(CLASS_OR_ID.AG_NOTE_LINK_CONTENT)) {
+    const parent = node.closest(`.${CLASS_OR_ID.AG_NOTE_LINK}`);
+    text += parent.getAttribute('data-href') ?? parent.querySelector(`.${CLASS_OR_ID.AG_NOTE_LINK_CONTENT}`)?.innerText ?? ''
   } else {
     const childNodes = node.childNodes
     for (const n of childNodes) {
-      text += getTextContent(n, blackList)
+      text += getTextContent(n, blackList, ignoreNoteLink)
     }
   }
   return text

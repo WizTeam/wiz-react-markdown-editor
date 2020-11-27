@@ -187,6 +187,10 @@ const enterCtrl = (ContentState) => {
     const endBlock = this.getBlock(end.key);
     let parent = this.getParent(block);
 
+    if (this.fixNoteLink(block)) {
+      this.enterHandler(event);
+    }
+
     event.preventDefault();
 
     // Don't allow new lines in language identifiers (GH#569)

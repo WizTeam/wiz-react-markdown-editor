@@ -126,6 +126,7 @@ const inputCtrl = (ContentState) => {
     return false;
   };
 
+
   ContentState.prototype.inputHandler = function (event, notEqual = false) {
     const { start, end } = selection.getCursorRange();
     if (!start || !end) {
@@ -137,6 +138,9 @@ const inputCtrl = (ContentState) => {
     const paragraph = document.querySelector(`#${key}`);
     const startBlock = this.getBlock(oldStart.key);
     const endBlock = this.getBlock(oldEnd.key);
+    if (this.fixNoteLink(block)) {
+      return this.inputHandler(event, notEqual)
+    }
 
     if (oldStart.key !== oldEnd.key || oldStart.offset !== oldEnd.offset) {
       if (oldStart.key === oldEnd.key) {
@@ -166,8 +170,11 @@ const inputCtrl = (ContentState) => {
       this.singleRender(block);
       return this.inputHandler(event, true);
     }
+    if (window.testParams === true) {
+      return;
+    }
 
-    let text = getTextContent(paragraph, [CLASS_OR_ID.AG_MATH_RENDER, CLASS_OR_ID.AG_RUBY_RENDER]);
+    let text = getTextContent(paragraph, [CLASS_OR_ID.AG_MATH_RENDER, CLASS_OR_ID.AG_RUBY_RENDER], false);
 
     let needRender = false;
     let needRenderAll = false;
@@ -325,6 +332,7 @@ const inputCtrl = (ContentState) => {
     const rect = paragraph.getBoundingClientRect();
     const checkQuickInsert = this.checkQuickInsert(block);
     const checkTagInsert = this.checkTagInsert(block, event.inputType);
+    const checkNoteInsert = this.checkNoteLinkInsert(block);
     const reference = this.getPositionReference();
     const tagInsertReference = this.getPositionReference();
     reference.getBoundingClientRect = function () {
@@ -346,6 +354,7 @@ const inputCtrl = (ContentState) => {
     };
     this.muya.eventCenter.dispatch('muya-quick-insert', reference, block, !!checkQuickInsert);
     this.muya.eventCenter.dispatch('muya-tag-insert', { reference: tagInsertReference, block, status: checkTagInsert, tagCursor: this.tagCursor});
+    this.muya.eventCenter.dispatch('muya-note-link-insert', { reference: tagInsertReference, block, status: checkNoteInsert !== false, ...checkNoteInsert});
 
     this.cursor = { start, end };
 
@@ -382,7 +391,6 @@ const inputCtrl = (ContentState) => {
     if (event.type === 'compositionend') {
       setTimeout(() => this.partialRender());
     }
-
     if (checkMarkedUpdate || inlineUpdatedBlock || needRender) {
       return needRenderAll ? this.render() : this.partialRender();
     }

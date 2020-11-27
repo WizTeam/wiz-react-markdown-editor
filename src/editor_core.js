@@ -67,7 +67,8 @@ function Editor(props) {
     scrollingElement,
     onImageAction,
     lang,
-    contentId
+    contentId,
+    noteLinks
   } = props;
   //
   const editorRef = useRef();
@@ -86,12 +87,13 @@ function Editor(props) {
       theme,
       imagePathPicker: onSelectImages,
       imageAction: onImageAction,
-      lang
+      lang,
+      noteLinks
       // markdown,
       // transformImageUrl
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [focusMode, onSelectImages, theme, resourceUrl, onImageAction]
+    [focusMode, onSelectImages, theme, resourceUrl, onImageAction, noteLinks]
   );
 
   const editor = useMuya(editorRef, MuyaOptions);
@@ -273,6 +275,7 @@ Editor.propTypes = {
   editorFocus: PropTypes.func,
   onScreenCaptureManual: PropTypes.func,
   bottomHeight: PropTypes.number,
+  noteLinks: PropTypes.array,
   lang: PropTypes.oneOf(['en', 'zh-cn', 'zh-tw'])
 };
 
@@ -291,6 +294,7 @@ Editor.defaultProps = {
   editorFocus: () => {},
   onScreenCaptureManual: null,
   bottomHeight: 100,
+  noteLinks: [],
   lang: 'en'
 };
 

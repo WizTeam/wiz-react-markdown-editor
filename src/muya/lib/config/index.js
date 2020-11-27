@@ -275,6 +275,10 @@ export const CLASS_OR_ID = genUpper2LowerKeyHash([
   'AG_FRONT_MATTER',
   'AG_FRONT_ICON',
   'AG_GRAY',
+  'AG_NOTE_LINK',
+  'AG_NOTE_LINK_SYMBOL',
+  'AG_NOTE_LINK_CONTENT',
+  'AG_NO_CURSOR',
   'AG_HARD_LINE_BREAK',
   'AG_HARD_LINE_BREAK_SPACE',
   'AG_LINE_END',
@@ -473,7 +477,8 @@ export const MUYA_DEFAULT_OPTION = {
   // Markdown extensions
   superSubScript: false,
   footnote: false,
-  lang: 'en'
+  lang: 'en',
+  // getNoteTitle: (value) => value
 };
 
 // export const DIAGRAM_TEMPLATE = {

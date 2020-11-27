@@ -162,10 +162,12 @@ kbd {
     margin-bottom: 0 !important;
   }
 
-  a {
+  a, .ag-note-link {
     color: var(--link-color);
   }
-
+  .ag-note-link {
+    cursor: pointer;
+  }
   h1,
   h2,
   h3,

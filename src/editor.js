@@ -48,7 +48,7 @@ const MarkdownEditor = forwardRef((props, ref) => {
   // eslint-disable-next-line no-shadow
   function doSaveData({ contentId, content }) {
     if (onSave) {
-      onSave({ contentId, markdown: content.markdown });
+      onSave({ contentId, markdown: content.markdown, noteLinks: content.noteLinks });
     }
   }
 

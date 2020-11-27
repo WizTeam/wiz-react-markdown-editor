@@ -89,7 +89,7 @@ class ClickEvent {
     const { container, eventCenter, contentState, options } = this.muya;
     const handler = (event) => {
       if (options.readOnly) return;
-      // 
+      //
       const now = new Date().getTime();
       if (this.touchstartTime && now - this.touchstartTime >= 300) {
         this.touchstartTime = null;
@@ -130,6 +130,14 @@ class ClickEvent {
           }
         });
       }
+
+      const noteLink = target.closest(`.${CLASS_OR_ID.AG_NOTE_LINK}`);
+      if (noteLink) {
+        eventCenter.dispatch('muya-note-link', {
+          href: noteLink.getAttribute('data-href') ?? noteLink.querySelector(`.${CLASS_OR_ID.AG_NOTE_LINK_CONTENT}`)?.innerText ?? ''
+        })
+      }
+
       // Handle image and inline math preview click
       const markedImageText = target.previousElementSibling;
       const mathRender = target.closest(`.${CLASS_OR_ID.AG_MATH_RENDER}`);

@@ -32,6 +32,21 @@ function chooseImage() {
   });
 }
 
+const noteLinks = [
+  {
+    title: 'test1',
+    id: 'testLink1'
+  },
+  {
+    title: 'test2',
+    id: 'testLink2'
+  },
+  {
+    title: 'test3',
+    id: 'testLink3'
+  }
+];
+
 const App = () => {
   const [theme, setTheme] = React.useState('default');
   const [focusMode, setFocusMode] = React.useState(false);
@@ -71,6 +86,13 @@ const App = () => {
       },
       true
     );
+    editorRef.current.on('muya-note-link', (param) => {
+      console.log('note link: ', param);
+    });
+    editorRef.current.on('muya-note-link-change', ({ content, render: renderFn }) => {
+      console.log('content', content);
+      renderFn(noteLinks);
+    });
   }, []);
 
   function handleInsert(type, e) {
@@ -353,6 +375,7 @@ const App = () => {
       </div>
       <div style={{ minHeight: '110vh' }}>
         <MarkdownEditor
+          noteLinks={noteLinks}
           theme={data?.theme || theme}
           focusMode={focusMode}
           typewriterMode={typewriterMode}

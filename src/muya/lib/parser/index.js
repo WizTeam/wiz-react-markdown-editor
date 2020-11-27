@@ -257,6 +257,29 @@ const tokenizerFac = (src, beginRules, inlineRules, pos = 0, top, labels, option
         continue;
       }
     }
+    // note link
+    const noteLinkTo = inlineRules['note_link'].exec(src);
+    if (noteLinkTo) {
+      inChunk = true;
+      pushPending();
+      const range = {
+        start: pos,
+        end: pos + noteLinkTo[0].length
+      };
+      const marker = noteLinkTo[1];
+      tokens.push({
+        type: 'note_link',
+        raw: noteLinkTo[0],
+        range,
+        marker,
+        parent: tokens,
+        content: noteLinkTo[2]
+      });
+      src = src.substring(noteLinkTo[0].length);
+      pos = pos + noteLinkTo[0].length;
+      continue;
+    }
+
     // superscript and subscript
     if (superSubScript) {
       const superSubTo = inlineRules.superscript.exec(src) || inlineRules.subscript.exec(src);

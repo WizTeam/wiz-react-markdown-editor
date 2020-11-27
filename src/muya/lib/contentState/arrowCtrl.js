@@ -101,13 +101,15 @@ const arrowCtrl = ContentState => {
     const { start, end } = selection.getCursorRange()
     const { topOffset, bottomOffset } = selection.getCursorYOffset(paragraph)
 
-
-
-    function getOffset(offset, newBlock) {
+    const getOffset = (offset, newBlock) => {
       if (newBlock?.text) {
         const hContent = beginRules.header.exec(newBlock.text);
         const newOffset = offset + (hContent?.[0]?.length ?? 0)
-        return Math.min(newOffset, newBlock.text.length)
+
+        console.log('newOffset', newOffset)
+        console.log('ValidText', this.getValidText(newBlock))
+
+        return Math.min(newOffset, this.getValidText(newBlock).length)
       }
       return 0;
     }
@@ -193,7 +195,6 @@ const arrowCtrl = ContentState => {
         return this.partialRender()
       }
     }
-
     if (
       (event.key === EVENT_KEYS.ArrowUp) ||
       (event.key === EVENT_KEYS.ArrowLeft && start.offset === 0)
@@ -205,10 +206,16 @@ const arrowCtrl = ContentState => {
           const lineHeight = parseFloat(getComputedStyle(preEle).lineHeight);
           const preLineNum = Math.round(height / lineHeight);
           if (preLineNum > 1) {
+            console.log('xxxxxx')
             return;
           }
         }
+        const noteLinkNodes = preEle.querySelectorAll(`.${CLASS_OR_ID.AG_NOTE_LINK}`)
+        if ([...noteLinkNodes].some(item => item.getAttribute('data-href'))) {
+          return ;
+        }
       }
+
       event.preventDefault()
       event.stopPropagation()
       const key = preBlock.key
@@ -220,6 +227,7 @@ const arrowCtrl = ContentState => {
         oldOffset = start.offset;
       }
       const offset = event.key === EVENT_KEYS.ArrowUp ? getOffset(oldOffset, preBlock) : preBlock.text.length;
+      console.log('offset', offset);
       this.cursor = {
         start: { key, offset },
         end: { key, offset }
