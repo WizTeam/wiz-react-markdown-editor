@@ -141,10 +141,10 @@ class Transformer {
         break;
     }
     // Image width/height attribute must be an integer.
-    width = parseInt(width);
+    width = parseInt(width, 10);
     this.width = width;
     image.setAttribute('width', width);
-    this.height = this.reference.getBoundingClientRect().height;
+    this.height = parseInt(this.reference.getBoundingClientRect().height, 10);
     this.update();
   };
 

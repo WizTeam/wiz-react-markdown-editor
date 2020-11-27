@@ -104,11 +104,11 @@ const imageCtrl = ContentState => {
     const { start, end } = range
     const oldText = block.text
     if (Object.prototype.toString.call(attrName) === '[object Object]' && !attrValue && attrName.width && attrName.height) {
-      const rules = /=(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?)\)$/;
+      const rules = /\s=(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?)\)$/;
       if (rules.test(block.text)) {
-        block.text = oldText.replace(rules, `=${attrName.width}x${attrName.height})`)
+        block.text = oldText.replace(rules, ` =${attrName.width}x${attrName.height})`)
       } else {
-        block.text = `${oldText.substring(0, oldText.length - 1)}=${attrName.width}x${attrName.height})`;
+        block.text = `${oldText.substring(0, oldText.length - 1)} =${attrName.width}x${attrName.height})`;
       }
     } else {
       let imageText = ''
