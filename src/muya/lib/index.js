@@ -181,13 +181,16 @@ class Muya {
     return this.contentState.getCodeMirrorCursor();
   }
 
-  setMarkdown(markdown, cursor, isRenderCursor = true) {
+  setMarkdown(markdown, cursor, isRenderCursor = true, noteLinks) {
     let newMarkdown = markdown;
     let isValid = false;
     if (cursor && cursor.anchor && cursor.focus) {
       const cursorInfo = this.contentState.addCursorToMarkdown(markdown, cursor);
       newMarkdown = cursorInfo.markdown;
       isValid = cursorInfo.isValid;
+    }
+    if (noteLinks) {
+      this.contentState.noteLinkMap.resetNoteLinks(noteLinks);
     }
     this.contentState.importMarkdown(newMarkdown);
     this.contentState.importCursor(cursor && isValid);

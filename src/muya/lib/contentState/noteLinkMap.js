@@ -10,4 +10,8 @@ export default class NoteLinkMap {
   setLink(id, title) {
     this.linkMap.set(id, title);
   }
+  resetNoteLinks(noteLinks) {
+    this.linkMap.clear();
+    noteLinks.forEach((item) => this.setLink(item.id, item.title))
+  }
 }

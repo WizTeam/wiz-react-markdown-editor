@@ -87,13 +87,12 @@ function Editor(props) {
       theme,
       imagePathPicker: onSelectImages,
       imageAction: onImageAction,
-      lang,
-      noteLinks
+      lang
       // markdown,
       // transformImageUrl
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [focusMode, onSelectImages, theme, resourceUrl, onImageAction, noteLinks]
+    [focusMode, onSelectImages, theme, resourceUrl, onImageAction]
   );
 
   const editor = useMuya(editorRef, MuyaOptions);
@@ -130,9 +129,9 @@ function Editor(props) {
       editor.setOptions({
         transformImageUrl
       });
-      editor.setMarkdown(markdown, 0);
+      editor.setMarkdown(markdown, 0, true, noteLinks);
     }
-  }, [transformImageUrl, markdown, editor]);
+  }, [transformImageUrl, markdown, editor, noteLinks]);
 
   useEffect(() => {
     if (editor) {
