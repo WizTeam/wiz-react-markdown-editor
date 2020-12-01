@@ -218,6 +218,9 @@ export default function useImperative(ref, editor) {
       function redo() {
         editor.redo();
       }
+      function getNoteLinks() {
+        return editor.getNoteLinks();
+      }
       function selectFirstTitle() {
         const firstBlock = editor.contentState.getFirstBlock();
         if (editor && firstBlock && firstBlock.text.startsWith('# ')) {
@@ -268,7 +271,8 @@ export default function useImperative(ref, editor) {
         htmlToMarkdown,
         selectFirstTitle,
         undo,
-        redo
+        redo,
+        getNoteLinks
       };
     },
     [editor]
