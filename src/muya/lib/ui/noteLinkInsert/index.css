@@ -15,6 +15,10 @@
   height: 28px;
   align-items: center;
 }
+.ag-note-link-insert .item .icon {
+  margin-right: 6px;
+  width: 17px;
+}
 
 .ag-note-link-insert:hover .active {
   background: transparent;

@@ -1,5 +1,6 @@
 import BaseScrollFloat from '../baseScrollFloat';
 import { patch, h } from '../../parser/render/snabbdom';
+import noteIcon from '../../assets/icons/note.svg'
 import './index.css';
 export default class NoteLinkInsert extends BaseScrollFloat  {
   static pluginName = 'noteLinkInsert';
@@ -32,7 +33,13 @@ export default class NoteLinkInsert extends BaseScrollFloat  {
             mousedown: () => this.selectItem(item)
           }
         },
-        item.title
+        [
+          h('i.icon', {style: {
+            background: `url(${noteIcon}) no-repeat`,
+            'background-size': '100%'
+          }}, ''),
+          h('span', item.title)
+        ]
       )
     );
     let vNode = h('div', children.length ? children : h('div.no-result', 'No result'));
