@@ -121,8 +121,20 @@ export default function useImperative(ref, editor) {
       function on(...param) {
         if (editor) {
           editor.on(...param);
+        } else {
+          eventRef.current.push(param);
         }
-        eventRef.current.push(param);
+      }
+
+      function off(...param) {
+        if (editor) {
+          editor.on(...param);
+        } else {
+          const deleteIndex = eventRef.current.findIndex((item) => item[0] === param[0]);
+          if (deleteIndex > -1) {
+            eventRef.current.splice(deleteIndex, 1);
+          }
+        }
       }
 
       function tableColAlignLeft() {
@@ -250,6 +262,7 @@ export default function useImperative(ref, editor) {
         insertQuote,
         insertMathFormula,
         on,
+        off,
         tableColAlignLeft,
         tableColAlignCenter,
         tableColAlignRight,
