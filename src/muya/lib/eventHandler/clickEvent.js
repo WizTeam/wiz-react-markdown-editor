@@ -134,7 +134,8 @@ class ClickEvent {
       const noteLink = target.closest(`.${CLASS_OR_ID.AG_NOTE_LINK}`);
       if (noteLink) {
         eventCenter.dispatch('muya-note-link', {
-          href: noteLink.getAttribute('data-href') ?? noteLink.querySelector(`.${CLASS_OR_ID.AG_NOTE_LINK_CONTENT}`)?.innerText ?? ''
+          href: noteLink.getAttribute('data-href') ?? noteLink.querySelector(`.${CLASS_OR_ID.AG_NOTE_LINK_CONTENT}`)?.innerText ?? '',
+          event
         })
       }
 
