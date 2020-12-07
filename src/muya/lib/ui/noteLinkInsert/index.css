@@ -14,10 +14,16 @@
   user-select: none;
   height: 28px;
   align-items: center;
+  color: var(--editorColor);
 }
 .ag-note-link-insert .item .icon {
   margin-right: 6px;
-  width: 17px;
+  height: 25px;
+  width: 20px;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  mask-image: url(../../assets/icons/note.svg);
+  background:  var(--editorColor);
 }
 
 .ag-note-link-insert:hover .active {

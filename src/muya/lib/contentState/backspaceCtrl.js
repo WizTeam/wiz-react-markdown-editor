@@ -120,20 +120,22 @@ const backspaceCtrl = (ContentState) => {
     const { start: oldStart, end: oldEnd } = this.cursor;
     const startBlock = this.getBlock(oldStart.key);
     const endBlock = this.getBlock(oldEnd.key);
-    if (oldStart.key !== oldEnd.key || oldStart.offset !== oldEnd.offset) {
-      if (oldStart.key === oldEnd.key) {
-        startBlock.text = startBlock.text.slice(0, oldStart.offset) + startBlock.text.slice(oldEnd.offset);
-      } else {
-        startBlock.text = startBlock.text.slice(0, oldStart.offset);
-        endBlock.text = endBlock.text.slice(oldEnd.offset);
-        this.removeBlocks(startBlock, endBlock, false);
+    if (startBlock.functionType === 'cellContent' && endBlock.functionType === 'cellContent') {
+      if (oldStart.key !== oldEnd.key || oldStart.offset !== oldEnd.offset) {
+        if (oldStart.key === oldEnd.key) {
+          startBlock.text = startBlock.text.slice(0, oldStart.offset) + startBlock.text.slice(oldEnd.offset);
+        } else {
+          startBlock.text = startBlock.text.slice(0, oldStart.offset);
+          endBlock.text = endBlock.text.slice(oldEnd.offset);
+          this.removeBlocks(startBlock, endBlock, false);
+        }
+        this.cursor = {
+          start: { key: oldStart.key, offset: oldStart.offset },
+          end: { key: oldStart.key, offset: oldStart.offset }
+        };
+        event?.preventDefault();
+        this.render();
       }
-      this.cursor = {
-        start: { key: oldStart.key, offset: oldStart.offset },
-        end: { key: oldStart.key, offset: oldStart.offset }
-      };
-      event?.preventDefault();
-      this.render();
     }
   }
   ContentState.prototype.backspaceHandler = function (event) {

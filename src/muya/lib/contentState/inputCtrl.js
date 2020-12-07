@@ -142,6 +142,16 @@ const inputCtrl = (ContentState) => {
       return this.inputHandler(event, notEqual)
     }
 
+    if (oldStart.key === oldEnd.key && oldStart.offset !== oldEnd.offset && BRACKET_HASH[event.data]) {
+      startBlock.text = startBlock.text.slice(0, oldStart.offset) + event.data + startBlock.text.slice(oldStart.offset, oldEnd.offset) + BRACKET_HASH[event.data] + startBlock.text.slice(oldEnd.offset);
+      this.cursor = {
+        start: { key, offset: oldStart.offset + 1 },
+        end: { key, offset: oldEnd.offset + 1 }
+      };
+      this.partialRender();
+      return;
+    }
+
     if (oldStart.key !== oldEnd.key || oldStart.offset !== oldEnd.offset) {
       if (oldStart.key === oldEnd.key) {
         startBlock.text = startBlock.text.slice(0, oldStart.offset) + startBlock.text.slice(oldEnd.offset);
@@ -169,9 +179,6 @@ const inputCtrl = (ContentState) => {
       };
       this.singleRender(block);
       return this.inputHandler(event, true);
-    }
-    if (window.testParams === true) {
-      return;
     }
 
     let text = getTextContent(paragraph, [CLASS_OR_ID.AG_MATH_RENDER, CLASS_OR_ID.AG_RUBY_RENDER], false);
