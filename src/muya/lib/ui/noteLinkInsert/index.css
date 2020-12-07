@@ -25,6 +25,12 @@
   mask-image: url(../../assets/icons/note.svg);
   background:  var(--editorColor);
 }
+.ag-note-link-insert .item .text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
 
 .ag-note-link-insert:hover .active {
   background: transparent;

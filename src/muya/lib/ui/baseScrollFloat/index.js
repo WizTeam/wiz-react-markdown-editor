@@ -52,12 +52,14 @@ class BaseScrollFloat extends BaseFloat {
     this.reference = null;
   }
 
-  show(reference, cb) {
+  show(reference, cb, update = false) {
     this.cb = cb;
-    if (reference instanceof HTMLElement) {
-      if (this.reference && this.reference === reference && this.status) return;
-    } else {
-      if (this.reference && this.reference.id === reference.id && this.status) return;
+    if (!update) {
+      if (reference instanceof HTMLElement) {
+        if (this.reference && this.reference === reference && this.status) return;
+      } else {
+        if (this.reference && this.reference.id === reference.id && this.status) return;
+      }
     }
 
     this.reference = reference;

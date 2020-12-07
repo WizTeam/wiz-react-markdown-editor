@@ -34,7 +34,7 @@ export default class NoteLinkInsert extends BaseScrollFloat  {
         },
         [
           h('i.icon', ''),
-          h('span', item.title)
+          h('span.text', item.title)
         ]
       )
     );
@@ -56,7 +56,7 @@ export default class NoteLinkInsert extends BaseScrollFloat  {
         this.positionOffset = offset;
         this.oldContent = content;
         this.render();
-        this.show(reference);
+        this.show(reference, () => {}, true);
         eventCenter.dispatch('muya-note-link-change', {content, render: (noteLinks) => this.renderMenu(noteLinks)});
       } else {
         this.hide();
