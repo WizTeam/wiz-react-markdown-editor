@@ -4,7 +4,8 @@ export const menu = [{
   text: 'Add a line above',
 }, {
   label: 'insertRowAfter',
-  text: 'Add a line below'
+  text: 'Add a line below',
+  shortCut: '⌘+Enter'
 }, {
   label: 'border',
 }, {

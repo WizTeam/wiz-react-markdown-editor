@@ -1,5 +1,6 @@
 import runSanitize from './dompurify'
 import { URL_REG, DATA_URL_REG, IMAGE_EXT_REG } from '../config'
+import { isOsx } from '../config'
 
 const ID_PREFIX = 'ag-'
 let id = 0
@@ -395,4 +396,26 @@ export const collectFootnotes = (blocks) => {
   }
 
   return map
+}
+
+export function updateHotkeyTip(hotkeyStr) {
+  if (!hotkeyStr) {
+    return '';
+  }
+  let hotkey;
+  if (isOsx) {
+    hotkey = hotkeyStr.replace('ctrl', '⌘').replace('shift', '⇧')
+      .replace('alt', '⌥');
+    if (hotkey.indexOf('⇧') > -1) {
+      hotkey = hotkey.replace(':', ';').replace('+', '=')
+        .replace('_', '-');
+    }
+  } else {
+    hotkey = hotkeyStr.replace('⌘', 'ctrl').replace('⇧', 'shift')
+      .replace('⌥', 'alt');
+    if (hotkey.indexOf('shift') > -1) {
+      hotkey = hotkey.replace(';', ':').replace('=', '+');
+    }
+  }
+  return hotkey;
 }

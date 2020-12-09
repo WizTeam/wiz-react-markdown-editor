@@ -2,6 +2,7 @@ import BaseFloat from '../baseFloat'
 import { patch, h } from '../../parser/render/snabbdom'
 import { menu, alignMenu } from './config'
 import { content } from './lang';
+import {updateHotkeyTip} from '../../utils'
 import selection from '../../selection';
 
 import './index.css';
@@ -114,7 +115,7 @@ class TableMenu extends BaseFloat {
       }
       //
       const shortCutWrapper = h('div.short-cut', [
-        h('span', shortCut)
+        h('span', updateHotkeyTip(shortCut))
       ])
 
       let textWrapper = h('span', content[this.lang][label]);
