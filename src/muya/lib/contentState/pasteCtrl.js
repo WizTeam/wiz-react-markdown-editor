@@ -235,7 +235,7 @@ const pasteCtrl = ContentState => {
     event.preventDefault()
     event.stopPropagation()
 
-    const text = rawText || event.clipboardData.getData('text/plain')
+    let text = rawText || event.clipboardData.getData('text/plain')
     let html = rawHtml || event.clipboardData.getData('text/html')
 
     // Support pasted URLs from Firefox.
@@ -251,6 +251,18 @@ const pasteCtrl = ContentState => {
     const startBlock = this.getBlock(start.key)
     const endBlock = this.getBlock(end.key)
     const parent = this.getParent(startBlock)
+
+    // 处理图片
+    if (copyType === 'copyAsMarkdown' && this.muya.options.imageAction) {
+      const promiseArr = []
+      text.replace(/(\!\[)(.*?)(\\*)\]\((.*?)(\\*?)(\s=(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?))?\)/g, (match, p1, p2, p3, p4) => {
+        promiseArr.push(this.muya.options.imageAction(p4))
+      })
+      const pathArr = await Promise.all(promiseArr);
+      text = text.replace(/(\!\[)(.*?)(\\*)\]\((.*?)(\\*?)(\s=(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?))?\)/g, (match, p1, p2, p3, p4) => {
+        return `![${p2}](${pathArr.shift()})`
+      })
+    }
 
     if (copyType === 'htmlToMd') {
       html = text
