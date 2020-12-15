@@ -79,6 +79,6 @@ export default class NoteLinkInsert extends BaseScrollFloat  {
   }
 
   getItemElement(item) {
-    return this.scrollElement.querySelector(`[data-link="${item.link}"]`);
+    return this.scrollElement.querySelector(`.active`);
   }
 }
