@@ -133,6 +133,42 @@ const noteLinkCtrl =  (ContentState) => {
     }, [])
     return getLinks(this.blocks)
   }
+
+  ContentState.prototype.insertNoteLink = function(content) {
+    const { start, end } = selection.getCursorRange();
+    if (start.key === end.key) {
+      const { key, offset: startOffset } = start;
+      const { offset: endOffset } = end;
+      const block = this.getBlock(start.key);
+      if (content) {
+        block.text = `${block.text.substring(0, startOffset)}[[${content}]]${block.text.substring(endOffset)}`;
+        const offset = startOffset + content.length + 4;
+        this.cursor = {
+          start: { key, offset },
+          end: { key, offset }
+        };
+      } else {
+        if (block.text.substring(startOffset - 2, startOffset) == '[[' && block.text.substring(endOffset, endOffset + 2) == ']]') {
+          block.text = `${block.text.substring(0, startOffset - 2)}${block.text.substring(startOffset, endOffset)}${block.text.substring(endOffset + 2)}`;
+          this.cursor = {
+            start: { key, offset: startOffset - 2 },
+            end: { key, offset: endOffset - 2 }
+          };
+        } else {
+          block.text = `${block.text.substring(0, startOffset)}[[${block.text.substring(startOffset, endOffset)}]]${block.text.substring(endOffset)}`;
+          this.cursor = {
+            start: { key, offset: startOffset + 2 },
+            end: { key, offset: endOffset + 2 }
+          };
+        }
+      }
+
+      this.partialRender();
+      this.muya.eventCenter.dispatch('stateChange');
+    }
+  }
+
+
 }
 
 export default noteLinkCtrl;

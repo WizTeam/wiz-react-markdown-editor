@@ -250,6 +250,9 @@ const App = () => {
       case 'redo':
         editorRef.current.redo();
         break;
+      case 'noteLink':
+        editorRef.current.insertNoteLink('gg');
+        break;
       default:
         break;
     }
@@ -359,6 +362,9 @@ const App = () => {
         </button>
         <button type="button" onMouseDown={(e) => handleInsert('redo', e)}>
           redo
+        </button>
+        <button type="button" onMouseDown={(e) => handleInsert('noteLink', e)}>
+          noteLink
         </button>
         {isCursorInTable ? (
           <>

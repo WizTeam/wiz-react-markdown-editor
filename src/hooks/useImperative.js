@@ -233,6 +233,10 @@ export default function useImperative(ref, editor) {
       function getNoteLinks() {
         return editor.getNoteLinks();
       }
+      function insertNoteLink(content) {
+        editor.contentState.insertNoteLink(content);
+      }
+
       function selectFirstTitle() {
         const firstBlock = editor.contentState.getFirstBlock();
         if (editor && firstBlock && firstBlock.text.startsWith('# ')) {
@@ -285,7 +289,8 @@ export default function useImperative(ref, editor) {
         selectFirstTitle,
         undo,
         redo,
-        getNoteLinks
+        getNoteLinks,
+        insertNoteLink
       };
     },
     [editor]
