@@ -207,7 +207,7 @@ const inputCtrl = (ContentState) => {
           this.removeBlocks(startBlock, endBlock);
         }
       } else {
-        this.removeBlocks(startBlock, endBlock, false);
+        this.removeBlocks(startBlock, endBlock);
       }
       if (this.blocks.length === 1) {
         needRenderAll = true;
