@@ -15,52 +15,52 @@ const COMMAND_KEY = isOsx ? '⌘' : 'Ctrl'
 const icons = [
   {
     type: 'strong',
-    tooltip: 'Emphasize',
+    tooltip: 'emphasize',
     shortcut: `${COMMAND_KEY}+B`,
     icon: strongIcon
   }, {
     type: 'em',
-    tooltip: 'Italic',
+    tooltip: 'italic',
     shortcut: `${COMMAND_KEY}+I`,
     icon: emphasisIcon
   }, {
     type: 'u',
-    tooltip: 'Underline',
+    tooltip: 'underline',
     shortcut: `${COMMAND_KEY}+U`,
     icon: underlineIcon
   }, {
     type: 'del',
-    tooltip: 'Strikethrough',
+    tooltip: 'strikethrough',
     shortcut: `${COMMAND_KEY}+D`,
     icon: strikeIcon
   }, {
     type: 'mark',
-    tooltip: 'Highlight',
+    tooltip: 'highlight',
     shortcut: `⇧+${COMMAND_KEY}+H`,
     icon: highlightIcon
   }, {
     type: 'inline_code',
-    tooltip: 'Inline Code',
+    tooltip: 'inlineCode',
     shortcut: `${COMMAND_KEY}+\``,
     icon: codeIcon
   }, {
     type: 'inline_math',
-    tooltip: 'Inline Math',
+    tooltip: 'inlineMath',
     shortcut: `⇧+${COMMAND_KEY}+M`,
     icon: mathIcon
   }, {
     type: 'link',
-    tooltip: 'Link',
+    tooltip: 'link',
     shortcut: `${COMMAND_KEY}+L`,
     icon: linkIcon
   }, {
     type: 'image',
-    tooltip: 'Image',
+    tooltip: 'image',
     shortcut: `⇧+${COMMAND_KEY}+I`,
     icon: imageIcon
   }, {
     type: 'clear',
-    tooltip: 'Eliminate',
+    tooltip: 'eliminate',
     shortcut: `⇧+${COMMAND_KEY}+R`,
     icon: clearIcon
   }

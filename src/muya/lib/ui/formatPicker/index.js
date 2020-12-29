@@ -1,6 +1,7 @@
 import BaseFloat from '../baseFloat'
 import { patch, h } from '../../parser/render/snabbdom'
 import icons from './config'
+import { content } from './lang';
 
 import './index.css'
 
@@ -28,6 +29,7 @@ class FormatPicker extends BaseFloat {
     const formatContainer = this.formatContainer = document.createElement('div')
     this.container.appendChild(formatContainer)
     this.floatBox.classList.add('ag-format-picker-container')
+    this.lang = this.muya.options.lang;
     this.listen()
   }
 
@@ -70,7 +72,7 @@ class FormatPicker extends BaseFloat {
       }
       return h(itemSelector, {
         attrs: {
-          title: `${i.tooltip} ${i.shortcut}`
+          title: `${content[this.lang][i.tooltip]} ${i.shortcut}`
         },
         on: {
           click: event => {
