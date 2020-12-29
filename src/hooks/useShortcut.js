@@ -40,7 +40,9 @@ const keys = [
   ['format.strike', 'CmdOrCtrl+D'],
   ['format.hyperlink', 'CmdOrCtrl+L'],
   ['format.image', 'CmdOrCtrl+Shift+I'],
-  ['format.clear-format', 'Shift+CmdOrCtrl+R']
+  ['format.clear-format', 'Shift+CmdOrCtrl+R'],
+
+  ['selectAll', 'CmdOrCtrl+A']
 ];
 
 export default function useShortcut(container, editor, listener) {
@@ -144,6 +146,9 @@ export default function useShortcut(container, editor, listener) {
           break;
         case 'format.clear-format':
           editor?.contentState.format('clear');
+          break;
+        case 'selectAll':
+          editor?.selectAll();
           break;
         default:
           break;
