@@ -1,21 +1,40 @@
-// import virtualize from 'snabbdom-virtualize/strings'
-const snabbdom = require('snabbdom')
+import { init } from 'snabbdom/build/package/init';
+import { attributesModule } from 'snabbdom/build/package/modules/attributes';
+import { classModule } from 'snabbdom/build/package/modules/class';
+import { datasetModule } from 'snabbdom/build/package/modules/dataset';
+import { eventListenersModule } from 'snabbdom/build/package/modules/eventlisteners';
+import { heroModule } from 'snabbdom/build/package/modules/hero';
+// import { Module } from 'snabbdom/build/package/modules/module';
+import { propsModule } from 'snabbdom/build/package/modules/props';
+import { styleModule } from 'snabbdom/build/package/modules/style';
 
-export const patch = snabbdom.init([ // Init patch function with chosen modules
-  require('snabbdom/modules/class').default, // makes it easy to toggle classes
-  require('snabbdom/modules/attributes').default,
-  require('snabbdom/modules/style').default, // handles styling on elements with support for animations
-  require('snabbdom/modules/props').default, // for setting properties on DOM elements
-  require('snabbdom/modules/dataset').default,
-  require('snabbdom/modules/hero').default,
-  // require('snabbdom/modules/module').default,
-  require('snabbdom/modules/eventlisteners').default // attaches event listeners
+import {h} from 'snabbdom/build/package/h';
+
+import toHTML from 'snabbdom-to-html'
+
+import {toVNode} from 'snabbdom/build/package/tovnode'
+
+export const patch = init([
+  attributesModule,
+  classModule,
+  datasetModule,
+  eventListenersModule,
+  heroModule,
+  // Module,
+  propsModule,
+  styleModule
 ])
-export const h = require('snabbdom/h').default // helper function for creating vnodes
-export const toHTML = require('snabbdom-to-html') // helper function for convert vnode to HTML string
-export const toVNode = require('snabbdom/tovnode').default // helper function for convert DOM to vnode
+
 export const htmlToVNode = html => { // helper function for convert html to vnode
   const wrapper = document.createElement('div')
   wrapper.innerHTML = html
   return toVNode(wrapper).children
+}
+
+
+
+export {
+  h,
+  toHTML,
+  toVNode
 }
