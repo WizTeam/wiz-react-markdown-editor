@@ -237,6 +237,10 @@ export default function useImperative(ref, editor) {
         editor.contentState.insertNoteLink(content);
       }
 
+      function getTOC() {
+        return editor.getTOC();
+      }
+
       function selectFirstTitle() {
         const firstBlock = editor.contentState.getFirstBlock();
         if (editor && firstBlock && firstBlock.text.startsWith('# ')) {
@@ -290,7 +294,8 @@ export default function useImperative(ref, editor) {
         undo,
         redo,
         getNoteLinks,
-        insertNoteLink
+        insertNoteLink,
+        getTOC
       };
     },
     [editor]
