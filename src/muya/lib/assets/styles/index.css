@@ -765,7 +765,7 @@ figure.ag-active.ag-container-block > div.ag-container-preview {
   left: 50%;
   width: 100%;
   box-sizing: border-box;
-  z-index: 10000;
+  z-index: 1200;
   transform: translateX(-50%);
   padding: .5rem;
   background: var(--floatBgColor);
